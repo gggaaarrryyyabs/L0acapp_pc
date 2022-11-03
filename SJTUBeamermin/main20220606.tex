@@ -1,0 +1,291 @@
+% !TeX TS-program = xelatex
+% This is SJTUBeamermin v1.0
+% For more detailed desciption, see
+% https://github.com/LogCreative/SJTUBeamermin/blob/main/doc/sjtubeamermintheme.pdf
+%
+\documentclass[
+    % draft,                             % 草稿模式
+    aspectratio=169,                   % 使用 16:9 比例
+]{beamer}
+\mode<presentation>
+\usetheme[
+    navigation=subsections,            % 使用子章节进度显示
+     lang=en,                           % 使用英文
+    % cjk=true,                          % 使用CJK而不是ctex
+    color=blue,                         % 使用红色主题
+    % pattern=all,                        % 使用全图案装饰
+    % gbt=bibtex,                        % 使用 gbt (使用 bibtex 编译)
+]{sjtubeamermin}
+% \usecolortheme[]{beaver}                 % 使用其他颜色主题
+% \addbibresource{ref.bib}               % gbt!=bibtex
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{empheq}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{fontspec}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{color,soul}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\renewcommand{\Bbb}{\mathbb}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\GR}{\mathbb{GR}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Fn}{\mathbb{F}_2^n}
+\newcommand{\Fm}{\mathbb{F}_2^m}
+\newcommand{\df}{\delta_F}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\gtr}{\operatorname{T}}
+\newcommand{\teich}{\textit{Teichm$\ddot{u}$ller sets}}
+% \newtheorem*{definition}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{proposition}{Proposition}
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\setbeamertemplate{itemize items}[default]
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=red,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+% \NewDocumentEnvironment{example}{O{\textbf{Example:}}} % Define example environment
+% {\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+% {\end{leftrule}}
+\setbeamertemplate{footline}[frame number]
+
+\NewDocumentEnvironment{question}{O{\textbf{Something:}}} % Define something environment
+{\begin{leftrule}\noindent\textcolor{graylight}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{remark}{O{\textbf{Remark:}}} % Define remark environment
+{\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+{\end{leftrule}}
+
+\begin{document}
+    \institute[School of Electronic Information and Electrical Engineering]{电子信息与电气工程学院}   % 组织
+    % \logo{
+    %     \includegraphics{support/cnlogored.pdf}  % 重定义 logo
+    % }
+    \titlegraphic{                         % 标题图像
+        \begin{stampbox}[white]
+            \includegraphics[width=0.3\textwidth]{support/head.png}
+        \end{stampbox}
+    }
+    \title{A new combinational logic \\minimization technique}  % 标题
+ %   \subtitle{SJTUBeamer \fbox{\textsc{min}} Template}         % 副标题
+    \author{Zhaole Li}                  % 作者
+    \date{\textcolor{red}{Workshop of AES, 2022}}                          % 日期
+    \maketitle                             % 创建标题页
+
+
+\AtBeginSection[]{
+    \begin{frame}
+        % \tableofcontents[currentsection]           % 传统节目录             
+        \sectionpage                   % 节页
+    \end{frame}
+}
+
+% 使用小节目录
+%\AtBeginSubsection[]{                  % 在每小节开始
+ %   \begin{frame}
+        % \tableofcontents[currentsection,currentsubsection]             % 传统小节目录             
+  %      \subsectionpage                % 小节页
+ %   \end{frame}
+%}
+
+\section{Introduction}
+%\subsection{第 1 小节}
+
+    \begin{frame}
+        \frametitle{Optimal combinational circuits}
+        
+       The meaningful metrics for constructing optimal combinational circuits are gate count, depth, energy consumption, etc.
+
+       The number of $ n $-variable Boolean functions is $ 2^{2^n} $, so no known techniques can even find the optimal circuits for $ 8 $-variable Boolean functions. 
+       Thus we build the implementations using some heuristics. 
+
+    \end{frame}
+    \begin{frame}
+        \frametitle{Optimal combinational circuits}
+        
+        \begin{enumerate}
+            \item This work presented a new technique for circuit implementations with two steps:
+            \begin{enumerate}
+                \item Reducing multiplicative complexity for the non-linear components;
+                \item Then optimizing the linear components.
+            \end{enumerate}
+            \item The metric is gate count with AND, XOR and 1;
+        \end{enumerate}
+        
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{First Step}
+    
+        \begin{definition}
+            The multiplicative complexity of a function is the number of $ \F_2 $ multiplications necessary and sufficient to compute it.
+        \end{definition}
+
+        \begin{example}
+            The multiplicative complexity of 
+            $ f(x_1,x_2,x_3,x_4)=x_{1} x_{2} x_{3} x_{4}+x_{1} x_{2} x_{3}+x_{1} x_{2} x_{4}+x_{2} x_{3} x_{4}+x_{1} x_{2}+x_{1} x_{3}+x_{1} x_{4}+x_{2} x_{3}+x_{3} x_{4} $ 
+            is no greater than $ 3 $ since $ f=(x_1+1)(x_2+1)(x_3+1)(x_4+1)+x_1+x_2+x_3+x_4+1 $
+            and is $ 3 $ due to $ \operatorname{deg}(f)=4 $.
+        \end{example}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Second Step}
+    
+        The second step is composed by finding the maximal linear components of the circuit and minimizing the number of XOR gates needed. 
+        A new heuristic for the second step is proposed. 
+    \end{frame}
+
+\section{Non-linear components of Sbox in AES\footnote{Boyar J, Peralta R. A new combinational logic minimization technique with applications to cryptology[C]//International Symposium on Experimental Algorithms. Springer, Berlin, Heidelberg, 2010: 178-189.}}
+
+    \begin{frame}
+        \frametitle{$ \F_{2^4} $ inversion}
+        The only non-linear component in AES's Sbox is to compute the inverse in the finite field field $ \F_{2^8} $.
+        Canright built a circuit for inverses in $ \F_{2^8} $ by giving a circuit for inverses in $ \F_{2^4} $. 
+        Using the same general technique but in different bases\footnote{$ W $ is a root of $ x^2+x+1 $ over $ \F_2 $, $ Z $ is a root of $ x^2+x+W $ over $ \F_{2^2} $.} $ \{W,W^2,Z^2,Z^8\} $ we can represent an element
+         $ \Delta=\left(x_{0} W+x_{1} W^{2}\right) Z^{2}+\left(x_{2} W+x_{3} W^{2}\right) Z^{8} $ of $ \F_{2^4} $,
+        and the inverse of this element $ \Delta^{\prime}=\left(y_{0} W+y_{1} W^{2}\right) Z^{2}+\left(y_{2} W+y_{3} W^{2}\right) Z^{8} $ can be calculated as the following:
+    \end{frame}
+    \begin{frame}
+        \frametitle{$ \F_{2^4} $ inversion}
+        \begin{empheq}[left=\empheqlbrace]{align*}
+            -y_0&=x_1 x_2 x_3+x_0 x_2+x_1 x_2+x_2+x_3\\
+            -y_1&=x_0 x_2 x_3+x_0 x_2+x_1 x_2+x_1 x_3+x_3\\
+            -y_2&=x_1 x_0 x_3+x_0 x_2+x_0 x_3+x_0+x_1\\
+            -y_3&=x_1 x_2 x_0+x_0 x_2+x_0 x_3+x_1 x_3+x_1
+        \end{empheq}
+    \end{frame}
+
+
+    \begin{frame}
+        \frametitle{Optimal non-linear components}
+        For $ \F_{2^4} $ inversion, we take the method:
+        \begin{enumerate}
+            \item pick an equation and build an efficient circuit for it;
+            \item store the intermediate functions used in above for possible usage in the other equations;
+            \item iterate until all equations have been computed.
+        \end{enumerate}
+        \begin{remark}
+            It turns out that $3$ multiplications are enough to compute any functions on four variables. 
+        \end{remark}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Optimal non-linear components}
+        
+        \begin{empheq}[left=\empheqlbrace]{align*}
+            -\mathbin{\color{blue}y_1}&=(\mathbin{\color{red}x_0 x_2} +x_1)(x_2 +x_3) +x_3\\
+            -\mathbin{\color{green}y_3}&=(\mathbin{\color{red}x_0 x_2} +x_3)(x_0 +x_1) +x_1\\
+            -y_0&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{blue}y_1})x_3 +\mathbin{\color{blue}y_1} +x_2+x_3\\
+            -y_2&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{green}y_3})x_3 +\mathbin{\color{green}y_3} +x_0+x_1
+        \end{empheq}
+        This circuit needs $ 5 $ AND gates and $ 11 $ XOR gates. 
+
+    \end{frame}
+
+\section{Minimizing linear components\footnote{Boyar J, Peralta R. A new combinational logic minimization technique with applications to cryptology[C]//International Symposium on Experimental Algorithms. Springer, Berlin, Heidelberg, 2010: 178-189.}}
+
+    \begin{frame}
+            \frametitle{An example of linear component}
+        
+            \begin{example}
+                \[\begin{pmatrix}
+                    1 &1 &0 &0\\
+                    1 &1 &1 &0\\
+                    1 &1 &1 &1\\
+                    0 &1 &1 &1
+                \end{pmatrix}\begin{pmatrix}
+                    x_1\\x_2\\x_3\\x_4
+                \end{pmatrix}\]
+                Actually written in the equations  $ x_1+x_2;x_1+x_2+x_3;x_1+x_2+x_3+x_4;x_2+x_3+x_4. $
+                It's easy to see that we only need $ 4 $ XOR to compute the linear component $ v_1=x_1+x_2;v_2=v_1+x_3;v_3=v_2+x_4;v_4=v_3+x_1. $
+            \end{example}
+        \end{frame}
+    
+    \begin{frame}
+        \frametitle{A new heuristic}
+    
+        Let $S$ be a set of linear functions. For any linear predicate $f$, we define the distance $\delta(S,f)$ 
+        as the minimum number of additions of elements from $S$ necessary to obtain $f$.
+        For the linear Boolean function, initially $ S $ is just the set of all variables $ x_1,x_2,...,x_n $,
+        then a new base element is the form of two old base elements, update the $ \delta(S,f) $ until $ \delta(S,f)=0 $.
+        \begin{enumerate}
+            \item For the $ (n,m) $-linear Boolean functions, we use the $ m\times n $ matrix over $ \F_2 $ such as $ f(\textbf{x})=M\textbf{x} $.
+            $ S $ still be just the set of all variables $ x_1,x_2,...,x_n $;
+            \item Denote $ Dist[] $ the distance from $ S $ to the linear function given by rows of $ M $, 
+            in fact, $ Dist[i]=\delta(S,f_i) $ where $ f_i $ is the $ i^{th} $ linear function given by $ M $;
+            \item Pick a new base element by adding two old base elements and then update $ Dist[] $;
+            \item Iterate the last step until $ Dist[]=(0,0,...,0) $.
+        \end{enumerate}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{How to pick the new base element}
+    
+        \begin{enumerate}
+            \item pick those that minimize the sum of new distances;
+            \item pick one that maximizing the Euclidean norm of the vector of new distances;
+        \end{enumerate}
+        This criterion seems strange for maximizing. But we want a distance $ (0,2,1) $ rather than $ (1,1,1) $. 
+    \end{frame}
+
+
+    \begin{frame}
+        \frametitle{Example}
+        We  bulid the circuit of the following equation system:
+        \[\begin{aligned}
+            &y_{0}=x_{0}+x_{1}+x_{2} \\
+            &y_{1}=x_{1}+x_{3}+x_{4} \\
+            &y_{2}=x_{0}+x_{2}+x_{3}+x_{4} \\
+            &y_{3}=x_{1}+x_{2}+x_{3} \\
+            &y_{4}=x_{0}+x_{1}+x_{3} \\
+            &y_{5}=x_{1}+x_{2}+x_{3}+x_{4}
+        \end{aligned}\]
+        so the matrix $ M $ is $\begin{pmatrix}
+                1 & 1 & 1 & 0 & 0 \\
+                0 & 1 & 0 & 1 & 1 \\
+                1 & 0 & 1 & 1 & 1 \\
+                0 & 1 & 1 & 1 & 0 \\
+                1 & 1 & 0 & 1 & 0 \\
+                0 & 1 & 1 & 1 & 1
+            \end{pmatrix}.$
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Example}
+    
+        \begin{enumerate}
+            \item In above situation, the initial $ S $ is the set $ \{[0 0 0 0 1],[00010],[00100],[01000],[10000]\} $;
+            \item The initial distance is $ Dist=[2,2,3,2,2,3] $;
+            \item First choose the two coloumn which have the most $ 1 $ in the same row;
+            \item \dots 
+        \end{enumerate}
+
+    \end{frame}
+
+    
+
+    \makebottom     % 创建尾页  % 非标准命令
+
+\end{document}

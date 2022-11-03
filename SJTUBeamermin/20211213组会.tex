@@ -1,0 +1,903 @@
+% !TeX encoding = UTF-8
+% !TeX TS-program = xelatex
+% This is SJTUBeamermin v1.0
+% For more detailed desciption, see
+% https://github.com/LogCreative/SJTUBeamermin/blob/main/doc/sjtubeamermintheme.pdf
+%
+\documentclass[
+    % draft,                             % 草稿模式
+    aspectratio=169,                   % 使用 16:9 比例
+]{beamer}
+\mode<presentation>
+\usetheme[
+    navigation=subsections,            % 使用子章节进度显示
+     lang=en,                           % 使用英文
+    % cjk=true,                          % 使用CJK而不是ctex
+    color=blue,                         % 使用红色主题
+    % pattern=all,                        % 使用全图案装饰
+    % gbt=bibtex,                        % 使用 gbt (使用 bibtex 编译)
+]{sjtubeamermin}
+% \usecolortheme[]{beaver}                 % 使用其他颜色主题
+\addbibresource{ref.bib}               % gbt!=bibtex
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage{xcolor,cite}
+\usepackage{tikz-cd}
+\usepackage{soul}
+\usepackage{empheq}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\renewcommand{\Bbb}{\mathbb}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\GR}{\mathbb{GR}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\gtr}{\operatorname{T}}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{proposition}{Proposition}
+% \newtheorem*{definition}{Definition}
+\newcommand{\teich}{\textit{Teichm$\ddot{u}$ller sets}}
+\usepackage{amsfonts}
+\usepackage{fontspec}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{color,soul}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\setbeamertemplate{itemize items}[default]
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=red,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+% \NewDocumentEnvironment{example}{O{\textbf{Example:}}} % Define example environment
+% {\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+% {\end{leftrule}}
+
+\NewDocumentEnvironment{question}{O{\textbf{Something:}}} % Define something environment
+{\begin{leftrule}\noindent\textcolor{graylight}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{remark}{O{\textbf{Remark:}}} % Define remark environment
+{\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+{\end{leftrule}}
+
+\begin{document}
+    \institute[School of Electronic Information and Electrical Engineering]{电子信息与电气工程学院}   % 组织
+    % \logo{
+    %     \includegraphics{support/cnlogored.pdf}  % 重定义 logo
+    % }
+    \titlegraphic{                         % 标题图像
+        \begin{stampbox}[white]
+            \includegraphics[width=0.3\textwidth]{support/head.png}
+        \end{stampbox}
+    }
+    \title{Galois Ring \\and generalized Boolean function}  % 标题
+ %   \subtitle{SJTUBeamer \fbox{\textsc{min}} Template}         % 副标题
+    \author{Zhaole Li}                  % 作者
+    \date{\textcolor{red}{Workshop of APN function, 2022}}                          % 日期
+    \maketitle                             % 创建标题页
+
+%\part{第一部分}
+
+% 使用节目录
+% \AtBeginSection[]{
+%     \begin{frame}
+%         % \tableofcontents[currentsection]           % 传统节目录             
+%         \sectionpage                   % 节页
+%     \end{frame}
+% }
+
+% 使用小节目录
+%\AtBeginSubsection[]{                  % 在每小节开始
+ %   \begin{frame}
+        % \tableofcontents[currentsection,currentsubsection]             % 传统小节目录             
+  %      \subsectionpage                % 小节页
+ %   \end{frame}
+%}
+
+%\section{第 1 节}
+%\subsection{第 1 小节}
+
+
+
+    \begin{frame}
+        \frametitle{Introduction}
+        \begin{definition}[Galois ring]
+            The \textbf{Galois ring} $\GR(p^k,n)$ constructed by $\frac{\Bbb Z_{p^k}[x]}{ (h(x))}= \Bbb Z_{p^k}[\xi]$ 
+            where $h(x)$ is a basic\footnote{The basic irreducible polynomial $h(x)$ is defined as the 
+            polynomial $(\overline{h}(x))\in\Bbb F_p[x]$ is irreducible in $\Bbb F_p[x]$.} irreducible polynomial of degree $n$ over $\Bbb Z_{p^k}$(a Hensel lift of a irreducible polynomial from $\Bbb Z_p[x]$) and $\xi=x+(h(x))$ is a root of $h(x)$. 
+        \end{definition}
+        \[\frac{\Bbb Z_{p^k}[x]}{ (h(x)) }=\{a_0+a_1x+a_2x^2+\cdots+a_{n-1}x^{n-1}+ (h(x)), a_i\in\Z_{p^k} \}.\]
+        Set $ \xi=x+ (h(x))  $, then $ h(\xi)=0 $ and $ \xi^i=x^i+(h(x))$. 
+        % Thus the former can be transformed into the latter:
+        % \[\Z_{p^k}=\{a_0+a_1\xi+a_2\xi^2+\cdots+a_{n-1}\xi^{n-1}, a_i\in\Z_{p^k}\}.\]
+    \end{frame}
+    \begin{frame}
+        \frametitle{Examples of Galois Rings}
+    
+        \begin{example}
+            Consider the ring $ \Z_{p^k} $ where $ p $ is a prime and $ k $ is a positive integer. 
+            Clearly $ 1 $ is the identity of the ring. 
+            And the set of zero divisors with $ 0 $ is the ideal $ (p)=p\Z_{p^k} $. 
+            
+            Note that when $ k=1 $, $ \Z_{p^k}=\F_p $ is just the finite field with $ p $ elements.
+        \end{example}
+        \begin{example}
+            Set $ h(x) $ is a monic basic irreducible polynomial of degree $ n $ in $ \Z_{p^k} $, 
+            then consider the residue class of the ring $ \Z_{p^k}[x]/(h(x)) $.
+            
+            Clearly the residue classes 
+            \[a_0+a_1x+\cdots+a_{m-1}x^{m-1}+(h(x)),\]
+            where $ a_i\in\Z_{p^k} $ are distinct elements of $ \Z_{p^k}[x]/(h(x)) $.
+            $ 1+(h(x)) $ is the identity and $ (h(x)) $ is the zero.
+            And the set of zero divisors with $ (h(x)) $ is the ideal $ (p+h(x)) $.
+        \end{example}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Introduction}
+        \begin{itemize}
+             
+            \item We have all elements in $ \Z_{p^k} $ of $ p $-adic: 
+        $ \Z_{p^k}=\{c_0+pc_1+p^2c_2+\cdots+p^{k-1}c_{k-1},c_i\in\Z_p\}.$
+        \item Then we have a ring homomorphism:
+        \[\begin{array}{ccc}
+            -:\quad\Z_{p^k}&\rightarrow &\Z_{p}\\
+            c_0+pc_1+p^2c_2+\cdots+p^{k-1}c_{k-1}&\mapsto &c_0,
+        \end{array}\]
+        where $ c_i\in\Z_{p} $, whose kernal is the ideal $ (p) $ of $ \Z_{p^k} $.
+        
+        \item Meanwhile $ - $ can be extended to 
+        \[\begin{array}{ccc}
+            -:\quad\Z_{p^k}[x]&\rightarrow&\Z_{p}[x]\\
+            a_0+a_1x+a_2x^2+\cdots+a_{m-1}x^{m-1}&\mapsto&\overline{a_0}+\overline{a_1}x+\cdots+\overline{a_{m-1}}x^{m-1},
+        \end{array}\]
+        where $ a_i\in\Z_{p^k} $, whose kernal is the ideal $ (p) $ of $ \Z_{p^k}[x] $. 
+        Note that the image of the ideal $ (h(x)) $ under the homomorphism $ - $ is $ (\overline{h}(x)) $.
+        % The above homomorphism can induce another homomorphism and this homomorphism will also be denoted by $ - $:
+        % \[\begin{array}{ccc}
+        %     -:\quad\Z_{p^k}[x]/\left\langle f(x)\right\rangle &\rightarrow&\Z_{p}[x]/\left\langle \overline{f}(x)\right\rangle \\
+        %     a_0+a_1x+a_2x^2+\cdots+a_{n-1}x^{n-1}+\left\langle f(x)\right\rangle&\mapsto&\overline{a_0}+\overline{a_1}x+\cdots+\overline{a_{n-1}}x^{n-1}+\left\langle \overline{f}(x)\right\rangle.
+    \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        By ring isomorphism theorem, we confirm the map
+        \[\begin{array}{ccc}
+            \quad\Z_{p^k}[x]/(h(x))&\rightarrow&\Z_{p}[x]/(\overline{h}(x))\\
+            a_0+a_1x+a_2x^2+\cdots+a_{m-1}x^{m-1}+(h(x))&\mapsto&\overline{a_0}+\overline{a_1}x+\cdots+\overline{a_{m-1}}x^{m-1}+(\overline{h}(x)) ,
+        \end{array}\]
+    is also a ring homomorphism, also denoted by $ - $.
+
+    Clearly, the kernal of the above homomorphism is the ideal $ (p+h(x)) $. Thus, we have 
+    \[(\Z_{p^k}[x]/(h(x)))/(p+(h(x)))\cong\Z_p[x]/(\overline{h}(x)).\]
+    Note that $ \Z_p[x]/(\overline{h}(x)) $ is the finite field $ \F_{p^n} $, where $ n=\deg(\overline{h}(x)) $.
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        For simplicity, write $ \xi=x+(h(x)) $, then $ h(\xi)=0 $ and 
+        \[a_0+a_1x+\cdots+a_{m-1}x^{m-1}+(h(x))=a_0+a_1\xi+\cdots+a_{m-1}\xi^{m-1},\]
+         and then all elements of $ \Z_{p^k}[x]/(h(x)) $ can be expressed in the form
+         \[a_0+a_1\xi+\cdots+a_{m-1}\xi^{m-1},\quad a_i\in\Z_{p^k}.\]
+        Thus, we have $ \Z_{p^k}[\xi]=\Z_{p^k}[x]/(h(x)) $ is a Galois ring.
+    
+    \end{frame}
+
+    \begin{frame}[fragile]
+        \frametitle{Introduction}
+    
+        We also have $ \overline{\xi}=x+(\overline{h}(x)) $ and $ \overline{\xi} $ is a root of 
+        the monic irreducible polynomial $ \overline{h}(x) $ over $ \F_p $ and then 
+        \[\F_p[x]/(\overline{h}(x))=\F_p[\overline{\xi}]\cong \F_{p^n}.\]
+        Therefore, we have 
+        \[\begin{array}{ccc}
+            \quad\Z_{p^k}[\xi] &\rightarrow&\F_{p}[\xi]\\
+            a_0+a_1\xi+a_2\xi^2+\cdots+a_{m-1}\xi^{m-1} &\mapsto&\overline{a_0}+\overline{a_1}\xi+\cdots+\overline{a_{m-1}}\xi^{m-1}.
+        \end{array}\]
+        \begin{center}
+            \[\begin{tikzcd}
+                \Z_{p^k}[x] \arrow[r,"-"] \arrow[d] & \F_{p}[x] \arrow[d] \\
+                \Z_{p^k}[\xi] \arrow[r,"-"]  & \F_{p}[\overline{\xi}] 
+            \end{tikzcd}\]
+        \end{center}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Structure of Galois rings}
+    
+        \begin{theorem}[\cite{additive_form}]
+            Any two Galois rings of the \textcolor{red}{same characteristic} and the same cardinality are isomorphic.
+        \end{theorem}
+        Therefore we can use the notation $ \GR(p^k,n) $ to denote any Galois ring of 
+        characteristic $ p^k $ and cardinality $ p^{kn} $.
+
+        \begin{remark}
+            Any two finite fields with the same number of elements are isomorphic.
+        \end{remark}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Structure of Galois rings}
+        Every element of $\GR(p^k,n)=\Z_{p^k}/(h(x))$ can be uniquely written in the \textbf{`additive` form}:
+        \begin{equation}\label{additive_form}
+            a_0+a_1\xi+a_2\xi^2+\cdots+a_{n-1}\xi^{n-1},
+        \end{equation}
+        where $a_i\in\Bbb Z_{p^k}$ and $ \xi $ is a root of $ h(x) $. 
+        From this form we conclude the number of elements of $\GR(p^k,n)$ is $p^{kn}$, 
+        also we confirm the \hl{characteristic is $ p^k $}.
+
+        \begin{remark}
+            Every elements of $ \F_{p^n}=\Z_{p}/(f(x)) $ can be uniquely written in the form;
+            \[a_0+a_1\alpha+a_2\alpha^2+\cdots+a_{n-1}\alpha^{n-1},\quad a_i\in\F_p,\]
+            where $ \alpha $  is a root of the irreducible polynomial $ f(x) $ over $ \F_2[x] $. 
+        \end{remark}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+        We have $\xi^{p^n-1}=1$ if $\xi$ is a root of $h(x)$, 
+        which is a monic basic primitive polynomial of degree $ n $ over $ \Z_{p^k} $.
+        $ \xi $ forms a cyclic group of order $ p^n-1$ with multiplication, 
+        also forms $ \mathcal{T}_n $ by adjoining $0$ called by $\teich$ isomorphism to $\Bbb F_{p^n}$.
+    \begin{remark}
+        The existence of the monic basic primitive(irreducible) polynomial of degree $ n $ over $ \Z_{p^k} $ is 
+        due to the Hensel's Lemma and the existence of the monic primitive(irreducible) polynomial of degree $ n $ 
+        over $ \F_p $. 
+    \end{remark}
+
+    \end{frame}
+    \begin{frame}
+        \frametitle{Structure of Galois rings}
+    
+        \begin{definition}[$ \teich $]
+            $ \teich $ of $ \GR(p^k,n)=\Z_{p^k}[\xi] $ is of the form 
+            \[\mathcal{T}_n=\{0,1,\xi,\xi^2,\dots,\xi^{p^n-2}\}.\]
+            % clearly $ \mathcal{T}_n $ is isomorphic to the finite field $ \Bbb F_{p^n} $. 
+        \end{definition}
+    
+    \end{frame}
+\begin{frame}
+    \frametitle{The p-adic Representation}
+
+    Thus we give \textbf{`multiplicative` form}($ p $-adic) of $\GR(p^k,n)=\Z_{p^k}[\xi]$:
+    \begin{equation}\label{multiplication_form}
+        a_0+pa_1+p^2a_2+\cdots+p^{k-1}a_{k-1},
+    \end{equation}
+    where $a_i\in\mathcal{T}_n=\{0,1,\xi,\xi^p,\dots,\xi^{p^n-2}\}$.
+
+    \begin{remark}
+        In a finite ring, every nonzero element is a zero divisor or a unit. 
+        Thus in the multiplicative form of the Galois ring, if $ a_0\neq 0 $, the element is a unit, 
+        otherwise a zero divisor.
+    \end{remark}
+
+    Thus $ (p) =p\GR(p^k,n) $ is the collection of all zero divisors and a maximal ideal by counting.
+     Hence $ \GR(p^k,n)/(p)$ is the finite field $ \F_{p^n} $. 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Example of the Galois Ring $ \GR(8,3) $}
+    \begin{itemize}
+        
+        \item Assume $ p=2 $, $ k=3 $, $ n=3 $ and set $ h(x)=x^3-2x^2-3x-1\in\Bbb{Z}_8[x] $ then we obtain that $\GR(8,3)=\frac{\Bbb Z_8[x]}{(h(x)) }\cong\Bbb Z_8[\xi]$ where $ \xi=x+(h(x))  $ is a root of basic primitive polynomial $ h(x) $ of degree $ 3 $ over $ \Bbb Z_8 $. Notice that $ \overline{h}(x)=x^3+x+1\in\Bbb Z_2[x] $ is clearly a primitive polynomial over $ \Bbb Z_2 $.
+        
+        The residue class of the form
+        \[a_0+a_1x+a_2x^2+(h(x)), \]
+        where $ a_i\in\Bbb Z_8 $, are all distinct elements of $ \Bbb Z_8[x]/(h(x))  $.
+        
+        \item The additive form is listed below:
+        \[\Bbb Z_8[\xi]=\{ a_0+a_1\xi+a_2\xi^2,a_i\in\Bbb Z_8 \},\]
+        \item And the multiplicative form is also listed below:
+        \[\Bbb Z_8[\xi]=\{a_0+2a_1+4a_2,a_i\in\mathcal{T}_3\}.\]
+        
+    \end{itemize}
+    \end{frame}
+
+
+
+
+% \begin{frame}[fragile]
+%     \frametitle{Introduction}
+
+%     We have the image $ \overline{\xi}=x+\left\langle \overline{f}(x)\right\rangle  $, so $ \overline{f}(\overline{\xi})=0 $. Notice that $ \overline{f}(x) $ is monic irreducible over $ \F_p $ and 
+%     \[\Z_p[x]/\left\langle \overline{f}(x)\right\rangle=\F_p[\overline{\xi}]\cong\F_{p^n}. \]
+%     Therefore we can give $ - $ in the following form:
+%     \[\begin{array}{ccc}
+%         -:\quad\Z_{p^k}[\xi]&\rightarrow&\Z_{p}[\overline{\xi}] \\
+%         a_0+a_1\xi+a_2\xi^2+\cdots+a_{n-1}\xi^{n-1}&\mapsto&\overline{a_0}+\overline{a_1}\overline{\xi}+\cdots+\overline{a_{n-1}}\overline{\xi}^{n-1}.
+%     \end{array}\]
+%     Thus we have a commutative diagram:
+%     \begin{center}
+%         \[\begin{tikzcd}
+%             \Z_{p^k}[x] \arrow[r,"-"] \arrow[d] & \F_{p}[x] \arrow[d] \\
+%             \Z_{p^k}[\xi] \arrow[r,"-"]  & \F_{p}[\overline{\xi}] 
+%         \end{tikzcd}\]
+%     \end{center}
+% \end{frame}
+
+
+\begin{frame}[fragile]
+    \frametitle{Extension of Galois Rings}
+    % \begin{enumerate}[label=(\arabic*)]
+        % \item \textit{Basic irreducible polynomial}: we can always obtain a basic irreducible polynomial over $ \Z_{p^k} $ from an irreducible polynomial over $ \Z_p $ by Hensel Lifting.
+        \begin{theorem}
+            Let $ R=\GR(p^k,m) $ and $ R'=\GR(p^k,n) $. If $ R' $ is a extension ring of $ R $, 
+            then $ m\mid n $.
+        \end{theorem}
+        We have the commutative diagram: for all $ m\mid n $
+        \begin{center}
+            \[\begin{tikzcd}
+                \GR(p^r,m) \arrow[r,"-"] \arrow[d,hook] & \Bbb F_{p^m} \arrow[d,hook] \\
+                \GR(p^r,n) \arrow[r,"-"]  & \Bbb F_{p^n} 
+            \end{tikzcd}\]
+        \end{center}
+        \begin{remark}
+            % The extension of Galois ring is also parallel to the extension of finite fields and
+            Let $ \F_{p^m} $ be a finite field with $ p^m $ elements. If $ \F_{p^n} $ is a extension field 
+            of $ \F_{p^m} $, then $ m\mid n $.
+        \end{remark}
+    % \end{enumerate}
+
+\end{frame}
+\begin{frame}
+    \frametitle{Extension of Galois Rings}
+
+    Conversely, we have 
+    \begin{theorem}
+        Let $ R=\GR(p^k,m) $ and $ m\mid n $, then there is a Galois ring $ R'=\GR(p^k,n) $ containing
+        $ R $ as a subring.
+    \end{theorem}
+    And we arrive at 
+    \begin{theorem}
+        Let $ h(x) $ be a monic basic irreducible polynomial of degree $ l $ over $ R=\GR(p^k,m) $,
+        then the residue class ring $ R[x]/(h(x)) $ is a Galois ring of characteristic $ p^k $ and cardinality $ p^{kml} $ and containing $ R $ as a subring. Thus,
+        \[R[x]/(h(x))=\GR(p^k,ml).\]
+        Besides, let $ \xi=x+(h(x)) $, then $ h(\xi)=0  $ and then $ R[x]/(h(x))=R[\xi] $.
+    \end{theorem}
+\end{frame}
+\begin{frame}
+    \frametitle{Generalized Trace}
+  
+    Let $ R=\GR(p^k,m) $ and $ R'=\GR(p^k,n) $, where $ m\mid n $. Then for any $ \alpha\in R' $, define 
+    \[\gtr_R^{R'}(\alpha)=\alpha+\sigma(\alpha)+\sigma^2(\alpha)+\cdots+\sigma^{n/m-1}(\alpha),\]
+    where $ \sigma(\alpha)=\sigma(a+2b)=a^{p^m}+2b^{p^m} $.
+    \begin{theorem}
+        For $ \alpha,\beta\in R' $ and $ a\in R $, we have 
+        \begin{enumerate} 
+            \item $ \gtr_R^{R'}(\alpha)\in R $;
+            \item $ \gtr_R^{R'}(\alpha+\beta)=\gtr_R^{R'}(\alpha)+\gtr_R^{R'}(\beta) $;
+            \item $ \gtr_R^{R'}(a\alpha)=a\gtr_R^{R'}(\alpha) $, in particular, $ \gtr_R^{R'}(a)=\frac{na}{m} $;
+            \item $ \gtr_R^{R'}(\alpha^{p^{mk}})=\gtr_R^{R'}(\alpha) $;
+        \end{enumerate}
+    \end{theorem}
+    
+\end{frame}
+\begin{frame}
+    \frametitle{Generalized Trace}
+    \begin{remark}
+        For $ F=\F_{p^m} $ and  $ F'=\F_{p^n} $ with $ m\mid n $, we have for all $ \alpha\in F $, 
+        \[\tr_F^{F'}(\alpha)=\alpha+\alpha^{p^{m}}+\alpha^{p^{2m}}+\cdots+\alpha^{p^{(n-m)}}.\]
+    \end{remark}
+
+    There exists the commutative relationship between maps:
+    \[-\circ \gtr_R^{R'}=\tr_1^n\circ-,\]
+    where $ \tr_1^n $ is the trace function from the finite field $ \Bbb F_{p^n} $ mapto $ \Bbb F_p $. 
+    
+\end{frame}
+    \begin{frame}
+        \frametitle{Introduction of $ \GR(4,n) $}
+    
+            The elements in $ \mathcal{T}_n $ have some properties, for all $ n\geq 2 $(if not, $ \mathcal{T}_1=\{0,1\} $ is trivil):
+            \begin{enumerate} 
+                \item $ \pm\xi^i\pm\xi^j $ is a unit for $ 0\leq j< i\leq 2^n-2 $. If not, we have $ \pm\xi^i\pm\xi^j\in 2R $, after the projection $ - $ with $ \theta=\overline{\xi} $ we have $ \theta^i+\theta^j=0 $, but it's impossible since $ \theta $ is a primitive element in the finite field.
+                \item $ \xi^i-\xi^j\neq\pm\xi^k $ for distinct $ 0\leq i,j,k\leq 2^n-2 $. If not, we have $ 1+\xi^a=\xi^{b} $ where $ a\neq b $, then square the equation we obtain $ 1+2\xi^a+\xi^{2a}=\xi^{2b} $, meanwhile we obtain $ 1+\xi^{2a}=\xi^{2b} $ under the Frobenius map. Therefore we arrive at $ 2\xi^{a}=0 $, a contradiction.{This leads to the addition of $ \mathcal{T}_n $ is not the addition of integers}
+                \item When $ n\geq 3 $, then for $ i\neq j $ and $ k\neq l $, we have $ \xi^i-\xi^j=\xi^k-\xi^l\Leftrightarrow i=k~and~j=l $: just like before we obtain $ 1+\xi^a=\xi^b+\xi^c $ and $ \xi^a=\xi^{b+c}\mod{2} $, which means $ \theta^a=\theta^b\theta^c $, meanwhile we also have $ 1+\theta^a=\theta^b+\theta^c $, so $ (\theta^b+1)(\theta^c+1)=0 $ implies $ \theta^b=1 $ or $ \theta^c=1 $.
+                \item For odd $ m\geq 3 $, $ \xi^i+\xi^j+\xi^k+\xi^l=0\Rightarrow i=j=k=l $: omit the proof.
+                
+                % like before we have $ \xi^a+\xi^b+\xi^c=-1 $ and $ \xi^a=\xi^{b+c}\mod{2} $, so we obtain $  $
+            \end{enumerate}
+    
+   
+    % \begin{frame}
+    %     \frametitle{Introduction of $ \GR(4,n) $}
+    
+    %     Notice that $\mathcal{T}_n$ is not closed under the addition, thus we define the new operation $\oplus$ of $\mathcal{T}_n$ by $a\oplus b=(a+b+\varepsilon)^2 $ where $ \varepsilon\in\mathcal{T}_n $ a constant. This new operation is closed since $ (a\oplus b)^{2^n}=(a+b+\varepsilon)^{2^n\cdot 2}=(a+b+\varepsilon)^2=a\oplus b $, i.e. the result is still in $ \mathcal{T}_n $. And as $ (a,b) $ varies over $ \mathcal{T}_n\times\mathcal{T}_n $, $ a\oplus b $ also takes every element of $ \mathcal{T}_n $ once. So we can also simply define $ a\oplus b=(\sqrt{a}+\sqrt{b})^2=a+b+2\sqrt{ab} $.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Addition of \teich }
+    
+        Actually in $\GR(4,n) $, the operation of addition of $\mathcal{T}_n$ is defined by $ a\oplus b=(a+b)^{2^n} $: 
+        \begin{itemize}
+            \item Firstly, $ \forall c=a+2b\in\GR(4,n) $, we have $ c^{2^n}=(a+2b)^{2^n}=a\in \mathcal{T}_n $, where $ a,b\in \mathcal{T}_n $. So we confirm that for all $ a,b\in\mathcal{T}_n $, we obtain $ a\oplus b=(a+b)^{2^n}=((a+b)_0+2((a+b)_1))^{2^n}=(a+b)_0\in\mathcal{T}_n $;
+            
+            \item Secondly we have $ 0\oplus 0=0^{2^n}=0 $, i.e. $ 0 $ is the zero of $ \mathcal{T}_n $;
+            
+            \item And then if $ a\oplus b=(a+b)^{2^d} $ where $ d\neq n $, we have $ a\oplus 0=a^{2^d}\neq a $ for some $ a\in\mathcal{T}_n $, which means $ 0 $ is not the zero.
+            Contradiction.
+
+            \item Also $ a\oplus a=(a+a)^{2^n}=(2a)^{2^n}=0 $, which means that the inverse of $ a $ is $ a $.
+            
+        \end{itemize}
+    \end{frame}
+\begin{frame}
+    \frametitle{Addition operation of \teich}
+
+    \begin{theorem}[Lucas Theorem]
+        For non-negative integers $m$ and $n$ and a prime $p$, the following congruence relation holds:
+        \[\binom{m}{n}\equiv\prod_{i=0}^k\binom{m_i}{n_i} \mod{p},\]
+        where 
+        \[m=m_kp^k+\cdots+m_1p+m_0,\]
+        and 
+        \[n=n_kp^k+\cdots+n_1p+n_0,\]
+        are the base $ p $ expansions of $ m $ and $ n $ respectively. Note that the convention $ \binom{m}{n}=0 $ if $ m<n $.
+    \end{theorem}
+
+\end{frame}
+
+    \begin{frame}
+        \frametitle{Addition operation of \teich }
+    
+        
+        We have $ (\mathcal{T}_n,\oplus) $ forms a group and we can confirm that $ a\oplus b=(a+b)^{2^n}=a+b+2(ab)^{2^{n-1}} $:
+        
+        Since $ \binom{2^n}{t}=\frac{2^n}{t}\binom{2^n-1}{t-1} $, 
+        assume $ 2^f||t $, then $ 2^{n-f}|\binom{2^n}{t} $. Hence we only consider $ t $ such as $ 2^{n-1}||t $ or $ 2^n||t $, 
+        the latter is $ t=2^n $ which is not in consideration. 
+        When $ 2^{n-1}||t $, we obtain $ t=2^{n-1} $, so $ \binom{2^n}{2^{n-1}}=2\binom{2^n-1}{2^{n-1}-1} $. 
+        Notice that $ 2\nmid\binom{2^n-1}{2^{n-1}-1} $ by Lucas Theorem. 
+        So we have $ 4\mid\binom{2^n}{t} $ for all $ t\neq 2^{n-1} $ and $ \binom{2^n}{2^{n-1}}\equiv 2\mod{4} $. 
+        So $ (a+b)^{2^n}=a+b+2(ab)^{2^{n-1}} $.
+        \begin{remark}[Consequence of Lucas Theorem]
+            A binomial coefficient $\binom{m}{n}$ is divisible by $2$ if and only if at least one of the base $2$ digits of $n$ is greater than the corresponding digit of $m$.
+        \end{remark}
+    \end{frame}
+        
+    %     \begin{frame}
+    %     \frametitle{Something}
+    
+        % I don't know how to go on this, or I have a wrong direction of the proof?.        
+        % \hl{Therefore I have no idea why not use $ 1\leq d\leq n-2 $.} 
+        
+        % Use the trace function in $ \GR(4,n) $ and $ y=x+z+2\sqrt{zx} $ we have
+        % \[\gtr_R^{R'}(x\oplus y)=\gtr_R^{R'}(x+(x+z+2\sqrt{xz}))=2\gtr_R^{R'}(x)+\gtr_R^{R'}(z)+2\gtr_R^{R'}(\sqrt{xz})\]
+        % where $ x,y,z\in\mathcal{T}_n $.
+    
+    % \end{frame}
+    % \begin{frame}
+    %     \frametitle{Introduction}
+    
+    %     Think about $c\in\Bbb Z_4$, we can uniquely decompose it into $c=a+2b$ where $a,b\in\Bbb Z_2$, then we have a  projection $-:\Bbb Z_4\rightarrow\Bbb Z_2$ such as $\overline{c}=a$, which is the module $2$ map in fact. Thus we have a natural extension $-:\Bbb Z_4[x]\rightarrow\Bbb Z_2[x]$ acts as
+    % \[\overline{\left( \sum_{i=0}^k c_ix^k\right)}=\sum_{i=0}^k \overline{c_i}x^k=\sum_{i=0}^k {a_i}x^k,\]
+    % where $ c_i=a_i+2b_i\in\Z_4 $ and $ a_i,b_i\in\Z_2 $.
+
+    % Furthermore we can extend this homomorphism to $ \GR(4,n) $:
+    % \[\overline{c}=\overline{a+2b}=\overline{\xi^i+2\xi^j}=\overline{\xi}^i,\]
+    % where $ c=a+2b\in\GR(4,n) $ and $ a=\xi^i,b=\xi^j\in\mathcal{T}_n $
+
+    % % Also from this canonical map we can induces the surjection from $\GR(4,n)$ to $\Bbb F_{2^n}$:
+    % % \[\mu(c)=\mu(a+2b)=\mu(\xi^r+2\xi^s)=\mu(\xi^r)=\theta^r,\forall c\in \GR(4,n),\xi^r,\xi^s\in\mathcal{T}_n\]
+    % % therefore we have the isomorphism from $\mathcal{T}_n$ to $\Bbb F_{2^n}$.
+    
+    % \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        Not all elements in ring is a unit, such that the elements of the form $2\xi^r$ in $\GR(4,n)$ are zero divisors. Denote $R^*=R\setminus 2R$ the set of all units of $ \GR(4,n) $, then every elements of $R^*$ has the unique representation in the form $\xi^r(1+2t)$ where $t\in\mathcal{T}_n$.
+
+    \begin{remark}
+        In $ \GR(4,n) $, all zero divisors are of the form $ 2\xi^r $ with cardinality $ 2^n-1 $ and units are of the form $ \xi^r(1+2t) $ with cardinality $ (2^n-1)2^n $.
+    \end{remark}
+    
+    \end{frame}
+   
+    \begin{frame}
+        \frametitle{Generalized Trace of $\GR(4,n)$}
+    
+        In $ R'=\GR(4,n) $ and $ R=\Z_4 $, we confirm $2$-multiplication is the projection from $ \Bbb Z_4[x] $ to $ \Bbb Z_2[x] $, then
+        \begin{align*}
+            2\gtr_R^{R'}(c)=&2\gtr_R^{R'}(a+2b)=2\left( \sum_{i=0}^{n-1}a^{2^i}+2\sum_{i=0}^{n-1}b^{2^i}  \right)\\
+            =&2\sum_{i=0}^{n-1}a^{2^i}=2\tr_1^n(\bar{a})=2\tr_1^n(\overline{a+2b})=2\tr_1^n(\overline{c}),
+        \end{align*}
+        where $ c\in \GR(4,n) $ and $ c=a+2b $ with $ a,b\in\mathcal{T}_n $.
+
+        The Trace function over $ \GR(4,n) $ has the $ 2 $-adic expansion:
+        \[\gtr_R^{R'}(x)=\tr_1^n(\bar{x})+2p(\bar{x}),\]
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}        
+        where $ p(x) $ is defined as 
+        \begin{empheq}[left={p(x)=\empheqlbrace}]{align*}
+            &\sum_{i=1}^{(n-1)/2}\tr_1^n(x^{2^i+1})\\
+            &\sum_{i=1}^{n/2-1}\tr_1^n(x^{2^i+1})+\tr_1^{n/2}(x^{2^{n/2}+1}).
+        \end{empheq}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        \begin{definition}[Walsh transform of generalized Boolean function\footnote{Kai-Uwe Schmidt. Quaternary Constant-Amplitude Codes for Multicode CDMA}]
+            An extension of Boolean function was introduced by Schmidt, and is a mapping from $ \mathcal{T}_n $ to $ \Z_{2^s} $. When $ s=2 $, we can define the walsh transform $ W_f:\mathcal{T}_n\rightarrow \Bbb C $ of $ \Bbb Z_4 $-Boolean functions $ f:\mathcal{T}_n\rightarrow \Bbb Z_4 $ as below
+            \[W_f(u)=\sum_{x\in\mathcal{T}_n}i^{f(x)+2\gtr(ux)},\quad u\in\mathcal{T}_n,\]
+            where $ i $ is the $ 4 $-nth root and $ \gtr(ux) $ is the Trace function over Galois Ring $ \GR(4,n) $.
+        \end{definition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        \begin{definition}[generalized bent functions]
+            The generalized Boolean function $ f $ is generalized bent if $ |W_f(u)|=2^{n/2} $ for all $ u\in \mathcal{T}_n $.
+        \end{definition}
+        It's well known that the finite field $ \Bbb F_{2^n} $ is isomorphic to $ \Bbb F_2^n $, so the Walsh transform is also in this form:
+        \[W_f(u)=\sum_{x\in \Z_2^n}i^{f(x)+2u\cdot x},\quad u\in\Z_2^n.\]
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        \begin{definition}[Gray-map]
+            Denote $\varphi$ as the \textit{Gray-map} and we rewrite elements $c$ in $\Bbb Z_4$ as $a+2b$, where $a,b\in \Bbb Z_2$. We clearly confirm that $\varphi:\Bbb Z_4\rightarrow \Bbb Z_2\times\Bbb Z_2$ by $\varphi(c)$ to $(\beta(c),\gamma(c))$ is an isomorphism, where $\beta(c)=b$ and $\gamma(c)=a+b$. Extending this map to $\varphi:\Bbb Z_4^n\rightarrow\Bbb Z_2^{2n}$ is clear given by $\varphi(\boldsymbol{c})=(\beta(\boldsymbol{c}),\gamma(\boldsymbol{c}))$. 
+        \end{definition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        \begin{proposition}
+            The Gray-map is distance preseving: the Lee weight\footnote{Lee weight of a quaternary word is defined to be the Hamming weights of the images of the quaternary word under the Gray-map} of $ u-v $ is equal to the Hamming distance between binary words $ \varphi(u) $ and $ \varphi(v) $.
+        \end{proposition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        It also defined a generalized Gray-map\footnote{$ Z_{2^k} $-Linear Codes} from $ \Bbb Z_{2^k} $ to the Reed-Muller code of order $ 1 $, $ \mathcal{RM}(1,k-1) $:
+    \begin{align*}
+        G:\Bbb Z_{2^k}\rightarrow \mathcal{RM}(1,k-1)\\
+        u\longmapsto u_k+\sum_{i=1}^{k-1}u_iy_i
+    \end{align*} 
+    where $ y_i $ are varieties of Boolean functions and $ u=\sum_{i=1}^{k-1}2^{i-1}u_i $ is binary expansion of an element of $ \Bbb Z_{2^k} $. Note that the Boolean function of $ \Bbb F_{2}^{k} $ is one-to-one corespponding to its truth table, which is a binary $ 2^k $-tuple vector(The view of RS codes). Thus we obtain $ G:\Bbb Z_{2^k}\hookrightarrow \Bbb F_2^{2^{k-1}}  $ is a nonsurjective mapping. Actually it is since the image are only the Boolean functions of degree $ 1 $ or $ 0 $.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Example of Gray-map}
+    
+        \begin{example}
+            When $ k=3 $, the images of elements of $ \Bbb Z_8 $ are listed below with even weights:
+            \begin{align*}
+                G(0)=(0,0,0,0);G(1)=(0,1,0,1);
+                G(2)=(0,0,1,1);G(3)=(0,1,1,0);\\
+                G(4)=(1,1,1,1);G(5)=(1,0,1,0);
+                G(5)=(1,1,0,0);G(7)=(1,0,0,1);
+            \end{align*}
+        \end{example}
+    
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{ Generalize bent Z4-quadratic forms}
+        
+        Assume $ R=\Z_4 $ and $ R'=\GR(4,m) $.
+        Let $ l $ be a positive integer and $ 1=e_0\leq e_1<\cdots<e_l=m $ with $ e_i\mid e_{i+1} $.
+        Let $ f_i=m/e_i $ is odd, then define 
+        \[Q_j(x)=\gtr_{R}^{R'}(\sum_{i=1}^{\frac{f_j-1}{2}}x^{2^{ie_j}+1}).\]
+        Take $ \gamma_0,\gamma_1,\dots,\gamma_{l-1}\in\mathcal{T}  $, where $ \overline{\gamma_0}=1 $, $ \overline{\gamma_j}\in\F_{2^{e_j}} $ 
+        and $ 1+\sum_{j=1}^{t}\overline{\gamma_j}^2\neq 0 $ for $ t\leq l-1 $. 
+        Thus, for any $ a\in\mathcal{T}^* $, define the $\Z_4$-quadratic forms:
+        \[f_{a}(x)=\gtr_{R}^{R'}(a x)+2 \sum_{j=1}^{l-1} Q_{j}\left(\gamma_{j} a x\right).\]
+    \end{frame}
+    \begin{frame}
+        \frametitle{Generalize bent Z4-quadratic forms}
+    
+        By some calculation we have 
+        \[2B_{f_a}(x,y)=f_a(x\oplus y)-f_a(x)-f_a(y)=2 \tr_{1}^{m}\left(\bar{y}\left(\bar{a}^{2} \bar{x}+\sum_{j=1}^{l-1} \overline{\gamma_{j} a}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j} a x_{j}}\right)+\overline{\gamma_{j} a x}\right)\right)\right). \]
+        For simplicity we denote $ \tr_1^m $ the trace function from $ \F_{2^m} $ to $ \F_{2^1} $.
+    \end{frame}
+    \begin{frame}
+        \frametitle{Generalize bent Z4-quadratic forms}
+    
+        Thus we have 
+        \begin{align*}
+            2B_{f_a-f_b}(x,y)=2&\tr_{1}^{m}\left(\bar{y}\left((\bar{a}^{2}+\bar{b}^{2}) \bar{x}\right.\right.\\
+            +&\left.\left.\sum_{j=1}^{l-1} \left(\overline{\gamma_{j} a}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j}ax}\right)+\overline{\gamma_{j}ax}\right)
+            +\overline{\gamma_{j} b}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j}bx}\right)+\overline{\gamma_{j} b x}\right)\right)\right)\right).
+        \end{align*}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Generalize bent Z4-quadratic forms}
+    
+        Next it's to prove that $ \operatorname{rad}(B_{f_a-f_b})=\{0\} $.
+
+        Suppose that $ x\in\operatorname{rad}(B_{f_a-f_b}) $ and $ x\neq 0 $, then $ \bar{x} $ is a nonzero solution of 
+        \[(\bar{a}^{2}+\bar{b}^{2}) \bar{x}+\sum_{j=1}^{l-1} \left(\overline{\gamma_{j} a}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j}ax}\right)+\overline{\gamma_{j}ax}\right)+\overline{\gamma_{j} b}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j}bx}\right)+\overline{\gamma_{j} b x}\right)\right)=0.\]
+        Multiply $ x $ and $ \tr_{e_j}^m(\overline{\gamma_j x})=\overline{\gamma_j}\tr_{e_j}^m(\overline{x}) $ we have 
+        \[(1+\sum_{j=1}^{l-1}\overline{\gamma_j}^2)(\bar{a}^{2}+\bar{b}^{2}) \bar{x}^2+\sum_{j=1}^{l-1} \gamma_{j}^2x \left(\overline{a}\tr_{e_{j}}^{m}\left(\overline {ax}\right)+\overline{b}\tr_{e_{j}}^{m}\left(\overline{ bx}\right)\right)=0.\]
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Generalize bent Z4-quadratic forms}
+    
+        Note that $ \tr_{e_j}^m(y^2)=(\tr_{e_j}^m(y))^2 $ for all $ y\in\F_{2^m} $. Set above equation be $A$, then we have 
+        \begin{align*}
+            \tr_{e_{l-1}}^m(A)=&(1+\sum_{j=1}^{l-2}\overline{\gamma_j}^2)\tr_{e_{l-1}}^m((\bar{a}^{2}+\bar{b}^{2}) \bar{x}^2)\\
+            +&\sum_{j=1}^{l-2} \gamma_{j}^2 \left(\tr_{e_{l-1}}^m(\overline{ax})\tr_{e_{j}}^{m}\left(\overline {ax}\right)+\tr_{e_{l-1}}^m(\overline{bx})\tr_{e_{j}}^{m}\left(\overline{ bx}\right)\right).
+        \end{align*}
+
+        Since $ f_{j+1} $ is odd, then $ tr_{e_j}^m(\tr_{e_{j+1}}^m(y))=\tr_{e_j}^m(y) $ for all $ y\in\F_{2^m} $. We have 
+        \[\tr_{e_1}^m\left(\tr_{e_2}^m\left(\cdots\tr_{e_{l-1}}^m(A)\cdots\right)\right)=\tr_{e_{1}}^{m}\left(\left(\bar{a}^{2}+\bar{b}^{2}\right) \bar{x}^{2}\right)=\left(\tr_{e_{1}}^{m}((\bar{a}+\bar{b}) \bar{x})\right)^{2}=0.\]
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Generalize bent Z4-quadratic forms}
+    
+        Thus, $ \tr_{e_1}^m((\bar{a}+\bar{b}) \bar{x})=0 $, i.e. there exists a $t$ s.t. $ \tr_{e_{t+1}}^m((\bar{a}+\bar{b}) \bar{x})\neq 0 $ but $ \tr_{e_t}^m((\bar{a}+\bar{b}) \bar{x})=0 $.
+    
+            Note that when $ j\geq t+1 $, $ \tr_{e_{t+1}}^{m}\left(\overline{\gamma_{j} a x}\left(\tr_{e_{j}}^{m}\left(\overline{\gamma_{j} a x}\right)+\overline{\gamma_{j} a x}\right)\right)=0 $.
+
+            And let $ u_j=\tr_{e_j}^m(\overline{ax})=\tr_{e_j}^m(\overline{bx}) $ since $ \tr_{e_j}^m((\bar{a}+\bar{b}) \bar{x})=0 $ for $ j\leq t $.
+    \end{frame}
+    \begin{frame}
+        \frametitle{Contradiction}
+    
+        Consider $ \tr_{e_{t+1}}^m(A) $, we can arrive at 
+        \[=\tr_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x})\left(\left(1+\sum_{j=1}^{t} \bar{\gamma}_{j}^{2}\right) \tr_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x})+\sum_{j=1}^{t} \overline{\gamma_{j}}^{2} u_{j}\right)=0.\]
+    
+        So we have 
+        \[\left(1+\sum_{j=1}^{t} \bar{\gamma}_{j}^{2}\right) \tr_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x})+\sum_{j=1}^{t} \overline{\gamma_{j}}^{2} u_{j}=0.\]
+        which means $ \tr_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x})\in\F_{2^{e_t}} $.
+
+        But we also have 
+        \[0=\operatorname{tr}_{e_{t}}^{m}((\bar{a}+\bar{b}) \bar{x})=\operatorname{tr}_{e_{t}}^{e_{t+1}}\left(\operatorname{tr}_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x})\right)=\operatorname{tr}_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x}) \operatorname{tr}_{e_{t}}^{e_{t+1}}(1)=\operatorname{tr}_{e_{t+1}}^{m}((\bar{a}+\bar{b}) \bar{x}).\] Contradiction with $ t $.
+    \end{frame}
+    \begin{frame}
+        \frametitle{Examples of generalized bent functions}
+        \begin{itemize} 
+            \item For simplicity, $ \gtr_1^m $ denotes the generalized trace from $ \GR(4,m) $ to $ \Z_4 $. 
+            \item $ Q(x)=\gtr_1^m(x+2x^{1+2^{2k}}+2x^{1+2^{3k}}) $, $ x\in \mathcal{T}_m $ bent iff $ \gcd(m,k)=\gcd(m,3k) $. When $ m=4 $ and $ k=1 $, the generalized bent function is of the form $ \gtr_1^4(x+2x^5+2x^9) $. 
+            \item Truthtable is [0, 0, 2, 2, 1, 2, 2, 1, 3, 2, 1, 2, 3, 1, 3, 3], corresponding to $ x\in [0,1,\xi,...,\xi^{2^4-2}] $. And its Walsh spectra [−4, −4, 4, 4, 4i, 4, 4, −4i, 4i, 4, −4i, 4, 4i, −4i, 4i, 4i].
+            \item Also we have its gray-map $ b(x) $, with truthtable [0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1] and Walsh spectra 
+            [−4, −4, 4, 4, −4, 4, 4, −4, 4, 4, −4, 4, 4, −4, 4, 4].
+            \item Its gray-map $ a(x)+b(x) $ with truthtable [0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0] and Walsh spectra [−4, −4, 4, 4, 4, 4, 4, 4, −4, 4, 4, 4, −4, 4, −4, −4].
+        \end{itemize}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Boolean functions in finite field and vector space}
+    
+        There is an isomorphim between the vector space $ \F_2^4 $ to $ \F_{2^4} $. We can assume the basis of vector space is $ \{1,\xi,\xi^2,\xi^3\} $, then we have
+        \begin{empheq}[left=\empheqlbrace]{alignat*=4}
+            0     &\rightarrow(0000)&,\quad &\xi^7 &\rightarrow(1101)\\
+            1     &\rightarrow(1000)&,\quad &\xi^8 &\rightarrow(1010)\\
+            \xi^1 &\rightarrow(0100)&,\quad &\xi^9 &\rightarrow(0101)\\
+            \xi^2 &\rightarrow(0010)&,\quad &\xi^{10}&\rightarrow(1110)\\
+            \xi^3 &\rightarrow(0001)&,\quad &\xi^{11}&\rightarrow(0111)\\
+            \xi^4 &\rightarrow(1100)&,\quad &\xi^{12}&\rightarrow(1111)\\
+            \xi^5 &\rightarrow(0110)&,\quad &\xi^{13}&\rightarrow(1011)\\
+            \xi^6 &\rightarrow(0011)&,\quad &\xi^{14}&\rightarrow(1001)\\
+        \end{empheq}
+        where $ \xi $ is a root of $ x^4+x+1=0 $.
+    \end{frame}
+    \begin{frame}
+        \frametitle{Boolean functions in finite field and vector space}
+    
+        Consider $ \tr_1^4(x^3) $ where $ x\in\F_{2^4}=\F_2[\xi] $, $ \xi $ is a root of $ x^4+x+1 $ in $ \F_2[x] $. Assume 
+        $ x=x_1+\xi x_2+\xi^2 x_3+\xi^3 x_4 $, then we have
+        \begin{align*}
+            \tr_1^4(x^3)=&\tr_1^4((x_1+\xi x_2+\xi^2 x_3+\xi^3 x_4)^3)\\
+            =&\tr_1^4((x_1+\xi^2 x_2+\xi^4 x_3+\xi^6 x_4)(x_1+\xi x_2+\xi^2 x_3+\xi^3 x_4))\\
+            =&x_1\tr_1^4(1)+x_1x_2\tr_1^4(\xi)+x_1x_3\tr_1^4(\xi^2)+x_1x_4\tr_1^4(\xi^3)+\cdots\\
+            &+x_4\tr_1^4(\xi^9)
+        \end{align*}
+        Meanwhile we can give the value of $ \tr_1^4(\xi^i) $, so we confirm $f(x)=f(x_1+\xi x_2+\xi^2 x_3+\xi^3 x_4)=x_2+x_3+x_4+x_2x_4+x_3x_4 $.
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Truthtable of the Boolean function}
+    
+        \begin{center}
+    
+            \begin{tabularx}{\textwidth}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+                \toprule
+                vector&0000&1000&0100 &1100 &0010 &1010 &0110 &1110    &0001 &1001\\
+                finite~field&$0$   &   $1$&$\xi^1$&$\xi^4$&$\xi^2$&$\xi^8$&$\xi^5$&$\xi^{10}$&$\xi^3$&$\xi^{14}$\\
+                value&0   &   1&1    &1    &1    &1    &0    &0       &1    &1\\
+                \midrule
+                vector      &0101&1101&0011&1011&0111&1111&&&&\\
+                finitefield &$\xi^9$&$\xi^7$&$\xi^6$&$\xi^{13}$&$\xi^{11}$&$\xi^{12}$&&&&\\
+                value       &1&1&1&1&1&1&&&&\\
+                \bottomrule
+            \end{tabularx}
+        \end{center}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Introduction}
+    
+        \begin{definition}[$ \Z_4 $-linearity]
+            The binary codes are $ \Z_4 $-linearity if they can be constructed as binary images under the Gray map of linear codes over $ \Z_4 $
+        \end{definition}
+        
+        \begin{proposition}
+            Kerdock code is $\Bbb Z_4$-Linearity.
+        \end{proposition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Definition of the binary Kerdock code}
+    
+        Original definition of \textit{Kerdock codes} $\mathcal{K}_n$ of length $m=2^n$ uses the trace function from $\Bbb F_{2^n}$ to $\Bbb F_2$, and we can also take the Kerdock codes as the union of some cosets of Reed-Muller codes $\mathcal{RM}(1,n)$ with coset representants in $\mathcal{RM}(2,n)$, but we will give another method defining the Kerdock codes $ \mathcal{K}_n $ as images of $\Bbb Z_4$-linear codes quaternary Kerdock codes $ \mathcal{K}(n-1) $ by Gray-map\footnote{The $\Bbb Z_4$-Linearity of Kerdock, Preparata, Goethals, and Related Codes}.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Exmaple of quaternary Kerdock code}
+    
+    \begin{example}
+        
+        Example of quaternary $\mathcal{K}(3)$:
+        Assume $ n=3 $ and $ f(x)=x^3-2x^2-3x-1 $ be the basic primitive polynomial of degree $ 3 $. We find $ g(x)=(x^{2^3-1}-1)/(x-1)f(x)=x^3-x^2-2x-1 $, thus the generator matrix of quaternary $ \mathcal{K}(3) $ is 
+        \[\begin{bmatrix}
+            1 & 3 &2 & 3& 1& 0&0&0\\
+            1 & 0& 3 &2 & 3& 1&0 &0\\
+            1 & 0&0&3 &2 & 3& 1& 0\\
+            1 & 0&0&0&3 &2 & 3& 1 
+        \end{bmatrix}\]
+        And the $ \mathcal{K}_4 $ is the images of the gray-map of quaternary $ \mathcal{K}(3) $.
+    \end{example}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Error?}
+    
+        \begin{question}
+            The paper \textit{The $\Bbb Z_4$-Linearity of Kerdock, Preparata, Goethals, and Related Codes} gave the right(?)\footnote{In this paper it gave $ f(x)=g(x)\Rightarrow f(x)^2(x-1)=x^7-1 $ but I can't get this result} polynomial $ g(x)=x^3-2x^2-3x-1=f(x) $ as the two $f(x)$ are equal and got the same weight distribution. But can an incorrect generator matrix give the same weight distribution?
+        \end{question}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Kerdock code is $ \Z_4 $-linearity}
+    
+        And we describe the $\mathcal{K}(n)$ by trace function of $\GR(4,n)$ as below:
+    \[\mathcal{K}(n)=\{\epsilon\boldsymbol{1}+\boldsymbol{u}^{(\lambda)};\epsilon\in\Bbb Z_4,\lambda\in\Bbb Z_4[\xi]\}\]
+    where $\xi^{\infty}=0$ and
+    \[\boldsymbol{u}^{(\lambda)}=\left( T(\lambda\xi^{\infty}),T(\lambda\xi^{0}),T(\lambda\xi^{1}),\dots,T(\lambda\xi^{m-1}) \right)\]
+    Thus it shows that each code of $\mathcal{K}(n)$ can be expreesd by this form:
+    \[c=\left( c_{\infty},c_0,c_1,\dots,c_{m-1} \right)\]
+    where
+    \[c_i=T(\lambda\xi^i)+\epsilon,i\in\{0,1,...,m-1,\infty\}\] and $\lambda=\xi^r+2\xi^s$.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Kerdock code is $ \Z_4 $-linearity}
+    
+        Hence we can give the $2$-adic expression of $c_i$ as $c_i=a_i+2b_i$, where
+    \begin{empheq}[left=\empheqlbrace]{align}\label{a_ib_i}
+        a_i=&tr(\pi\theta^i)+\alpha(\epsilon) \\
+        b_i=&tr(\eta\theta^t)+Q(\pi\theta^i)+\alpha'(\epsilon)
+    \end{empheq}
+    where $\theta=\overline{\xi},\pi=\overline{\xi^r},\alpha(\epsilon)+2\alpha'(\epsilon)=\epsilon,\eta=\overline{\epsilon\xi^r+\xi^s}$ and
+    \[Q(x)=\sum_{j=1}^{(n-1)/2}tr(x^{2^j+1}).\]
+
+    Therefore the images of quaternary Kerdock codes $c_i$ can be expressed in this form:
+    \[\varphi(c_i)=\left( \beta(c_i),\gamma(c_i) \right)=(b_i,a_i+b_i).\]
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Kerdock code is $ \Z_4 $-linearity}
+    
+        Besides the original definition of Kerdock codes\footnote{A Class of Low-Rate Nonlinear Binary Codes} consist of two half: the left half has form as $c=(c_l,c_r)$
+    \begin{equation}\label{kerdock_l}
+        c_l(x)=tr(\eta x)+Q(\phi x)+A
+    \end{equation}
+    and the right half is of the form
+    \begin{equation}\label{kerdock_r}
+        c_r(x)=tr(\eta x+\phi x)+Q(\phi x)+B.
+    \end{equation}
+
+    Though the comparison\ref{a_ib_i}\ref{kerdock_l}\ref{kerdock_r}, we conclude \textbf{the binary Kerdock codes can be expressed as images of quaternary Kerdock codes by Gray-map i.e. $\Bbb Z_4$-linear}.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Is $\mathcal{RM}(r,n) $ $ \Z_4 $-linearity?}
+    
+        \begin{remark}
+            Since the $ \mathcal{RM}(1,n) $ is contained in the $ \mathcal{K}_n $, we have $ \mathcal{RM}(1,n) $ is also $ \Z_4 $-linearity, so it's natural to think is there only one $ \mathcal{RM}(r,n) $ with $ \Z_4 $-linearity.
+        \end{remark}
+        \begin{proposition}
+        The binary Reed-Muller code $ \mathcal{RM}(r,n) $ of length $ m=2^n $ is $ \Z_4 $-linearity for $ r=0,1,2,n-1~and ~n $.
+        \end{proposition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{generalized Boolean function}
+    
+        \begin{definition}[$ \Z_4 $-valued quadratic form]
+            A $ \Z_4 $-valued quadratic form is a mapping $ F:\mathcal{T}_n\rightarrow \Z_4 $ with 
+            \begin{enumerate} 
+                \item $ F(0)=0 $;
+                \item $ F(x\oplus y)=F(x)+F(y)+2B(x,y) $
+            \end{enumerate}
+            where $ B:\mathcal{T}_n\times\mathcal{T}_n\rightarrow \Z_2 $ is a symmetric bilinear form. And $ F $ is called alternating if $ B(x,x)=0 $ for all $ x\in\mathcal{T}_n $ meanwhile the rank of $ F $ is defined as the rank of $ B $ with $ rank(B)=n-dim_{\Z_2}(rad(B)) $ and $ rad(B)=\{x\in\mathcal{T}_n:B(x,y)=0,\forall y\in\mathcal{T}_n\} $.
+        \end{definition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{generalized Boolean function}
+    
+        \begin{lem}
+            For a $ \Z_4 $-valued quadratic form $ F(x) $, $ F(x) $ is generalized bent iff $ F(x) $ is of full rank.
+        \end{lem}
+        \begin{lem}\label{linearizedpoly}
+            $ G(x)=\sum_{i=0}^{n-1}\lambda^ix^{p^i}\in\Bbb F_p[x] $. Then $ G(x)=0 $ has only one root in $ \Bbb F_{p^n} $ iff $ gcd(\sum_{i=0}^{n-1}\lambda^ix^i,x^n-1) $
+        \end{lem}
+        Then the construction of generalized bent functions $ F(x) $ can be transformed into the calculation of rank of $ B(x) $, while the specail form $ F(x) $ can lead to some easy calculation.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Example of generalized bent function}
+    
+        Assume $ F(x) $ the generalized Boolean function of the form
+        \[F(x)=T\left( x+2\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}c_ix^{1+2^{ki}} \right)\quad c_i\in\Z_2,x\in\mathcal{T}_n\]
+        where $ k $ is any positive integer and clearly $ F(x) $ is of $ \Z_4 $-valued quadratic forms.
+        
+        We can give the equation:
+        \begin{align*}
+            2B(x,y)&=F(x\oplus y)-F(x)-F(y)\\
+            &=2T\left( xy+\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}\left(c_ix^{2^{ki}}y+c_ixy^{2^{ki}}\right)\right)\\
+            &=2T\left( y\left(x+\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}\left(c_ix^{2^{ki}}+c_ix^{2^{(n-i)k}}\right)\right)\right)
+        \end{align*}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Example of generalized bent function}
+    
+        Thus we only need to confirm the number of solution $ x\in\mathcal{T}_n $ of the linearized polynomial 
+        \[ \mathcal{L}(x)=x+\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}\left(c_ix^{2^{ki}}+c_ix^{2^{(n-i)k}}\right) \]
+        is $ 1 $.
+
+        According to lemma \ref{linearizedpoly}, we need to confirm whether the corresponding polynomial 
+        \[Q(x)=1+\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}\left(c_ix^{{ik}}+c_ix^{{(n-i)k}}\right)\]
+        is coprime with $ x^n-1 $
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Links between generalized bent  and bent function}
+    
+        The walsh transform of generalized Boolean functions is similar to the walsh transform of Boolean functions, besides the quaternary Kerdock codes can be transform into the binary Kerdock codes, so it's natural to think whether generalized bent functions have some links with bent functions. And it does.
+
+    $ f:\Z_{2^{n}}\rightarrow\Z_4 $ be any generalized Boolean function. Decompose it into $ f(x)=a(\bar{x})+2b(\bar{x}) $ for all $ x\in\Z_{2^n} $, where $ a,b:\Z_{2^{n}}\rightarrow\Z_2 $ are both Boolean functions.
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{Connection}
+    
+        \begin{lem}
+            If $ n $ is even(odd), then $ f(x) $ is generalized bent(semibent) function iff both $ b(x) $ and $ a(x)+b(x) $ are both Boolean bent(semibent) functions.
+        \end{lem}
+        Then we can construct some bent functions from above generalized bent functions.
+        \begin{example}
+            $ F(x) $ is defined as before and if it's generalized bent function, then we have 
+            \[ b(x)=p(x)+\sum_{i=1}^{\lfloor\frac{n-1}{2}\rfloor}tr(c_ix^{1+2^{ki}}) \quad c_i\in\Z_2,x\in\Bbb F_{2^n} \]
+            is also bent function.
+        \end{example}
+    \end{frame}
+
+
+  % gbt=bibtex
+%\part{参考文献}
+%    \begin{frame}[allowframebreaks]
+   %     \printbibliography[title=参考文献]    % gbt!=bibtex
+        % \bibliography{ref.bib}             % gbt=bibtex
+  %  \end{frame}
+
+    \makebottom     % 创建尾页  % 非标准命令
+
+\end{document}

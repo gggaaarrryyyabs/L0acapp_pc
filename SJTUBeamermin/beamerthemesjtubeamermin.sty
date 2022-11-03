@@ -1,0 +1,109 @@
+%%
+%% This is file `beamerthemesjtubeamermin.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% beamerthemesjtubeamermin.dtx  (with options: `package')
+%% -------------------------------------------------------------------
+%% Copyright (C) 2021 Log Creative
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%% https://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status ‘maintained’.
+%% 
+%% The Current Maintainer of this work is Log Creative.
+%% -------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemesjtubeamermin}[2021-08-14 sjtubeamermin parent theme v:1.0]
+\mode<all>
+\DeclareOptionBeamer{navigation}{
+    \PassOptionsToPackage{navigation=#1}{beamerouterthemesjtubeamermin}
+}
+\DeclareOptionBeamer{lang}{
+    \def\beamer@sjtubeamermin@lang{#1}
+    \PassOptionsToPackage{lang=#1}{beamerouterthemesjtubeamermin}
+    \PassOptionsToPackage{lang=#1}{beamerinnerthemesjtubeamermin}
+}
+\def\beamer@sjtubeamermin@langcn{cn}%
+\def\beamer@sjtubeamermin@langen{en}%
+\DeclareOptionBeamer{cjk}{\def\beamer@sjtubeamermin@cjk{#1}}
+\def\beamer@sjtubeamermin@cjktrue{true}%
+\def\beamer@sjtubeamermin@cjkfalse{false}%
+\DeclareOptionBeamer{color}{
+    \PassOptionsToPackage{color=#1}{beamercolorthemesjtubeamermin}
+    \PassOptionsToPackage{color=#1}{beamerinnerthemesjtubeamermin}
+}
+\DeclareOptionBeamer{pattern}{
+    \PassOptionsToPackage{pattern=#1}{beamerouterthemesjtubeamermin}
+    \PassOptionsToPackage{pattern=#1}{beamerinnerthemesjtubeamermin}
+}
+\DeclareOptionBeamer{gbt}{\def\beamer@sjtubeamermin@gbt{#1}}
+\def\beamer@sjtubeamermin@gbttrue{true}%
+\def\beamer@sjtubeamermin@gbtfalse{false}%
+\def\beamer@sjtubeamermin@gbtbibtex{bibtex}%
+\ExecuteOptionsBeamer{
+    navigation=tools,
+    cjk=false,
+    lang=cn,
+    color=blue,
+    pattern=title,
+    gbt=false,
+}
+\ProcessOptionsBeamer
+\RequirePackage{silence}
+\def\Hy@WarnOptionDisabled#1{
+    \def\next{#1}%
+    \ifx\next pdfauthor %
+        \ifx\next driverfallback %
+        \else
+        \Hy@Warning{%
+            Option `#1' has already been used,\MessageBreak
+            setting the option has no effect%
+        }\fi%
+    \fi%
+}
+\ifx\beamer@sjtubeamermin@lang\beamer@sjtubeamermin@langen%
+\else
+    \ifx\beamer@sjtubeamermin@cjk\beamer@sjtubeamermin@cjktrue%
+        \RequirePackage{CJKutf8}
+        \renewcommand{\figurename}{图}
+        \renewcommand{\tablename}{表}
+        \renewcommand{\contentsname}{目录}
+    \else%
+        \RequirePackage[UTF8]{ctex}
+    \fi%
+\fi
+\ifx\beamer@sjtubeamermin@gbt\beamer@sjtubeamermin@gbtbibtex%
+    \ifx\beamer@sjtubeamermin@lang\beamer@sjtubeamermin@langen%
+        \bibliographystyle{IEEEtran}
+    \else
+        \RequirePackage{gbt7714}
+    \fi
+\else
+    \ifx\beamer@sjtubeamermin@gbt\beamer@sjtubeamermin@gbttrue%
+        \RequirePackage[style=gb7714-2015]{biblatex}
+    \else
+        \RequirePackage[style=authortitle-comp]{biblatex} %
+    \fi
+    \def\cite#1{
+        \footfullcite{#1}
+    }
+\fi%
+\hypersetup{unicode}
+\RequirePackage{bookmark}
+\WarningFilter{latexfont}{Font shape}
+\mode<presentation>
+\beamer@compresstrue
+\usecolortheme{sjtubeamermin}
+\usefonttheme{sjtubeamermin}
+\useoutertheme{sjtubeamermin}
+\useinnertheme{sjtubeamermin}
+\endinput
+%%
+%% End of file `beamerthemesjtubeamermin.sty'.

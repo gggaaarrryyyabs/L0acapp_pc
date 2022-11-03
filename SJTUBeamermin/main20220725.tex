@@ -1,0 +1,610 @@
+% !TeX TS-program = xelatex
+% This is SJTUBeamermin v1.0
+% For more detailed desciption, see
+% https://github.com/LogCreative/SJTUBeamermin/blob/main/doc/sjtubeamermintheme.pdf
+%
+\documentclass[
+    % draft,                             % 草稿模式
+    aspectratio=169,                   % 使用 16:9 比例
+]{beamer}
+\mode<presentation>
+\usetheme[
+    navigation=subsections,            % 使用子章节进度显示
+     lang=en,                           % 使用英文
+    % cjk=true,                          % 使用CJK而不是ctex
+    color=blue,                         % 使用红色主题
+    % pattern=all,                        % 使用全图案装饰
+    % gbt=bibtex,                        % 使用 gbt (使用 bibtex 编译)
+]{sjtubeamermin}
+% \usecolortheme[]{beaver}                 % 使用其他颜色主题
+% \addbibresource{ref.bib}               % gbt!=bibtex
+
+\usepackage{amsmath,amsthm}
+\usepackage{bm}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usepackage{empheq}
+\usepackage{tabularx}
+\usepackage{multicol}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{fontspec}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{color,soul}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+
+\usepackage[customcolors]{hf-tikz}
+\tikzset{style green/.style={
+    set fill color=green!50!lime!60,
+    set border color=white,
+  },
+  style cyan/.style={
+    set fill color=cyan!90!blue!60,
+  },
+  style orange/.style={
+    set fill color=orange!80!red!60,
+  },
+  hor/.style={
+    above left offset={-0.31,0.31},
+    below right offset={0.31,-0.2},
+    #1
+  },
+  ver/.style={
+    above left offset={-0.1,0.3},
+    below right offset={0.15,-0.15},
+    #1
+  }
+}
+
+\renewcommand{\Bbb}{\mathbb}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\GR}{\mathbb{GR}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Fns}{\mathbb{F}_{2^n}^*}
+\newcommand{\Fn}{\mathbb{F}_{2^n}}
+\newcommand{\Fks}{\mathbb{F}_{2^k}^*}
+\newcommand{\Fk}{\mathbb{F}_{2^k}}
+\newcommand{\df}{\delta_F}
+\newcommand{\tr}{\operatorname{tr}_1^k}
+\newcommand{\gtr}{\operatorname{T}}
+\newcommand{\teich}{\textit{Teichm$\ddot{u}$ller sets}}
+% \newtheorem*{definition}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{proposition}{Proposition}
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\setbeamertemplate{itemize items}[default]
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=red,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+% \NewDocumentEnvironment{example}{O{\textbf{Example:}}} % Define example environment
+% {\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+% {\end{leftrule}}
+\setbeamertemplate{footline}[frame number]
+
+\NewDocumentEnvironment{question}{O{\textbf{Something:}}} % Define something environment
+{\begin{leftrule}\noindent\textcolor{graylight}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{remark}{O{\textbf{Remark:}}} % Define remark environment
+{\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+{\end{leftrule}}
+
+\begin{document}
+    \institute[School of Electronic Information and Electrical Engineering]{电子信息与电气工程学院}   % 组织
+    % \logo{
+    %     \includegraphics{support/cnlogored.pdf}  % 重定义 logo
+    % }
+    \titlegraphic{                         % 标题图像
+        \begin{stampbox}[white]
+            \includegraphics[width=0.3\textwidth]{support/head.png}
+        \end{stampbox}
+    }
+    \title{APN functions}  % 标题
+ %   \subtitle{SJTUBeamer \fbox{\textsc{min}} Template}         % 副标题
+    \author{Zhaole Li}                  % 作者
+    \date{\textcolor{red}{Workshop of APN function, 2022}}                          % 日期
+    \maketitle                             % 创建标题页
+
+
+\AtBeginSection[]{
+    \begin{frame}
+        % \tableofcontents[currentsection]           % 传统节目录             
+        \sectionpage                   % 节页
+    \end{frame}
+}
+
+% 使用小节目录
+%\AtBeginSubsection[]{                  % 在每小节开始
+ %   \begin{frame}
+        % \tableofcontents[currentsection,currentsubsection]             % 传统小节目录             
+  %      \subsectionpage                % 小节页
+ %   \end{frame}
+%}
+
+\section{Introduction}
+%\subsection{第 1 小节}
+    \begin{frame}
+        \frametitle{Boolean functions}
+    
+        We call $ n $-variable Boolean functions or Boolean functions in dimension $ n $ the functions from 
+        the $ n $-dimensional vector space $ \F_2^n $ over $ \F_2 $ to $ \F_2 $. 
+
+        Given a basis, the field $ \Fn $ can be identified with the vector space $ \F_2^n $. 
+        Thus the input of Boolean functions will also be considered in the field $ \Fn $.
+
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Differential uniformity}
+        The differential attack, introduced by Biham and Shamir\footnote{E. Biham and A. Shamir. Differential cryptanalysis of DES-like cryptosystems. Journal of
+        Cryptology 4 (1), pp. 3–72, 1991.}, is a chosen plaintext attack for block ciphers in general.
+
+        An $(n,m)$-function $F$ is called differentially $\delta$-uniform, if for every nonzero $a \in \Fn$ and every $b\in\Fm$, 
+        the equation $F(x)+F(x+a)=b$ has at most $\delta$ solutions. We denote the minimum of these integers $ \delta $ by $ \delta_F $
+        and call it the differential uniformity of $F$. For every $(n, m)$-function $F$, we have $\delta_F \geq \max(2, 2^{n−m})$.
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{APN functions}
+        We can have $\delta_F = 2$ only when $m \geq n$, and this case is specially defined for $ n=m $:
+        \begin{definition}[APN functions]
+            An $(n, n)$-function $F$ is called almost perfect nonlinear (APN) if it is differentially $2$-uniform, i.e.
+            if for every $a \in \Fn \setminus \{0_n\} $ and every $b \in \Fn$, the equation $F(x) + F(x + a) = b$ has $0$ or $2$ solutions 
+            (i.e. the derivative $D_aF(x) = F(x) + F(x + a)$ is $2$-to-$1$). Equivalently, $|\{D_aF(x), x \in \Fn\}| =2^{n−1} $.
+            In other words, for distinct elements $x, y, z, t\in\Fn$, the equality $ x + y + z + t = 0_n $ implies $F(x) + F(y) +F(z) + F(t) \neq 0_n$. 
+        \end{definition}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The classification of APN functions}
+    
+        \begin{definition}
+            Let $F$ and $F'$ be two functions from $\F_2^n$ to $\F_2^n$.
+            \begin{enumerate}
+                \item $F$ and $F'$ are Extended affine equivalent (EA-equivalent) if
+                \[    F'(x)=L_1(F(L_2(x)))+L(x),\]
+                where $L_1$ and $ L_2 $ are affine permutations on $\F_2^n$ , 
+                and $L$ is an affine function on $\F_2^n$ .
+                \item $F$ and $F'$  are Carlet–Charpin–Zinoviev equivalent (CCZ-equivalent) if there exists an
+                affine permutation which maps $G_F$ onto $G_{F'}$  , where $G_F = \{(x, F(x)):x \in\F_2^n \}$ is the
+                graph of $F$, and $G_{F'}$ is the graph of $F'$.
+            \end{enumerate}
+        \end{definition}
+    \end{frame}
+    \begin{frame}
+        \frametitle{The classification of APN functions}
+    
+        \begin{remark}
+            \begin{enumerate}
+                \item CCZ-equivalence is a generalization of EA-equivalence.
+                \item If a function is APN, then its CCZ-equivalent functions are all APN.
+                \item Two quadratic APN functions are CCZ-equivalent if and only if they are EA-equivalent.
+            \end{enumerate}
+        \end{remark}
+    
+    \end{frame}
+
+\section{A matrix approach for constructing quadratic APN functions}
+
+    \begin{frame}
+        \frametitle{Quadratic APN functions}
+    
+        Let $ F(x)=\sum_{1\le t< i\le n}c_{i,t}x^{2{i-1}+2^{t-1}}\in\F_{2^n}[x] $ be a quadratic function. 
+        We define an $ n\times n $ matrix $ E=(e_{i,t})_{n\times n} $ by setting $ e_{i,t}=c_{i,t} $
+        for $ i>t $, otherwise $ e_{i,t}=0 $.
+        Let $ X=(x^{2^0},x^{2^1},...,x^{2^{n-1}})^T $ and $ x=x_1\alpha_1+x_2\alpha_2+\cdots+x_n\alpha_n $
+        where $ x_i\in\F_2 $ for $ 1\le i\le n $. We have 
+        \begin{equation}
+            F(x)=\overline{x}^TM^TEM\overline{x}, 
+        \end{equation}
+        where $ \overline{x}=(x_1,x_2,...,x_n)^T $ and 
+        $ M=\begin{pmatrix}
+            \alpha_1   &\alpha_2   &\dots  &\alpha_n   \\
+            \alpha_1^2& \alpha_2^2& \dots & \alpha_n^2\\
+            \vdots    & \vdots    & \ddots& \vdots    \\
+            \alpha_1^{2^{n-1}} &\alpha_2^{2^{n-1}} &\dots & \alpha_n^{2^{n-1}}\\
+        \end{pmatrix}. $
+
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Matrices when F is APN}
+        When $ a=a_1\alpha_1+a_2\alpha_2+\cdots +a_n\alpha_n $ and $ \overline{a}=(a_1,...,a_n)^T $, we have 
+        \begin{align*}
+            D_aF(x)=&F(x+a)+F(x)+F(a)\\
+                = &(\overline{x} + \overline{a})^T M^T E M(\overline{x} + \overline{a}) + \overline{x}^T M^T E M\overline{x} + \overline{a}^T M^T E M\overline{a}\\       
+                =&\overline{x}^T M^T (E+E^T) M\overline{a}.
+        \end{align*}
+        So we define a symmetric matrix $ C_F=E+E^T $ with diagnoal elements are all zero, so is $ H=M^TC_FM $.
+        When $ F $ is quadratic, $ D_aF(x) $ is a linear function, so $ F $ is APN iff $ \max\{\operatorname{dim}_{\F_2}(Ker(D_a))|a\in \F_{2^n}\}=1 $.
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Matrices when F is APN}
+    
+        $ D_aF(x)=\overline{x}^T H\overline{a} $ has $ 2 $ solutions 
+        iff $ \operatorname{Rank}_{\F_2}(H\overline{a})^T =n-1 $, and $ H\overline{a} $ is 
+        the $ \F_2 $-linear combination of $ n $  colomums of $ H $. Thus
+        \[D_a(x)=\overline{x}^TH\overline{a}=0,\] 
+        has $ 2 $ solutions for $ \overline{a}\in\F_2^n\setminus\{0\} $ iff $ F $ is APN. 
+        \begin{definition}
+            Let  $ H=(h_{u,v})_{n\times n} $ be an $ n\times n $ matrix over $ \F_{2^n} $. $ H $ is called a 
+            quadratic APN matrix (QAM) if 
+            \begin{enumerate}
+                \item $H$ is symmetric and the elements in its main diagonal are zero;
+                \item Every nonzero $ \F_2 $-linear combination of the $n$ rows of $H$ has rank $n − 1$.
+            \end{enumerate}
+        \end{definition} 
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Properties of QAMs}
+    
+        $ F $ is an APN function with the correspondence matrix is QAM 
+        related to basis $ \{\alpha_1,...,\alpha_n\} $.
+        \begin{enumerate}
+            \item So if $ H_{\alpha},H_{\beta} $ are corresponding matrices for $F(x)$ 
+            relative to the $\alpha,\beta$ respectively. Then we confirm $ H_{\beta}=P^TH_{\alpha}P $ 
+            where the invertible $ n\times n $ matrix $ P $ satisfying that  
+            \[(\beta_1,...,\beta_n)=(\alpha_1,...,\alpha_n)P.\] 
+            \item So if $ F(x),F'(x) $ is the quadratic function defined by $ H_{\alpha},H_{\beta} $ related to 
+            $ \alpha $, are two functions EA-equivalent?
+        \end{enumerate}
+
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The relation between $ F(x) $ and $ F'(x) $}
+        The answer is yes: $F'(x)$ is EA-equivalent to $F(x)$.
+        \begin{proof}
+            
+            Set the functions defined by $H$ and $H'=P^THP$ relative to $\alpha$ be $ F(x)=\sum_{1\le t<i\le n}c_{i,t}x^{2^{i-1}+2^{t-1}} $, define $ E,E' $ as before, hence we have 
+            \[F(x) = \overline{x}^T M^T E M\overline{x},F'(x) = \overline{x}^T M^T E'M\overline{x},\]
+            where $ \overline{x}=(x_1,...,x_n)^T\in\F_2^n $.
+            We set $ W=M^TEM,W'=M^TE'M $, then $ W+W^T=H $ and $ W'+W'^T=H'=P^THP=P^TWP+P^TW^TP $.
+        \end{proof}
+
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The Lemma for the symmetric matrix with zero diagnoal}
+        \begin{lemma}
+            Suppose $ H=(h_{u,v})_{n\times n} $ is a symmetric matrix over $\F_{2^n}$ with diagnoal elements are
+            all zeros,  define a set $ S=\{W|W+W^T=H\} $,  if $ W_1+W_1^T=W_2+W_2^T=H $, 
+            then there exists a symmetric matrix $A$ such that $W_2 = W_1 + A$.
+        \end{lemma}
+        \begin{proof}
+            Obviously for any symmetric matrix $A$, we have
+            \[(W_1+A)+(W_1+A)^T=W_1+W_1^T+A+A^T=W_1+W_1^T=H\]
+            which implies that $ W_1+A\in S $ for any symmetric matrix $A$.
+
+            By fixing $ W_1 $, we define another set $ S'=\{W_1+A|A ~\text{is symmetric}\} $, then $ \#S' $ is the
+            number of symmetric matrices over $ \F_{2^n} $, i.e. $ \#S'=(2^n)^{n+\frac{n(n-1)}{2}} $. Note that 
+            $ \#S=\#S' $, and all elements of $ S' $ belong to $ S $, so $ S'=S $, i.e. $ W_2=W_1+A $.
+        \end{proof}
+
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{The relation between $ F(x) $ and $ F'(x) $}
+        \begin{proof}
+            
+            Since $ W'+W'^T=H'=P^THP=P^TWP+P^TW^TP $, according to lemma above, there exists a symmetric matrix $ A $ 
+            such that $ W'=P^TWP+A $. Thus
+            \begin{align*}
+                F'(x)=&\overline{x}^T M^T E'M\overline{x}=\overline{x}^T W'\overline{x}\\
+                =&\overline{x}^T (P^TWP+A)\overline{x}=\overline{x}^T P^TM^TEMP\overline{x}+\overline{x}^T A\overline{x}\\
+                =&G(x)+\overline{x}^T A\overline{x},
+            \end{align*}
+            where $ G(x)=\overline{x}^T P^TM^TEMP\overline{x} $, is affine equivalent to $ F(x) $.
+            \[\overline{x}^T A\overline{x}=\sum_{i=1}^{n}a_{i,i}x_i.\]
+            is a linear function since $ A $ is symmetric, so $ F'(x) $ is EA-equivalent to $G(x)$.
+            Thus $F'(x)$ is EA-equivalent to $F(x)$.
+        \end{proof}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{The relation between $ H $ and $ L(H) $}
+        
+        \begin{theorem}
+            
+            Let $H =(h_{u,v}) \in \F_{2^n}^{n\times n}$ be a symmetric matrix with main diagonal elements
+            all zeros, and $L$ be a linear permutation on $\F_{2^n}$. Let $H' =(h_{u,v}') \in \F_{2^n}^{n\times n}$
+            such that $ h_{u,v}'=L(h_{u,v}) $ for all $ 1\le u,v\le n $. Then the the quadratic functions 
+            defined by $H$ and $H'$ relative to $ \alpha $ are EA-equivalent. And $ H $ is a QAM iff $ H' $ is a QAM.
+        \end{theorem}
+       
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Proof} 
+        \begin{proof}
+            Just as before, we have $ H=M^T(E+E^T)M=M^TC_FM $, then $ C_F=(M^T)^{-1}HM^{-1} $. 
+            For the basis $ \alpha=\{\alpha_1,...,\alpha_n\} $, we have the dual basis $ \theta=\{\theta_1,...\theta_n\} $ such that 
+            \[Tr(\alpha_i\theta_j)=\left\{
+                \begin{aligned}
+                    0,~ \text{for}\quad i\ne j;\\
+                    1,~ \text{for}\quad i= j.
+                \end{aligned}\right.\]
+            Thus we have $ (M^T)^{-1}=M_{\theta} $ and the element in $ i $-th row and $ j $-th colomum is 
+            $ \theta_j^{2^{i-1}} $. Hence we have $ C_F=M_{\theta}HM_{\theta}^T $, so 
+            \[c_{i,t}=\sum_{1\le u,v\le n}\theta_u^{2^{i-1}}\theta_u^{2^{t-1}}h_{u,v}.\]
+            Choose $ \eta_{u,v}\in\F_{2^n} $ such that $ \eta_{u,v}+\eta_{v,u}=h_{u,v} $ and $ h_{u,v}=0 $, 
+            then we have a quadratic function $ Q(x)=\sum_{1\le v<u\le n}Tr(\theta_ux)Tr(\theta_vx)h_{u,v} $ 
+            over $ \F_{2^n} $ which is EA-equivalent to 
+            \par
+            ~
+            \par
+           
+        \end{proof}
+
+    \end{frame}
+    \begin{frame}
+        \frametitle{Proof}
+        \begin{proof}
+            
+            $ F(x) $,
+            using the same technique we get $ Q'(x) $ which is also EA-equivalent to $ F'(x) $.
+            
+            Thus we only need to confirm the relation between $ Q(x) $ and $ Q'(x) $:
+            \begin{align*}
+                Q'(x)&=\sum_{1\le v<u\le n}Tr(\theta_ux)Tr(\theta_vx)h_{u,v}'=\sum_{1\le v<u\le n}Tr(\theta_ux)Tr(\theta_vx)L(h_{u,v})\\
+                &=L(\sum_{1\le v<u\le n}Tr(\theta_ux)Tr(\theta_vx)h_{u,v})=L(Q(x)).
+            \end{align*}
+            $ L(Tr(x))=Tr(x) $ since $ L $ is a linear permutation. Therefore it duduces that $ F(x) $ and $ F'(x) $
+            are  EA-equivalent.
+        \end{proof}
+            
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Constructing quadratic APN functions from a given QAM}
+        
+        Before introducing the algorithms for constructing quadratic APN functions, we give some results on 
+        matrices over $ \F_{2^n} $ which are useful.
+
+        \begin{lemma}
+            Let $ H \in\F_{n\times n}^{2^n} $  be a symmetric matrix with main diagonal elements all zero. 
+            Then every nonzero linear combination over $\F_2$ of the $n$ rows of $H$ has rank at most $n − 1$.
+        \end{lemma}
+        \begin{theorem}
+            Let $ A=(a_{i,j})\in\F_{2^n}^{r\times c} $ with $ 1\le r<c\le n $ and $ a_{i,j}=a_{j,i},a_{i,i}=0 $
+            for $ 1\le i,j\le r $. 
+            Let $ A[:,k],A[k] $ be the $ k $-th colomum and $ k $-th row of $ A $, respectively. 
+            Set $ b=\sum_{k=1}^{c}\lambda_kA[:,k] $, where $ 0\ne (\lambda_1,...,\lambda_c)\in\F_2^c $. 
+            Assume $ t=\operatorname{Rank}_{\F_2}\{b[1],b[2],...,b[r]\} $. Then if every nonzero linear combination 
+            over $\F_2$ of the $r$ rows of $A$ has rank at least $c − 1$, we have 
+            \begin{enumerate}
+                \item if $ (\lambda_{r+1},...,\lambda_c)=0  $, then $ t=r-1 $;
+                \item if $ (\lambda_{r+1},...,\lambda_c)\ne 0  $, then $ t=r $;
+            \end{enumerate}
+        \end{theorem}
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Proof}
+        \begin{enumerate}
+            \item Assume $ (\lambda_{r+1},...,\lambda_c)=0 $, then $ b=\sum_{k=1}^{r}\lambda_kA[:,k] $, so 
+            $ t\le r-1 $; Let $ B $ is the matrix of first $ r\times r $ submatrix of $ A $, then 
+            $ b=\operatorname{Rank}_{\F_2}(\sum_{k=1}^{r}\lambda_kB[k]) $, so if $ t<r-1 $, then we have 
+            $ \operatorname{Rank}_{\F_2}(\sum_{k=1}^{r}\lambda_kA[k])<r-1+(c-r)=c-1 $, contradiction.
+            \item Assume $ (\lambda_{r+1},...,\lambda_c) \ne 0 $, w.l.o.g. let $ \lambda_c=1 $, then substitude 
+            $ A[:,c] $ with $ b $, we get a new $ r\times c $ matrix $ A' $. 
+            If $ t<r $, we have $ \sum_{k=1}^{r}\lambda_k'A'[k,c]=0 $ for 
+            $ (\lambda_1',...,\lambda_r')\in\F_{2}^{r}\setminus\{0\} $.
+            W.l.o.g. suppose $ \lambda_1'\ne 0 $, 
+            then substitude $ A'[1] $ with $ \sum_{i=1}^{r}\lambda_i'A'[i] $ and get a new matrix $ A'' $, 
+            then substitude $ A''[:,1] $ with $ \sum_{i=1}^{r}\lambda_i'A''[:,i] $ and get get a new matrix $ A''' $,
+            note that $ A'=AP $, where $ P $ is a invertible matrix; $ A''=P'A',A'''=A''P'' $, where $ P',P'' $ are 
+            also invertible matrices, so every nonzero linear combination over $\F_2$ of the $r$ rows of $A'''$ 
+            has rank at least $c − 1$. However, we have $ A'''[1,c]=A'''[1,1]=0 $, contradiction.  
+        \end{enumerate}
+        
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Exclude some improper matrices}
+        
+        \begin{corollary}
+            $ H=(h_{u,v})_{n\times n} $ is a symmetric matrix over $\F_{2^n}$ and $ A $ is the $ r\times c $
+            submatrix consisting of the first $ r $ rows and the first $ c $ colomums of $ H $. Suppose $ B=A^T $,
+            then if $ A $ has the property that every nonzero linear combination over $\F_2$ of the $r$ rows of $A$
+            has rank at least $c − 1$, so does $ B $.
+        \end{corollary}
+
+        Note that every submatrix $ A=(a_{i,j})\in\F_{2^n}^{r\times c} $ with $1\le r<c\le n $ of a QAM $ H $ must
+        has the property that every nonzero linear combination over $\F_2$ of the $r$ rows of the submatrix 
+        has rank at least $c − 1$. Thus, if a matrix has a submatrix which don't have that property, it cannot be 
+        a QAM. Using the corollary, checking the property of submatrix $ A $ is enough.  
+        
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{How to construct QAMs}
+        
+        Given an $ n\times n $ QAM matrix $ H $ over $ \F_{2^n} $, we wish to get some new QAMs by assigning some 
+        different values of $ H $. Since $ H $ is a QAM, the $ n-1\times n-1 $ submatrix $ A $ consists
+        of the first $ n-1 $ rows and the first $ n-1 $ colomums of $ H $, 
+        and any nonzero linear combination of the $n − 1$ rows of $A$ has rank $n − 2$. Thus $ H=\begin{pmatrix}
+            A & c\\c^T & 0
+        \end{pmatrix} $, where $ c=(x_1,...,x_{n-1})^T $. Then we choose suitable $ c $ to make $ H $ a QAM.
+        
+        
+    \end{frame}   
+    
+    \begin{frame}
+        \frametitle{How to choose suitable $ c $}
+        
+        \begin{example}
+            Let $ n=4 $ and we give the $ H $ over $ \F_{2^4} $:
+            \begin{equation}
+                \left(\begin{array}{cccc}
+                    \tikzmarkin[hor=style orange]{el}0       & h_{1,2} & h_{1,3}  &c_1\\
+                     h_{2,1} & 0       & h_{2,3}  &c_2\\
+                     h_{3,1} & h_{3,2} & 0   \tikzmarkend{el}     &c_3\\
+                    c_1     &c_2     &c_3      &0      
+                \end{array}
+                \right)
+            \end{equation}
+            The matrix framed is the submatrix $ A $, clearly any nonzero linear combination of the $4 − 1$ rows 
+            of $A$ has rank $4 − 2$. Then we need to test whether $ [A,c] $ has the similar property:
+            \begin{enumerate}
+                \item if $ c_1\in\operatorname{Span}(A[1]) $, then the first row of $ [A,c] $ has rank $ 4-2 $, 
+                so $ H $ is not a QAM;
+                \item if $ c_1+c_2\in\operatorname{Span}(A[1]+A[2]) $, then the sum of the first two rows of 
+                $ [A,c] $ has rank $ 4-2 $, so $ H $ is not a QAM;
+                \item $ \cdots $;
+            \end{enumerate}
+        \end{example}
+        
+        
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{How to choose suitable $ c $}
+
+        From the example above, we need only to choose $ c=(c_1,...,c_{n-1})^T\in\F_{2^n}^{n-1} $ to satisfy
+        \[\lambda_1c_1+\cdots+\lambda_{n-1}c_{n-1}\in \F_{2^n}\setminus\operatorname{Span}(\lambda_1A[1]+\cdots+\lambda_{n-1}A[n-1]),\]
+        where $ \lambda_i\in\F_2 $ for all $ 1\le i\le n-1 $.
+
+        First we only modify $ c_1 $, we can simplify the set as below:
+        Let $ S_{1}=\F_{2^n}\setminus V_1 $, where $ V_1=\operatorname{Span}(A[1]) $.
+        After fixing the value for $ c_1 $, we need to modify $ c_2 $, but the range of $ c_2 $ is more 
+        complex: $ c_2\notin\operatorname{Span}(A[2]) $ and $ c_2\notin\operatorname{Span}(A[1]+A[2]) $.
+        And $ c_3 $ has the same condition: $ c_3\notin\operatorname{Span}(A[3]) $, 
+        $ c_3\notin\operatorname{Span}(A[3]+A[1]) $, $ c_3\notin\operatorname{Span}(A[3]+A[2]) $ and 
+        $ c_3\notin\operatorname{Span}(A[3]+A[2]+A[1]) $.
+
+        % since $ \operatorname{dim}_{\F_2}V=n-2 $, 
+        % we have $ S=(V+a_1)\cup(V+a_2)\cup(V+a_3) $ for $ a_1,a_2,a_3\in\F_{2^n} $. Because $ c_1\in S_{A[1]} $, 
+        % there exists $ v\in V $ such that $ c_1=v+a_i $ for some $ 1\le i\le 3 $, so $ a_i $ can be obtained by 
+        % some suitable colomum tranformations,
+        
+    \end{frame}
+    \begin{frame}
+        \frametitle{An algorithm for choosing suitable $ c $}
+        Let $ A $ be the submatrix of $ H $ consisting of the first $ n-1 $ rows and colomums,
+        $ S=\{S_{\lambda}:\lambda=(\lambda_1,\dots,\lambda_{n-1})\in\F_2^{n-1}\setminus\{0\}\} $ where 
+        $S_{\lambda}=\F_{2^n}\setminus\operatorname{Span}(\sum_{j=1}^{n-1}\lambda_jA[j])$.
+        \begin{algorithm}[H]
+            \SetKwInOut{Input}{Input}
+            \SetKwInOut{Output}{Output}
+            \Input{A QAM $H$ over $\F_{2^n}$; A set $S$ as defined above; An index $i=1$.}
+            \Output{Some QAMs}
+            \For{each $ c_i\in S_{e_i} $}{
+                \If(){$ i=n-1 $}{
+                    $ h_{n-1,n}=h_{n,n-1}=c_{n-1} $\;
+                    \Return{$H$}
+                }
+                {
+                    $ h_{i,n}=h_{n,i}=c_{i} $\;
+                    $ S_{e_{i+1}}\leftarrow S_{e_{i+1}}\cap S_{e_{i+1}+e_i} $\;
+                    $ i\leftarrow i+1 $\;
+                }
+            }
+            \caption{The algorithm for choosing suitable $ c $}
+        \end{algorithm}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{How to choosing suitable $ c $}
+
+        Thus, given a QAM $ H $, we can assign the values of the last colomum of $ H $ to get some new QAMs by
+        using algorithm. Furthermore,  assigning the values of the more colomums of $ H $ can get more QAMs,
+        but it needs to apply the algorithm several times. 
+
+        If we want to find new APN functions on $ \F_{2^n} $ for $ n\ge 8 $, 
+        we must change values of a QAM for at least  two colomums by experimental results, 
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Avoiding EA‑equivalent APN functions}
+    
+        \begin{example}
+        $ x^3 $ is a well-known quadratic APN function on $ \F_{2^n} $. Let $ n=8 $, $ g $ be the primitive element of $ \F_{2^8} $ with 
+        $ g^8+g^4+g^3+g^2+1=0 $, $ C $ be an $ 8\times 8 $ matrix such that $ c_{1,2}=c_{2,1}=1 $ and $ c_{i,j}=0 $ for all the others.
+        Suppose $ M $ is an $ 8\times 8 $ matrix such that $ m_{i,j}=(g^{11})^{2^{i-1}+2^{j-1}} $ for $ 1\le i,j\le 8 $. Then the corresponding QAM
+        of $ x^3 $ is  
+            \[H_{8}=\left(\begin{array}{cccccccc}
+                0 & g^{34} & g^{81} & g^{83} & g^{170} & g^{106} & \mathbf{c}_{\mathbf{1 3}} & \mathbf{c}_{\mathbf{7}} \\
+                g^{34} & 0 & g^{68} & g^{162} & g^{166} & g^{85} & \mathbf{c}_{\mathbf{1 2}} & \mathbf{c}_{\mathbf{6}} \\
+                g^{81} & g^{68} & 0 & g^{136} & g^{69} & g^{77} & \mathbf{c}_{\mathbf{1 1}} & \mathbf{c}_{\mathbf{5}} \\
+                g^{83} & g^{162} & g^{136} & 0 & g^{17} & g^{138} & \mathbf{c}_{\mathbf{1 0}} & \mathbf{c}_{\mathbf{4}} \\
+                g^{170} & g^{166} & g^{69} & g^{17} & 0 & g^{34} & \mathbf{c}_{\mathbf{9}} & \mathbf{c}_{\mathbf{3}} \\
+                g^{106} & g^{85} & g^{77} & g^{138} & g^{34} & 0 & \mathbf{c}_{\mathbf{8}} & \mathbf{c}_{\mathbf{2}} \\
+                \mathbf{c}_{\mathbf{1 3}} & \mathbf{c}_{\mathbf{1 2}} & \mathbf{c}_{\mathbf{1 1}} & \mathbf{c}_{\mathbf{1 0}} & \mathbf{c}_{\mathbf{9}} & \mathbf{c}_{\mathbf{8}} & 0 & \mathbf{c}_{\mathbf{1}} \\
+                \mathbf{c}_{\mathbf{7}} & \mathbf{c}_{\mathbf{6}} & \mathbf{c}_{\mathbf{5}} & \mathbf{c}_{\mathbf{4}} & \mathbf{c}_{\mathbf{3}} & \mathbf{c}_{\mathbf{2}} & \mathbf{c}_{\mathbf{1}} & 0
+            \end{array}\right).\]
+        \end{example}
+        
+    \end{frame}
+        
+    \begin{frame}
+        \frametitle{Avoiding EA‑equivalent APN functions}
+    
+        \begin{example}
+            We assign values for $ c_i $ for $ 1\le i\le 13 $ to get new QAMs. Let $ H_8 $ be a QAM, then:
+            \begin{enumerate}
+                \item[1] $ V=\operatorname{Span}(g^{34}, g^{81} , g^{83}, g^{170} ,g^{106}) $, and $ V $ can partition 
+                $ \F_{2^8} $ into $ 8 $ sets: $ \F_{2^8}=V\cup(V+a_1)\cup(V+a_2)\cup(V+a_3)\cup(V+a_4)\cup(V+a_5)\cup(V+a_6)\cup(V+a_7) $;
+                \item[2] $ \operatorname{Rank}_{\F_2}(0,g^{34}, g^{81} , g^{83}, g^{170} ,g^{106},c_{13})=6 $, 
+                i.e. $ c_{13}\in\F_{2^8}\setminus V $.
+                Suppose $ c_{13} $ is the linear combination of $ g^{34}, g^{81} , g^{83}, g^{170} ,g^{106} $ with
+                a set $ A=\{a_i|1\le i\le 7\} $;
+            \end{enumerate}
+        \end{example}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Avoiding EA‑equivalent APN functions}
+        \begin{example}
+            \begin{enumerate}
+                \item[3] Thus we have \[ H_8'=P^TH_8P=\left(\begin{array}{cccccccc}
+                    0 & g^{34} & g^{81} & g^{83} & g^{170} & g^{106} & a & \mathbf{c}_{\mathbf{7}} \\
+                    g^{34} & 0 & g^{68} & g^{162} & g^{166} & g^{85} & x_{\mathbf{1 2}} & \mathbf{c}_{\mathbf{6}} \\
+                    g^{81} & g^{68} & 0 & g^{136} & g^{69} & g^{77} & x_{\mathbf{1 1}} & \mathbf{c}_{\mathbf{5}} \\
+                    g^{83} & g^{162} & g^{136} & 0 & g^{17} & g^{138} & x_{\mathbf{1 0}} & \mathbf{c}_{\mathbf{4}} \\
+                    g^{170} & g^{166} & g^{69} & g^{17} & 0 & g^{34} & x_{\mathbf{9}} & \mathbf{c}_{\mathbf{3}} \\
+                    g^{106} & g^{85} & g^{77} & g^{138} & g^{34} & 0 & x_{\mathbf{8}} & \mathbf{c}_{\mathbf{2}} \\
+                    a & x_{\mathbf{1 2}} & x_{\mathbf{1 1}} & x_{\mathbf{1 0}} & x_{\mathbf{9}} & x_{\mathbf{8}} & 0 & \mathbf{c}_{\mathbf{1}} \\
+                    \mathbf{c}_{\mathbf{7}} & \mathbf{c}_{\mathbf{6}} & \mathbf{c}_{\mathbf{5}} & \mathbf{c}_{\mathbf{4}} & \mathbf{c}_{\mathbf{3}} & \mathbf{c}_{\mathbf{2}} & \mathbf{c}_{\mathbf{1}} & 0
+                \end{array}\right). \]
+                \item[4] If $ H_8 $ is a QAM then $ H_8' $ is also a QAM, and they are EA-equivalent. So we only need
+                to consider $ c_{13}\in A $.
+            \end{enumerate}
+        \end{example}
+        
+    \end{frame}
+    \begin{frame}
+        \frametitle{Avoiding EA‑equivalent APN functions}
+        
+        \begin{example}
+            \begin{enumerate}
+                    \item[5] Similarly, $ U=\operatorname{Span}(g^{34}, g^{68} , g^{162}, g^{166} ,g^{85}) $, 
+                    and $ B\cup(B+g^{34}) $ be a partition of $ \F_{2^8}\setminus U $.
+                    \item[6] When $ c_{13} $ and $ c_{12} $ have been chosen, 
+                    let $ E=\operatorname{Span}(g^{34}, g^{81} , g^{83}, g^{170} ,g^{106},c_{13}) $, then $ E $
+                    can partition $ \F_{2^8} $ into $ 4 $ parts.
+                    \item[7] $ F=\operatorname{Span}(g^{34}, g^{68} , g^{162}, g^{166} ,g^{85},c_{12}) $ and 
+                    $ G\cup (G+g^{34}) $ be a partition of $ \F_{2^8}\setminus F $. 
+                \end{enumerate}
+            \end{example}
+        
+        \end{frame}
+
+    
+    \makebottom     % 创建尾页  % 非标准命令
+
+\end{document}
