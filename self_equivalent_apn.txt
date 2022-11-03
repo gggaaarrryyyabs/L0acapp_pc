@@ -1,0 +1,716 @@
+/* The following functions generate lists of CCZ-inequivalent representatives from all currently known infinite families over GF(2^n) with n in the range from 6 to 11. */
+
+function listAPNRepresentatives6()
+	n := 6;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+
+	G6 := [
+		x^3,
+		x^6 + x^9 + p^7*x^48,
+		p*x^3 + p^4*x^24 + x^17
+	];
+
+	return G6;
+end function;
+
+function listAPNRepresentatives7()
+	n := 7;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+
+	G7 := [
+		x^3,
+		x^5,
+		x^9,
+		x^13,
+		x^57,
+		x^63,
+		x^3 + Trace(x^9)
+	];
+
+	return G7;
+end function;
+	
+function listAPNRepresentatives8()
+	n := 8;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+
+	G8 := [
+		x^3,
+		x^9,
+		x^57,
+		x^3 + x^17 + p^48*x^18 + p^3*x^33 + p*x^34 + x^48,
+		x^3 + Trace(x^9),
+		x^3 + p^(-1)*Trace(p^3*x^9),
+		(x + x^16)^3 + p^17*(p*x + p^16*x^16)^12 + p*(x + x^16)*(p*x + p^16*x^16)
+	];
+
+	return G8;
+end function;
+	
+function listAPNRepresentatives9()
+	n := 9;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+	Q := quo< P | ideal < P | x^(2^n) + x > >;
+	Trace39 := x + x^8 + x^64;
+	G9 := [
+		x^3,
+		x^5,
+		x^17,
+		x^13,
+		x^241,
+		x^19,
+		x^255,
+		x^3 + Trace(x^9),
+		P ! ( Q ! (x^3 + Evaluate(Trace39, x^9 + x^18)) ),
+		P ! ( Q ! (x^3 + Evaluate(Trace39,x^18 + x^36)) ),
+		p^337*x^129 + p^424*x^66 + p^2*x^17 + p*x^10 + p^34*x^3
+	];
+
+	return G9;
+end function;
+
+function listAPNRepresentatives10()
+	n := 10;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+	G10 := [
+		x^3,//gold
+		x^9,//gold 
+		x^57,
+		x^339,
+		x^6 + x^33 + p^31*x^192,
+		x^72 + x^33 + p^31*x^258,
+		x^3 + Trace(x^9),
+		x^3 + p^(-1)*Trace(p^3*x^9),
+		x^3 + p^341 * x^9 + p^682 * x^96 + x^288,
+		x^3 + p^341 * x^129 + p^682 * x^96 + x^36
+	];
+
+	return G10;
+end function;
+
+function listAPNRepresentatives11()
+	n := 11;
+	FF<p> := GF(2^n);
+	P<x> := PolynomialRing(FF);
+	G11 := [
+		x^3,
+		x^5,
+		x^9,
+		x^17,
+		x^33,
+		x^13,
+		x^57,
+		x^241,
+		x^993,
+		x^35,
+		x^287,
+		x^1023,
+		x^3 + Trace(x^9)
+	];
+
+	return G11;
+end function;
+
+
+F<v>:=GF(2,11);
+output:=[];
+for a in F do
+	if a eq 0 then continue; end if;
+	for b in F do
+		if Trace(b*a^(-3)) eq 1 and Trace(a^-1) eq 0 and points(a,b) eq 1 then
+			Append(~output,a);Append(~output,b);
+		end if;
+	end for;
+end for;
+
+=================================================================================================
+//
+n:=5;
+F<v>:=GF(2,n);
+Z:=Integers();
+function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+
+specialcase:=[];
+lambda:=Random(F);
+Fset:=[x:x in F];
+Finverse:=[Fset[i]:i in [#F..1 by -1]];
+for mu in Finverse do
+for nu in F do 
+	result:={* *};
+for a1,a2,b1 in F do
+	// if a1 eq b1 or a1*b1 eq 0 then continue; end if;
+for b2 in F do
+	// if a2 eq b2 or a2*b2 eq 0 then // general case
+	// 	continue; 
+	// end if; 
+	// if mu eq 0 then continue; end if;
+	// if a2^2+b2^2+a2*b2+(a2^2*b2+a2*b2^2)*mu*lambda^-1 eq 0 then //the equation has at least 4 solutions
+	// 	for nu in F do
+			// if Trace((a1+b1)*mu+(a2+b2)*nu) eq 0 and Trace(mu*a1+nu*a2) eq 0 then
+		// for x in F do
+		// 	if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then 
+		// 		continue; 
+		// 	end if;
+			// if inverse(x+a2)+inverse(x+b2)+inverse(x+a2+b2)+inverse(x) eq mu then //the equation has 8 solutions
+				d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+				if d eq 2^(n+4) or d eq -2^(n+4) then 
+					Append(~specialcase,a1);
+					Append(~specialcase,a2);
+					Append(~specialcase,b1);
+					Append(~specialcase,b2);
+					Append(~specialcase,mu);
+					Append(~specialcase,nu);
+				end if;
+				Include(~result,d);
+				// Trace(a1*inverse(a2)+b1*inverse(b2)+(a1+b1)*inverse(a2+b2)+a1*inverse(x+a2)+b1*inverse(x+b2)+(a1+b1)*inverse(x+a2+b2)+x*nu);
+				// break;
+					// end if;
+				// end for;	
+			// end if;
+		// end for;
+	// end if;
+	end for;
+	end for;
+	result;
+end for;
+end for;
+
+allspecial:=Matrix(#specialcase div 5,5,specialcase);
+A:=Open("secondorder_8speciallambdaR.txt","w");
+for i in [1..#specialcase] do
+	fprintf A,"%6o,",specialcase[i];
+	if i mod 6 eq 0 then 
+		fprintf A,"\n";
+	end if;
+end for;delete A;  
+
+=============================================================================================================
+
+F<v>:=GF(2,8);
+Z:=Integers();
+function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+a1:=v^3;b1:=v^7;
+c0:=[];c1:=[];c:=[];
+result_munu:=[];
+for mu,nu in F do 
+	for a2,b2 in F do 
+	result:=0;
+		if a2 eq b2 or a2 eq 0 or b2 eq 0 or a2^2+b2^2+a2*b2+(a2^2*b2+a2*b2^2)*mu ne 0 then continue; end if;
+		for x in F do
+			if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then 
+				result+:=(-1)^(Z!Trace(a1*inverse(x+a2)+b1*inverse(x+b2)+(a1+b1)*inverse(x+a2+b2)+nu*(x)));
+			elif inverse(x)+inverse(x+a2)+inverse(x+b2)+inverse(x+a2+b2) eq mu then
+				result+:=(-1)^(Z!Trace(a1*inverse(x+a2)+b1*inverse(x+b2)+(a1+b1)*inverse(x+a2+b2)+nu*(x)));
+				// for nu in F do 
+				// 	Append(~c,(-1)^(Z!Trace(a1*inverse(x)+b1*inverse(x+a2+b2)+(a1+b1)*inverse(x+b2)+nu*(x+a2))));
+				// 	Append(~c1,(-1)^(Z!Trace(a1*inverse(x+a2)+b1*inverse(x+b2)+(a1+b1)*inverse(x+a2+b2)+nu*x)));
+				// 	Append(~c0,(-1)^(Z!Trace(a1*inverse(a2)+b1*inverse(b2)+(a1+b1)*inverse(a2+b2))));
+				// end for;
+			end if;
+		end for;
+	Append(~result_munu,result);
+	result_munu;
+	end for;
+end for;
+
+===================================================================
+ 
+//验证8个解的充要条件是否正确
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue;end if;
+	for mu in F do 
+		for x in F do 
+			if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+			if  inverse(x)+inverse(x+a2)+inverse(x+b2)+inverse(x+a2+b2) eq mu then
+				if Trace(a2*(mu*b2*(a2+b2))^-1) eq 1 or Trace(b2*(mu*a2*(a2+b2))^-1) eq 1 then 
+					print "!!!!";
+					mu;a2;b2;
+				end if;
+			end if;
+		end for;
+	end for;
+end for;
+
+==================================================================
+lambda:=1;
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue; end if;
+	mu:=(a2^2+b2^2+a2*b2)*(a2^2*b2+a2*b2^2)^-1;
+	solution:=0;
+	if Trace(a2*inverse(mu*b2*(a2+b2))) eq 0 and Trace(b2*inverse(mu*a2*(a2+b2))) eq 0 then
+		for x in F do 
+			if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+			if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu then 
+				solution:=x;
+				break;
+			end if;
+		end for;
+	end if;
+	solution;
+	if solution ne 0 then
+		for a1,b1 in F do
+			for nu in F do
+				[Trace(mu*(a1+b1)+nu*(a2+b2)),Trace(mu*(a1)+nu*(a2)),Trace(a1*a2^-1+b1*b2^-1+(a1+b1)*(a2+b2)^-1),Trace(a1*(solution+a2)^-1+b1*(solution+b2)^-1+(a1+b1)*(solution+a2+b2)^-1+nu*solution)];
+				print "\n";
+			end for;
+		end for;
+	end if;
+end for;
+
+for lambda in F do
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue; end if;
+	for mu in F do
+		// for x in F do 
+			// if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+			// if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu*lambda^-1 then
+				if Trace(lambda*a2*inverse(mu*b2*(a2+b2))) eq 0 and Trace(lambda*b2*inverse(mu*a2*(a2+b2))) eq 0 and (a2^2+b2^2+a2*b2)*(a2^2*b2+a2*b2^2)^-1 eq mu*lambda^-1 then
+				[mu,lambda];
+				end if;
+			// end if;
+		// end for;
+	end for;
+	end for;
+end for;
+
+	mu:=(a2^2+b2^2+a2*b2)*(a2^2*b2+a2*b2^2)^-1;
+	solution:=0;
+	if Trace(a2*inverse(mu*b2*(a2+b2))) eq 0 and Trace(b2*inverse(mu*a2*(a2+b2))) eq 0 then
+		for x in F do 
+			if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+			if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu then 
+				solution:=x;
+				break;
+			end if;
+		end for;
+	end if;
+	solution;
+	if solution ne 0 then
+		for a1,b1 in F do
+			for nu in F do
+				[Trace(mu*(a1+b1)+nu*(a2+b2)),Trace(mu*(a1)+nu*(a2)),Trace(a1*a2^-1+b1*b2^-1+(a1+b1)*(a2+b2)^-1),Trace(a1*(solution+a2)^-1+b1*(solution+b2)^-1+(a1+b1)*(solution+a2+b2)^-1+nu*solution)];
+				print "\n";
+			end for;
+		end for;
+	end if;
+end for;
+
+=============================================
+//test gamma = beta_2/alpha_2 
+F<v>:=GF(2,8);
+alpha_2:=v;
+counter:=0;
+function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+counter:=0;
+scase:=[];
+for x in F do
+	y:=x*alpha_2;
+	if y eq 0 then continue; end if;
+	// if x eq 0 or Order(x) le 3 then continue; end if;
+	if Trace(inverse(y^2+y+1)) eq 0 and Trace(y^2*inverse(y^2+y+1)) eq 0 then
+		if  Order(y) gt 3 and y ne 1 then 
+			counter+:=1;
+			Append(~scase,y);
+		end if;
+	end if;
+end for;
+================================================
+
+// for lambda in F do
+n:=7;
+F<v>:=GF(2,n);
+Z:=Integers();
+lambda:=1;
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue; end if;
+	for mu in F do
+		if mu eq 0 then continue; end if;
+		if Trace(lambda*a2*inverse(mu*b2*(a2+b2))) eq 0 and Trace(lambda*b2*inverse(mu*a2*(a2+b2))) eq 0 and (a2^2+b2^2+a2*b2)*(a2^2*b2+a2*b2^2)^-1 eq mu*lambda^-1 then
+			for a1,b1,nu in F do
+				if a1 eq b1 or a1 eq 0 or b1 eq 0 or a1 eq a2 then continue; end if;
+				d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+				if d ge 2^(n+3) or d le -2^(n+3) then
+					print "[mu,nu,a1,a2,b1,b2]=",[mu,nu,a1,a2,b1,b2];
+					print "d=",d;
+				end if;
+			end for;
+		end if;
+	end for;
+end for;
+
+n:=6;
+F<v>:=GF(2,n);
+Z:=Integers();
+lambda:=1;
+counter:=0;
+ge8_counter:=0;
+specialcase:=[];
+ge8_case:=[];
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue; end if;
+	mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;// 0 is a solution
+	if mu eq 0 then continue; end if;
+	if Trace(lambda*a2*inverse(mu*b2*(a2+b2))) eq 0 and Trace(lambda*b2*inverse(mu*a2*(a2+b2))) eq 0 then // y_0 is a solution
+		for a1,b1,nu in F do
+			if a1 eq b1 or a1 eq 0 or b1 eq 0 then continue; end if;
+			if Trace(mu*(a1+b1)+nu*(a2+b2)) eq 0 and Trace(mu*(a1)+nu*(a2)) eq 0 then
+				c0:=Trace(lambda*a1*a2^-1+lambda*b1*b2^-1+lambda*(a1+b1)*(a2+b2)^-1);
+				for x in F do 
+					if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+					if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu*lambda^-1 then
+						c1:=Trace(lambda*a1*(x+a2)^-1+lambda*b1*(x+b2)^-1+lambda*(a1+b1)*(x+a2+b2)^-1+nu*x);
+						if c0 eq c1 then 
+							counter+:=1; 
+							specialcase cat:=[mu,nu,a1,a2,b1,b2];
+						end if;
+						// print "Tr(mu(a1+b1)+nu(a2+b2))=",Trace(mu*(a1+b1)+nu*(a2+b2)),"Tr(mu(a1)+nu(a2))=",Trace(mu*(a1)+nu*(a2)),"c0=",c0,"c1=",c1;
+						break;
+						// d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+						// if d eq 2^(n+3) or d eq -2^(n+3) then
+						// 	counter+:=1;
+							// specialcase cat:=[mu,nu,a1,a2,b1,b2];
+						// 	// print "[mu,nu,a1,a2,b1,b2]=",[mu,nu,a1,a2,b1,b2];
+						// 	// print "d=",d;
+						// elif d gt 2^(n+3) or d le 2^(n+3) then
+						// 	ge8_counter+:=1;
+						// 	ge8_case cat:=[mu,nu,a1,a2,b1,b2];
+						// end if;
+					end if;
+				end for;
+			end if;
+		end for;
+	end if;
+end for;
+
+
+n:=6;
+F<v>:=GF(2,n);
+Z:=Integers();
+lambda:=1;
+counter:=0;
+ge8_counter:=0;
+specialcase:=[];
+ge8_case:=[];
+for a2,b2 in F do 
+	if a2 eq b2 or a2*b2 eq 0 then continue; end if;
+	mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+	if mu eq 0 then continue; end if;
+	for a1,b1,nu in F do
+		if a1 eq b1 or a1 eq 0 or b1 eq 0  then continue; end if;
+		for x in F do 
+			if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if;
+			if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu*lambda^-1 then
+				d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+				if d eq 2^(n+3) or d eq -2^(n+3) then
+					counter+:=1;
+					specialcase cat:=[mu,nu,a1,a2,b1,b2];
+					// print "[mu,nu,a1,a2,b1,b2]=",[mu,nu,a1,a2,b1,b2];
+					// print "d=",d;
+				end if;
+				break;
+			end if;
+		end for;
+	end for;
+end for;
+==============================================================================
+
+k:=6;
+F<v>:=GF(2,k);
+counter:=0;
+lambda:=1;
+wantcase:=[];
+for a1,b1 in F do 
+	if a1 eq b1 or a1 eq 0 or b1 eq 0 then continue; end if;
+	for a2 in F do
+	for b2 in F do
+		if   a2 eq 0 or a2 eq b2 or  b2 eq 0 then continue; end if;
+		mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+		for nu in F do 
+			d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+			if d eq 2^(k+3) or d eq -2^(k+3) then 
+				break a2;
+			end if;
+		end for;
+		counter+:=1;
+		counter;
+		wantcase cat:=[a1,a2,b1,b2];
+	end for;
+	end for;
+end for;
+A:=Open("secondorder_6speciallambda1.txt","w");
+for i in [1..#specialcase] do
+	fprintf A,"%6o,",specialcase[i];
+	if i mod 4 eq 0 then 
+		fprintf A,"\n";
+	end if;
+end for;delete A;  
+==============================================================================
+// fix (alpha_1,alpha_2,beta_2), assume beta_1 run through F_{2^k}
+k:=7;
+Z:=Integers();
+lambda:=1;
+F<v>:=GF(2,k);
+guess:=[ v^5, v^10, v^11, v^19, v^20, v^22, v^25, v^27, v^29, v^33, v^38, v^39, v^40, v^44, v^47, v^49, v^50, v^51, v^54, v^58, v^61, v^66, v^69, v^73, v^76, v^77, v^78, v^80, v^83, v^87, v^88, v^89, v^94, v^98, v^100, v^102, v^105, v^107, v^108, v^116, v^117, v^122 ];
+// guess:=[v^9,v^18,v^27,v^36,v^45,v^54];
+
+// guess:=[ v^9, v^13, v^15, v^17, v^18, v^26, v^27, v^30, v^33, v^34, v^36, v^39, v^43, v^47, v^51, v^52, v^53, v^54, v^57, v^60, v^66, v^67, v^68, v^72, v^77, v^78, v^83, v^86, v^89, v^94, v^99, v^101, v^102, v^104, v^106, v^108, v^111, v^114, v^119, v^120, v^121, v^123, v^132, v^134, v^135, v^136, v^141, v^144, v^147, v^149, v^151, v^153, v^154, v^156, v^161, v^166, v^169, v^172, v^177, v^178, v^183, v^187, v^188, v^189, v^195, v^198, v^201, v^202, v^203, v^204, v^208, v^212, v^216, v^219, v^221, v^222, v^225, v^228, v^229, v^237, v^238, v^240, v^242, v^246 ];
+function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+
+randomset:=[Random(F):i in [1..#F div 4]];
+
+a1ba2b2_2kplus3:=[];
+Fstar:={v^i:i in [0..(2^k-2)]};
+counter:=0;
+while counter ne 1 do
+	for a2 in F do 
+	if a2 eq 0 then continue; end if;
+	for c in guess do
+		b2:=c*a2;
+		mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+		for a1 in F do
+			// a1:=0;
+			if a1 eq 0 then continue; end if;
+			b1set:=[];
+			for b1 in F do
+				if  b1 eq 0 then continue; end if; 
+				for nu in F do
+					d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+					// d;
+					if d eq 2^(k+3) or d eq -2^(k+3) then 
+						Append(~b1set,b1);
+						break;
+					end if;
+				end for;
+			end for;
+			if #b1set ne 2^k-1 then
+				print "Error!, a1=0 has situation that there exist some b1 cannot have  pm 2^(k+3) values";
+				a1ba2b2_2kplus3:=[a1,a2,b2];
+			end if;
+			// a1ba2b2_2kplus3;
+		end for;
+	end for;
+	end for;
+	counter+:=1;
+	// Include(~a1b1_2kplus3,b1set);
+end while;
+A:=Open("secondorder_7randomc.txt","w");
+for i in [1..#a1ba2b2_2kplus3] do
+	fprintf A,"%6o,",a1ba2b2_2kplus3[i];
+	if i mod 3 eq 0 then 
+		fprintf A,"\n";
+	end if;
+end for;delete A; 
+==============================================================================
+
+k:=6;
+Z:=Integers();
+lambda:=1;
+F<v>:=GF(2,k);
+guess:=[v^9,v^18,v^27,v^36,v^45,v^54];
+function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+
+a1b1_2kplus3:={@ @};
+// for a2,b2 in F do//fix a2 b2
+	a2:=v;b2:=v^10;
+	// if a2 eq 0 or b2 eq 0 or a2 eq b2 then continue; end if;
+	// if b2*a2^-1 notin guess then continue; end if;
+	mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1; 
+	lambda:=1;
+	for a1 in F do// fix a1
+
+		c0_0getb1set:=[];
+		c0_1getb1set:=[];
+		for b1 in F do
+			if a1 eq 0 or b1 eq 0 then continue; end if; 
+			nu_set:=[];
+			for nu in F do
+				// if nu in {1,v^4,v^6,v^7,v^29 ,v^39,v^50,v^55} then continue; end if;
+				// d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];d;
+				if Trace(mu*a1+nu*a2) eq 0 and Trace(mu*b1+nu*b2) eq 0 then 
+					Append(~nu_set,nu);
+					// c0:=Trace(lambda*a1*a2^-1+lambda*b1*b2^-1+lambda*(a1+b1)*(a2+b2)^-1);
+					// for x in F do 
+					// 	if x eq 0 or x eq a2 or x eq b2 or x eq a2+b2 then continue; end if; 
+					// 	if x^-1+(x+a2)^-1+(x+b2)^-1+(x+a2+b2)^-1 eq mu then 
+					// 		if c0 ne Trace(lambda*a1*(x+a2)^-1+lambda*b1*(x+b2)^-1+lambda*(a1+b1)*(x+a2+b2)^-1+nu*x) then
+					// 			Append(~nu_set,nu);
+					// 		end if;
+					// 		break;
+					// 	end if;
+					// end for;
+				end if;
+				d:=0;
+				if d eq 2^(k+3) then
+					print "2^(k+3)",[a1,b1,nu];
+				elif d eq -2^(k+3) then
+					print "-2^(k+3)",[a1,b1,nu];
+				end if;
+			end for;
+			nu_set;
+		end for;
+	end for;
+
+[ 1, v^4, v^6, v^7,  v^29,  v^39, v^50,  v^55]
+[ v^8, v^17, v^26, v^35, v^44, v^53, v^62, 0 ]
+
+
+			c0:=Trace(lambda*a1*a2^-1+lambda*b1*b2^-1+lambda*(a1+b1)*(a2+b2)^-1);
+			if c0 eq 0 then 
+				Append(~c0_0getb1set,b1); 
+			else	
+				Append(~c0_1getb1set,b1);
+			end if;
+		end for;
+		nu_trace_a1a2:=[nu:nu in F|Trace(mu*a1+nu*a2) eq 0];
+		nu_trace_b1b2:=[];
+		for b1 in c0_0getb1set do 
+			if Trace(mu*b1+nu*b2) eq 0 then
+				Append(~nu_trace_b1b2,b1);
+			end if;
+		end for;
+
+	end for;
+	// Include(~a1b1_2kplus3,b1set);
+// end for;
+
+
+F<v>:=GF(2,6);
+a1:=1;a2:=1;b2:=v^9;
+mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+for b1 in F do
+for nu in F do
+	d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];d;
+end for;
+end for;
+
+lambda:=1;
+a2:=1;b2:=v^9;
+mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+for a1,b1 in F do
+	// if a1 eq b1 or a1*b1 eq 0 then continue; end if;
+	nu_trace_a1a2:=[nu:nu in F|Trace(mu*a1+nu*a2) eq 0];
+	nu:=nu_trace_a1a2[1];
+	Trace(mu*v^9*a1+nu*v^9*a2);
+	nu_trace_a1a2:=[nu:nu in F|Trace(mu*a1+nu*a2) eq 0 and Trace(mu*b1+nu*b2) eq 0];
+	if #nu_trace_a1a2 ne 16 then
+		[a1,b1];
+	end if;
+end for;
+
+
+a:=[1,v^9,v^18,v^27,v^36,v^45,v^54,0];
+b:=[1 ,v^4 ,v^6 ,v^7 ,v^29 ,v^39 ,v^50,v^55 ];
+
+
+
+k:=6;
+Z:=Integers();
+lambda:=1;
+F<v>:=GF(2,k);
+guess:=[v^9,v^18,v^27,v^36,v^45,v^54];
+function inverse(x)
+    return (x eq 0) select F!0 else x^-1;
+end function;
+a2:=v;
+b2:=v^10;
+mu:=(a2^2+b2^2+a2*b2)*lambda*(a2^2*b2+a2*b2^2)^-1;
+for a1,b1 in F do
+	nu:=[x:x in F|Trace(mu*a1+x*a2) eq 0 and Trace(mu*b1+x*b2) eq 0];
+	nu;
+	if #nu ne 8 then 
+		print "#nu=",#nu,"[a1,b1,a,b]=",[a1,b1];
+	end if;
+end for;
+
+k:=6;
+ F<v>:=GF(2,k);
+ function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+Z:=Integers();
+lambda:=1;
+// c:=[x:x in F|x notin GF(4) and Trace(x^2*inverse(x^2+x+1)) eq 0 and Trace(inverse(x^2+x+1)) eq 0];
+a2:=1;b2:=v^9;
+mu:=(a2^2+b2^2+a2*b2)*(a2^2*b2+a2*b2^2)^-1;
+for a1,b1 in F do
+	counter:=0; 
+	for nu in F do
+		d:=&+[(-1)^Z!Trace(x1*lambda*inverse(y)+(x1+a1)*lambda*inverse(y+a2)+(x1+b1)*lambda*inverse(y+b2)+lambda*(x1+a1+b1)*inverse(y+a2+b2)+mu*x1+nu*y):x1,y in F];
+		// d;
+		if d eq 2^(k+3) or d eq -2^(k+3) then 
+			counter+:=1;
+		end if;
+	end for;
+	if counter ne 8 then
+		[a1,b1];
+	end if;
+end for;
+
+
+k:=6;
+ F<v>:=GF(2,k);
+ function inverse(x)
+	return (x eq 0) select F!0 else x^-1;
+end function;
+Z:=Integers();
+lambda:=1;
+// c:=[x:x in F|x notin GF(4) and Trace(x^2*inverse(x^2+x+1)) eq 0 and Trace(inverse(x^2+x+1)) eq 0];
+// a2:=1;b2:=v^9;
+mu:=0;
+for a2 in F do
+	b2:=0;
+	res:=[];
+for a1,b1 in F do
+	// counter:=0; 
+	for nu in F do
+		d:=&+[(-1)^Z!Trace((a1)*lambda*inverse(y+a2)+(b1)*lambda*inverse(y+b2)+lambda*(a1+b1)*inverse(y+a2+b2)+nu*y):y in F];
+		if d ne 0 then Append(~res,d); end if;
+		if d eq 32 then 
+			[a1,b1,a2,nu];
+		end if;
+	end for;
+	// res;
+end for;
+end for;
+
+sbox[256] = {0, 145, 49, 81, 37, 141, 99, 58, 69, 90, 45, 195, 133, 163, 154, 77, 47, 95, 236, 109, 244, 189, 64, 248, 151, 105, 13, 2, 169, 110, 68, 114, 79, 205, 159, 236, 105, 210, 206, 132, 244, 248, 125, 128, 55, 2, 201, 13, 143, 236, 173, 63, 87, 13, 2, 169, 201, 36, 178, 174, 244, 32, 248, 221, 88, 132, 90, 119, 187, 94, 206, 218, 98, 48, 57, 154, 100, 15, 72, 210, 233, 212, 25, 213, 244, 240, 115, 134, 46, 157, 135, 197, 214, 92, 8, 115, 65, 142, 162, 156, 161, 87, 53, 50, 133, 196, 63, 143, 128, 248, 77, 196, 31, 49, 14, 209, 1, 22, 103, 129, 38, 134, 110, 63, 221, 68, 226, 138, 152, 215, 36, 154, 196, 178, 15, 136, 123, 186, 158, 174, 194, 58, 80, 89, 31, 177, 81, 14, 189, 42, 132, 226, 1, 33, 22, 199, 70, 95, 38, 206, 233, 181, 180, 25, 182, 211, 156, 8, 244, 38, 240, 211, 78, 165, 61, 39, 129, 60, 46, 98, 32, 164, 248, 141, 97, 82, 151, 85, 37, 47, 164, 95, 56, 58, 183, 68, 162, 153, 90, 144, 164, 40, 114, 15, 219, 110, 122, 62, 33, 194, 92, 78, 69, 159, 79, 100, 64, 45, 100, 248, 193, 149, 146, 55, 31, 14, 113, 145, 134, 174, 159, 70, 125, 226, 74, 36, 1, 167, 65, 22, 233, 25, 117, 116, 142, 71, 101, 93, 118, 8, 179, 60, 244, 179, 70, 240};
+
+
+
+
+F<v>:=GF(2,7);
+Z:=Integers();
+f:=func<x|x^3+x>;
+[&+[Z!(Eltseq(x)[i])*(2^(i-1)):i in [1..7]]:x in F];
+[&+[Z!(Eltseq(f(x))[i])*(2^(i-1)):i in [1..7]]:x in F];
+
+input = { 1, 2, 4, 8, 16, 32, 64, 3, 6, 12, 24, 48, 96, 67, 5, 10, 20, 40, 80, 35, 70, 15, 30, 60, 120, 115, 101, 73, 17, 34,
+68, 11, 22, 44, 88, 51, 102, 79, 29, 58, 116, 107, 85, 41, 82, 39, 78, 31, 62, 124, 123, 117, 105, 81, 33, 66, 7, 14,
+28, 56, 112, 99, 69, 9, 18, 36, 72, 19, 38, 76, 27, 54, 108, 91, 53, 106, 87, 45, 90, 55, 110, 95, 61, 122, 119, 109,
+89, 49, 98, 71, 13, 26, 52, 104, 83, 37, 74, 23, 46, 92, 59, 118, 111, 93, 57, 114, 103, 77, 25, 50, 100, 75, 21, 42,
+84, 43, 86, 47, 94, 63, 126, 127, 125, 121, 113, 97, 65, 0 };
+
+output = { 0, 10, 68, 4, 112, 42, 16, 12, 126, 69, 92, 28, 6, 121, 80, 45, 42, 93, 113, 45, 54, 6, 86, 112, 20, 25, 63, 22, 102, 19, 73, 99, 92, 112, 55, 65, 127, 4, 73, 21, 10, 18, 20, 45, 114, 33, 126, 26, 22, 58, 71, 16, 75, 71, 18, 95, 108, 92, 
+3, 67, 33, 100, 125, 76, 54, 2, 126, 38, 11, 34, 97, 111, 43, 111, 16, 68, 33, 20, 23, 83, 68, 9, 2, 7, 22, 111, 73, 50,
+122, 4, 25, 57, 42, 27, 66, 46, 18, 88, 90, 117, 117, 10, 6, 31, 37, 17, 117, 94, 2, 105, 51, 124, 40, 71, 54, 49, 5,
+56, 101, 98, 25, 77, 104, 82, 47, 30, 48, 0 };
+
+for (int i =0;i<128;i++)
+	sbox[input[i]] = output[i];
+for (int i =0;i<128;i++)
+	printf("%d,",sbox[i]);

@@ -1,0 +1,96 @@
+ChangeDirectory("C:/Users/livkle344/Downloads/Compressed/Magma");
+ChangeDirectory("C:/Users/shiyanshi/Downloads/Magma");
+Z:=IntegerRing();
+    k:=4;
+    n:=2*k;
+    d:=(2^n-1) div 3;
+    F<v>:=FiniteField(2,n);
+    Fk<w>:=FiniteField(2,k);
+    FminuesF4:={v^i:i in [1..2^n-1]};
+    FminuesF4:=FminuesF4 diff {v^(d),v^(2*d)};
+    allmu:=[mu:mu in FminuesF4|mu^(2^k)+mu eq 1];
+for mu in allmu do 
+    myfunc:=func<x|(1+mu^4)*x^(2^(k+1)+1)+(1+mu^3+mu+mu^4)*x^(2^k+2)+(mu^2+mu^3+mu^4)*x^(3*2^k)+(1+mu^2+mu^4)*x^3>;
+    mymultiset:={* myfunc(x):x in F *};
+    for j in [0..k-1] do
+    for jj in [0..k-1] do
+    for jjj in [0..k-1] do
+        for i in [0..k-1] do
+        for ii in [0.. k-1] do
+        for iii in [0.. k-1] do
+            for a in Fk do
+            for b in Fk do
+                for c in Fk do
+                for d in Fk do
+                    for cons in F do 
+                        testfunc:=func<x,y|cons+a*x^(2^jjj+1)+b*x^(2^j+2^jj)+v*c*y^(2^i+2^ii)+v*d*y^(2^iii+1)>;
+                        testmultiset:={* testfunc(x,y):x in Fk,y in Fk *};
+                        if testmultiset eq mymultiset then 
+                        //if IsZero(Matrix(#F,[myfunc(x+v*y)-testfunc(x,y):x in Fk,y in Fk])) then 
+                            PrintFile("results2.txt",mu,j,a,c,i,cons);
+                            a;c;i;mu;cons;
+                            break;
+                        end if;
+                    end for;
+                end for;
+                end for;
+            end for;
+            end for;
+        end for;    
+        end for;
+        end for; 
+    end for; 
+    end for;j;
+    end for;
+end for;
+
+for x in F do
+    if (x+1)^3 eq 1+mu^2+mu^4 then
+        print "x=",x;
+    end if;
+end for;
+
+for b in F do
+    if b^3 eq mu^3+mu^2+mu^4 then
+        print "b=",b;
+    end if;
+end for;
+
+
+
+yourfunc:=func<x|(b*x^(2^k)+(a+1)*x)^3>
+
+        //beta:=mu+mu^2;
+        //i:=0;
+        //F_original:=func<x|(1+beta)^2*x^(2^(k+i+1)+1)+(1+beta)^2*x^(2^(i+1)+1)+(1+beta)*x^(2^(k+i)+2^i+1)+(1+beta)*(mu+beta)*x^(2^(k+i+1)+2^k)+(1+beta)*(mu+beta)*x^(2^(i+1)+2^k)+(mu+beta)*x^(2^(k+i)+2^i+2^k)>;
+// testfunc:=cons+(a*x^(2^j+2^jj)+c*y^(2^i+2^ii))
+
+
+
+
+
+
+
+
+
+
+//when n=6, all F10 are not ccz to x^3;
+//when n=14, mu=v^424, F is 4 uniform 
+for mu in allmu do
+    c0:=mu^2+mu^3+mu^4;
+    c1:=1+mu^4;
+    c2:=1+mu+mu^3+mu^4;
+    c3:=1+mu^2+mu^4;
+    theta1:=c0*c0^(2^k)+c1*c1^(2^k)+c2*c2^(2^k)+c3*c3^(2^k);
+    theta2:=c0^(2^k)*c1+c2^(2^k)*c3;
+    theta3:=c2^(2^k)*c0+c3^(2^k)*c1;
+    theta4:=c1^(2^k)*c1+c2^(2^k)*c2;
+    d:=theta2*theta2^(2^k)/theta1^2;
+    printf "theta1=%3o\n,trace=%3o\n,equivalence is %3o\n,gamma is %3o\n",theta1,&+[(theta4/theta1)^i:i in [1,2,4,8,16,32,64]],(theta2/theta1)^2-theta3^(2^k)/theta1,&+[d^i:i in [1,2,4,8,16,32,64]];
+end for;
+
+
+
+
+
+

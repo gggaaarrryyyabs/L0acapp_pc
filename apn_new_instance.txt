@@ -1,0 +1,254 @@
+//load "C:/Users/shiyanshi/OneDrive/homework_tex/apn_new_instance.txt";
+
+
+n:=7;
+F<v>:=FiniteField(2^n);
+V:=VectorSpace(FiniteField(2),n);
+P<x>:=PolynomialRing(F);
+Z:=IntegerRing();
+
+function apncheck(inputddt)
+    if Max(inputddt) gt 2 then 
+        return false;
+    else 
+        return true;
+    end if;
+end function;
+
+function sboxcomplete(inputsbox)
+    if Min(inputsbox) eq -1 then 
+        return false;
+    else 
+        return true;
+    end if;
+end function;
+
+weightgethree:=[x:x in [1..2^n-1]|Weight(V!IntegerToSequence(x,2,n)) ge 3];
+counter:=[0:i in [1..#weightgethree]];
+sum:=[V![0:i in [1..n]]:j in [1..#weightgethree]];
+
+//test whether the degree of vboolean function of the sbox is greater than 2  
+function sboxdegree(inputsbox,dep,counter,sum)
+    for i in [1..#weightgethree] do 
+        u:=weightgethree[i];
+        if IntegerToSequence(dep-1,2,n) le IntegerToSequence(u,2,n) then
+            counter[i]+:=1;
+            sum[i]+:=V!IntegerToSequence(inputsbox[dep],2,n);
+            if counter[i] eq 2^(Weight(V!IntegerToSequence(u,2,n))) then
+                if sum[i] ne V![0:i in [1..n]] then 
+                    return false;
+                end if;
+            end if;
+        end if;
+    end for;
+    return true;
+end function;
+
+
+
+//
+function removesboxdegree(inputsbox,dep,counter,sum)
+    for i in [1..#weightgethree] do 
+        u:=weightgethree[i];
+        if IntegerToSequence(dep-1,2,n) le IntegerToSequence(u,2,n) then
+            counter[i]-:=1;
+            sum[i]-:=V!IntegerToSequence(inputsbox[dep],2,n);
+            if counter[i] eq 2^(Weight(V!IntegerToSequence(u,2,n)))-1 then
+                if sum[i] ne V!IntegerToSequence(inputsbox[dep],2,n) then 
+                    return false;
+                end if;
+            end if;
+        end if;
+    end for;
+    return true;
+end function;
+
+//bitxor of two integers
+function addinsbox(input1,input2)
+    sumseq:=[IntegerToSequence(input1,2,n)[j]+IntegerToSequence(input2,2,n)[j] eq 1 select 1 else 0:j in [1..n]];
+    return SequenceToInteger(sumseq,2);
+end function;
+
+
+function ddtbyfailsbox(inputsbox,dep,inputddt)
+    x:=dep-1;
+    for a in [1..2^n-1] do
+        aplusx:=addinsbox(a,x);
+        if aplusx le dep-1 then
+            b:=addinsbox(inputsbox[aplusx+1],inputsbox[x+1]);
+            inputddt[a+1+b*2^n]-:=2;
+        end if;
+    end for;
+    return inputddt;
+end function;
+
+//evens:=[3, 5, 6, 9, 10, 12, 15];
+
+/*
+function ddtbynewsboxeven(inputsbox,dep,inputddt)
+    x:=dep-1;
+    for i in [1..#evens] do
+        a:=evens[i];
+        aplusx:=addinsbox(a,x);
+        if aplusx le dep-1 then
+            b:=addinsbox(inputsbox[aplusx+1],inputsbox[x+1]);
+            inputddt[a+1+b*2^n]+:=2;
+        end if;
+    end for;
+    return inputddt;
+end function;
+*/
+
+//generate ddt of sbox step by step
+function ddtbynewsbox(inputsbox,dep,inputddt)
+    x:=dep-1;
+    for a in [1..2^n-1] do
+        aplusx:=addinsbox(a,x);
+        if aplusx le dep-1 then
+            b:=addinsbox(inputsbox[aplusx+1],inputsbox[x+1]);
+            inputddt[a+1+b*2^n]+:=2;
+        end if;
+    end for;
+    return inputddt;
+end function;
+
+
+/*,
+s:=[ 0   ,  0   ,  1  ,   9 ,    6   , 15   ,  4  ,  11,0   , 10 , 5 , 7 ,   10,7 ,    2 ,    9];
+ddt:=[0:i in [1..2^n*2^n]];
+for i in [1..2^n] do
+    sboxdegree(s[1..i],i,counter,sum);
+end for;
+Max(ddt);
+ddt:=[0:i in [1..2^n*2^n]];
+for i in [1..2^n] do
+    ddt:=ddtbynewsbox(s[1..i],i,ddt);
+end for;
+Transpose(Matrix(2^n,2^n,ddt));
+
+
+*/
+
+
+function initialvalue(length)
+    seq:=[IntegerRing(length)|x:x in [1..length]];
+    for i in [length..1 by -1] do
+        j:=Random(1,i);
+        temp:=seq[j];
+        seq[j]:=seq[i];
+        seq[i]:=temp;
+    end for;
+    return seq;
+end function;
+
+
+/*
+//每次程序都崩溃，所以放弃递归函数的写法
+function nextvalue(dep,inputsbox,inputddt)
+    if sboxcomplete(inputsbox) then 
+        return inputsbox;
+    end if;
+    dep:=Position(inputsbox,-1);
+    for len in [1..2^n] do
+        inputsbox[dep]:=original[dep][len];
+        newtempddt:=ddtbynewsbox(inputsbox,dep);
+        newddt:=[newtempddt[i]+inputddt[i]:i in [1..2^(2*n)]];
+        if sboxdegree(inputsbox,dep) and apncheck(newddt) then 
+            inputddt:=newddt;
+            dep+:=1;
+            printf "sbox is %o\n",inputsbox;
+            return nextvalue(dep,inputsbox,inputddt);
+        end if;
+        inputsbox[dep]:=-1;
+        return nextvalue(dep,inputsbox,inputddt);
+    end for;
+end function;
+*/
+
+sbox:=[-1:i in [1..2^n]];
+sbox[1]:=0;
+ddt:=[0:i in [1..2^(2*n)]];
+deplen:=[1:i in [1..2^n]];
+depth:=Position(sbox,-1);
+
+
+s:=[ 0,14,30,55,99,97,114,23,93,25,115,41,59,14,45,37,120,38,79,63,67,80,106,56,29,116,12,67,47,96,20,74,53,97,60,1,29,119,61,56,48,90,52,12,41,111,8,1,119,30,36,22,26,83,61,106,47,53,112,30,10,85,79,59,4,124,85,55,125,0,55,30,104,79,78,65,53,96,119,40,89,14,18,93,13,19,9,25,9,17,58,43,127,122,29,92,47,40,6,122,94,2,4,0,109,78,48,69,19,124,105,73,31,118,24,122,5,53,82,13,119,90,51,56,31,49,25,105 ];
+
+original:=Matrix(128,1,s);
+ddt:=[0:i in [1..128*128]];
+for i in [1..128] do
+ddt:=ddtbynewsbox(s[1..i],i,ddt);
+end for;
+Max(ddt);
+
+//original:=[initialvalue(2^n):i in [1..2^n]];
+
+//t:=Realtime();
+
+iteration:=0;
+
+while sboxcomplete(sbox) eq false do
+    iteration+:=1;
+    len:=deplen[depth]; 
+    sbox[depth]:=original[depth][len];
+    ddt:=ddtbynewsbox(sbox,depth,ddt);
+    apnflag:=apncheck(ddt);
+    degreeflag:=sboxdegree(sbox,depth,counter,sum);
+    if apnflag and degreeflag then 
+        depth+:=1;
+        printf "iteration is %o, current depth is %o\n",iteration,depth-1;
+    else
+        flag:=removesboxdegree(sbox,depth,counter,sum);
+        //printf "the failsbox is %o\n",sbox[1..depth];
+        ddt:=ddtbyfailsbox(sbox,depth,ddt);
+        sbox[depth]:=-1;
+        deplen[depth]+:=1;
+        while Max(deplen) gt 5 do
+            deplen[depth]:=1;
+            depth-:=1;
+            flag:=removesboxdegree(sbox,depth,counter,sum);
+            ddt:=ddtbyfailsbox(sbox,depth,ddt);
+            sbox[depth]:=-1;
+            deplen[depth]+:=1;
+        end while;
+    end if;
+    /*
+    if Realtime(t) gt 5 then
+        original:=[initialvalue(2^n):i in [1..2^n]];
+        sbox:=[-1:i in [1..2^n]];
+        sbox[1]:=0;
+        ddt:=[0:i in [1..2^(2*n)]];
+        deplen:=[1:i in [1..2^n]];
+        depth:=Position(sbox,-1);
+        //t:=Realtime();
+    end if;
+    */
+end while;
+
+printf "The APN function is %o",sbox;
+
+
+F<v>:=GF(2,5);
+f:=func<x|x^3>;
+input:=[(x eq 0) select 0 else Log(x):x in F];
+output:=[(f(x) eq 0) select 0 else Log(f(x)):x in F];
+
+Z:=Integers();
+
+input:=[];
+for x in F do 
+    if x eq 0 then 
+        Append(~input,0);
+    end if;
+    Append(~input,&+[Z!Eltseq(f(x))[i]*2^(i-1):i in [1..9]]);
+end for;
+
+
+
+
+在博一期间完成了培养计划的全部课程，目前研究方向是对称密码系统中的S-box的构造与S-box的性质的研究，曾参与的课题是通过减少硬件实现中异或门的数量来降低S-box的计算复杂度，目前还在实现想法中。
+
+在博一期间我顺利完成了培养计划的全部课程，其中数学类课程为我继续深入科研工作打下了扎实的基础，专业课则拓宽我的知识面、认清密码学现状与发展趋势、开阔了自己研究方向的应用背景，让我得以在更高的层面上俯瞰自己的研究领域，对整个学科的结构有更加宏观的认识，有利于使自己成为一名适应国家战略需求的专业型博士人才，同时更加清晰地认识到自己在社会上将要负担的责任，确定将来个人职业发展方向。
+我的导师在博一期间对我的淳淳教诲和着重训练，让我掌握了从事科学研究的方法与技巧，进一步增强了自己的理论知识，提高了密码学实践能力，同时在科研中让我清晰地认识到自己的不足，对将来继续深造有着决定性的帮助。更重要的是，参与科研项目的经历训练了我科技文献的写作能力，提高了我对工程实践的认识程度，更加精确地刨析了项目课题涉及的研究方向在国内的发展情况，便于我寻找新的研究方向。此外，参加科研项目也提高了我的沟通能力、表达能力和理解能力，是决定科研合作成功的重中之重。
+在博士期间我的研究方向是对称密码系统中的S-box的构造与其性质的研究，曾参加过的项目与我的研究方向紧密相关，高度耦合。目前正在对如今正在参与的密码学竞赛也是对我密码学知识、工程实践能力和创新能力的一次锻炼。
+

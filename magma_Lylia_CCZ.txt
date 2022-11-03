@@ -1,0 +1,350 @@
+
+n:=8;
+F<v>:=FiniteField(2,n);
+P<x>:=PolynomialRing(GF(2));
+Z:=IntegerRing();
+w:=v;                       //or select a primitive element
+
+
+//whether ccz equivalence of poly A and B over finite field
+function CCZE(PolynomialF,PolynomialG,variables)
+    n:=variables; 
+    p:=2; 
+    GF<a>:=FiniteField(p,n);
+    a:=PrimitiveElement(GF);
+    //returns the linear Code with generator matrix (1,x,f(x))
+    function CF(f)
+        M:=Matrix(2*n+1,p^n,[1:x in GF] cat [Trace(a^i*x):x in GF,i in [1..n]] cat [Trace(a^i*f(x)):x in GF,i in [1..n]]);
+        return LinearCode(M);
+    end function;
+    f1:=PolynomialF;
+    f2:=PolynomialG;
+    return IsIsomorphic(CF(f1),CF(f2));
+end function;
+
+
+self:=function(x)
+    F:=GF(2^n);
+    k:=n/2;
+    mu:=Z(2^n)^31;
+    beta:=mu+mu^2;
+    return (1+beta)^2*x^(2^(k+1)+1)+(1+beta)^2*x^(2^(1)+1)+(1+beta)*x^(2^(k)+2)+(1+beta)*(mu+beta)*x^(2^(k+1)+2^k)+(1+beta)*(mu+beta)*x^(2+2^k)+(mu+beta)*x^(2^(k)+1+2^k);
+end;
+
+g:=function(x)
+    return x^5;
+end;
+
+
+ccz:=function(f,g,n)
+    F:=GF(2^n);
+    return CodeIsomorphism(linearcode(f),linearcode(g));
+end;
+
+linearcode:=function(f) 
+    firstline:=[];for i in [1..Size(F)] do Add(firstline,1);od;
+    abovelines:=[];
+    belowlines:=[];
+    for i in [1..n] do
+        line:=[];
+        for x in F do Add(line,trace(Z(2^n)^i*x,n,1));od;
+        abovelines[i]:=line;
+    od;
+    for i in [1..n] do
+        line:=[];
+        for x in F do Add(line,trace(Z(2^n)^i*f(x),n,1));od;
+        belowlines[i]:=line;
+    od;
+    mat:=[];
+    mat[1]:=firstline;Append(mat,abovelines);Append(mat,belowlines);
+    return GeneratorMatCode(mat,GF(2));
+end;
+
+
+
+
+//trace function from 2^n to 2^m
+trace:=function(element,n,m)    
+    local result,i;
+    result:=0;
+    i:=0;
+    for i in [0..n/m-1] do 
+        result:=result+element^(2^i);
+    od;
+    if result = 0*Z(2) then 
+        return 0;
+    else 
+        return 1;
+        fi;
+end;
+
+
+
+
+
+
+
+//differential uniformity  of polynomial A
+function DifferentialUniformity(A,numbervariables)
+    n:=numbervariables;
+    F<w>:=FiniteField(2,n);
+    Z:=IntegerRing();
+    Fstar:=[w^i:i in [0..2^n-2]];
+    //Fstar:=F diff {0};
+    M:=[];
+    for u in Fstar do
+        Differential:=[A(x)+A(x+u):x in F];
+        Uniformity:=Multiplicities(SequenceToMultiset(Differential));
+        M:=M cat [Max(Uniformity)];
+    end for;
+    C:=Max(M);
+    return C;
+end function;
+
+
+
+
+
+n:=8;
+Diffuniform:=[0];
+IJ:=[];
+//for i in [1..n-1] do
+for j in [1..n-1] do
+A:=func<x|(x+Trace(x^(2^0+1)+x^(2^1+1)+x^(2^2+1)+x^(2^3+1)+x^(2^4+1)+x^(2^5+1)+x^(2^6+1)+x^(2^7+1)))^(2^j+1)>;
+if DU(A,n) eq 2 then
+IJ cat:=[j];
+end if;
+//end for;
+end for;
+IJmatrix:=Matrix(#IJ div 2,2,IJ);
+IJmatrix;
+
+
+//result, when n=8, results have been covered.
+//result, when n=10 the results are listed below:
+//[1 1]
+//[1 9]
+//[3 3]
+//[3 7] 
+//[5 1]
+//[5 3]
+//[5 7]
+//[5 9]
+//[7 3]
+//[7 7]
+//[9 1]
+//[9 9]
+//result, 
+//[1 1]
+//[1 7] ccz eq [1 1]
+//[4 1] ccz eq [1 1]
+//[4 3] ccz eq []
+//[4 5] ccz eq [4 3]
+//[4 7] ccz eq [4 1]
+//[7 1]
+//[7 7] ccz eq [7 1]
+
+
+function Tr(y)
+result:=0;
+for i in [0..9] do
+result+:=y^(2^i);
+end for;
+return result;
+end function;
+
+IJmatrix:=Matrix(2,12,[1,1,3,3,4,4,4,4,5,5,7,7,1,9,3,7,1,3,7,9,3,7,1,9]);
+for i in [1..7] do
+for j in [1..7] do
+//f:=(x+Tr(x^(2^(IJmatrix[1][i])+1)))^(2^(IJmatrix[2][i])+1);
+[i,j];
+//gammaRank(f,10);
+CCZE(func<x|(x+Trace(x^(2^(4)+1)))^(2^(2*3)-2^(3)+1)>,func<x|(x+Trace(x^(2^(i)+1)))^(2^(j)+1)>,8);
+//CCZE(func<x|(x+Trace(x^(2^(4)+1)))^(2^(7)+1)>,func<x|(x+Trace(x^(2^(IJmatrix[i][1])+1)) bv)^(2^(IJmatrix[i][1])+1)>,8);
+end for;
+end for;
+
+for i in [1,3,5,7] do
+for j in [1,3,5,7] do
+[i,j];
+CCZE(func<x|(x+Trace(x^(2^(4)+1)))^(2^(i)+1)>,func<x|(x+Trace(x^(2^(4)+1)))^(2^(j)+1)>,8);
+end for;
+end for;
+
+CCZE(func<x|(x+Trace(x^(2^(4)+1)))^(2^(7)+1)>,func<x|(x+Trace(x^(2^(1)+1)))^(2^(1)+1)>,8);
+CCZE(func<x|x^3>,func<x|x^5>,8);
+
+
+ 
+
+
+// given a vectorial Boolean function in univariate form in F_{2^n}, returns its gamma-rank 
+function gammaRank(f,m)
+    //R:=Parent(f);
+    Z:=Integers();
+    Fn:=FiniteField(2,m);
+    n:=2*m;
+    M:=ScalarMatrix(GF(2),2^n,0);
+    W:=VectorSpace(GF(2),n);
+    Gf:={W!(Eltseq(v) cat Eltseq(Evaluate(f,v))): v in Fn};
+    for w in W do
+        ww:=[Z!w[i]:i in [1..n]];
+        j:=SequenceToInteger(ww,2)+1;
+        GFtilde:={r+w:r in Gf};
+        for v in GFtilde do
+            vv:=[Z!v[i]:i in [1..n]];
+            i:=SequenceToInteger(vv,2)+1;
+            M[i][j]:=1;
+        end for;
+    end for;
+    return Rank(M);
+end function;
+
+//check whether the function is an APN function by its size of the image of derivative 
+//n is the number of variables
+function isAPN(F,n)
+    Field:=FiniteField(2,n);
+	for a in Field do
+		if a eq 0 then
+			continue;
+		end if;
+		derivative_image := { F(x) + F(x+a) : x in Field };
+		if #derivative_image ne 2^(n-1) then
+			return false;
+		end if;
+	end for;
+	return true;
+end function;
+
+
+[ 64, 64, 64, 64, 64, 64, 64, 64, 64, 63, 63, 62, 62, 63, 61, 62, 60, 59, 59, 60, 61, 58, 61, 59, 58, 57, 56, 55, 53, 7,
+4, 15, 26, 7, 25 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//differential uniformity  of polynomial A with bivariate
+function BDU(A,numbervariables)
+n:=numbervariables;
+F<a>:=FiniteField(2,n);
+Fsub<w>:=FiniteField(2,n div 2);
+Z:=IntegerRing();
+Fstar:=[a^i:i in [0..#F-2]];
+Fsubstar:=[w^i:i in [0..#Fsub-2]];
+//Fstar:=F diff {0};
+M:=[];
+for u in Fsubstar do
+for v in Fsubstar do
+Differential:=[A(x,y)+A(x+u,y+v):x in Fsub,y in Fsub];
+Uniformity:=Multiplicities(SequenceToMultiset(Differential));
+M:=M cat [Max(Uniformity)];
+end for;
+return Max(M);
+end function;
+
+//differential uniformity of sbox
+function SBOXDU(A)
+Z:=IntegerRing(16);
+du:=Matrix(IntegerRing(),15,1,[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+M:=[];
+for i in [1..#A-1] do
+differential:=[A[k]+A[(k+i mod 16)+1] mod 16: k in [1..#A]];
+Uniformity:=Multiplicities(SequenceToMultiset(differential));
+M:=M cat Uniformity;
+end for;
+return Max(M);
+end function;
+
+SBOXDU([0..15]);
+
+
+// given a vectorial Boolean function in the univariate form, return its algebraic normal form 
+// WARNING To use the function must change the number of variables in the code line 
+// P<x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9>:=PolynomialRing(GF(2), n)
+
+function ANF(f)
+    R<z>:=Parent(f);
+    K<a>:=BaseRing(R);
+    n:=Degree(K);
+    V:=VectorSpace(GF(2),n);
+    // Return the element in finite field K corresponding to the vector in vector space V
+    function invcorrisp(v)
+        return K!(&+[v[i+1]*a^i:i in [0..n-1]]);
+    end function;
+    // I is the matrix of the image of f(x) with the x's values in vector space V
+    I:=Matrix(GF(2), 2^n, n, []);
+    V1:=[i:i in V];
+    K1:=[i:i in K];
+    for k in [1..2^n] do
+        z:=invcorrisp(V1[k]);
+        for i in [1..2^n] do
+            if Evaluate(f,z) eq invcorrisp(V1[i]) then
+                I[k]:=V1[i];
+                break; 
+            end if; 
+        end for; 
+    end for;
+    B:=Matrix(GF(2), 2^n, 2^n, []);
+    //I can't use P<[x]>:=PolynomialRing(GF(2),n);
+    P<x_1,x_2,x_3,x_4,x_5,x_6,x_7,x_8,x_9,x_10>:=PolynomialRing(GF(2), n);
+    M:=[ &*[(P.i)^(Integers()!a[i]):i in [1..n]]:a in V];
+    // M is the list of all possible monomials in n variables
+    for i,j in [1..2^n] do
+        B[i, j]:=Evaluate(M[j],Eltseq(V1[i]));
+    end for;
+    S:=Solution(Transpose(B),Transpose(I));
+    pN:=[];
+    for j in [1..n] do
+        pn:=0;
+        for i in [1..2^n] do
+            pn:=M[i]*S[j][i]+pn;
+        end for;
+        Append(~pN,pn);
+    end for;
+    return pN;
+end function;
+
+
+vbf of x^3 in GF(2^9) 
+[
+    x_1*x_8 + x_1 + x_2*x_5 + x_2*x_8 + x_3*x_6 + x_3*x_7 + x_3*x_9 + x_4 + x_5*x_6 + x_5*x_7 + x_5*x_8 + x_6*x_8 + x_6*x_9 + x_7*x_8 + x_7 + x_9,
+    x_1*x_2 + x_1*x_6 + x_2*x_8 + x_2*x_9 + x_3*x_5 + x_3*x_7 + x_4*x_5 + x_4*x_7 + x_4*x_9 + x_5*x_8 + x_5*x_9 + x_6*x_8 + x_6 + x_7*x_9,
+    x_1*x_2 + x_1*x_3 + x_1*x_9 + x_2*x_6 + x_4*x_5 + x_4*x_6 + x_5*x_7 + x_6*x_7 + x_6*x_9 + x_7*x_8 + x_7*x_9 + x_8,
+    x_1*x_4 + x_1*x_7 + x_2*x_9 + x_2 + x_3*x_6 + x_3*x_9 + x_4*x_7 + x_4*x_8 + x_5 + x_6*x_7 + x_6*x_8 + x_6*x_9 + x_7*x_9 + x_8*x_9 + x_8,
+    x_1*x_3 + x_1*x_5 + x_1*x_8 + x_2*x_3 + x_2*x_5 + x_2*x_7 + x_2*x_8 + x_3*x_6 + x_3*x_7 + x_4*x_6 + x_4*x_8 + x_4 + x_5*x_7 + x_6*x_8 + x_7*x_8 + x_7*x_9 + x_9,
+    x_1*x_8 + x_2*x_3 + x_2*x_4 + x_2*x_8 + x_2*x_9 + x_3*x_5 + x_4*x_5 + x_4*x_7 + x_4*x_9 + x_5*x_6 + x_5*x_7 + x_5*x_8 + x_5*x_9 + x_6 + x_7*x_8 + x_7*x_9 + x_8*x_9 + x_9,
+    x_1*x_4 + x_1*x_7 + x_1*x_9 + x_2*x_5 + x_2*x_6 + x_2*x_8 + x_3 + x_4*x_5 + x_4*x_6 + x_4*x_7 + x_5*x_7 + x_5*x_8 + x_5*x_9 + x_6*x_7 + x_6*x_9 + x_6 + x_8 + x_9,
+    x_1*x_7 + x_1*x_8 + x_1*x_9 + x_2*x_4 + x_2*x_6 + x_2*x_9 + x_3*x_4 + x_3*x_6 + x_3*x_8 + x_3*x_9 + x_4*x_7 + x_4*x_8 + x_5*x_7 + x_5*x_9 + x_5 + x_6*x_8 + x_7*x_9 + x_8*x_9,
+    x_1*x_5 + x_1*x_9 + x_2*x_9 + x_3*x_4 + x_3*x_5 + x_3*x_9 + x_4*x_6 + x_5*x_6 + x_5*x_8 + x_6*x_7 + x_6*x_8 + x_6*x_9 + x_7 + x_8*x_9
+] 
+
+vbf of x^3 in GF(2^10)
+[
+    x_1*x_6 + x_1*x_8 + x_1 + x_2*x_8 + x_2*x_10 + x_3*x_5 + x_4*x_5 + x_4*x_7 + x_4*x_8 + x_4*x_10 + x_5*x_6 + x_5*x_7 + x_5*x_8 + x_6*x_7 + x_6 + x_7*x_8 + x_7*x_9 + x_8*x_10 + x_9*x_10,
+    x_1*x_2 + x_1*x_6 + x_1*x_8 + x_1*x_9 + x_1*x_10 + x_2*x_6 + x_3*x_5 + x_3*x_9 + x_3*x_10 + x_4*x_6 + x_4*x_8 + x_5*x_6 + x_5*x_8 + x_6*x_9 + x_6*x_10 + x_7*x_10 + x_7 + x_8*x_9 + x_9*x_10 + x_9 + x_10,
+    x_1*x_2 + x_1*x_3 + x_1*x_6 + x_1*x_7 + x_1*x_8 + x_1*x_10 + x_2*x_6 + x_2*x_9 + x_2*x_10 + x_3*x_5 + x_3*x_6 + x_3*x_8 + x_3*x_10 + x_4*x_6 + x_4*x_7 + x_4*x_9 + x_4*x_10 + x_5*x_6 + x_5*x_7 + x_5*x_8 + x_5*x_9 + x_5*x_10 + x_5 + x_7*x_8 + x_7*x_10 + x_7 + x_8*x_9 + x_8*x_10 + x_8 + x_10,
+    x_1*x_4 + x_1*x_6 + x_1*x_7 + x_1*x_8 + x_2*x_6 + x_2*x_7 + x_2*x_10 + x_2 + x_3*x_5 + x_3*x_6 + x_3*x_8 + x_3*x_9 + x_3*x_10 + x_4*x_7 + x_4*x_9 + x_4*x_10 + x_5*x_7 + x_5*x_10 + x_5 + x_6*x_7 + x_6*x_8 + x_6*x_9 + x_7*x_10 + x_8 + x_10,
+    x_1*x_3 + x_1*x_5 + x_1*x_7 + x_1*x_8 + x_1*x_10 + x_2*x_3 + x_2*x_6 + x_2*x_7 + x_2*x_8 + x_2*x_10 + x_3*x_6 + x_3*x_7 + x_3*x_8 + x_3*x_10 + x_4*x_5 + x_4*x_8 + x_4*x_9 + x_4*x_10 + x_5*x_7 + x_5*x_10 + x_5 + x_6*x_9 + x_6 + x_7*x_9 + x_7 + x_8*x_9,
+    x_1*x_7 + x_1*x_9 + x_2*x_3 + x_2*x_4 + x_2*x_7 + x_3*x_5 + x_3*x_6 + x_3*x_7 + x_3*x_8 + x_3*x_9 + x_3*x_10 + x_4*x_5 + x_4*x_6 + x_4*x_7 + x_5*x_6 + x_5*x_7 + x_5*x_9 + x_5 + x_6*x_8 + x_7*x_9 + x_8*x_9 + x_9*x_10,
+    x_1*x_4 + x_1*x_6 + x_1*x_7 + x_1*x_10 + x_2*x_5 + x_2*x_6 + x_2*x_7 + x_2*x_8 + x_2*x_9 + x_3*x_5 + x_3*x_7 + x_3*x_8 + x_3*x_9 + x_3*x_10 + x_3 + x_4*x_7 + x_4*x_8 + x_4*x_9 + x_4*x_10 + x_5*x_6 + x_5*x_10 + x_6*x_8 + x_6*x_9 + x_6*x_10 + x_6 + x_7*x_8 + x_7*x_9 + x_7 + x_8*x_9 + x_9*x_10 + x_10,
+    x_1*x_7 + x_1*x_9 + x_2*x_4 + x_3*x_4 + x_3*x_6 + x_3*x_7 + x_3*x_9 + x_3*x_10 + x_4*x_5 + x_4*x_6 + x_4*x_7 + x_5*x_6 + x_5 + x_6*x_7 + x_6*x_8 + x_7*x_9 + x_8*x_9 + x_8*x_10 + x_10,
+    x_1*x_5 + x_1*x_7 + x_1*x_9 + x_2*x_8 + x_2*x_9 + x_3*x_4 + x_3*x_5 + x_3*x_6 + x_3*x_9 + x_4*x_6 + x_5*x_6 + x_5*x_8 + x_5*x_9 + x_5*x_10 + x_5 + x_6*x_7 + x_6*x_8 + x_6*x_9 + x_6 + x_7*x_8 + x_7*x_9 + x_8 + x_9,
+    x_1*x_8 + x_1*x_9 + x_2*x_5 + x_2*x_7 + x_2*x_8 + x_3*x_6 + x_3*x_7 + x_3*x_8 + x_3*x_9 + x_3*x_10 + x_4*x_6 + x_4*x_8 + x_4*x_9 + x_4*x_10 + x_4 + x_5*x_8 + x_5*x_9 + x_5*x_10 + x_6*x_7 + x_7*x_9 + x_7*x_10 + x_7 + x_8*x_9 + x_8*x_10 + x_8 + x_9*x_10
+]

@@ -1,0 +1,450 @@
+
+//load "C:/Users/shiyanshi/OneDrive/homework_tex/apn_matrix.txt";
+
+//ChangeDirectory("C:/Users/livkle344/Downloads/Compressed/Magma");
+ChangeDirectory("C:/Users/shiyanshi/Downloads/Magma");
+m:=2;
+q:=2^m;
+n:=2*m;
+F<v>:=FiniteField(2^n);
+Fsub<w>:=FiniteField(2^m);
+V:=VectorSpace(FiniteField(2),n);
+Field:=[0] cat [v^i:i in [1..2^n-1]];
+P<x>:=PolynomialRing(GF(2));
+Z:=IntegerRing();
+initial:=[ 2^n:i in [1..5]];
+A:=Open("results2.txt","w");
+for i in [1..#initial] do
+    fprintf A,"%-2o,",initial[i];
+end for;delete A;
+K:=Split(Gets(Open("results2.txt","r")),",");
+initial:=[StringToInteger(K[i]):i in [1..#K]];
+
+/*
+cyclotomiccoset:={@ [0],
+    [1, 2, 4, 8, 16, 32, 64, 128, 256, 512], [3, 6, 12, 24, 48, 96, 192, 384, 513, 768],
+    [5, 10, 20, 40, 80, 160, 257, 320, 514, 640], [7, 14, 28, 56, 112, 224, 448, 515, 769, 896],
+    [9, 18, 36, 72, 129, 144, 258, 288, 516, 576], [11, 22, 44, 88, 176, 352, 385, 517, 704, 770],
+    [13, 26, 52, 104, 208, 259, 416, 518, 641, 832], [15, 30, 60, 120, 240, 480, 519, 771, 897, 960],
+    [17, 34, 65, 68, 130, 136, 260, 272, 520, 544], [19, 38, 76, 152, 193, 304, 386, 521, 608, 772],
+    [21, 42, 84, 168, 261, 321, 336, 522, 642, 672], [23, 46, 92, 184, 368, 449, 523, 736, 773, 898],
+    [25, 50, 100, 131, 200, 262, 400, 524, 577, 800], [27, 54, 108, 216, 387, 432, 525, 705, 774, 864],
+    [29, 58, 116, 232, 263, 464, 526, 643, 833, 928], [31, 62, 124, 248, 496, 527, 775, 899, 961, 992],
+    [33, 66, 132, 264, 528], [35, 70, 97, 140, 194, 280, 388, 529, 560, 776],
+    [37, 74, 148, 161, 265, 296, 322, 530, 592, 644], [39, 78, 156, 225, 312, 450, 531, 624, 777, 900],
+    [41, 82, 133, 164, 266, 289, 328, 532, 578, 656], [43, 86, 172, 344, 353, 389, 533, 688, 706, 778],
+    [45, 90, 180, 267, 360, 417, 534, 645, 720, 834], [47, 94, 188, 376, 481, 535, 752, 779, 901, 962],
+    [49, 67, 98, 134, 196, 268, 392, 536, 545, 784], [51, 102, 195, 204, 390, 408, 537, 609, 780, 816],
+    [53, 106, 212, 269, 323, 424, 538, 646, 673, 848], [55, 110, 220, 440, 451, 539, 737, 781, 880, 902],
+    [57, 114, 135, 228, 270, 456, 540, 579, 801, 912], [59, 118, 236, 391, 472, 541, 707, 782, 865, 944],
+    [61, 122, 244, 271, 488, 542, 647, 835, 929, 976], [63, 126, 252, 504, 543, 783, 903, 963, 993, 1008],
+    [69, 81, 138, 162, 273, 276, 324, 546, 552, 648], [71, 113, 142, 226, 284, 452, 547, 568, 785, 904],
+    [73, 137, 145, 146, 274, 290, 292, 548, 580, 584], [75, 150, 177, 300, 354, 393, 549, 600, 708, 786],
+    [77, 154, 209, 275, 308, 418, 550, 616, 649, 836], [79, 158, 241, 316, 482, 551, 632, 787, 905, 964],
+    [83, 166, 197, 305, 332, 394, 553, 610, 664, 788], [85, 170, 277, 325, 337, 340, 554, 650, 674, 680],
+    [87, 174, 348, 369, 453, 555, 696, 738, 789, 906], [89, 139, 178, 278, 356, 401, 556, 581, 712, 802],
+    [91, 182, 364, 395, 433, 557, 709, 728, 790, 866], [93, 186, 279, 372, 465, 558, 651, 744, 837, 930],
+    [95, 190, 380, 497, 559, 760, 791, 907, 965, 994], [99, 198, 396, 561, 792],
+    [101, 163, 202, 281, 326, 404, 562, 593, 652, 808], [103, 206, 227, 412, 454, 563, 625, 793, 824, 908],
+    [105, 141, 210, 282, 291, 420, 564, 582, 657, 840], [107, 214, 355, 397, 428, 565, 689, 710, 794, 856],
+    [109, 218, 283, 419, 436, 566, 653, 721, 838, 872], [111, 222, 444, 483, 567, 753, 795, 888, 909, 966],
+    [115, 199, 230, 398, 460, 569, 611, 796, 817, 920], [117, 234, 285, 327, 468, 570, 654, 675, 849, 936],
+    [119, 238, 455, 476, 571, 739, 797, 881, 910, 952], [121, 143, 242, 286, 484, 572, 583, 803, 913, 968],
+    [123, 246, 399, 492, 573, 711, 798, 867, 945, 984], [125, 250, 287, 500, 574, 655, 839, 931, 977, 1000],
+    [127, 254, 508, 575, 799, 911, 967, 995, 1009, 1016], [147, 153, 201, 294, 306, 402, 585, 588, 612, 804],
+    [149, 169, 293, 298, 329, 338, 586, 596, 658, 676], [151, 185, 302, 370, 457, 587, 604, 740, 805, 914],
+    [155, 217, 310, 403, 434, 589, 620, 713, 806, 868], [157, 233, 295, 314, 466, 590, 628, 659, 841, 932],
+    [159, 249, 318, 498, 591, 636, 807, 915, 969, 996], [165, 297, 330, 594, 660],
+    [167, 229, 313, 334, 458, 595, 626, 668, 809, 916], [171, 342, 345, 357, 405, 597, 684, 690, 714, 810],
+    [173, 299, 346, 361, 421, 598, 661, 692, 722, 842], [175, 350, 377, 485, 599, 700, 754, 811, 917, 970],
+    [179, 203, 358, 406, 409, 601, 613, 716, 812, 818], [181, 301, 331, 362, 425, 602, 662, 677, 724, 850],
+    [183, 366, 441, 459, 603, 732, 741, 813, 882, 918], [187, 374, 407, 473, 605, 715, 748, 814, 869, 946],
+    [189, 303, 378, 489, 606, 663, 756, 843, 933, 978], [191, 382, 505, 607, 764, 815, 919, 971, 997, 1010],
+    [205, 211, 307, 410, 422, 614, 617, 665, 820, 844], [207, 243, 414, 486, 615, 633, 819, 828, 921, 972],
+    [213, 309, 333, 339, 426, 618, 666, 678, 681, 852], [215, 371, 430, 461, 619, 697, 742, 821, 860, 922],
+    [219, 411, 435, 438, 621, 717, 729, 822, 870, 876], [221, 311, 442, 467, 622, 667, 745, 845, 884, 934],
+    [223, 446, 499, 623, 761, 823, 892, 923, 973, 998], [231, 462, 627, 825, 924],
+    [235, 359, 413, 470, 629, 691, 718, 826, 857, 940], [237, 315, 423, 474, 630, 669, 723, 846, 873, 948],
+    [239, 478, 487, 631, 755, 827, 889, 925, 956, 974], [245, 317, 335, 490, 634, 670, 679, 851, 937, 980],
+    [247, 463, 494, 635, 743, 829, 883, 926, 953, 988], [251, 415, 502, 637, 719, 830, 871, 947, 985, 1004],
+    [253, 319, 506, 638, 671, 847, 935, 979, 1001, 1012], [255, 510, 639, 831, 927, 975, 999, 1011, 1017, 1020],
+    [341, 682], [343, 349, 373, 469, 683, 686, 698, 746, 853, 938], 
+    [347, 365, 427, 437, 685, 694, 725, 730, 854, 874], [351, 381, 501, 687, 702, 762, 855, 939, 981, 1002], 
+    [363, 429, 693, 726, 858], [367, 445, 491, 695, 734, 757, 859, 890, 941, 982], 
+    [375, 471, 477, 699, 747, 750, 861, 885, 942, 954],
+    [379, 431, 493, 701, 727, 758, 862, 875, 949, 986], [383, 509, 703, 766, 863, 943, 983, 1003, 1013, 1018],
+    [439, 443, 475, 731, 733, 749, 877, 878, 886, 950], [447, 507, 735, 765, 879, 894, 951, 987, 1005, 1014],
+    [479, 503, 751, 763, 887, 893, 955, 958, 989, 1006], [495, 759, 891, 957, 990],
+    [511, 767, 895, 959, 991, 1007, 1015, 1019, 1021, 1022]
+ @};
+*/
+//coset:=[(cyclotomiccoset[i])[1]:i in [1..#cyclotomiccoset]];
+
+//quadrinomials:=func<x|x^3+a*(x^(2^s+1))^2^k+b*x^(3*2^m)+c*(x^(2^(s+m)+x^m))^2^k>;
+//tracefunction:=func<x|a*Trace(b*x^3,Fsub)+a^q*Trace(c*x^(2^s+1),Fsub)>;
+
+function isAPN(F,n)
+    Field:=FiniteField(2,n);
+	for a in Field do
+		if a eq 0 then
+			continue;
+		end if;
+		derivative_image := { F(x) + F(x+a) : x in Field };
+		if #derivative_image ne 2^(n-1) then
+			return false;
+		end if;
+	end for;
+	return true;
+end function;
+
+/*
+result:={@  @};
+s:=3;
+B:=Set(Field) diff Set([x^3:x in F]);
+for a in Set(F) diff Set(Fsub) do
+    for b in B do 
+    for c in F do 
+    if c*b^(-3) in Fsub then 
+        for i in [1..#coset] do
+            for j in [i+1..#coset] do 
+                tracefunction:=func<x|a*Trace(b*x^3,Fsub)+a^q*Trace(c*x^(2^s+1),Fsub)+Trace(x^(2^coset[i]+2^coset[j]))>;
+                if isAPN(tracefunction,n) then 
+                    Include(~result,{@ {@a,b,c,i,j@} @});
+                    a;b;c;i;j;
+                end if;
+            end for;
+        end for;
+    end if;
+    end for;
+    end for;
+end for;
+
+*/
+
+M:=[];
+for i in [1..#initial-1] do
+    M cat:=IntegerToSequence(i,2,n) cat Eltseq(v^(initial[i]-1));
+end for;
+
+weightgethree:=[x:x in [3..2^n-1]|Weight(V!IntegerToSequence(x,2,n)) ge 3];
+
+//begin at the [v^4 F(v^4)];
+//k is flag of all nodes where k[i] is the (i+4)-th [v^(i+4) F(v^(i+4))], when there is one i such that k[i]=0, end the whole program. 
+j:=#initial;
+impossiblek:={@  @};
+
+function IsLessDegreeTwo(inputmatrix)
+    xGraph:=ColumnSubmatrix(Matrix(#inputmatrix div (2*n),2*n,inputmatrix),n);
+    fGraph:=ColumnSubmatrixRange(Matrix(#inputmatrix div (2*n),2*n,inputmatrix),n+1,2*n);
+    for u in weightgethree do 
+        if u le (#inputmatrix div (2*n)) then
+            sum:=0*xGraph[1];
+            for i in [1..u-1] do 
+                if xGraph[i] le xGraph[u] then
+                    sum+:=fGraph[i];
+                end if;
+            end for;
+            if sum ne 0*xGraph[1] then 
+                return false;
+            end if;
+        end if;
+    end for;
+    return true;
+end function;
+
+
+function ReduceInitialByAffineP(initial,impossiblek)
+    for i in [1..#impossiblek] do
+        if #initial ge #impossiblek[i] then 
+            for j in [0..n-1] do 
+                seq:=[Field[initial[l]]+(Field[(impossiblek[i])[l]])^2^j:l in [1..#impossiblek[i]]];
+                if seq eq [seq[1]:i in [1..#seq]] then
+                    return #impossiblek[i];
+                end if;
+            end for;
+        end if;
+    end for;
+    return 0;
+end function;
+
+
+/*  function ReduceInitialBySubset(initial,impossiblek)
+        pos:=0;
+        for i in [1..#impossiblek] do
+            if SetToMultiset(impossiblek[i]) subset SetToMultiset(initial) then
+                change:=SetToIndexedSet(Set(impossiblek[i]) meet Set(initial[5..#initial]));
+                pos:=Position(initial,change[1]);
+                break;
+            end if;
+        end for; 
+        return pos;
+  end function;
+*/
+
+function TestZeroInitial(inputinitial)
+    repeat
+        j:=Position(inputinitial,0)-1;
+        inputinitial:=inputinitial[1..j];
+        inputinitial[j]-:=1;
+    until &*inputinitial ne 0;
+    return inputinitial;
+end function;
+
+
+function ReduceSet(impossiblek)
+    reducedset:={@  @};
+    flag:=[0:i in [1..#impossiblek]];
+    for j in [1..#impossiblek] do   
+        if flag[j] eq 0 then 
+            for i in [j+1..#impossiblek] do  
+                if ReduceInitialByAffineP(impossiblek[j],{@ impossiblek[i] @}) ne 0 then
+                    flag[i]:=[1];
+                end if;
+            end for;
+            Include(~reducedset,impossiblek[j]);
+        end if; 
+    end for;
+    return reducedset;
+end function;
+
+function testdifferential(vectorvalues)
+    
+    x:=[];
+    for i in [1..#vectorvalues] do
+        x cat:=IntegerToSequence(i,2,n);
+    end for;
+    xGraph:=Matrix(#vectorvalues,n,x);
+    for i in [0..#vectorvalues-1] do
+        differentialset:={* vectorvalues[i+1]*};
+        for j in [0..i-1] cat [i+1..#vectorvalues-1] do
+            exp:=xGraph[i+1]+xGraph[j+1];exponent:=0;
+            for m in [1..n] do
+                if exp[m] eq 1 then
+                    exponent+:=2^m;
+                end if;
+            end for;
+            if exponent le (#vectorvalues-1) then
+                if v^(vectorvalues[j+1]-1) eq v^(vectorvalues[exponent+1]-1) then
+                    Include(~differentialset,1);
+                else
+                    Include(~differentialset,Log(v^(vectorvalues[j+1]-1)+v^(vectorvalues[exponent+1]-1))+1);
+                end if;
+            end if;
+            if Max(Multiplicities(differentialset)) ge 3 then
+                return false;
+            end if;
+        end for;
+    end for;
+    return true;
+end function;
+
+function ReduceImpossibleByDDT(inputimpossible)
+    differentialflag:=[];
+    presize:=#inputimpossible;
+    for i in [1..presize] do
+        for j in [1..#inputimpossible[i]] do
+            if (testdifferential(inputimpossible[i]) eq false) and testdifferential((inputimpossible[i])[1..#inputimpossible[i]-j]) then
+                Include(~inputimpossible,(inputimpossible[i])[1..#inputimpossible[i]-j]);
+                Append(~differentialflag,i);
+                break;
+            end if;
+        end for;
+    end for;
+    return inputimpossible diff {@ inputimpossible[i]:i in differentialflag @};
+end function;
+
+function ReduceInitialByDDT(inputinitial)
+    if testdifferential(inputinitial) eq false then
+        flag:=#inputinitial;
+        for i in [1..flag] do
+            if testdifferential(inputinitial[1..flag-i]) then
+                return i;
+            end if;
+        end for;
+    else return 0;
+    end if;
+end function;
+
+repeat
+ /*   while ReduceInitialByDDT(initial) ne 0 do
+        Include(~impossiblek,initial);
+        initial:=initial[1..#initial+1-ReduceInitialByDDT(initial)];
+        j:=#initial;
+        initial[j]-:=1;
+        M:=M[1..(j-1)*2*n];
+        if &*initial eq 0 then//test whether there are some zeros elements in initial vector;
+            initial:=TestZeroInitial(initial);
+            M:=M[1..(#initial-1)*2*n];
+            j:=#initial;
+            impossible:=initial;
+            impossible[#impossible]+:=1;
+            Include(~impossiblek,impossible);
+        end if;
+    end while;
+*/
+    if initial[j] eq 1 then 
+            M cat:=IntegerToSequence(j,2,n) cat [0:i in [1..n]];// Eltseq(0) will throw an error, so use this method to add the matrix value;
+        else
+            M cat:=IntegerToSequence(j,2,n) cat Eltseq(v^(initial[j]-1));
+    end if;
+
+    while IsLessDegreeTwo(M) eq false do
+        initial[j]-:=1;
+        M:=M[1..(j-1)*2*n];
+        if &*initial eq 0 then//test whether there are some zeros elements in initial vector;
+            initial:=TestZeroInitial(initial);
+            M:=M[1..(#initial-1)*2*n];
+            j:=#initial;
+            impossible:=initial;
+            impossible[#impossible]+:=1;
+            Include(~impossiblek,impossible);
+        end if;
+        if initial[j] eq 1 then 
+            M cat:=IntegerToSequence(j,2,n) cat [0:i in [1..n]];// Eltseq(0) will throw an error, so use this method to add the matrix value;
+        else
+            M cat:=IntegerToSequence(j,2,n) cat Eltseq(v^(initial[j]-1));
+        end if;
+    end while;    
+
+    dist:=MinimumDistance(Dual(LinearCode(Transpose(Matrix(j,2*n,M)))));// testify the differential uniformity by code theory;
+
+    if dist ge 5 then 
+    // if dist>=5, then this matrix value is confirmed and look the deeper one;
+        printf "Matrix colomum is %3o and MinimumDistance is %3o\n", j,dist;
+        j+:=1;//succeed in initial[j], so the next is initial[j+1]  
+        initial;
+        A:=Open("results2.txt","w");
+        for i in [1..#initial] do
+            fprintf A,"%-2o,",initial[i];
+        end for;delete A;   
+        initial cat:=[2^n];
+    else 
+    // if not, the initial is excluded and the initial can be used to avoid some initial which contains the original initial;
+        Include(~impossiblek,initial);
+        impossiblek:=ReduceSet(impossiblek);
+        initial[j]-:=1;//fail in initial[j], so change the value of initial[j] to restart
+        M:=M[1..(#initial-1)*2*n];
+        if &*initial eq 0 then//test whether there are some zeros elements in initial vector;
+            initial:=TestZeroInitial(initial);
+            M:=M[1..(#initial-1)*2*n];
+            impossible:=initial;
+            impossible[#impossible]+:=1;
+            Include(~impossiblek,impossible);
+        end if;
+        
+    //    impossiblek:=ReduceImpossibleByDDT(impossiblek);
+
+        pos:=ReduceInitialByAffineP(initial,impossiblek);
+        if pos ne 0 then 
+            initial[pos]-:=1;
+            if initial[pos] eq 0 then//test whether there are some zeros elements in initial vector;
+                initial:=TestZeroInitial(initial);
+                M:=M[1..(#initial-1)*2*n];
+                j:=#initial;
+                impossible:=initial;
+                impossible[#impossible]+:=1;
+                Include(~impossiblek,impossible);
+            else
+                if pos ne #initial then 
+                    if initial[pos] eq 1 then 
+                        for i in [1..n] do
+                            M[(pos-1)*2*n+n+i]:=[0];
+                        end for;
+                    else 
+                        for i in [1..n] do
+                            M[(pos-1)*2*n+n+i]:=Eltseq(v^(initial[pos]-1))[i];
+                        end for;
+                    end if;
+                end if;
+            end if;
+        end if; 
+    j:=#initial;
+    end if;
+until (initial[1] eq 0) or (j eq 2^n);
+
+
+
+/*
+
+//get the graph of F(x), [x,F(x)]
+graph:=Matrix(2^n,2*n,[0:i in [1..2*n]] cat M);
+
+value:= Matrix(2^n,n,[graph[i][j]:j in [n+1..2*n],i in [1..2^n]]);
+domain:=Matrix(2^n,n,[graph[i][j]:j in [1..n],i in [1..2^n]]);
+
+//DU calculator
+Seq:=[];
+for a in [domain[i]:i in [2..2^n]] do
+    Differential:=[];
+    for x in [domain[i]:i in [1..2^n]] do
+        //Differential[Position(domain,x)]:=value[Position(F,x)]+value[Position(F,a+x)];
+        different:=a+x;
+        for i in [1..2^n] do
+            if domain[i] eq x then
+                for j in [1..2^n] do
+                    if domain[j] eq different then
+                        Differential[i]:=value[i]+value[j];
+                    end if;
+                end for;
+            end if;
+        end for;
+    end for;
+    Uniformity:=Multiplicities(SequenceToMultiset(Differential));
+    Seq:=Seq cat Uniformity;
+end for;
+C:=Max(Seq);
+if C eq 2 then
+    value;
+end if;
+C;
+*/
+
+/*
+Sbox in AES vectorial form 
+n:=8;
+F<v>:=FiniteField(2^n);
+Fstar:={v^i:i in [0..2^n-2]};
+P<x>:=PolynomialRing(GF(2));
+Z:=IntegerRing();
+value:=[0,0,0,0,0,0,0,0];
+for f in Fstar do
+value:=value cat Eltseq(f^(-1));
+end for;
+domain:=Matrix(2^n,n,[graph[i][j]:j in [1..n],i in [1..2^n]]);
+value:=Matrix(256,8,value);
+*/
+
+
+/*
+M:=[0:i in [1..n]];
+for i in [1..2^n-1] do
+    M cat:=Eltseq(v^(i-1));
+end for;
+s:=[Z|x:x in M];
+matrix:=Transpose(Matrix(2^n,n,s));
+original:=&+[2^(i-1)*matrix[i]:i in [1..n]];
+
+
+for j in [2..2^n] do
+s:=[];
+for i in [1..2^n] do
+    s cat:=M[(j -1)*n+1..i*n];
+end for;
+    matrix:=Transpose(Matrix(2^n,n,[Z|x:x in [s[i]+M[i]:i in [1..#M]]]));
+    &+[2^(i-1)*matrix[i]:i in [1..n]];
+end for;
+*/
+
+
+//[ 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 256, 255, 255, 255, 255, 254, 254, 254, 254, 253,254, 253, 252, 251, 252, 251, 253, 252, 251, 252, 250, 249, 250, 252, 251, 253, 249, 253, 247, 248, 248, 247, 248, 249, 246, 249, 250, 248, 245, 246, 249, 244, 250, 247, 243, 244, 248, 239, 241, 242, 242, 250, 245, 245, 246, 243, 239, 241, 238, 237, 233, 236, 228, 235, 236, 230, 237, 241, 238, 235, 239, 229, 227, 223, 242, 237, 221, 231, 232, 240, 221, 243, 224, 226, 219, 214, 235, 215, 225, 211, 209, 155, 148, 187, 195, 208, 6, 130, 151, 129, 217, 79, 41, 223, 31 ]
+
+
+//[ 64, 64, 64, 64, 64, 64, 64, 64, 64, 63, 63, 62, 62, 63, 61, 62, 60, 59, 59, 60, 61, 58, 61, 59, 58, 57, 56, 55, 50, 46, 46, 11, 26, 13, 39, 12, 16, 15, 2 ]; initialValue=[v^9, v^32, v^17, v^44];
+
+//[ 64, 64, 64, 64, 64, 64, 64, 64, 64, 63, 63, 62, 62, 63, 61, 62, 60, 58, 57, 60, 61, 59, 61, 57, 59, 60, 55, 53, 46, 20, 20, 37, 5, 54, 18, 27, 34, 59 ] v^42, v^53, v^44, v^6
+
+//k:=[ 64, 64, 64, 64, 64, 64, 64, 64, 64, 63, 63, 62, 62, 63, 61, 62, 60, 59, 59, 60, 61, 58, 61, 59, 58, 57, 56, 55, 53, 7, 4, 15, 26, 7, 25 ]; initialValue:=[ v^9, v^32, v^17, v^44 ];
+
+//[0, 1, 1, 1, 1, 32, 32, 32, 31, 64, 63, 62, 64, 63, 63, 64, 62, 62, 61, 58];
+
+//initial:=[ 54, 64, 64, 64, 64, 64, 64, 64, 64, 43, 43, 64, 64, 58, 63, 54, 52, 60, 63, 60, 48];

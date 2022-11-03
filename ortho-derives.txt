@@ -1,0 +1,125 @@
+
+m:=5;
+q:=2^m;
+n:=2*m;
+F<v>:=FiniteField(2,n);
+//must be quadpolynomial APN 
+function OrthoTest(Function,n)
+    F<v>:=FiniteField(2,n);
+    W:=VectorSpace(GF(2),n);
+    ortho:=[];
+    for i in [0..2^n-2] do
+        a:=v^i;
+        linearspace:=[];
+        for x in F do
+            linearspace cat:=(Function(x)+Function(x+a)+Function(0)+Function(a) eq 0) select [0:i in [1..n]] else Eltseq(Function(x)+Function(x+a)+Function(0)+Function(a));
+        end for;
+        ortho cat:=Basis(NullspaceOfTranspose(Matrix(GF(2),2^n,n,linearspace)));
+    end for;
+    ortho cat:=[0*ortho[1]];
+    functionG:=[];
+    for j in [1..2^n-1] do
+        for i in [1..2^n-1] do
+            if W!Eltseq(v^i) eq ortho[j] then
+                Append(~functionG,v^i);
+                break;
+            end if;
+        end for;
+    end for;
+    Append(~functionG,0);
+    function G(x)
+        return (x eq 0) select 0 else (x eq 1 select 1 else functionG[Log(x)]); 
+    end function;
+    return G;
+end function;
+
+function DDT
+
+G:=OrthoTest(func<x|x^3>,n);
+S:=OrthoTest(func<x|x^5>,n);
+load "DifferentialUniformityExe.m";
+ddtG:=DDTexe(G,n); 
+ddtS:=DDTexe(S,n);
+if Ncols(ddtG) ne Ncols(ddtS) then
+    false;
+else
+    IsZero(ddtG-ddtS);
+end if;
+
+
+
+function AffineEq(function1,function2,n)
+ortho1:=[];
+ortho2:=[]; 
+F<v>:=FiniteField(2,n);
+W:=VectorSpace(GF(2),n);
+for a in Fstar do
+linearspace1:=[];
+linearspace2:=[];
+for x in F do
+if function1(x)+function1(x+a)+function1(0)+function1(a) eq 0 then 
+linearspace1 cat:=[0:i in [1..n]];
+else
+linearspace1 cat:=Eltseq(function1(x)+function1(x+a)+function1(0)+function1(a));
+end if;
+if function2(x)+function2(x+a)+function2(0)+function2(a) eq 0 then 
+linearspace2 cat:=[0:i in [1..n]];
+else
+linearspace2 cat:=Eltseq(function2(x)+function2(x+a)+function2(0)+function2(a));
+end if;
+end for;
+ortho1 cat:=Basis(NullspaceOfTranspose(Matrix(GF(2),2^n,n,linearspace1)));
+ortho2 cat:=Basis(NullspaceOfTranspose(Matrix(GF(2),2^n,n,linearspace2)));
+end for;
+ortho1 cat:=[2*ortho1[1]];
+ortho2 cat:=[2*ortho2[1]];
+
+Seq:=[];
+domain:=[W!Eltseq(f):f in F];
+for a in [domain[i]:i in [1..2^n-1]] do
+Differential1:=[];
+Differential2:=[];
+i:=1;
+for x in [domain[j]:j in [1..2^n]] do
+different:=a+x;
+for j in [1..2^n] do
+if domain[j] eq different then
+Differential1[i]:=ortho1[i]+ortho1[j];
+Differential2[i]:=ortho2[i]+ortho2[j];
+break;
+end if;
+end for;
+i+:=1;
+end for;
+if Multiplicities(SequenceToMultiset(Differential1)) ne Multiplicities(SequenceToMultiset(Differential2)) then
+return false;
+end if; 
+end for;
+return true;
+end function;
+
+
+
+Solution(Transpose(Matrix(GF(2),256,8,linearspace)),Matrix(GF(2),1,256,[0:i in [1..256]]));
+b:=Seqelt(Basis(NullspaceOfTranspose(Matrix(GF(2),256,8,linearspace))));
+
+Solution(Transpose(Matrix(GF(2),2,2,[1,0,0,1])),Matrix(GF(2),1,2,[0,0]));
+
+//to test affine equivalent
+//
+
+
+
+orth:=[];
+for a in Fstar do
+i:=1;
+linearSpace:=[Function(x)+Function(x+a)+Function(0)+Function(a):x in F];
+//M:=Matrix(GF(2),256,8,linearspace);
+//ortho:=ortho cat Basis(NullspaceOfTranspose(Matrix(GF(2),256,8,linearspace)));
+i:=i+1;
+end for;
+
+Solution(Transpose(Matrix(GF(2),256,8,linearspace)),Matrix(GF(2),1,256,[0:i in [1..256]]));
+b:=Basis(NullspaceOfTranspose(Matrix(GF(2),256,8,linearspace)));
+
+
