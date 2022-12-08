@@ -1,0 +1,82 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~18} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年12月5日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    设 $ f(x) $是 $ \R[x]_n $内任意多项式, 其中 $ \R[x]_n $是次数小于 $ n $的系数在 $ \R $上的多项式集合. 设 $ a\in\R $且非零. 
+    \begin{enumerate}[label=(\arabic{*})]
+      \item 证明: $ \left\{ 1,x-a,(x-a)^2,(x-a)^3,...,(x-a)^{n-1} \right\} $是 $ \R[x]_n $的一组基底.
+      \item 设 $ f(x)=\sum_{i=0}^{n-1}c_ix^i $, 其中 $ c_i\in\R,i=0,1,...,n-1 $, 则 $ f(x) $可以用新的基底表示为: 
+      \[ f(x)=a_0+a_1(x-a)+a_2(x-a)^2+\cdots+a_{n-1}(x-a)^{n-1}. \] 给出 $ a_i $的表达式 (用 $ c_i $和 $ a $ 表示).
+    \end{enumerate}
+
+    解: \begin{enumerate}[label=(\arabic{*})]
+      \item 假设 $ S=\left\{ 1,x-a,(x-a)^2,(x-a)^3,...,(x-a)^{n-1} \right\} $. 
+      注意到 $ \dim_{\R}(\R[x]_n)=n $且 $ |S|=n $, 故仅需证明 $ S $中的元素是线性独立即可. 
+      又因为 
+      \[ (x-a)^i=\begin{bmatrix}
+        0&\cdots&0&1&\binom{i}{1}(-a)&\binom{i}{2}(-a)^2&\cdots&(-a)^i
+      \end{bmatrix}\begin{bmatrix}
+        x^{n-1}\\\vdots\\x^{i+1}\\x^{i}\\x^{i-1}\\\vdots\\1
+      \end{bmatrix} \]
+      使用线性变换可以得到结果: 
+      \[ \begin{bmatrix}
+        (x-a)^{n-1}\\\vdots\\(x-a)^{i-1}\\(x-a)^i\\(x-a)^{i-1}\\\vdots\\1  
+      \end{bmatrix}=
+      P\begin{bmatrix}
+        x^{n-1}\\\vdots\\x^{i+1}\\x^{i}\\x^{i-1}\\\vdots\\1
+      \end{bmatrix} \]
+      其中 
+      \[P=\begin{bmatrix}
+        1&\binom{n-1}{1}&\cdots&\binom{n-1}{i+1}(-a)^{i+1}&\binom{n-1}{i}(-a)^i&\cdots&(-a)^{n-1}\\
+        0&1&\cdots&\binom{n-2}{i}(-a)^i&\binom{n-2}{i-1}(-a)^{i-1}&\cdots&(-a)^{n-2}\\
+        \vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots\\
+        0&0&\cdots&1&\binom{i}{1}(-a)&\cdots&(-a)^i\\
+        \vdots&\vdots&\vdots&\vdots&\vdots&\vdots&\vdots\\
+        0&0&\cdots&0&0&\cdots&1\\
+      \end{bmatrix}\]是一个上三角矩阵, 因此是一个可逆线性变换, 故
+      因为 $ \left\{ 1,x,x^2,...,x^{n-1} \right\} $是一组基底, 所以 $ \left\{ 1,x-a,(x-a)^2,(x-a)^3,...,(x-a)^{n-1} \right\} $是 $ \R[x]_n $的一组基底.
+
+      
+      \item 利用泰勒公式可得到答案:
+      \begin{align*}
+        a_0&=f(a)=\sum_{i=0}^{n-1}c_ia^i\\
+        a_1&=f'(a)=\sum_{i=1}^{n-1}ic_ia^{i-1}\\
+        &\vdots\\
+        a_j&=f^{(j)}(a)=\frac{1}{j!}\sum_{i=j}^{n-1}i(i-1)(i-2)\cdots(i-j+1)c_ia^{i-j},j=2,3,...,n-1\\
+      \end{align*}
+    \end{enumerate} 
+    
+\end{document}
+

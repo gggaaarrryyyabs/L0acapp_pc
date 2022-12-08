@@ -1,0 +1,119 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usepackage{outlines}
+\usetikzlibrary{calc}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+\usepackage{geometry}
+% \geometry{a4paper,left=3.17cm,right=3.17cm,top=2.54cm,bottom=2.54cm}
+
+% \title{NIS2312-2 Spring 2022 Homework~1}
+% \author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  % \begin{center}
+
+  % \vspace{-0.3in}
+  % \begin{tabular}{c}
+  %   \textbf{\Large Spring 2021-2022} \\
+  %   \textbf{\Large  } \\
+  %   \textbf{\Large  Type III配对群上的co-CDH问题困难 + H 为 RO} \\
+  %   \textbf{\Large  $ \Rightarrow $} \\
+  %   \textbf{\Large  BLS签名算法（Type III）是EUF-CMA安全的} \\
+  %   \textbf{\Large  } \\
+  %   \textbf{\Large 2022年6月15日} \\
+  % \end{tabular}
+  % \end{center}
+  % \noindent
+  % \rule{\linewidth}{0.4pt}
+  由攻破IND-CPA安全性的敌手$\mathcal{A}$ 来构造 解决CDH问题的敌手$\mathcal{B}$:
+  \begin{enumerate}
+    \item 首先挑战者生成$(G,p,g,g^x,g^y)$, 并发送给敌手$\mathcal{B}$;
+    \item 敌手$\mathcal{B}$构造信息$PK=(G,p,g,h=g^x)$发送给敌手$\mathcal{A}$;
+    \item 敌手$\mathcal{A}$向敌手$\mathcal{B}$查询预言机, 若输入$x_i$为新, 返回$H(x_i)$, 若不为新, 则返回对应结果;
+    \item 敌手$\mathcal{A}$发送明文信息$M_0,M_1$给敌手$\mathcal{B}$;
+    \item 敌手$\mathcal{B}$构造信息$C=(c_1=g^y,c_2\in \{0,1\}^m)$发送给敌手$\mathcal{A}$;
+    \item 敌手$\mathcal{A}$运行算法, 由于$H(h^y)=H(g^{xy})$, 故敌手$\mathcal{A}$有不可忽略的概率会向敌手$\mathcal{B}$查询$g^{xy}$的预言机输出;
+    \item 此时敌手$\mathcal{B}$即可以不可忽略的概率获得$g^{xy}$解决CDH问题;
+  \end{enumerate}
+    
+%   通过攻破EUF-CMA问题的敌手$\mathcal{A}$来构造攻破UI-PA问题的敌手$\mathcal{B}$:
+% \begin{outline}[enumerate]
+%   \1 首先挑战者生成$(PK,SK)$, 并发送$PK$给敌手$\mathcal{B}$:
+%   \2 敌手$\mathcal{B}$多次向挑战者发起多次查询, 并获得挑战者返回的信息$(R_i,e_i,z_i)$;
+%   \2 敌手$\mathcal{B}$向挑战者发起一次挑战, 提交一个$R^*$,挑战者返回$e^*$;
+%   \2 敌手$\mathcal{B}$可再次向挑战者发起多次查询, 并获得挑战者返回的信息$(R_i,e_i,z_i)$;
+%   \2 敌手$\mathcal{B}$向挑战者发送$z^*$, 其挑战成功的概率为$Pr[g^{z^*}=h^{e^*}\cdot R^*]$; 
+%   \1 敌手$\mathcal{B}$在与敌手$\mathcal{A}$进行通信:
+%   \2 敌手$\mathcal{B}$将公钥$PK$发送给敌手$\mathcal{A}$;
+%   \2 敌手$\mathcal{A}$向敌手$\mathcal{B}$发送若干$M_i$进行签名查询. 因为敌手$\mathcal{B}$没有私钥信息, 无法进行正确的签名, 故从挑战者返回的信息$(R_i,e_i,z_i)$中随机选择$e_i$, 规约为$e_i=H(R_i,M_i)$并向敌手$\mathcal{A}$返回签名信息$\sigma_i=(R_i,z_i)$;
+%   \2 敌手$\mathcal{B}$向敌手$\mathcal{A}$提供一个RO;
+%   \2 敌手$\mathcal{A}$向敌手$\mathcal{B}$发送若干$(R_i,M_i)$进行RO查询,并存储对应返回值$H(R_i,M_i)$;
+%   \2 由假设, 敌手$\mathcal{A}$可以攻破EUF-CMA问题, 则敌手$\mathcal{A}$可向敌手$\mathcal{B}$提交信息$(M^*,\sigma^*=(R^*,z^*))$,且满足关系$e^*=H(R^*,M^*),g^{z^*}=h^{e^*}\cdot R^*$. 显然$(R^*,M^*)$必为敌手$\mathcal{A}$查询过的信息, 则其有多项式概率成功. 若没有查询过, 则敌手$\mathcal{A}$成功概率仅为$1/p$, 是可忽略的;
+%   \1 此时敌手$\mathcal{B}$的挑战策略:
+%   \2 记敌手$\mathcal{A}$向敌手$\mathcal{B}$发起RO查询的次数为Q, 敌手$\mathcal{B}$从中随机抽取, 则有$1/Q$的概率满足$(R_i,M_i)=(R^*,M^*)$, 此时有$e^*=H(R^*,M^*)=H(R_i,M_i)$. 此时敌手$\mathcal{B}$将敌手$\mathcal{A}$提交的$R^*,z^*$和敌手$\mathcal{A}$查询过的$e^*$发送给挑战者便可以不可忽略的概率攻破其安全性.
+% \end{outline}
+  
+  % 需要取消下列等式中 $ sk_A $的使用:
+  % $$
+% e(H(M),pk_A)\cdot e(H(M),pk_B)=e(H(M),g_2^{sk_A})\cdot e(H(M),g_2^{sk_B})=e(H(M),g_2)^{sk_A+sk_B}
+% $$
+% 因为$pk_A$和$pk_B$已知, 所以, 将 $ pk_A $取消也是一个方法, 也就是说, Bob取在签名时使用新的公钥：
+% $$
+% pk_B^{'}=\frac{pk_B}{pk_A}
+% $$
+% 令$pk_B^{'}$为其新的公钥, 并声称该签名是Alice和Bob两者的聚合签名, 那么在验证聚合签名时：
+% $$
+% e(H(M),pk_A)\cdot e(H(M),pk_B^{'})=e(H(M),pk_A\cdot pk_B^{'})=e(H(M),pk_B)=e(H(M)^{sk_B},g_2)
+% $$
+% 签名验证通过.
+    % 假设结论错误：BLS签名算法 (Type III)不是EUF-CMA安全的, 即存在一个敌手 $\mathcal{A}$, 在CMA安全模型中, 能够以不可忽略的概率攻破EUF问题.
+
+    % 证明前提错误：Type III配对群上的co-CDH问题是困难的 $+$ H为RO, 即存在一个敌手$\mathcal{B}$, 以不可忽略的概率能够攻破DL问题.
+
+    % 通过攻破EUF-CMA问题的敌手$\mathcal{A}$来构造攻破co-CDH问题的敌手$\mathcal{B}$:
+    % \begin{enumerate}
+    %   \item 首先挑战者生成 $ PG=(G_1,G_2,G_T,p,g_1,g_2,g_T,e) $ 为Type III配对群;
+    %   \item 挑战者均匀随机选取$x,y\leftarrow \mathbb{Z}_p$, 发送信息$(PG,g_1^x,g_1^y,g_2^y)$给敌手$\mathcal{B}$;
+    %   \item 若敌手$\mathcal{B}$向挑战者发送$g_1^{x\cdot y}$, 则挑战成功;
+    %   \item 敌手$\mathcal{B}$将信息$(PG,h=g_2^y)$作为公钥$PK$发送给敌手$\mathcal{A}$;
+    %   \item 敌手$\mathcal{A}$向敌手$\mathcal{B}$发送若干$M_i$进行查询, 敌手$\mathcal{B}$返回信息$\sigma_i=Sign(SK,M_i)$. 因为敌手$\mathcal{B}$没有私钥信息, 此时敌手$\mathcal{B}$的策略为：随机均匀选取$m_i \leftarrow \mathbb{Z}_p$, 令$H(M_i)=g_1^{m_i}$, 再计算$\sigma_i=H(M)^y=g_1^{ym_i}=h^{m_i}$发送给敌手$\mathcal{A}$;
+    %   \item 敌手$\mathcal{B}$向敌手$\mathcal{A}$提供一个RO查询;
+    %   \item 敌手$\mathcal{A}$向敌手$\mathcal{B}$发送若干$M_i$进行哈希RO查询, 并存储对应的返回值$H(M_i)$;
+    %   \item 敌手$\mathcal{A}$向敌手$\mathcal{B}$发起一次挑战,发送信息对$(M^*,\sigma^*)$;
+    %   \item 由假设, 敌手$\mathcal{A}$可以攻破BLS签名算法 (Type III) EUF-CMA问题, 则敌手$\mathcal{A}$可向敌手$\mathcal{B}$提交的信息有不可忽略的概率满足关系：$e(H(M^*),h)=e(\sigma^*,g_2)$;
+    %   \item 此时敌手$\mathcal{B}$的挑战策略;
+    %   \item 在敌手$\mathcal{A}$发起RO查询时, 敌手$\mathcal{A}$向敌手$\mathcal{B}$发送信息$M_j$后, 向敌手$\mathcal{B}$随机选择一次返回$g_1^x$;
+    %   \item 此时敌手$\mathcal{A}$有不可忽略的概率选中$M_j$, 并解决问题, 那么此时$\mathcal{B}$就得到了$\sigma^*=g_1^{xy}$;
+    %   \item 敌手$\mathcal{B}$向挑战者发送结果, 挑战成功.
+    % \end{enumerate}
+      %  证明：利用反证法：用 \textbf{攻破IND-CPA安全性的敌手} $ \mathcal{A} $  来构造 \textbf{解决CDH问题的敌手} $ \mathcal{B} $.
+      %  \begin{enumerate}
+    %    \item 假设DHIES不是IND-CPA安全的, 即 $ \exists\mathcal{A} $在CPA安全模型下能以不可忽略的概率攻破CDH问题；
+    %    \item 那么挑战者generate $ (G,p,g,g^x,g^y) $ 并且发送给敌手 $ \mathcal{B} $;
+    %    \item 敌手 $ \mathcal{B} $构造 $ pk=(G,p,g,h=g^x) $ 发送给敌手 $ \mathcal{A} $;
+    %    \item 敌手 $ \mathcal{A} $ 向敌手 $ \mathcal{B} $查询 oracle, 若输入 $ x_i $ 为新, 返回 $ H(x_i) $, 若不为新, 则返回对应结果;
+    %    \item 敌手 $ \mathcal{A} $发铭文信息 $ M_0,M_1 $给敌手 $ \mathcal{B} $;
+    %    \item 敌手 $ \mathcal{B} $构造信息 $ C=(c_1=g^y,c_2\in\{0,1\}^m) $, 故敌手 $ \mathcal{A} $有不可忽略的概率会向
+    %    敌手 $ \mathcal{B} $查询 $ g^{xy} $的 oracle输出;
+    %    \item 敌手 $ \mathcal{A} $运行算法, 由于 $ H(h^y)=H(g^{xy}) $, 因此敌手 $ \mathcal{A} $有不可忽略的概率会向敌手 $ \mathcal{B} $查询 $ g^{xy} $ 的oracle输出;
+    %    \item 此时敌手 $ \mathcal{B} $即以不可忽略的概率获得 $ g^{xy} $解决 CDH 问题;
+    %  \end{enumerate}
+%       证明：由攻破DS' EUF-CMA安全性的敌手$\mathcal{A}$构造攻破DS EUF-CMA安全的敌手$\mathcal{B}$;
+
+% \begin{enumerate}
+%   \item 挑战者执行 Gen 算法, 生成公私钥对$(pk,sk)$,并将公钥发送给敌手 $\mathcal{B}$, 敌手$\mathcal{B}$将公钥发送给敌手$\mathcal{A}$.
+%   \item 敌手$\mathcal{A}$多次向敌手$\mathcal{B}$发送$M_i$进行oracle查询.敌手$\mathcal{B}$收到信息后, 向挑战者发送$H(M_i)$并将结果$\sigma_i$发送给敌手$\mathcal{A}$.
+%   \item 敌手$\mathcal{A}$以不可忽略的概率攻破EUF问题向敌手$\mathcal{B}$发送$(M^*, \sigma^*)$. 敌手$\mathcal{B}$将信息对$(H(M^*),\sigma^*)$转发给挑战者, 此时敌手$\mathcal{B}$以不可忽略的概率攻破DS EUF-CMA.
+% \end{enumerate}
+
+\end{document}

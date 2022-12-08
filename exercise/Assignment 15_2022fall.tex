@@ -1,0 +1,92 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~15} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年11月14日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    设 $ n $是正整数, 证明: $ \langle n\rangle $ 为 $ \Z $的素理想的充分必要条件是 $ n $为素数.
+
+    解: 
+    必要性. 如果 $n$ 不是素数, 则 $n=1$ 或 $n$ 为合数.
+    \begin{enumerate}[label=(\arabic{*})]
+      \item 如果 $n=1$, 则 $\langle n\rangle=\mathbf{Z}$ 不是 $\mathbf{Z}$ 的素理想.
+      \item 如果 $n$ 为合数. 设 $n=a b, 1<a<n, 1<b<n$, 则 $a \notin\langle n\rangle, b \notin\langle n\rangle$, 而 $a b=n \in\langle n\rangle$, 则 $\langle n\rangle$ 也不是 $\mathbf{Z}$ 的素理想.
+    \end{enumerate}
+
+      这就证明了必要性.
+
+      充分性. 设 $n$ 为素数. 如果 $a b \in\langle n\rangle$, 则 $n \mid a b$. 因为 $n$ 是素数, 所以 $n \mid a$ 或 $n \mid b$, 即 $a \in\langle n\rangle$ 或 $b \in\langle n\rangle$, 所以 $n$ 为素理想.
+
+\subsubsection*{Problem 2} 
+    证明: $ \langle x^2+1\rangle $ 不是 $ \Z_2[x] $的素理想.
+  
+    解: 由于 $ x+1\notin \langle x^2+1\rangle $, 而 $ (x+1)^2=x^2+1\in\langle x^2+1\rangle $, 
+    所以$ \langle x^2+1\rangle $ 不是 $ \Z_2[x] $的素理想.
+\subsubsection*{Problem 3}
+    设 $ p $是正整数. 证明: $ \langle p\rangle $是 $ \Z $ 的极大理想的充分必要条件是 $ p $是素数.
+
+    解: 
+    证明 必要性. 如果 $p$ 不是素数, 则 $p=1$ 或 $p$ 是一个合数.
+    \begin{enumerate}[label=(\arabic{*})]
+        \item  如果 $p=1$, 则 $\langle p\rangle=\mathbf{Z}$ 不是 $\mathbf{Z}$ 的极大理想.
+        \item  如果 $p$ 是合数, 设 $p=a b(1<a<p, 1<b<p)$, 则 $\langle p\rangle \subseteq\langle a\rangle$. 因为 $a<p$, 所以 $a \notin\langle p\rangle$, 从而 $\langle p\rangle \subsetneq\langle a\rangle$. 又因为 $a\rangle 1$, 所以 $\langle a\rangle \subsetneq \mathbf{Z}$. 因此 $\langle p\rangle$ 也不是 $\mathbf{Z}$ 的极 大理想.
+    \end{enumerate}
+      这就证明了必要性.
+
+      充分性. 设 $p$ 是素数, $I$ 是 $\mathbf{Z}$ 的任一理想, 使 $\langle p\rangle \subsetneq I \subseteq \mathbf{Z}$, 则存在 $a \in I$, 使 $a \notin\langle p\rangle$. 从而 $p \nmid a$. 因为 $p$ 是素数, 所以 $(a, p)=1$. 从而存在 $u, v \in \mathbf{Z}$, 使 $a u+p v=1$. 于是, 对任意的 $z \in \mathbf{Z}$,
+      $$
+      z=z \cdot 1=z a u+z p v \in I .
+      $$
+      由此得 $I=\mathbf{Z}$. 所以 $\langle p\rangle$ 为 $\mathbf{Z}$ 的极大理想.
+
+\subsubsection*{Problem 4}
+    设 $ R=2\Z,I=4\Z $为 $ R $的理想, 则 $ I $为 $ R $的极大理想, 但不是素理想. 
+
+    解:  设 $J$ 为 $R$ 的任一理想且 $I \subsetneq J \subseteq R$, 则存在 $a \in J$ 且 $a \notin I$. 令 $a=2 b$, 则 $2 \nmid b$, 所以 $(4, a)=2$. 从而存在 $u, v \in \mathbf{Z}$, 使 $a u+4 v=2$. 由此得 $2 \in J$, 所以 $J=2 \mathbf{Z}=R$, 从而 $I$ 为 $R$ 的极大理想.
+
+    又因为 $2 \notin I$, 但 $2 \cdot 2=4 \in I$, 所以 $I$ 不是 $R$ 的素理想.
+
+\subsubsection*{Problem 5}
+    设 $ R $是全体实函数的集合按通常函数的加法与乘法构成的一个环. 令 
+    \[I=\left\{ f(x)\in R\middle|f(0)=0 \right\}.\]
+
+    证明: $ I $是 $ R $的极大理想. 
+
+    解: 易知 $ I $为 $ R $的理想.
+
+    设 $ J $是 $ R $的任意真包含 $ I $的理想, 则存在 $ h(x)\in J $ 使得 $ h(0)\ne 0 $. 令 $ a=\frac{1}{h(0)} $且 $ g(x)\equiv a $, 
+    则 $ g(x)\in R $. 又因为 $ 1-g(0)h(0)=1-1=0 $, 所以 $ 1-g(x)h(x)\in I $. 从而 
+    \[1=(1-g(x)h(x)+g(x)h(x)\in J.\]
+    由此得 $ J=R $. 所以 $ I $为 $ R $的极大理想.
+\end{document}
+

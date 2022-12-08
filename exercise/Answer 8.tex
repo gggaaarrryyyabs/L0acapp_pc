@@ -1,0 +1,69 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\usepackage{tikz-cd}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+% \title{NIS2312-2 Spring 2022 Homework~1}
+% \author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 Spring 2021-2022} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Final Exam} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年6月13日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+  % 在这个练习中, 带 * 的题目属于数论方面, 可以不做的 (考试不会单独考数论的题).  
+\subsubsection*{Problem 1}
+    % 判断下列代数结构在给定运算下是否构成环
+    % 令 $ G $是实数对 $ (a,b),a\neq 0 $的集合, 在 $ G $上定义运算 $ (a,b)(c,d)=(ac,ad+b) $. 试证 $ G $是群.
+    假设 $ X $是一个非空集合, $ \mathcal{P}(X) $是集合 $ X $的全部子集构成的集合. 定义 $ A,B\in\mathcal{P}(X) $的加法如下
+    \[A+B=(A-B)\cup(B-A).\]
+    其中 $ A-B=\{c\in X\mid c\in A,c\notin B\} $. 证明 $ \mathcal{P}(X) $关于上述的加法运算构成群.
+\subsubsection*{Problem 2}
+    试证:
+    \begin{enumerate}
+      \item 群 $ G $的指数为 $ 2 $的子群 $ N $一定是 $ G $的正规子群;
+      \item 设 $ M,N $是群 $ G $的正规子群, 如果 $ M\cap N=\{e\} $, $ e $是群 $ G $的单位元, 则对任意 $ a\in M,b\in N $有 $ ab=ba $.
+    \end{enumerate}
+\subsubsection*{Problem 3}
+    \begin{enumerate}
+      \item 设 $ N\triangleleft G $且 $ g $是群 $ G $中的任意一个元素. 若元素 $ g $ 的阶 $ \operatorname{ord}(g) $和商群的阶 $ |G/N| $互素, 试证 $ g\in N $;
+      \item 设 $ H $是群 $ G $的子群, 如果对任意 $ x\in G $都有 $ x^2\in H $, 试证 $ H $是群$ G $的正规子群.
+    \end{enumerate}
+\subsubsection*{Problem 4}
+    设 $ R,S $是两个非零环, 证明 $ R\times S $不可能是域.
+\subsubsection*{Problem 5}
+    设 $ R,S $是交换环, $ f:R\rightarrow S $是环同态, $ I,J $分别是 $ R,S $的理想, 令 $ \sqrt{I}=\{r\in R\mid \text{存在}~n\in\Z^+~\text{使得}~r^n\in I\} $ 求证:
+    \begin{enumerate}
+      \item $ f(\sqrt{I})\subset \sqrt{f(I)} $;
+      \item $ \sqrt{f^{-1}(J)}=f^{-1}(\sqrt{J}) $.
+    \end{enumerate}
+\subsubsection*{Problem 6}
+    设$ P $是 交换环$ R $的一个真理想, 那么 $ P $是 $ R $的素理想 的充分必要条件是 对任意两个理想$ I,J $, 如果有 $ IJ\subseteq P $, 则有 $ I\subseteq P $或者 $ J\subseteq P $.  
+    
+    设 $ R $是整环, 证明:
+    \begin{enumerate}
+      \item 若 $ \langle p\rangle $是 $ R $的非零极大理想, 则 $ p $是不可约元;
+      \item $ p $为素元当且仅当 $ \langle p\rangle $是 $ R $的非零素理想.
+    \end{enumerate}
+\end{document}

@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Midterm}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  期中测试参考答案} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  2022年11月7日} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  测试时间: 45分钟} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    假设$ p $ 是一个素数, 令
+    \[G = \left\{z\in\Com\middle|z^{p^n}=1\right\}.\]
+    证明: 映射 $ \phi:G\rightarrow G $ 是一个群同态映射, 其中 $ \phi(z)=z^p $, $ z\in G $.
+    % \vspace{4cm}
+      
+    解: $ \forall x,y\in G $, 都有 $ \phi(xy)=(xy)^p=x^py^p=\phi(x)\phi(y) $, 
+    其中第二个等号的成立原因是 $ G $是一个交换群. 因此 $ \phi $是一个群同态映射.
+    \subsubsection*{Problem 2}
+    设 $ R $为环, 集合 $ Z(R)=\left\{c\in R\middle|rc=cr,\forall r\in R\right\} $叫做
+    环的中心. 证明: $ Z(R) $是 $ R $的子环. 但$ Z(R) $是否一定为 $ R $的理想呢?   
+    % \vspace{8cm}
+
+    解: 
+    \begin{enumerate}[label=\roman{*})]
+      \item $ 0\in Z(R) $是显然的, 故集合 $ Z(R) $非空;
+      \item $ \forall a,b\in Z(R) $, 都有 $ ar=ra $和 $ br=rb $, 其中 $ r\in R $, 因此有
+      $ ar-br=(a-b)r=ra-rb=r(a-b) $, 故 $ a-b\in Z(R) $;
+      \item $ \forall a,b\in Z(R) $, 都有 $ abr=arb=rab $, 其中 $ r\in R $, 故 $ ab\in Z(R) $.
+    \end{enumerate}
+    因此$ Z(R) $是 $ R $的子环. 
+    
+    但 $ Z(R) $不一定是 $ R $的理想: 假设 $ Z(R) $是 $ R $的理想. 如果环是含幺环, 
+    那么单位元 $ 1 $在环的中心, 故环的中心就是环本身. 
+    但对于非交换含幺环, 比如 $ n\times n $的实数矩阵的集合, 结论$ Z(R) = R $与非交换环的条件是矛盾的. 
+    
+
+    \subsubsection*{Problem 3} 
+    假设群 $ G $为有限群,  $ H,N $是群 $ G $的两个不同的子群. 证明:
+    \begin{enumerate}[label=(\arabic{*})]
+      \item 如果 $ (|N|,|H|)=1 $, 那么 $ H\cap N = \{e\} $;
+      \item 如果 $ N $是 $ G $的正规子群且 $ (|H|,|G:N|)=1 $, 那么 $ H $是 $ N $的子群.
+    \end{enumerate}
+
+    解:\begin{enumerate}[label=(\arabic{*})]
+      \item 因为 $ H\cap N $是 $ H $的子群, 因此根据拉格朗日定理有 $ |H\cap N| $ 整除$ |H| $; 
+      同理得到 $ |H\cap N| $整除 $ |N| $, 因此 $ |H\cap N| $是 $ |H| $和 $ |N| $的公因子. 又因为 $ (|H|,|N|)=1 $, 
+      故 $ |H\cap N|=1 $, 即 $ H\cap N=\{e\} $. 
+      \item 因为 $ (|H|,|G:N|)=1 $, 故存在整数 $ n,m $满足等式
+      \[m|G:N|+n|H| = 1.\]
+      所以 $ \forall h\in H $, 都有
+      \begin{align*}
+        hN =& h^{m|G:N|+n|H| }N\\
+           =& h^{m|G:N|}N\\
+           =& (hN)^{m|G:N|}\\
+           =& N,
+      \end{align*}
+      因此 $ h\in N $, 所以 $ H\subset N $. 故 $ H $是 $ N $的子群.
+      \item[(2)*] 另解: 因为 $ HN $是 $ G $的子群, 故 $ |HN:N| $整除 $ |G:N| $. 又有
+      $ |HN:N|=|H:N\cap H| $ (书上P.72第14题), 故 $ |HN:N| $ 整除 $ |H| $. 因此 $ |HN:N|=1 $, 故 $ |H:N\cap H|=1 $, 即 $ H\subset N $. 
+      故 $ H $是 $ N $的子群.
+    \end{enumerate}
+\end{document}

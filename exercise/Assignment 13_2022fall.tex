@@ -1,0 +1,134 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~13} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年11月2日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    设 $ R $为环, $ I,J $是 $ R $的两个理想. 令 
+    \[[I:J]=\{x\in R\mid xJ,Jx\subseteq I\}.\]
+    证明: $ [I:J] $ 是 $ R $的理想.
+
+      解: $ \forall x,y\in [I:J] $ 和 $ r\in R $, 都有 
+      \begin{align*}
+        (x-y)J &= xJ-yJ\in I\\
+        (rx)J =& rxJ\subseteq rI\subseteq I\\
+        (xr)J =& xrJ\subseteq xJ\subseteq I.
+      \end{align*}
+      故 $ [I:J] $ 是 $ R $的左理想, 同理得到是右理想. 故 $ [I:J] $是 $ R $的理想.
+
+\subsubsection*{Problem 2} 
+    设 $ R $是有单位元的交换环, $ a\in R $. 证明: $ a $ 是单位当且仅当 $ \langle a\rangle=R $.
+
+    解: 
+    $ \Rightarrow $: $ a $是单位, 故有 $ r\in R $ s.t. $ ra=e\in \langle a\rangle $. 因此 $ \forall x\in R $, 
+    都有 $ xe=x\in \langle a\rangle $, 即 $ R\subseteq \langle a\rangle $, 所以$ \langle a\rangle=R $.
+
+    $ \Leftarrow $: $ \langle a\rangle=R $可得到 $ e\in\langle a\rangle=R  $, 则存在 $ r\in R $使得 $ e=ra=ar $成立, 
+    所以 $ a $是 $ R $中的单位.
+
+\subsubsection*{Problem 3}
+    设 $ R $是交换环, $ X $是 $ R $的非空子集. 令
+    \[\operatorname{Ann}(X)=\{r\in R\mid rx=0,\forall x\in X\}.\]
+    证明: $ \operatorname{Ann}(X) $ 是 $ R $的理想.
+
+    解: 显然 $ \operatorname{Ann}(X) $ 非空. 
+    设 $ a,b\in\operatorname{Ann}(X) $ 且 $ x\in R $, 那么 $ \forall x\in X $都有 
+      \begin{align*}
+        (a-b) x &=a x-b x=0 \\
+        (r a) x &=r(a x)=r \cdot 0=0 \\
+        (a r) x &=(r a) x=r(a x)=r \cdot 0=0,
+      \end{align*}
+      因此 $ a-b,ra,ar\in\operatorname{Ann}(X) $, 所以 $ \operatorname{Ann}(X) $ 是 $ R $的理想.
+
+\subsubsection*{Problem 4}
+    设 $ R $ 是交换环, $ I $是 $ R $的理想. 令 
+    \[\sqrt{I}=\{r\in R\mid \exists n\in N, \text{~使~} r^n\in I \}.\]
+    证明: $ \sqrt{I} $是 $ R $的理想.
+
+    解: 显然 $ \sqrt{I} $集合非空. 设 $ a,b\in\sqrt{I} $, 故 $ \exists m,n\in\Z $ 使得 $ a^m,b^n\in I $.
+    因此对任意的 $ r\in R $, 都有
+    \begin{align*}
+      (a-b)^{m+n} &=a^{m+n}+\sum_{k=1}^{m+n-1}(-1)^k \mathrm{C}_{m+n}^k a^{m+n-k} b^k+(-1)^{m+n} b^{m+n} \in I \\
+      (r a)^m &=r^m a^m \in I \\
+      (a r)^m &=a^m r^m \in I,
+    \end{align*}
+    所以 $ a-b,ra,ar\in\sqrt{I} $, 因此 $ \sqrt{I} $是 $ R $的理想.
+
+\subsubsection*{Problem 5}
+    设 $ R_1,R_2 $是环, $ R=R_1\oplus R_2 $. 记 $ R_1^{\prime}=\{(a,0)\in R\mid a\in R_1\} $, 
+    $ R_2^{\prime}=\{(0,b)\in R\mid b\in R_2\} $. 证明:
+    \begin{enumerate}[label=(\arabic{*})]
+      \item $ R_1^{\prime},R_2^{\prime} $ 是 $ R $的理想;
+      \item $ R=R_1^{\prime}+R_2^{\prime} $.
+    \end{enumerate}
+
+    解: \begin{enumerate}[label=(\arabic{*})]
+      \item 对任意的 $x=(a, 0), y=(b, 0) \in R_1^{\prime}, r=\left(r_1, r_2\right) \in R$, 有
+      \begin{align*}
+      x-y &=(a-b, 0) \in R_1^{\prime} \\
+      r x &=\left(r_1 a, 0\right) \in R_1^{\prime} \\
+      x r &=\left(a r_1, 0\right) \in R_1^{\prime}.
+      \end{align*}
+      所以 $R_1^{\prime}$ 为 $R$ 的理想. 同理可证 $R_2^{\prime}$ 为 $R$ 的理想.
+      \item 对任意的 $(a, b) \in R$, 有 $(a, b)=(a, 0)+(0, b) \in R_1^{\prime}+R_2^{\prime}$, 所以 $R=R_1^{\prime}+R_2^{\prime}$. 
+    \end{enumerate}
+
+\subsubsection*{Problem 6}
+    设 $ R $是交换环. 证明 $ R $中所有幂零元的集合构成 $ R $的理想. 称此理想为 $ R $的诣零根 (nil radical), 记作
+    $ \operatorname{rad} R $.
+
+    解: 设幂零元构成的集合为 $ \operatorname{rad}R $, 显然 $ 0\in\operatorname{rad}R $, 故集合非空;
+    $ \forall x\in\operatorname{rad}R $, 存在 $ n\in\Z $使得 $ x^n=0 $. 故 $ \forall r\in R $, 都有
+    $ (rx)^n=r^nx^n=r^n0=0 $, 即 $ rx\in\operatorname{rad}R $. 所以 $ R $中所有幂零元的集合构成 $ R $的理想.
+\end{document}
+
+
+% 【救护车转运模版】
+% 转诊原因：腹部左下部分疼痛, 背部同样左下部分疼痛, 下午4点开始出现症状
+% 姓名：李兆乐
+% 性别：男
+% 身份证号：130528199602010016
+% 联系电话：13772024693
+% 患者性质：密接同楼栋人员
+% 宿舍（接人）地址：闵行区东川路800号西81号楼
+% 送回地址：闵行区东川路800号西81号楼
+% 封控楼栋封控开始时间：2022年11月1日22:30
+% 近期核酸检测结果（至少最近一次有结果的检测）：11月1日9:04, 阴性
+% 联系人：李兆乐
+% 联系电话：13772024693
+% 备注: 希望去闵行中心医院检查
+% 若有陪同
+% 陪同人姓名：
+% 联系电话：
+% 陪同人性质：
+% 核酸检测结果：

@@ -1,0 +1,41 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\F}{\mathbf{F}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+
+\begin{document}
+    We can define $ \gamma_F(a,b) $ as below:
+    $ \forall a,b\in\F_2^n,\gamma_F(a,b)= $
+    \[\left\{\begin{aligned}        
+        &1 ~\text{if} ~a\neq 0_n~\text{and}~ F(x)+F(x+a)=b ~\text{has~solutions}\\
+        &0 ~\text{otherwise}
+    \end{aligned}\right.\]
+
+    Thus, for every APN $ (n,n) $-function $ F $, we view it as a Boolean function
+    $ \frac{|(D_aF)^{-1}(b)|}{2}-2^{n-1}\delta_0(a,b) $, then we have 
+    \[\widehat{\gamma_F(u,v)}=\frac{1}{2}W_F^2(u,v)-2^{n-1}.\]
+    So we confirm that for every $ u,v $:
+    \[W_{\gamma_F}(u,v)=\left\{\begin{aligned}
+        &2^n ~\text{if}~ v=0_n\\
+        &2^n-W_F^2(u,v) ~\text{if}~ v\neq 0_n.
+    \end{aligned}\right.\]
+    
+    The fourth moment of the Walsh transform of an APN function $ F $:
+    \[\sum_{u,v\in\F_2^n}^{}W_F^4(u,v)=3\cdot 2^{4n}-2^{3n+1}.\]
+    When apply the Titsworth relation on the $ \gamma_F $, we have for all $ (u_0,v_0)\neq(0_n,0_n) $,
+    \[\sum_{u,v\in\F_2^n}^{}W_{\gamma_F}(u,v)W_{\gamma_F}(u+u_0,v+v_0)=0.\]
+    Then we have:
+    \begin{theorem}
+        Any APN $ (n,n) $-function $ F $ satisfies that $ \forall (u_0,v_0) $,
+        \[\sum_{\substack{u,v\in\F_2^n\\v\neq 0_n,v\neq v_0}}W_F^2(u,v)W_F^2(u+u_0,v+v_0)=2^{4n}-2^{3n+1}+2^{4n}\delta_0(u_0,v_0).\] 
+    \end{theorem}
+
+    \begin{corollary}
+        If there exists $ (u_0,v_0)\neq(0_n,0_n) $ such that $ |W_F(u,v)| $ and $ |W_F(u+u_0,v+v_0)| $ 
+        both achieve the maximun value of $ \{|W_F(u,v)|\mid u,v\in\F_2^n;v\neq 0_n\} $, 
+        then we have 
+        \[nl(F)\geq 2^{n-1}-\frac{1}{2}\sqrt[4]{2^{4n-1}-2^{3n}}.\]
+    \end{corollary}
+\end{document}

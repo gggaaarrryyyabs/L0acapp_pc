@@ -1,0 +1,192 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proof}{Proof}
+\newtheorem{remark}{Remark}
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+
+\newtheorem{claim}{Claim}
+
+% equation vertical uparrow with text 
+\newcommand\vertarrowbox[3][3ex]{%
+  \begin{array}[t]{@{}c@{}} #2 \\
+  \left\uparrow\vcenter{\hrule height #1}\right.\kern-\nulldelimiterspace\\
+  \makebox[0pt]{\scriptsize#3}
+  \end{array}%
+}
+
+
+\title{NIS2312-1 2022-2023 直积与中国剩余定理}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  直积与中国剩余定理} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年11月14日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+  假设 $ \{R_i\}_{i\in I} $ 是环的集合. 考虑直积
+  \[\prod_{i\in I}R_i.\]
+  现在定义如下两个运算:
+  \begin{align*}
+    \left(x_i\right)_{i \in I}+\left(y_i\right)_{i \in I}=&\left(x_i+y_i\right)_{i \in I} \\
+    \left(x_i\right)_{i \in I}\left(y_i\right)_{i \in I}=&\left(x_i y_i\right)_{i \in I}.
+  \end{align*}
+  从而 $ \prod_{i \in I} R_i $ 构成了一个环.
+
+  此时环中的零元素是: $\left(0_{R_i}\right) $.
+
+  而环中的单位元是: $ \left(1_{R_i}\right) $ (假设所有的环 $ R_i $ 有单位元).
+
+  因此, 对于每一个 $ k \in I $, 我们都有一个自然投影:
+  \[\prod_{i \in I} R_i \rightarrow R_k, \quad\left(a_i\right)_{i \in I} \mapsto a_k.\]
+  和环的嵌入:
+  \[R_k \rightarrow \Pi_{i \in I} R_i, \quad a_k \mapsto\left(0, \ldots, 0, a_k, 0, \ldots, 0\right).\]
+  此外, 
+  \[R_k \cong\{0\} \times \cdots \times\{0\} \times R_k \times\{0\} \times \cdots \times\{0\} \subseteq \prod_{i=1}^n R_i .\]
+  更进一步, 
+  \begin{definition}
+    设  $ R_k^{\prime}:=\{0\} \times \cdots \times\{0\} \times R_k \times\{0\} \times \cdots \times\{0\} $ 
+  和 $ R=\prod_{i=1}^n R_i $. 可知 $ R_k^{\prime} $ 是环 $ R $的理想. 
+    如果
+    \begin{enumerate}[label=(\roman{*})]
+      \item  $ R_k^{\prime} \cap \sum_{i \neq k} R_i^{\prime}=\{0\} $;
+      \item $ \sum_{i=1}^n R_i^{\prime}=R$. 
+    \end{enumerate}
+    则称 $ R=\prod_{i=1}^n R_i $ 是 $ \{R_i\}_{i=1}^n $的外直积.
+  \end{definition}
+  现在假设 $ R $是一个环, 如果理想 $ \{R_i\}_{i=1}^n $满足下列条件: 
+  \begin{enumerate}[label=(\roman{*})]
+    \item $ \sum_{i=1}^{n}R_i=R $;
+    \item 环中的任意元素都能用 $ R_i $的元素之和唯一地表示, 也就是说, 如果 
+    $ a_1+\cdots+a_n = b_1+\cdots+b_n $, 其中 $ a_i,b_i\in R_i $, $ i=1,2,\dots,n $, 那么对所有的 $ i\in\{1,2,...,n\} $, 
+    都有 $ a_i=b_i $ 成立.
+  \end{enumerate}
+  则称 $ R=\sum_{i=1}^{n}R_i $ 是 $ \{R_i\}_{i=1}^n $的内直积.
+
+  关于内直积, 有如下结论: 
+  \begin{claim}
+    $ R\cong\prod_{i=1}^n R_i $.
+  \end{claim}
+  \begin{proof}
+  考虑如下映射: 
+  \[f: \prod_{i=1}^n R_i\rightarrow R,\quad(r_1,\dots,r_n)\mapsto\sum_{i=1}^nr_i.\]
+  显然映射 $ f $ 是一个加法的同态映射.
+  
+  现在考虑乘法的同态映射: 如果 $ a\in R_i $ 且 $ b\in R_j $, 其中 $ i\ne j $, 那么 $ ab\in R_i\cap R_j $. 
+  因此, 有
+  \[ ab=0+\cdots+0+\vertarrowbox{ab}{$ R_i $}+\cdots+0+\cdots +0. \] 
+  和
+  \[ ab=0+\cdots+0+0+\cdots+\vertarrowbox{ab}{$ R_j $}+\cdots +0. \] 
+  故得到 $ ab=0 $. 
+  于是对所有的 $ (a_1,\dots,a_n), (b_1,\dots,b_n)\in \prod_{i=1}^n R_i $, 
+  都有 
+  \[ f((a_1,\dots,a_n)(b_1,\dots,b_n))=a_1b_1+\cdots+a_nb_n=(a_1+\cdots+a_n)(b_1+\cdots+b_n) .\]
+  成立. 因此 $ f $ 对上述乘法是一个同态映射.
+  
+  易知, 元素 $ 1_{R_1}+\cdots+1_{R_n}$ 就是环 $ R $的单位元, 因此我们有 $ f(1_{R_1},\dots,1_{R_n})=1_R $.
+  
+  单射: 若 $\sum_{i=1}^n r_i=\sum_{i=1}^n s_i $, 则对于所有的 $ k\in\{1,2,...,n\} $, 都有 $ r_k=s_k $.
+  
+  满射: 这是显然的.
+
+  综上, 映射 $ f $是一个从 $ \prod_{i=1}^n R_i $ 到 $ R $的一个环同构, 从而 $ R\cong\prod_{i=1}^n R_i $.
+  \end{proof}
+  现在给出内直积的等价条件: 
+  \begin{proposition}
+    假设 $ R_1,\dots,R_n $ 是环$ R $的理想. 那么下列三个条件是等价的: 
+    \begin{enumerate}[label=(\arabic{*})]
+      \item $ R $ 是 $R_1,\dots,R_n $的内直积; 
+      \item $ (R_1+\cdots +R_{i-1})\cap R_i=\{0\} $ 对所有的 $ i=2,\dots , n $都成立; 
+      \item $ (R_1+\cdots +R_{i-1}+R_{i+1}\cdots +R_n)\cap R_i=\{0\} $ 对所有的 $ i=1,\dots , n $都成立.
+    \end{enumerate}
+  \end{proposition}
+  
+  \begin{theorem}[中国剩余定理] 
+  设 $ R $ 是一个含幺环. 假设 $ I_1,\dots,I_n $ 是理想且有满足等式 $ I_i+I_j=R $, 其中 $ 1\leq i\neq j\leq n $.
+  则有环同构: 
+  \[R/(\cap_{i=1}^nI_i)\cong \Pi_{i\in I}(R/I_i).\]
+  \end{theorem}
+
+  \begin{proof} 
+  作如下映射
+  \[f:  R\rightarrow\Pi_{i\in I}(R/I_i),\quad r\mapsto(r~(\mathrm{mod}~I_1),\dots,r~(\mathrm{mod}~I_n)).\]
+  其中 $ r~(\mathrm{mod}~I_i) $ 代表$ R/I_i $ 中的陪集 $ r+I_i $.
+
+  可以直接验证 $ f $是一个环同态.
+
+  现在证明 $ f $ 是满同态: 
+  % 假设 $ (\overline{r_1},\dots,\overline{r_n})\in\Pi_{i\in I}(R/I_i),\;\overline{r_i}=r_i+I_i $.
+  
+  注意到 
+  \[R=R\cdot R=(I_1+I_2)(I_1+I_3)=I_1^2+I_1I_3+I_2I_1+I_2I_3\subseteq I_1+I_2I_3\subseteq R.\]
+  因此有 $ R=I_1+I_2I_3 $. 
+  利用同样的方法可以得到
+  \[R=R\cdot R=(I_1+I_2I_3)(I_1+I_4)=(I_1+I_2I_3)I_1+I_1I_4+I_2I_3I_4\subseteq I_1+I_2I_3I_4\subseteq R. \]
+  因此有 $ R=I_1+I_2I_3I_4 $. 
+  从而利用归纳法, 即得
+  \[R=I_1+I_2I_3\dots I_n.\]
+  于是有 $ a\in I_1 $, $ b_i\in I_2I_3\cdots I_n $, 使得 $ 1=a+b $. 
+  令 $ r_1=1-a=b $, 则 $ r_1\equiv 1 \pmod{I_1} $, 且 $ r_1\equiv 0 \pmod{I_k} $, 其中 $ k\in\{2,3,...,n\} $. 于是
+  \[f(r_1)=(1~(\mathrm{mod}~I_1),0~(\mathrm{mod}~I_2),\dots,0~(\mathrm{mod}~I_n)).\]
+  
+  完全同样地, 对于每个 $ k~(1\le k\le n) $, 都可以求出 $ r_k\in R $使得
+  \[f(r_k)=(0~(\mathrm{mod}~I_1),\dots,0~(\mathrm{mod}~I_{k-1}),1~(\mathrm{mod}~I_k),0~(\mathrm{mod}~I_{k+1}),\dots,0~(\mathrm{mod}~I_n)).\]
+  现在对于 $ \Pi_{i\in I}(R/I_i) $ 中的每个元素 $ a=(a_1~(\mathrm{mod}~I_1),\dots,a_n~(\mathrm{mod}~I_n)) $, 
+  设 $ r=a_1r_1+\dots+a_nr_n $, 故 $ r\equiv a_ir_i\equiv a_i\pmod{I_i} $, 从而 $ f(r)=a $, 因此 $ f $是满同态.
+
+  % $\Rightarrow r\equiv b_ir_i\equiv r_i \mod {I_i}\Rightarrow f(r)=(\overline{r_1},\dots,\overline{r_n})$.
+  最后求 $ \ker(f) $:
+  \[\ker(f)=\{r\in R|f(r)=0\}=\{r\in R|r~(\mathrm{mod}~I_i)=0,\forall i\}=\{r\in R|r\in I_i,\forall i\}=\bigcap_{i=1}^nI_i.\]
+  
+  由此给出环同构 $ R/(\cap_{i=1}^nI_i)\cong \Pi_{i\in I}(R/I_i) $.
+  \end{proof}
+  
+  \begin{remark}
+    \begin{enumerate}[label=(\arabic{*})]
+    \item 如果环 $ R $的两个理想 $ I, J $ 满足关系 $ I+J=R $, 那么称这两个理想是互素的; 
+    \item 对整数环$ R=\Z $应用中国剩余定理, 可知, 两个理想 $ m_1\Z $ 和 $ m_2\Z $ 是互素的当且仅当 $ (m_1,m_2)=1 $.
+    因此, 假设 $ m_1,\dots,m_n $ 是 $ n $ 个两两互素的正整数. 
+    % , 且 $gcd(m_i,m_j)=1,\forall i\neq j$. 
+    那么
+    \[\Z/(\cap_{i=1}^n m_i\Z)\cong\Pi_{i=1}^n(\Z/m_i\Z).\]
+    注意到 $ \cap_{i=1}^n m_i\Z=(\Pi_{i=1}^nm_i)\Z $ (why?).
+    因此, $ \Z/(\Pi_{i=1}^nm_i)\Z\cong\Pi_{i=1}^n\Z/m_i\Z $, 即 $ \Z_m\cong\Pi_{i=1}^n\Z_{m_i} $ 其中 $ m=\Pi_{i=1}^nm_i $.
+    \begin{proof}[Reason]
+      仅给出 $ n=2 $的情况, $ n\ge 3 $的证明是类似的: 
+      注意到 $ m_1\mid m_1m_2 $, 有 $ m_1m_2\in m_1\Z $, 则 $ m_1m_2\Z\in m_1\Z $. 
+      同理有 $ m_1m_2\Z\in m_2\Z $. 因此 $ m_1m_2\Z\subseteq m_1\Z\cap m_2\Z $.
+
+      相反的, 若 $ k\in m_1\Z\cap m_2\Z $, 则 $ m_1\mid k,m_2\mid k $. 因此 $ [m_1,m_2]\mid k $, 又因为 $ (m_1,m_2)=1 $, 
+      故 $ [m_1,m_2]=m_1m_2\mid k $, 从而有 $ k\in m_1m_2\Z $, 于是 $ m_1\Z\cap m_2\Z\subseteq m_1m_2\Z $.
+
+      综上, 有 $ m_1\Z\cap m_2\Z=m_1m_2\Z $.
+    \end{proof}
+    \end{enumerate}
+  \end{remark}
+
+
+\end{document}
+

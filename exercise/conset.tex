@@ -1,0 +1,231 @@
+\documentclass{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx,empheq}
+\usepackage{physics}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\TRACE}{\operatorname{Tr}}
+
+
+\title{ 2022 }
+
+
+
+
+\begin{document}
+%   \maketitle
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{Problem 1}
+    Let $ n>0 $ be an integer. We identify the element $ x^{\prime}=(x_1,x_2,\dots,x_{n-1},x_n)\in\F_2^n $ with $ (\vb*{x},x_n)\in\F_2^{n-1}\times\F_2 $, where $ \vb*{x}=(x_1,x_2,\dots,x_{n-1})\in\F_2^{n-1} $.
+
+    We define an $ (n,n) $-function $ F $ as follows:
+    \begin{equation}
+        F(x^{\prime})=F(\vb*{x},x_n)=
+            \begin{cases}
+                (F_1(\vb*{x}),f_1(\vb*{x})),   & \text{ if } x_n=0;\\
+                (F_2(\vb*{x}),f_2(\vb*{x})),   & \text{ if } x_n=1;\\
+            \end{cases} 
+        \end{equation}
+    where $ f_1(\vb*{x}) $ and $ f_2(\vb*{x}) $ are quadratic boolean function, $ F_1(\vb*{x}) $ and $ F_2(\vb*{x}) $ are two APN functions, all of those are defined on $ \F_{2}^{n-1} $.
+
+        Let us check whether the equation
+        \begin{equation}\label{eq:1}
+            D_{a^{\prime}}F(x^{\prime})=F(x^{\prime})+F(x^{\prime}+a^{\prime})=b^{\prime}
+        \end{equation}
+        has at most 2 solutions for all $ (a^{\prime},b^{\prime})\in\F_2^{n*}\times\F_{2}^{n} $. 
+        If we write $ x^{\prime}=(\vb*{x},x_n),a^{\prime}=(\vb*{a},a_n) $ and $ b^{\prime}=(\vb*{b},b_n) $, 
+        where $ \vb*{a},\vb*{b}\in\F_2^{n-1} $, then equation \eqref{eq:1} can be written as
+         \begin{equation}\label{eq:2}
+            D_{(\vb*{a},a_n)}F(\vb*{x},x_n)=F(\vb*{x},x_n)+F(\vb*{x}+\vb*{a},x_n+a_n)=(\vb*{b},b_n).
+        \end{equation}
+
+        So consider the case $ a^{\prime}=(\vb*{a},0) $ and $ b^{\prime}=(\vb*{b},b_n) $, we have 
+        \begin{enumerate}[label=(\arabic{*})]
+            \item If $ a_n=0 $, then we have $ F(\vb*{x},x_n)+F(\vb*{x+a},x_n)=(\vb*{b},b_n) $, which is equivalent to
+            \begin{equation}\left\{
+                \begin{aligned}\label{eq:3}
+                    &\left(F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})\right)x_n+\left(F_2(\vb*{x})+F_2(\vb*{x}+\vb*{a})\right)(x_n+1)=\vb*{b}\\
+                    &\left(f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})\right)x_n+\left(f_2(\vb*{x})+f_2(\vb*{x}+\vb*{a})\right)(x_n+1)=b_n.
+                \end{aligned}\right.
+            \end{equation}
+            If $ x_n=0 $, we have 
+            \begin{empheq}[left=\empheqlbrace]{align}
+                &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}\label{eq:3-0-1}\\
+                &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:3-0-2}.
+            \end{empheq}
+            % \[\begin{subequations}\left\{
+            %     \begin{aligned}
+            %         &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=b\label{eq:3-0-1}\\
+            %         &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:3-0-2}.
+            %     \end{aligned}\right.
+            %     \label{eq:3-0}
+            % \end{subequations}\]
+            If $ x_n=1 $, we have
+            \begin{empheq}[left=\empheqlbrace]{align}
+                    &F_2(\vb*{x})+F_2(\vb*{x}+\vb*{a})=\vb*{b}\label{eq:3-1-1}\\
+                    &f_2(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n\label{eq:3-1-2}.
+            \end{empheq}
+            The number of solutions of \eqref{eq:3} is equivalent to the sum of the numbers of the solutions of \eqref{eq:3-0} and \eqref{eq:3-1}.
+            Since $ F_1 $ and $ F_2 $ are both APN functions, 
+            we confirm that \eqref{eq:3-0-1} and \eqref{eq:3-1-1} both have $ 2 $ solutions for some $ (\vb*{a},\vb*{b}) $, 
+            which means in that case the equations 
+            \begin{empheq}[left=\empheqlbrace]{align}
+                    &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:4-1-1}\\
+                    &f_2(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n\label{eq:4-1-2}
+                \end{empheq}
+            have at most $ 2 $ solutions. Note that if $ \vb*{x_1} $ is the solution of \eqref{eq:4-1-1} or \eqref{eq:4-1-2}, so $ \vb*{x_1}+\vb*{a} $ is, 
+            it means one of two equations above must have no solution at point $ (\vb*{a},b_n) $.
+            
+            
+            % has at most $ 2 $ solutions for $ (a,b)\in\F_2^{9*}\times\F_2^9 $ by the APNness of $ x^3 $ over $ \F_2^9 $, and we confirm the number of solutions of the equations \eqref{eq:3} is 
+            % $ 2 $ if the solutions of $ D_a(x^3)=b $ satisfy the equation $ D_af_1(x)=b_n $ or  $ 0 $ otherwise.
+            \item If $ a_n=1 $, then we have $ F(\vb*{x},x_n)+F(\vb*{x+a},x_n+1)=(\vb*{b},b_n) $, which is equivalent to
+            \begin{equation}\label{eq:6}\left\{
+            	\begin{aligned}
+            		&\left(F_1(\vb*{x})+F_2(\vb*{x}+\vb*{a})\right)x_n+\left(F_2(\vb*{x})+F_1(\vb*{x}+\vb*{a})\right)(x_n+1)=\vb*{b}\\
+            		&\left(f_1(\vb*{x})+f_2(\vb*{x}+\vb*{a})\right)x_n+\left(f_2(\vb*{x})+f_1(\vb*{x}+\vb*{a})\right)(x_n+1)=b_n.
+            	\end{aligned}\right.
+            \end{equation}
+            If $ x_n=0 $, we have 
+            \begin{empheq}[left=\empheqlbrace]{align}
+            	&F_1(\vb*{x})+F_2(\vb*{x}+\vb*{a})=\vb*{b}\label{eq:6-0-1}\\
+            	&f_1(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n\label{eq:6-0-2}.
+            \end{empheq}
+            % \[\begin{subequations}\left\{
+            	%     \begin{aligned}
+            		%         &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=b\label{eq:3-0-1}\\
+            		%         &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:3-0-2}.
+            		%     \end{aligned}\right.
+            	%     \label{eq:3-0}
+            	% \end{subequations}\]
+            If $ x_n=1 $, we have
+            \begin{empheq}[left=\empheqlbrace]{align}
+            	&F_2(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}\label{eq:6-1-1}\\
+            	&f_2(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:6-1-2}.
+            \end{empheq}
+        
+    
+    \end{enumerate}
+    Consider a specific case, $ F_2(\vb*{x})=F_1(\vb*{x})+L(\vb*{x}) $ where $ L(\vb*{x}) $ is a linear permutation, 
+    then we have the two systems of equations below
+    \begin{empheq}[left=\empheqlbrace]{align*}
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}\\
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})+L(\vb*{a})=\vb*{b}\\
+        &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\\
+        &f_2(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n
+    \end{empheq}
+    and
+    \begin{empheq}[left=\empheqlbrace]{align*}
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})+L(\vb*{x}+\vb*{a})=\vb*{b}\\
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})+L(\vb*{x})=\vb*{b}\\
+        &f_1(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n\\
+        &f_2(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n.
+    \end{empheq}
+    If assume $ f_2(\vb*{x})=0 $ is a constant function, we will get two uncomplicated systems of equations
+    \begin{empheq}[left=\empheqlbrace]{align}
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}\\
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}+L(\vb*{a})\\
+        &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n=0
+    \end{empheq}
+    and
+    \begin{empheq}[left=\empheqlbrace]{align}
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}+L(\vb*{x}+\vb*{a})\\
+        &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}+L(\vb*{x})\\
+        &f_1(\vb*{x})=f_1(\vb*{x}+\vb*{a})=b_n.
+    \end{empheq}
+    \end{document}
+%            The number of solutions of \eqref{eq:6} is equivalent to the sum of the numbers of the solutions of \eqref{eq:6-0} and \eqref{eq:6-1}.
+%            Since $ F_1 $ and $ F_2 $ are both APN functions, 
+%            we confirm that \eqref{eq:3-0-1} and \eqref{eq:3-1-1} both have $ 2 $ solutions for some $ (\vb*{a},\vb*{b}) $, 
+%            which means in that case the equations 
+%            \begin{equation}
+%            	\left\{\begin{aligned}
+%            		&f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\\
+%            		&f_2(\vb*{x})+f_2(\vb*{x}+\vb*{a})=b_n
+%            	\end{aligned}\right.
+%            \end{equation}
+%            have at most $ 2 $ solutions. Note that if $ \vb*{x_1} $ is one of the solutions, so $ \vb*{x_1}+\vb*{a} $ is. 
+            
+            
+        
+%        To restrict $ F $ to be APNness, it's impossible that both cases have $ 2 $ solutions simultaneously. So assume 
+%        that $ x_0 $ and $ x_0+a $ are the solutions of \eqref{eq:3}, then equations \eqref{eq:4} must have the same solutions  or have no solution.
+%        
+%        If the equations \eqref{eq:3} and \eqref{eq:4} have the same solutions $ x_0,x_0+a $, we confirm that 
+%        \begin{equation}\left\{
+%            \begin{aligned}
+%                &D_aL(x_0)=0\\
+%                &D_af_2(x_0)=D_af_1(x_0).
+%            \end{aligned}\right.
+%        \end{equation}
+%        % But  $ D_aL(x_0) $
+%        If the equations \eqref{eq:4} have no solution, we have 
+%        \begin{equation}\left\{
+%            \begin{aligned}
+%                &x_1^3+(x_1+a)^3+D_aL(x_1)=b\\
+%                &D_af_2(x_1)\ne b_n.
+%            \end{aligned}\right.
+%        \end{equation}
+%        where $ x_1 $ is the solution of $ x^3+(x+a)^3+D_aL(x)=b $. 
+%        \begin{enumerate}
+%            \item[(3)] If $ a_n=1 $ and $ x_n=0 $, then $ x_n+a_n=1 $, then we have 
+%            \begin{equation}\label{eq:5}\left\{
+%                \begin{aligned}
+%                    &x^3+(x+a)^3+L(x+a)=b\\
+%                    &f_1(x)+f_2(x+a)=b_n.
+%                \end{aligned}\right.
+%            \end{equation} 
+%            Since $ x^3+(x+a)^3+L(x+a)=b\Rightarrow ax^2+xa^2+a^3+L(x+a)=b $, and we can assume $ L(x+a)=c(x+a) $, where
+%            $ c\in\F_{2^9}^* $. Then we have a quadratic equation $ ax^2+(a^2+c)x=a^3+ac+b $, so we confirm that 
+%            the equation has exactly two solutions if $ \Tr_9(\frac{a(a^3+ac+b)}{(a^2+c)^2})=0 $ and has no solution otherwise.
+%
+%            \item[(4)] If $ a_n=1 $ and $ x_n=1 $, then $ x_n+a_n=0 $, then we have 
+%            \begin{equation}\left\{
+%                \begin{aligned}
+%                    &x^3+(x+a)^3+L(x)=b\\
+%                    &f_1(x+a)+f_2(x)=b_n.
+%                \end{aligned}\right.
+%            \end{equation}
+%            Using the same method, we arrive at that  
+%            the equation has exactly two solutions if $ \Tr_9\left(\frac{a(a^3+b)}{(a^2+c)^2}\right)=0 $ and has no solution otherwise. If $ c^2=ab $, then $ \Tr_9\left(\frac{a(a^3+b)}{(a^2+c)^2}\right)=1 $
+%        \end{enumerate}    
+
+
+
+
+
+
+
+
+% for i in [1..2^5] do
+%     inputvector:=Intseq(i-1,2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~input,(eltvector));
+% end for;
+
+% for i in [1..2^n] do
+%     inputvector:=Intseq(sbox[i],2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~output,(eltvector));
+% end for;
+
+% function newsbox(x)
+%     if x eq 0 then 
+%         return 0; 
+%     end if;
+%     for i in [1..1024] do
+%         if x eq input[i] then
+%             return output[i];
+%         end if;
+%     end for;
+% end function;
+
+
+
+% G:=OrthoTest(newsbox,n);
+% ddtG:=DDTexe(G,n);

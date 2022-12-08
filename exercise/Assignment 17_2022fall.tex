@@ -1,0 +1,78 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~17} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年11月28日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    设 $ F $是域,  $ f(x) $和 $ g(x) $ 是 $ F $上不全为零的两个多项式. 证明: 存在 $ F $上的多项式 $ s(x),t(x) $使得 
+    \[s(x)f(x)+t(x)g(x)=\gcd(f(x),g(x)).\]
+ 
+    解:  设 $ d(x)=\gcd(f(x),g(x)) $. 
+    假设 $ S=\left\{ f(x)p(x)+g(x)q(x):p(x),q(x)\in F[x] \right\} $且 $ d(x) $是集合中次数最低的首一多项式, 
+    那么有 $ d(x)=f(x)s(x)+g(x)t(x) $ 成立, 其中 $ s(x),t(x)\in F[x] $. 对 $ f(x) $ 做带余除法, 有 
+    $ f(x)=a(x)d(x)+r(x) $, 其中 $ deg(r)<deg(d) $或者 $ r(x)=0 $. 因此有
+    \[r(x)=f(x)-a(x)d(x)=f(x)-a(x)\left( f(x)s(x)+g(x)t(x) \right)\]
+    也就是说, $ r(x) $是 $ f(x),g(x) $的线性组合, 则 $ r(x)\in S $, 因此 $ deg(r)\ge deg(d) $, 所以 $ r(x)=0 $, 故 $ d(x)\mid f(x) $; 
+    同理 $ d(x)\mid g(x) $, 由此得 $ d(x) $是 $ f(x),g(x) $的公因子, 故 $ \gcd(f(x),g(x)) $必然可以用 $ f(x),g(x) $的线性组合写出.
+
+\subsubsection*{Problem 2} 
+    设 $ F $是域, $ f(x),g(x),h(x) $ 是 $ F $上任意三个不全为 $ 0 $的多项式, 且有 $ f(x)=q(x)g(x)+h(x) $, 其中 $ q(x)\ne 0 $. 
+    证明: $ \gcd(f(x),g(x))=\gcd(g(x),h(x)) $.
+
+    解: 假设 $ d(x)=\gcd(f(x),g(x)) $, 那么有 $ f(x)s(x)+g(x)t(x)=d(x) $, 则 $ \left( q(x)g(x)+h(x) \right)s(x)+g(x)t(x)=d(x) $, 即
+    $ d(x) $是 $ h(x),g(x) $的公因子, 故 $ d(x)\mid\gcd(h(x),g(x)) $;
+    假设 $ c(x)=\gcd(h(x),g(x)) $, 那么 $ h(x)a(x)+g(x)b(x)=c(x) $, 则 $ \left( f(x)-q(x)g(x) \right)a(x)+g(x)b(x)=c(x) $, 即
+    $ c(x) $是 $ f(x),g(x) $的公因子, 故 $ c(x)\mid\gcd(f(x),g(x)) $. 综上, $ \gcd(f(x),g(x))=\gcd(g(x),h(x)) $.
+\subsubsection*{Problem 3} 
+    计算 $ \Z_3 $上两个多项式的最大公因式:
+    \[\gcd(x^4+x^3+x+2,x^4+2x^3+2x+2).\]
+
+    解: 有 
+    \begin{align*}
+      &\gcd(x^4+x^3+x+2,x^4+2x^3+2x+2)\\
+      =&\gcd(x^4+x^3+x+2,x^4+2x^3+2x+2-(x^4+x^3+x+2))\\
+      =&\gcd(x^4+x^3+x+2,x^3+x)\\
+      =&\gcd(x^4+x^3+x+2,x^2+1)\\
+      =&\gcd(x^4+x^3+x+2-(x^2+1)(x^2+x),x^2+1)\\
+      =&\gcd(2x^2+2,x^2+1)\\
+      =&x^2+1.\\
+    \end{align*}
+    或者直接写长除法比较直观:
+    \begin{align*}
+      x^4+2x^3+2x+2&=(x^4+x^3+x+2)+(x^3+x)\\
+      x^4+x^3+x+2&=(x+1)(x^3+x)+2(x^2+1)\\
+      x^3+x&=(2x)2(x^2+1)+0.
+    \end{align*}
+    故 $ \gcd(x^4+x^3+x+2,x^4+2x^3+2x+2)=x^2+1 $.
+\end{document}
+

@@ -1,0 +1,93 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~4} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年9月26日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+$ \R $是实数域, $ \Q $是有理数域, $ \Z $是整数集合.
+
+\subsubsection*{Problem 1}
+    设集合 $ G = \{a+b\sqrt{2}\in\R\mid a,b\in\Q\} $. 证明: $ G $ 关于 $ \R $ 的加法运算构成群.
+
+    解: 
+    \begin{enumerate}[label=(\arabic*)]
+      \item 显然 $ G $ 是一个非空集合; 
+      \item 对任意的 $ x=a_x+b_x\sqrt{2}, y=a_y+b_y\sqrt{2} \in G $, 有 $ x+y=(a_x+b_x)+(a_y+b_y)\sqrt{2}\in G $, 所以 $ G $ 关于 $ \R $ 的加法运算满足封闭性;
+      \item $ \R $ 的加法运算满足结合律, 所以在 $ G $上的计算同样满足结合律;
+      \item $ 0=0+0\sqrt{2}\in G $ 且满足 $ \forall x\in G $, $ 0+x=x $, 
+      故 $ 0 $是 $ G $关于 $ \R $ 的加法运算中的单位元;
+      \item $ \forall x\in G $, 都有 $ (-x)+x=x+(-x)=0 $, 故 $ -x $是 $ x $的逆元.
+    \end{enumerate}
+    从而, $ G $ 关于 $ \R $ 的加法运算构成群.
+      
+\subsubsection*{Problem 2} 
+    设集合 $ G = \{x \in\R \mid 0 \le x < 1\} $ 且定义运算 $ x \star y $ 是 $ x + y $ 的小数部分. 
+    证明: $ G $ 关于运算 $ \star $ 构成阿贝尔群.
+
+    解: $ x \star y=x+y-[x+y] $, 其中 $ [ ~] $是向下取整的函数.
+    \begin{enumerate}[label=(\arabic*)]
+      \item 显然 $ G $ 是一个非空集合; 
+      \item $ \forall x,y\in G $, 都有 $ 0\le x\star y<1 $, 故 $ x\star y\in G $, 所以$ G $ 关于运算 $ \star $满足封闭性;
+      \item $ \forall x,y,z\in G $, 写 $ x\star y=x+y+n $, 其中 $ n\in\{-1,0\} $. 
+      
+      那么 $ (x\star y)\star z = (x+y+n_1)\star z = x+y+n_1+z+n_2 = x+y+z+(n_1+n_2)\in [0,1) $,
+      
+      $ x\star (y\star z) = x\star (y+z+n_3) = x+(y+z+n_3)+n_4 = x+y+z+(n_3+n_4)\in [0,1) $,
+      
+      因此上述两个不等式相减可以得到 $ -1 < (n_1+n_2) - (n_3+n_4) <1 $且为整数, 
+      即 $ (n_1+n_2) = (n_3+n_4) $, 故满足结合律;
+      \item $ 0\in G $, 所以 $ \forall a\in G $, 都有 $ 0\star a=0+a=a=a+0=a\star 0 $, 因此 $ 0 $是单位元;
+      \item $ \forall a\in(0,1) $, 都有 $ (1-a)\star a=1-a+a-[1-a+a]=0 $, 如果 $ a=0 $, 那么 $ 0\star 0=0 $, 因此 非零元素$ a $的逆元为 $ 1-a $, $ 0 $的逆元为 $ 0 $本身;
+      \item $ \forall a,b\in G $, 都有 $ a\star b=a+b-[a+b]=b+a-[b+a]=b\star a $, 因此运算满足交换律.
+    \end{enumerate}
+    综上所述, $ G $ 关于运算 $ \star $ 构成阿贝尔群.
+\subsubsection*{Problem 3}
+    设 $ G $ 是一个阶为 $ n $ 的群, 其中 $ a_1,a_2,...,a_n $ 是任意 $ n $ 个元素, 这 $ n $个元素可能两两相等. 
+     证明: 存在整数 $ p $和 $ q $满足 $ 1\le p\le q\le n $, 
+     使得 $ a_pa_{p+1}a_{p+2}\cdots a_q=e $, 其中 $ e $ 是群 $ G $ 的单位元.
+
+    解: 构造集合 $ S=\{a_1,a_1a_2,a_1a_2a_3,...,a_1a_2...a_n\} $, 故集合 $ S $中元素数量是 $ n $. 如果 $ e\in S $, 
+    那么结论就已经证明出了; 如果 $ e\notin S $, 但 $ |G|=n $, 则 $ S $中必定有元素两两相等, 
+    假设为 $ a_1a_2\dots a_i=a_1a_2\dots a_i\dots a_j $, 因此利用消去律, 可以得到 $ a_{i+1}\dots a_j=e $. Q.E.D..
+
+\subsubsection*{Problem 4}
+    证明：设 $ G $ 是一个具有乘法运算的非空有限集合, 如果 $ G $ 满足结合律且对两个消去律成立, 则 $ G $ 构成群.
+
+    解: 
+    不妨设集合 $ G = \{a_1, a_2, \dots , a_n\} $. 对任意 $ b \in G $, 如果 $ba_i = ba_j$, 
+    则由左消去律得 $ a_i = a_j $, 于是 $ i = j $. 这说明, $ba_1, ba_2, \dots, ba_n $ 是 $G $中$ n $个互不相同的元素. 
+    同理 $a_1b, a_2b, \dots , a_nb $ 也是 $ G $中 $ n $ 个互不相同的元素. 因为 $ | G| = n $, 所以
+    \[ \{a_1b, a_2b, \dots , a_nb\} = G = \{ba_1, ba_2, \dots , ba_n\}. \]
+    由于 $ b\in G $ , 因此必存在 $ a_i\in G $ 使得 $ a_ib = b$. 对任意 $ a\in G $, 则
+    必存在 $ a_j \in G $ 使得 $ ba_j = a $. 于是 $ a_ia = a_iba_j = (a_ib)a_j = ba_j = a $, 
+    因此 $ a_i $ 为 $ G $ 的左单位元. 进一步, 对任意 $ a\in  G $ , 注意到 $\{a_1a, a_2a, \dots , a_na\} = G $, 
+    从而存在 $ a_l \in G $ 使得 $ a_la = a_i $, 即 $ a $有左逆元. 于是由定理 18 知 $ G $ 为群.
+\end{document}

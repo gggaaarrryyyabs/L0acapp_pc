@@ -1,0 +1,126 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~7} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年10月12日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+$ \R $是实数域, $ \Q $是有理数域, $ \Z $是整数集合.
+
+\subsubsection*{Problem 1}
+  证明: 群 $ G $的中心 $ C(G) $是 $ G $的正规子群.      
+  
+  解: 因为 $ C(G)=\{a\in G\mid \forall g\in G,ag=ga\} $, 
+  故 $ \forall g\in G,\forall a\in C(G) $, 都有 
+  $ gag^{-1}=agg^{-1}=a\in C(G) $, 即 $ gC(G)g^{-1}\subseteq C(G) $, 因此 $ C(G)\triangleleft G $.
+
+  不妨假设15阶群G存在两个5阶子群H和K
+  $\forall h\in H,k \in K,hk \in G$
+  
+  \begin{aligned}
+  |HK| &= |\bigcup_{h \in H} hK | \\
+  &= |\{hK|h\in H\}|\cdot |K| \\
+  \end{aligned}
+  
+  不妨设存在对应关系$\phi :h(H\cap K) \longmapsto hK,\forall h \in H$
+  若$h_1(H\cap K) = h_2(H \cap K)$,则 $h_1^{-1}h_2 \in H \cap K$
+  所以$h_1^{-1}h_2 \in K$,即$h_1K = h_2K$,所以$\phi$ 是一个映射
+  若h_1K = h_2K,则h_1^{-1}h_2 \in K,而h_1,h_2 \in H,所以$h_1^{-1}h_2 \in H$,即$h_1^{-1}h_2 \in H \cap K$,故 $h_1(H\cap K) = h_2(H \cap K)$,所以$\phi$ 是一个单射
+  $\forall h \in H,hK = \phi (h(H\cap K))$,所以$\phi$ 是一个满射$
+  $综上所述,$\phi$ 是从$\{h(H \cap K)| h \in H\}$到$\{hK|h \in H\}$的一个一一映射
+  所以$|\{hK|h\in H\}| = |\{h(H \cap K)| h \in H\}|$
+  \begin{aligned}
+  |HK| &= |\{hK|h\in H\}|\cdot |K|\\
+  &= |\{h(H \cap K)| h \in H\}| \cdot |K|\\
+  &= [H:H \cap K] \cdot |K| \\ 
+  &= |H||K|/|H \cap K|
+  \end{aligned}
+  $\forall x \in HK, \exist h \in H,k \in K,s.t. x = hk \in G$
+  所以$|G| \geq |HK| = |H||K|/|H \cap K|$
+
+\subsubsection*{Problem 2} 
+    证明: 群的两个正规子群的交或者积都是正规子群.
+  
+    解: 设群 $ G $的两个正规子群为 $ N,H $. 则对任意 $ g\in G $, $ \forall nh\in NH $, 
+    都有 $ gnhg^{-1}=gng^{-1}ghg^{-1}\in NH $成立, 故 $ NH $为 $ G $的正规子群;
+
+    对任意 $ g\in G $, $ \forall x\in N\cap H $, 都有 $ gxg^{-1}\in gNg^{-1}=N $, $ gxg^{-1}\in gHg^{-1}=H $, 故
+    $ gxg^{-1}\in N\cap H $, 故 $ N\cap H $为 $ G $的正规子群.
+  
+\subsubsection*{Problem 3}
+  设 $ G $为群, $ H $是 $ G $的子群. 定义 $ H $的正规化子 (normalizer) 为
+  \[N(H)=\{g\in G\mid gHg^{-1}=H\}.\]
+  证明: $ N(H) $是 $ G $的子群, $ H $ 是 $ N(H) $的正规子群.
+
+  解: $ N(H)=\{g\in G\mid gHg^{-1}=H\}=\{g\in G\mid H=g^{-1}Hg\}=\{g^{-1}\in G\mid gHg^{-1}=H\}. $且 
+  $ \forall x,y\in N(H) $ 都有 $ xyH(xy)^{-1}=xyHy^{-1}x^{-1}=xHx^{-1}=H $, 即 $ xy\in N(H) $. 故$ N(H) $是 $ G $的子群;
+
+  $ \forall g\in N(H) $ 都有 $ gHg^{-1}=H $, 故 $ H $ 是 $ N(H) $的正规子群.
+\subsubsection*{Problem 4}
+  设 $ G $为群, $ H\triangleleft G $ 且 $ [G:H]=m $. 证明: 对每个 $ x\in G $ 都有 $ x^m\in H $.
+
+    解: $ H\triangleleft G $ 且 $ [G:H]=m $可以得到商群 $ G/H $, 且 $ |G/H|=m $. 因此商群的任意元素 $ gH $ 的阶均整除 $ m $, 即 $ \operatorname{ord} gH\mid m $, 故 $ (gH)^m=g^mH=H $, 故 $ g^m\in H $成立. 
+  解: $ \subseteq $: $ \forall x\in H_1\cap H_2 $, 都有 $ x\in H_1,H_2 $, 故 $ ax\in aH_1,aH_2 $, 即 $ ax\in aH_1\cap aH_2 $, 
+  因此 $ a\left(H_1\cap H_2\right)\subseteq aH_1\cap aH_2 $;
+
+  $ \supseteq $: $ \forall x\in aH_1\cap aH_2 $, 都有 $ x=ah_1=ah_2 $, 其中 $ h_1\in H_1,h_2\in H_2 $. 则 $ a^{-1}x\in H_1 $, 
+  $ a^{-1}x\in H_2 $, 即 $ a^{-1}x\in H_1\cap H_2 $, 那么 $ x\in a\left( H_1\cap H_2\right) $, 因此 $ a\left(H_1\cap H_2\right) \supseteq aH_1\cap aH_2 $.
+
+  综上, $ a\left(H_1\cap H_2\right)=aH_1\cap aH_2 $.
+
+\subsubsection*{Problem 5}
+  设 $ H $是循环群 $ G $的子群. 证明: $ G/H $也是循环群.
+
+  解: 设 $ G=\langle g\rangle $, 则 $ G $是交换群, 故 $ H\triangleleft G $, $ G/H $是一个群; 
+  那么 $ \forall xH\in G/H $, 都有 $ x=g^k $, 其中 $ k\in\Z $, 则 $ xH=g^kH=(gH)^k $, 因此 $ gH $是群 $ G/H $的生成元, 
+  即 $ G/H $也是循环群.
+
+\subsubsection*{Problem 6}
+  设 $ |G|=15 $. 证明: 如果 $ G $有唯一的 $ 3 $阶子群和唯一的 $ 5 $阶子群, 则 $ G $ 是循环群. 
+  将此结果推广到 $ |G|=pq $的情况, 其中  $ p,q $为不同的素数.
+  
+  解: 仅给出  $ |G|=pq  $的情况: 
+
+  假设 $ N $是 $ p $阶子群, $ H $ 是 $ q $阶子群, 则 $ N\cup H $中的元素的阶有三种: $ 1,p,q $且元素数量为 $ p+q-1 $. 
+  因此存在 $ x\in G\setminus(N\cup H) $, 显然 $ \operatorname{ord}x\ne p,q,1 $, 根据拉格朗日定理,  $ G $的元素的阶可能有 
+  $ pq,p,q,1 $这四种情况, 因此 $ \operatorname{ord}x $只能为 $ pq $, 即 $ G=\langle x\rangle $.
+
+\subsubsection*{Problem 7* (选做)}
+  设 $ G $为交换群, $ |G|=n $, $ m $是一个正整数. 证明: 如果 $ m\mid n $, 则 $ G $有 $ m $阶子群.
+
+  解: $ n=2 $时结论成立; 
+  假设结论对阶小于 $ n $的交换群成立, 则
+  由柯西定理可知, 当 $ m $为素数时, $ G $有 $ m $阶子群, 结论成立;
+  % 当 $ n=pq $其中 $ p,q $为不同的素数时同样成立;
+  当 $ m $不是素数时, 假设 $ m=m'p $, 其中 $ p $是一个素数, 根据柯西定理可知存在 $ a\in G $ s.t. $ \operatorname{ord} a=p $, 
+  则令 $ H=\langle a\rangle $为循环群, 则 $ G/H $为交换群且 $ |G/H|=n/p<n $, 
+  那么根据归纳法可知商群 $ G/H $有阶为 $ m/p $的子群, 设为 $ N/H $, 有 $ N=\{n\in G\mid nH\in N/H\} $为所求, 其中 $ |N|=m/p\cdot p=m $.
+
+\end{document}
