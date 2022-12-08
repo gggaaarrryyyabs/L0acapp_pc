@@ -1,0 +1,375 @@
+\documentclass[12pt,a4paper]{ctexbook}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage[noadjust]{cite}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{soul}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{enumitem,empheq}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{pifont}
+% \newtheorem{theorem}{Theorem}
+\newcommand{\0}{\textbf{0}}
+\newcommand{\1}{\textbf{1}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\nl}{\mathrm{nl}}
+\newcommand{\Tr}{\mathrm{Tr}_1^n}
+\newcommand{\tr}{\mathrm{tr}_1^k}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbb{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\usepackage{bbding}%characteristic symbol
+\newcommand{\cmark}{\ding{51}}%checkmark 对号
+\newcommand{\xmark}{\ding{55}}%crossmark 错号
+\usetikzlibrary{graphs,quotes}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\makeatletter
+\def\@seccntformat#1{\csname #1ignore\expandafter\endcsname\csname the#1\endcsname\quad}
+\let\sectionignore\@gobbletwo
+\let\latex@numberline\numberline
+\def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
+\makeatother
+
+\newtheorem{theorem}{定理}
+\newtheorem{corollary}{推论}[theorem]
+% \newtheorem{example}{例}
+\newtheorem{innercustomthm}{例}
+\newtheorem{example}{Example}[subsection]
+\newtheorem{lemma}{引理}
+\newtheorem{remark}{Remark}
+\newtheorem{proof}{Proof}
+\renewcommand{\proof}{\textbf{Proof:}}
+
+
+\begin{document}
+
+
+\begin{proof}
+    没序号的
+\end{proof}
+
+
+
+McEliece's book\cite{mceliece2012finite}: 
+    \begin{lemma}
+        For $ 1\leq e\leq m $,
+        \begin{empheq}[left={\gcd (2^e+1,2^m-1)=\empheqlbrace}]{align*}
+            &1, &\text{if}~ \gcd (2e,m)=\gcd (e,m)\\
+            &2^{\gcd (e,m)}+1, &\text{if}~ \gcd (2e,m)=2\gcd (e,m)
+        \end{empheq}
+    \end{lemma}
+    \noindent\rule{\linewidth}{0.4pt}
+
+    AES硬件加速的实现方法：
+    下面给出 $ A=a_0 Y+a_1 Y^{16}\in\F_{2^8} $的取逆操作，其中$a_0,a_1\in\F_{2^4} $:
+    \begin{enumerate}
+        \item 设$ (W,W^2) $是$ \F_{2^2} $ 的基，$(Z^2,Z^8) $ 是 $ \F_{2^4} $ 的基，$ (Y,Y^{16} ) $是 $ \F_{2^8} $的基。
+        \item 计算A的逆元素的方法是： $A^{−1}=(AA^{16} )^{−1}A^{16}=((a_0+a_1 )^2 WZ+a_0 a_1 )^{−1}(a_1 Y+a_0 Y^{16}) $
+    \end{enumerate}
+
+    算法思想：这里需要计算的有 $ T_1=(a_0+a_1);T_2=(WZ) (T_1 )^2;T_3=a_0 a_1;T_4=T_2+T_3;T_5=(T_4 )^{−1};T_6=T_5 a_1;T_7=T_5 a_0 $. 所有的操作都是在 $\F_{2^4} $上，所以等同于对长度为 $4$ 的向量进行操作。
+    \begin{enumerate}
+        \item $T_1$和$T_4$是向量加法；
+        \item $T_2$是标量乘法，使用变换矩阵$P=\begin{bmatrix}
+            0 &1 &0 &1\\
+            1 &0 &1 &0\\
+            1 &1 &0 &0\\
+            0 &1 &0 &0
+        \end{bmatrix}$即可；
+        \item $T_3, T_6$和$T_7$是向量乘法，需要定义向量乘法$z=x\star y$，具体操作如下页所示；
+        \item $T_5$ 是有限域取逆操作的硬件实现，具体操作如下页所示。
+    \end{enumerate}
+
+    向量乘法$z=(z_0,z_1,z_2,z_3 )=x\star y=(x_0,x_1,x_2,x_3 )\star (y_0,y_1,y_2,y_3 )$结果如下：
+
+    
+
+    \begin{align*}
+        z_0&=x_1 y_1+(x_0+x_2 )(y_0+y_2 )+x_3 y_2+x_2 y_3+x_0 y_3+x_3 y_0+x_1 y_2+x_2 y_1\\
+        z_1&=x_0 y_0+(x_0+x_2 )(y_0+y_2 )+x_0 y_1+x_1 y_0+(x_1+x_3 )(y_1+y_3 )\\
+        z_2&=x_3 y_3+(x_0+x_2 )(y_0+y_2 )+x_0 y_1+x_1 y_0+x_0 y_3+x_3 y_0+x_1 y_2+x_2 y_1\\
+        z_3&=x_2 y_2+(x_0+x_2 )(y_0+y_2 )+x_3 y_2+x_2 y_3+(x_1+x_3 )(y_1+y_3 )\\
+    \end{align*}
+    可以暂时优化一下, 得到$10$次乘法的结果
+    \begin{empheq}{align*}
+        z_0&=(x_1 +x_2)(y_1+y_2) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +(x_0 +x_3)(y_0 +y_3) +x_0 y_0\\
+        z_1&=(x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) +x_1 y_1\\
+        z_2&=(x_0 +x_3)(y_0+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) +(x_1 +x_2)(y_1 +y_2) +x_2 y_2\\
+        z_3&=(x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +x_3 y_3
+    \end{empheq}
+        取逆操作$ y=(y_0,y_1,y_2,y_3 )=x^{−1}= (x_0,x_1,x_2,x_3 )^{−1}$ 结果如下(直观上看着是$8$次乘法)：
+    \begin{empheq}[left=\empheqlbrace]{align*}
+        -y_0&=x_1 x_2 x_3+x_0 x_2+x_1 x_2+x_2+x_3\\
+        -y_1&=x_0 x_2 x_3+x_0 x_2+x_1 x_2+x_1 x_3+x_3\\
+        -y_2&=x_1 x_0 x_3+x_0 x_2+x_0 x_3+x_0+x_1\\
+        -y_3&=x_1 x_2 x_0+x_0 x_2+x_0 x_3+x_1 x_3+x_1
+    \end{empheq}
+    注意可以使用复用来减少乘法的次数($5$次乘法)
+    \begin{empheq}[left=\empheqlbrace]{align*}
+        -\mathbin{\color{blue}y_1}&=(\mathbin{\color{red}x_0 x_2} +x_1)(x_2 +x_3) +x_3\\
+        -\mathbin{\color{green}y_3}&=(\mathbin{\color{red}x_0 x_2} +x_3)(x_0 +x_1) +x_1\\
+        -y_0&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{blue}y_1})x_3 +\mathbin{\color{blue}y_1} +x_2+x_3\\
+        -y_2&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{green}y_3})x_3 +\mathbin{\color{green}y_3} +x_0+x_1
+    \end{empheq}
+
+    现在寻求能不能继续减少乘法的数量：先尝试把所有的 $ T_i $表示出来吧.
+    \[a_0=\begin{pmatrix}
+        x_0\\x_1\\x_2\\x_3
+    \end{pmatrix},a_1=\begin{pmatrix}
+        y_0\\y_1\\y_2\\y_3
+    \end{pmatrix},
+    T_1=x+y=\begin{pmatrix}
+        x_0+y_0\\x_1+y_1\\x_2+y_2\\x_3+y_3
+    \end{pmatrix}. \]
+    \[ T_2=\begin{pmatrix}
+        x_1+y_1+x_3+y_3\\x_0+y_0+x_2+y_2\\x_0+y_0+x_1+y_1\\x_1+y_1
+    \end{pmatrix}.\]
+    $ T_3= $\[\begin{pmatrix}
+        (x_1 +x_2)(y_1+y_2) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +(x_0 +x_3)(y_0 +y_3) +x_0 y_0\\
+        (x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) + x_1  y_1\\
+        (x_0 +x_3)(y_0+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) +(x_1 +x_2)(y_1 +y_2) +x_2 y_2\\
+        (x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) + x_3  y_3
+    \end{pmatrix}\]
+    $ T_4=T_2+T_3= $ \[\begin{pmatrix}
+        (x_1 +x_2)(y_1+y_2) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +(x_0 +x_3)(y_0 +y_3) +x_0 y_0+x_1+y_1+x_3+y_3\\
+        (x_1 +x_3)(y_1+y_3) +(x_0+x_2+1)(y_0+y_2+1) +(x_0 +x_1)(y_0+y_1) + x_1  y_1+1\\
+        (x_0 +x_3)(y_0+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1+1)(y_0+y_1+1) +(x_1 +x_2)(y_1 +y_2) +x_2 y_2+1\\
+        (x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) + x_3  y_3+x_1+y_1
+    \end{pmatrix}\]
+    感觉看着就不大行, 不大能继续化简的样子
+
+    \noindent\rule{\linewidth}{0.4pt}
+
+    Lylia APN function\cite{Budaghyan2005}
+    \[\left(x+Tr^n_1\left(x^{2^i+1}\right)\right)^{2^i+1}\]
+    has covered all APN function(when $ n=8 $)
+    \[\left(x+Tr^n_1\left(x^{2^i+1}\right)\right)^{2^j+1}\]
+    where $ 1\leq i\neq j\leq n-1 $ and $ n $ is even.
+    So we guess all functions like this form have been covered.
+    
+    
+    \[\left(x+Tr^n_1\left(x^{2^i+1}\right)\right)^{2^{2j}-2^j+1}\]
+    also are CCZ-equivalent to Kasami APN function.
+
+    
+    %     //result, when n=8 the results are listed below:
+% [i j]
+% [1 1] 
+% [1 7] ccz eq [1 1]
+% [3 3] 
+% [3 5] ccz eq [3 3]
+% =======
+% [4 1] ccz eq [4 7]
+% [4 3] ccz eq [4 5]
+% [4 5] ccz eq [3 3]
+% [4 7] ccz eq [1 1] 
+% =======
+% [5 3] ccz eq [5 5]
+% [5 5]
+% [7 1] ccz eq [7 7]
+% [7 7]
+    \begin{enumerate}
+        \item EA-equivalent functions are CCZ-equivalent
+        \item if a function $F$ is a permutation then $F$ is CCZ-equivalent to $F^{−1}$\cite{carlet1998codes}
+        \item CCZ-equivalence coincides with\begin{enumerate}
+            \item EA-equivalence for planar functions [36, 38];
+            \item linear equivalence for DO planar functions [36, 38];
+            \item EA-equivalence for all functions whose derivatives are surjective [36];
+            \item EA-equivalence for all Boolean functions [24];
+            \item EA-equivalence for all vectorial bent Boolean functions [25];
+            \item EA-equivalence for two quadratic APN functions (conjectured by Edel,
+            proven by Yoshiara [145]).
+        \end{enumerate}
+    \end{enumerate}
+    \noindent\rule{\linewidth}{0.4pt}
+
+    \begin{theorem}[Carlet, Charpin, Zinoviev 1998]
+        Let $ F:\F_{2^n}\rightarrow\F_{2^n} $ with $ F(0)=0 $ and $ u $ be a primitive element of 
+        $ \F_{2^n} $. Then $ F $ is APN iff the binary linear code $ C_F $ defined by the 
+        parity check matrix
+        \[H_F=\begin{bmatrix}
+            u&u^2&\cdots&u^{2^n-1}\\
+            F(u)&F(u^2)&\cdots&F(u^{2^n-1})\\
+        \end{bmatrix}\]
+        has minimum distance $ 5 $.
+    \end{theorem}
+
+    Two functions $ F,G:\F_{2^n}\rightarrow\F_{2^n} $ are CCZ equivalent iff
+    $ G_F $ and $ G_G $ are affine-equivalent,
+
+    i.e. if the extended codes with parity check matrices
+
+    $ \begin{bmatrix}
+        1 & 1 &\cdots &1\\
+        0& u& \cdots &u^{2^n-1}\\
+        F(0)& F(u)& \cdots &F(u^{2^n-1})
+    \end{bmatrix} $ 
+    and 
+    $\begin{bmatrix}
+        1 & 1 &\cdots &1\\
+        0& u& \cdots &u^{2^n-1}\\
+        G(0)& G(u)& \cdots &G(u^{2^n-1})
+    \end{bmatrix}$
+    are equivalent.
+
+
+    \noindent\rule{\linewidth}{0.4pt}
+
+    \begin{theorem}\label{gowers}
+        Let $ k\in\Z^+ $, $ \epsilon>0 $. Let $ P:\F_2^n\rightarrow\F_2 $ be a polynomial of degree
+        at most $ k $, and $ f:\F_2^n\rightarrow\R $. Suppose $ \lvert \mathbb{E}_x\left[f(x)(-1)^{P(x)}\right]\rvert\geq\epsilon  $, then $ \left\lVert f\right\rVert _{U_{k+1}}\geq\epsilon $.
+    \end{theorem}
+    The converse of Theorem \ref{gowers} is also true for $k = 1, 2$.
+
+
+
+    
+    \noindent\rule{\linewidth}{0.4pt}
+
+    In 2003, algebraic attacks to LFSRs based on stream ciphers, by finding a way of solving 
+    the over defined system of multivariate equations whose unknowns are the secret key bits,
+    were proposed by Courtois and Meier\footnote{Courtois N., Meier W.: Algebraic Attacks on Stream Ciphers with Linear Feedback EUROCRYPT 2003,
+    LNCS, vol. 2656, pp. 345–359. Springer, Heidelberg (2003).}. In 2004, the algebraic immunity of a Boolean
+    function, representing its ability to resist this type of attacks, was introduced by Meier\footnote{Meier W., Pasalic E., Carlet C.: Algebraic attacks and decomposition of Boolean functions. In: Advances
+    in Cryptology-EUROCRYPT 2004, LNCS, vol. 3027, pp. 474–491. Springer, Heidelberg (2004)}.
+
+    \noindent\rule{\linewidth}{0.4pt}
+
+
+
+    Let $n=2k$ and $\F_{2^n}=\F_{2^k}^2$. For any $\beta\in\F_{2^k}$ with $\mathrm{Tr}_1^k(\beta)=1$,
+    then any element $X$ of $\F_{2^n}$ can be written as $X=x+\mu y$ where $x,y\in\F_{2^k}$ and $\mu$ is a root of the equation
+    $\mu^2+\mu+\beta=0$ over $\F_{2^n}$. Thus, the inverse function $X^{2^n-2}$ can be decomposed
+    (using $(x+\mu y)(x'+\mu y')=1$ and $0+0y=0\in\F_{2^n}$ or computing $(x+\mu y)^{2^n-2}$, see for examples \cite{Dumas2014arXiv} and \cite[Theorem 5]{PerrinUBCRYPTO16}) as
+    $\big(x,y\big)\mapsto \big(x(y^2+xy+\beta x^2)^{d}, (x+y)(y^2+xy+\beta x^2)^{d}\big)$ ($(x,y)$ should be $(y,x)$),
+    where $d={2^k-2}$ (clearly such mapping is bijective and is CCZ-equivalent to the inverse function over $\F_{2^n}$).
+    Experiments show that when $d$ has the form $2^i$ this mapping is a differentially 4-uniform bijection
+    for some integers $n$ and $i$. We now express this mapping with the univariate representation.
+    Assume that $\mu$ is a root of the $\mu^2+\mu+\beta=0$ over $\F_{2^n}$.
+    Then the mapping \noindent {\color{red}$\big(x,y\big)\mapsto \big(x(y^2+xy+\beta x^2)^{d}, (x+y)(y^2+xy+\beta x^2)^{d}\big)$}
+    can be written as $x+\mu y\mapsto x(y^2+xy+\beta x^2)^{d}+\mu(x+y)(y^2+xy+\beta x^2)^{d}$.
+    We have $\mu^2=\mu+\beta,\mu^4=\mu+\beta+\beta^2,\mu^8=\mu+\beta+\beta^2+\beta^4,\cdots,\mu^{2^k}=\mu+\mathrm{Tr}_1^k(\beta)$.
+    Let $X=x+\mu y$. We have $X^{2^k}=x^{2^k}+\mu^{2^k}y^{2^k}=x+(\mu+1)y=X+y$ and so $y=X+X^{2^k}$.
+    We have $x=X+\mu y=X+\mu(X+X^{2^k})=(\mu+1)X+\mu X^{2^k}$. By taking $d=2^i$, we could obtain the
+    function $F$ defined over $\F_{2^n}$ with the univariate representation, which is given in \eqref{E:diff4uniformsixterms}.
+    
+    
+    Let $n=2k$.
+    For any $\beta\in\F_{2^k}$ with $\mathrm{Tr}_1^k(\beta)=1$ (so $\mathrm{Tr}_1^n(\beta)=0$),
+    $\mu$ is a root of the equation $\mu^2+\mu+\beta=0$ over $\F_{2^n}$.
+
+    \[y^2+xy+\beta x^2=(\beta+1)(\beta+\mu)x^2+(\beta+\mu+1)(\beta+1)x^{2^{k+1}}+x^{2^k+1}.\]
+    \[x+\mu(x+y)=(\beta+1)x+(\beta+\mu)x^{2^k}\]
+    Then we define a polynomial over $\F_{2^n}$ as follows:
+    \begin{eqnarray}\label{E:diff4uniformsixterms}
+    F(x)&=&(1+\beta)^2 x^{2^{k+i+1}+1}+(1+\beta)^2 x^{2^{i+1}+1}+(1+\beta) x^{2^{k+i}+2^i+1}\\
+    &&+(\beta+\mu)(\beta+1) x^{2^{k+i+1}+2^k}+(\beta+\mu)(\beta+1) x^{2^{i+1}+2^k}+(\beta+\mu) x^{2^{k+i}+2^i+2^k}\nonumber.
+    \end{eqnarray}
+    
+    We now consider the equation $\mu^2+\mu+\beta=0$. Note that
+    $\mathrm{Tr}_1^k(\beta)=\mathrm{Tr}_1^k(\mu^2+\mu)=\mu+\mu^{2^k}$.
+    If we want to get $\mathrm{Tr}_1^k(\beta)=1$ with $\beta\in\F_{2^k}$ then we
+    only need to find an element $\mu\in\F_{2^n}\setminus\F_{2^k}$ such that $\mu+\mu^{2^k}=1$.
+    Assume that $\mu=x+\alpha y$ ($\alpha$ is a primitive element of $\F_{2^n}$ and clearly we
+    have $\alpha\in\F_{2^n}\setminus\F_{2^k}$; indeed, primitive element $\alpha$ can replaced by any element
+    in $\alpha\in\F_{2^n}\setminus\F_{2^k}$),
+    we have $\mu+\mu^{2^k}=y(\alpha+\alpha^{2^k})=1$ and thus $y=(\alpha+\alpha^{2^k})^{2^n-2}\in\F_{2^k}$
+    since $(\alpha+\alpha^{2^k})^{2^k}=(\alpha+\alpha^{2^k})$. Thus $\mu$ can take $\alpha (\alpha+\alpha^{2^k})^{2^n-2}=\frac{\alpha}{\alpha+\alpha^{2^k}}$.
+    Thus we have $\beta=\frac{\alpha}{\alpha+\alpha^{2^k}}+\frac{\alpha^2}{(\alpha+\alpha^{2^k})^2}
+    =\frac{\alpha^{2^k+1}}{(\alpha+\alpha^{2^k})^2}\in\F_{2^k}$ (we also need to assume that $\beta\not=1$
+    since \eqref{E:diff4uniformsixterms}, for doing this we only need to check that $\beta$ is a generator of $\F_{2^k}^*$).
+    So the conditions become: 1) any $\alpha\in\F_{2^n}$ such that $\alpha+\alpha^{2^k}\not=1$ and $\frac{\alpha^{2^k+1}}{(\alpha+\alpha^{2^k})^2}\not=1$;
+    2) $\mu=\alpha (\alpha+\alpha^{2^k})^{2^n-2}=\frac{\alpha}{\alpha+\alpha^{2^k}}$ in \eqref{E:diff4uniformsixterms};
+    3) $\beta=\frac{\alpha^{2^k+1}}{(\alpha+\alpha^{2^k})^2}$.
+    How to choose $i$ to ensure $F$ is a differentially 4-uniform bijection?
+    
+    
+    Another way to rewrite \eqref{E:diff4uniformsixterms} is as follows:
+    For $n=2k$, $\mu\in\F_{2^n}$ is such that $\mu+\mu^{2^k}=1$, $\mu+\mu^2\not=1$
+    ($\mu+\mu^2\not=1$ is equivalent to $\mu\not\in\F_4$;
+    we have $\mu+\mu^{2^k}=1$ implies that $\mu\not\in\F_{2^k}$), and $\mu+\mu^2\in\F_{2^k}$.
+    Let $\beta=\mu+\mu^2$ (this implies that $\mathrm{Tr}_1^k(\beta)=\mu+\mu^{2^k}=1$).
+    Then we define a polynomial over $\F_{2^n}$ as follows:
+    \begin{eqnarray}\label{E:diff4uniformsixtermsmu}
+    F(x)&=&(1+\beta)^2 x^{2^{k+i+1}+1}+(1+\beta)^2 x^{2^{i+1}+1}+(1+\beta) x^{2^{k+i}+2^i+1}\\
+    &&+(\beta+\mu)(\beta+1) x^{2^{k+i+1}+2^k}+(\beta+\mu)(\beta+1) x^{2^{i+1}+2^k}+(\beta+\mu) x^{2^{k+i}+2^i+2^k}\nonumber.
+    \end{eqnarray}
+    How to choose $i$?
+
+    \textbf{Simulations for \eqref{E:diff4uniformsixterms}:}
+    \begin{enumerate}
+      \item [-] For $n=6$, we take $\beta=1$ and $i=2$ have $F(x)$ is CCZ-equivalent to $x^{11}$ and $x^{23}$.
+      \item [-] For $n=10$, we take $\beta$ such that $\mathrm{Tr}_1^5(\beta)=1$ and $i=0$ (then $F$ is quadratic) have $F(x)$ is
+    differentially 4-uniform bijection. $F(x)$ is CCZ-inequivalent to $x^{3}$.
+    {\color{red}We must consider if this function is CCZ-equivalent to $x^{2^k+2}$ since all terms include $z^3$ ($z\in\F_{2^k}$) when decomposing this
+    function in to $\F_{2^k}^2$ ($2^k+2=3 \pmod {2^k-1}$).}
+      \item [-] For $n=12$, by taking $\beta$ such that $\mathrm{Tr}_1^6(\beta)=1$ and $d=2^i=8$, then $F(x)$ is a differentially 4-uniform bijection.
+    \end{enumerate}
+    
+    \vspace{5mm}
+    \noindent {\color{red}The quadratic case with four terms (i.e. $i=0$):}
+    
+    For $n=2k$ ($k$ odd), $\mu\in\F_{2^n}\setminus \F_4$ is such that $\mu+\mu^{2^k}=1$.
+    Let $i=0$, we have
+    \begin{eqnarray}\label{E:diff4uniformQuadratic}
+    F(x)&=&(1+\beta+\beta^2+\mu) x^{2^{k+1}+1}+(1+\beta^2) x^{3}+(1+\beta^2+\mu\beta+\mu) x^{2^k+2}\nonumber\\
+    &&+(\beta^2+\beta+\mu\beta+\mu) x^{3\cdot 2^k}\nonumber\\
+    %&=&(1+\mu^4) x^{2^{k+1}+1}+(1+\mu^2+\mu^4) x^3+(1+\mu+\mu^3+\mu^4) x^{2^k+2}+(\mu^2+\mu^3+\mu^4) x^{3\cdot 2^k}\nonumber\\
+    &=&(1+\mu^4) x^{2^{k+1}+1}+(1+\mu+\mu^3+\mu^4) x^{2^k+2}+(\mu^2+\mu^3+\mu^4) x^{3\cdot 2^k}+(1+\mu^2+\mu^4) x^3\nonumber
+    \end{eqnarray}
+    
+    $F$ is a quadratic bijection over $\F_{2^n}$, we checked by $n=6,10,14,18,22$ and this function may be CCZ-equivalent to $x^{3}$.
+    \begin{remark}\label{R:TuPermutation}
+    {\color{red}Indeed, the function $(x+ax+bx^{2^k})^3$ includes similar polynomials and the bijections in \cite{TuFFA19,TuFFA18}. and the functions in \cite{TuBCTIT20}.
+    The bijections in \cite[Theorem 1-(2)]{TuFFA18} are included in class $\Gamma_1$ in \cite{TuBCTIT20} which have boomerang uniformity four.
+    It seems that these bijections can be given by the function $(x+ax+bx^{2^k})^3$.
+    Some recent results in~\cite{QuButterflyDCC21,KimTypeCCDS21}-\cite{NoteButterflyDCC2022}.
+    }
+    \end{remark}
+
+apn functions:
+\begin{enumerate}
+    \item $ x^3+\omega x^{36} $, $ \omega\in \{u\F_{2^5}^*\}\cup\{u^2\F_{2^5}^*\} $ where $ u\in\F_{2^5}^* $ of order $ 3 $ in theorem 2 of \cite{edel2006newapn}
+    \item Let $s$ and $k$ be positive integers with $\gcd(s, 3k) = 1$ and let $t \in\{1, 2\}$, $i = 3 − t$. Let further $a = 2s + 1$ and $b = 2^{ik} + 2^{tk+s}$ and let $\omega = \alpha^{2k}−1$ for a primitive element $\alpha \in\F_{2^{3k}}^* $. If $\gcd(2^{3k}−1, (b−a)/(2^k−1)) \ne \gcd(2^k−1, (b−a)/(2^k−1))$,
+    the function $F : \F_{2^{3k}}\rightarrow \F_{2^{3k}}, x \mapsto x^a + \omega x^b$ is APN in theorem 1 of 
+    \cite{Budaghyan2008twobinomialapn}.
+    \item Let $s$ and $k$ be positive integers such that $s \leq 4 k-1$, $\gcd(k, 2)=\gcd(s, 2 k)=1$, and $i=s k \bmod 4, t=4-i$. Let further $a=2^{s}+1$ and $b=2^{i k}+2^{t k+s}$ and let $\omega=$ $\alpha^{2^{k}-1}$ for a primitive element $\alpha \in \mathbb{F}_{2^{4 k}}^{*}$. Then, the function $F: \mathbb{F}_{2^{4 k}} \rightarrow \mathbb{F}_{2^{4 k}}, x \mapsto x^{a}+\omega x^{b}$ is APN in theorem 2 of 
+    \cite{Budaghyan2008twobinomialapn}.
+    \item Let $k$ and $s$ be odd integers with $\gcd(k, s) = 1$. Let $ b\in\F_{2^{2k}} $ which is not a cube, 
+    $ c\in\F_{2^{2k}}\setminus\F_{2^k} $ and $ r_i\in\F_{2^k} $ for all $ i\in\{1,...,k-1\} $, then the function
+    $ F:\F_{2^{2k}}\rightarrow\F_{2^{2k}},x\mapsto bx^{2^s+1}+b^{2^k}x^{2^{k+s}+x^k+cx^{2^k+1}+\sum_{i=1}^{k-1}r_ix^{2^{i+k}+2^i}} $ is APN in Theorem 1 of \cite{Bracken2008apn}
+    \item Let $k$ and $s$ be positive integers such that $k+s=0 \bmod 3$ and $\gcd(s, 3 k)=\gcd(3, k)=1$. Let further $u \in \mathbb{F}_{2^{3 k}}^{*}$ be primitive and let $v, w \in \mathbb{F}_{2^{k}}$ with $v w \neq 1$. Then, the function
+    $$
+    \begin{aligned}
+    &F: \mathbb{F}_{2^{3 k}} \rightarrow \mathbb{F}_{2^{3 k}} \\
+    &x \mapsto u x^{2^{s}+1}+u^{2^{k}} x^{2^{2 k}+2^{k+s}}+v x^{2^{2 k}+1}+w u^{2^{k}+1} x^{2^{k+s}+2^{s}}
+    \end{aligned}
+    $$
+    is APN in Theorem 2.1 of \cite{bracken2011afewapn}
+    \item 
+\end{enumerate}
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{ref.bib}
+\end{document}
+
+
+{ 
+\newcommand{\ftcmu}{\fontspec{CMU Serif}
+\selectfont} \renewcommand{\bibfont}{\ftcmu}%设置英文字体不影响中文字体 
+\printbibliography[heading=bibliography,title=参考文献]
+}
