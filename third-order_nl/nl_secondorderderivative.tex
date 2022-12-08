@@ -1,0 +1,913 @@
+\documentclass{article}
+\usepackage{fullpage,enumitem,amsthm,amsmath,amssymb,graphicx,empheq}
+\usepackage{physics}
+\usepackage{tcolorbox}
+\usepackage[citecolor=blue]{hyperref}
+\usepackage{tikz}
+\usepackage{cite}
+
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\0}{\textbf{0}}
+\newcommand{\1}{\textbf{1}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\nl}{\mathrm{nl}}
+\newcommand{\TRACE}{\operatorname{Tr}_1^k}
+\newcommand{\TrN}{\operatorname{Tr}_1^n}
+\theoremstyle{plain}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\theoremstyle{nonumberplain}
+
+
+
+\newtheorem{construction}{Construction}
+% \newcommand{\Tr}{\mathrm{Tr}_1^n}
+% \newcommand{\tr}{\mathrm{Tr}_1^k}
+
+\title{ 2022 second-order of simplest \mathcal{PS} bent function}
+
+
+
+
+\begin{document}
+%   \maketitle
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+
+\section{Introduction}
+
+\section{Preliminaries}
+The Walsh transform of $f$ at point $\alpha \in \F_{2^n}$ is defined as
+\begin{equation*}
+    \widehat{f}(\alpha)=\sum_{x \in \F_{2^n}}(-1)^{f(x)+\Tr(\alpha x)}.
+\end{equation*}
+
+
+% \begin{lemma}\label{L:Parsevalrelation}
+% For any $n$-variable Boolean function $f$, we have  $$\sum_{a\in\F_{2^n}}\widehat{f}\;^2(a)=2^{2n}.$$
+% \end{lemma}
+
+% \begin{lemma}\label{L:autoshift}
+% Let $f$ be an arbitrary $n$-variable Boolean function. For any $\alpha,\beta\in\F_{2^n}*$, we have
+% $$\sum_{x\in\F_{2^n}}(-1)^{f(\alpha x)+f(\beta x)}=2^{-n}\sum_{u\in\F_{2^n}}\widehat{f}(\alpha^{-1}u)\widehat{f}(\beta^{-1}u).$$
+% \end{lemma}
+
+\section{The Walsh spectra of the derivatives of the inverse function}
+
+For any integer $n>0$, let us define $I_\nu(x)=\TrN(\nu x^{-1})$ over $\B_n$.
+The Kloosterman sums over $\F_{2^n}$ are defined as
+$\mathcal{K}(a)=\widehat{I_1}(\alpha)=\sum_{x\in\F_{2^n}}(-1)^{\TrN(x^{-1}+\alpha x)}$, where $\alpha\in\F_{2^n}$.
+In fact, the Kloosterman sums are generally defined on the multiplicative
+group $\F_{2^n}^*$. We extend them to $0$ by assuming $(-1)^0=1$.
+%\begin{lemma}[\cite{CarlitzKloo1969}]\label{L:Kloostermansumsone}
+%For any integer $m>0$, $\mathcal{K}(1)=1-\sum_{t=0}^{\lfloor m/2\rfloor}(-1)^{m-t}\frac{m}{m-t}{{m-t}\choose {t}}2^t$.
+%\end{lemma}
+% \begin{lemma}[\cite{LW90}] \label{inverse-nl}
+% For any positive integer $n$ and arbitrary $a\in\F_{2^n}^*$,  the
+% Walsh spectrum of $I_1(x)$ defined on $\F_{2^n}$ can take
+% any value divisible by $4$ in the range
+% $[-2^{{n/2}+1}+1,2^{{n/2}+1}+1]$.
+% \end{lemma}
+
+
+
+
+
+
+
+
+% \begin{lemma}\label{inverse-df}
+%      Let $n\ge 3$ be an integer. Define
+%      $C_{{\mu,\nu}}(\tau)=\sum_{x\in\F_{2^n}}(-1)^{\Tr(\mu x^{-1}+\nu(x+\tau)^{-1})}$,
+%      where $\mu,\nu,\tau\in\F_{2^n}^*$. Then the value of
+%      $C_{{\mu,\nu}}(\tau)$ belongs to $[-2^{{n/2}+1}-3, 2^{{n/2}+1}+1]$ and is divisible by $4$.
+%       More preciously,
+% $$C_{{\mu,\nu}}(\tau)=(-1)^{\Tr(\frac{\mu}{\tau}+\frac{\nu}{\tau})}W_{I_1}\left(\frac{\mu \nu}{\tau^2}\right)-2\Big((-1)^{\Tr(\frac{\mu}{\tau})\Tr(\frac{\nu}{\tau})}-1\Big).$$
+% \end{lemma}
+    \begin{proof} 
+    For any $\mu,\nu,\tau\in\F_{2^n}^*$,
+    we have (still using the convention $\frac 10=0$)
+    \begin{eqnarray*}
+    &&C_{{\mu,\nu}}(\tau)\\
+    &=&\sum_{x\in\F_{2^n}}(-1)^{\TrN(\frac{\mu}{x}+\frac{\nu}{x+\tau})}\\
+    &=&\sum_{x\in\F_{2^n}\setminus\{0,\tau\}}(-1)^{\TrN(\frac{\mu}{x}+\frac{\nu}{x+\tau})}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}\\
+    &=&\sum_{x\in\F_{2^n}\setminus\{0,\tau^{-1}\}}(-1)^{\TrN(\mu x+\frac{\nu x}{1+\tau x})}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}\\
+    &=&\sum_{x\in\F_{2^n}\setminus\{0,\tau^{-1}\}}(-1)^{\TrN(\mu x+\frac{1}{1+\tau x}\cdot\frac{\nu}{\tau}+\frac{\nu}{\tau})}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}\\
+    &=&\sum_{x\in\F_{2^n}\setminus\{0,1\}}(-1)^{\TrN(\frac{\mu x}{\tau}+\frac{\nu}{\tau x}+\frac{\mu}{\tau}+\frac{\nu}{\tau})}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}\\
+    &=&\sum_{x\in\F_{2^n}\setminus\{0,\frac{\tau}{\nu}\}}(-1)^{\TrN(\frac{1}{x}+\frac{\mu \nu}{\tau^2}x)+\TrN(\frac{\mu}{\tau}+\frac{\nu}{\tau})}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}\\
+    &=&\sum_{x\in\F_{2^n}}(-1)^{\TrN(\frac{1}{x}+\frac{\mu \nu}{\tau^2}x)+\TrN(\frac{\mu}{\tau}+\frac{\nu}{\tau})}-
+    (-1)^{\TrN(\frac{\mu}{\tau}+\frac{\nu}{\tau})}-(-1)^{\TrN(0)}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}
+   \end{eqnarray*}
+   where the third, fifth, and sixth identities hold by changing $x$ to ${1\over x}$, ${x+1\over \tau}$, and ${\nu x\over \tau}$ respectively.
+   Note that $-(-1)^{\TrN(\frac{\mu}{\tau}+\frac{\nu}{\tau})}-(-1)^{\TrN(0)}+(-1)^{\TrN(\frac{\mu}{\tau})}+(-1)^{\TrN(\frac{\nu}{\tau})}$
+   equals $0$ or $-4$. According to Lemma~\ref{inverse-nl}, we can see that $C_{{\mu,\nu}}(\tau)$ belongs to $[-2^{{n/2}+1}-3, 2^{{n/2}+1}+1]$ and is divisible by $4$.
+   This finishes the proof.
+   \end{proof}
+
+
+
+%\begin{lemma}\label{L:solution}
+%(Nyberg-Inverse)
+%the solutions of $$\frac1x+\frac{1}{x+\alpha}=\beta$$
+%\end{lemma}
+
+
+
+\subsection{The multiplicative inverse function}
+For any finite field $\F_{2^n}$, the multiplicative inverse function of $\F_{2^n}$, denoted by $I$, is defined as $I(x)=x^{2^n-2}$. In the sequel, we will use $x^{-1}$ or $\frac{1}{x}$ to
+denote $x^{2^n-2}$ with the convention that $x^{-1}=\frac{1}{x}=0$ when $x=0$. We recall that, for any $v \neq 0$, $I_v(x) = \mathrm{Tr}_1^n(vx^{-1})$ is a component function of $I$.
+The Walsh--Hadamard transform of $I_1$ at any point $\alpha$ is commonly known as Kloosterman sum over $\F_{2^n}$ at $\alpha$, which is usually denoted by $\mathcal{K}(\alpha)$,
+i.e., $\mathcal{K}(\alpha)=\widehat{I_1}(\alpha)=\sum_{x\in\F_{2^n}}(-1)^{\mathrm{Tr}_1^n(x^{-1}+\alpha x)}$.
+The original Kloosterman sums are generally defined on the multiplicative group $\F_{2^n}^*$. We extend them to $0$ by assuming $(-1)^0=1$. Regarding the Kloosterman sums,
+the following results are well known and we will use them in the sequel.
+% \begin{lemma}\cite{CarlitzKloo1969}
+% \label{L:Kloostermansumsone}
+% For any integer $n>0$, $\widehat{I_1}(1)=1-\sum_{t=0}^{\lfloor n/2\rfloor}(-1)^{n-t}\frac{n}{n-t}{{n-t}\choose {t}}2^t$.
+% \end{lemma}
+% \begin{lemma}\cite{LW90}
+% \label{inverse-nl}
+% For any positive integer $n$ and arbitrary $a\in\F_{2^n}^*$, the Walsh--Hadamard spectrum of $I_1(x)$ defined on $\F_{2^n}$ can take any value divisible by $4$ in the range
+% $[-2^{{n/2}+1}+1,2^{{n/2}+1}+1]$.
+% \end{lemma}
+% Let $n=2t+1$ be an odd integer and $P$ be the largest positive integer such that $P \equiv 0 \pmod 4$ and $P\leq 2^{t+1}\sqrt{2}+1$.
+% \begin{remark}
+% \label{rem-max-min}
+% The possible maximum absolute value of Walsh--Hadamard spectrum of $I_1$ over $\mathbb F_{2^n}$ is
+% \begin{eqnarray*}
+% \max_{\alpha\in\mathbb F_{2^n}^*}|\widehat{I_1}(\alpha)|=\left\{
+% \begin{array}{llll}
+% 2^{\frac{n}{2}+1}, &\mbox{ if } n \mbox{ is even}\\
+% P, &\mbox{ if } n \mbox{ is odd}
+% \end{array}
+% \right.,
+% \end{eqnarray*}
+% where $P$ is as defined above.
+% \end{remark}
+% \subsection{Basic Lemmas}
+% \begin{lemma}[\cite{MS1977}]\label{L:solutiondegree2}
+% For any $(\alpha,\beta)\in\F_{2^n}^*\times\F_{2^n}$, we define a polynomial
+% $\mu(x)=\alpha x^2+\beta x+\gamma\in\F_{2^n}[x]$.
+% Then the equation $\mu(x)=0$ has 2 solutions if and only if $\mathrm{Tr}_1^n(\beta^{-2}\alpha\gamma)=0$.
+% \end{lemma}
+% \begin{lemma}\label{L:tr0sum}
+% Let $n$ be a positive integer and $T_0=\{\upsilon^2+\upsilon : \upsilon\in\F_{2^n}\}$.
+% Then we have
+% \begin{eqnarray*}
+% \sum_{x\in T_0}(-1)^{\Tr\left(\frac{1}{x+1}\right)}=\frac12(-1)^{n}\widehat{I_1}(1).
+% \end{eqnarray*}
+% \end{lemma}
+
+
+% \begin{lemma}\label{L:rootssum}
+% Let $n$ be a positive integer. We have
+% \begin{eqnarray*}
+% \sum_{\upsilon\in\F_{2^n}\setminus\F_2}(-1)^{\mathrm{Tr}_1^n
+% \left(\frac{{\upsilon}^2}{\upsilon^2+\upsilon+1}\right)}=\sum_{\upsilon\in\F_{2^n}\setminus\F_2}(-1)^{\mathrm{Tr}_1^n\left(\frac{{\upsilon}^2+1}{\upsilon^2+\upsilon+1}\right)}=(-1)^n\left(\widehat{I}_1(1)-2\right).
+% \end{eqnarray*}
+% \end{lemma}
+
+\begin{lemma}\cite{tang2022invfunc}\label{L:SumInv00}
+Let $n\geq 3$ be an arbitrary integer. We define
+$$L=\#\left\{c\in\F_{2^n} : \mathrm{Tr}_1^n\left(\frac{1}{c^2+c+1}\right)=\mathrm{Tr}_1^n\left(\frac{c^2}{c^2+c+1}\right)=0\right\}.$$
+Then we have $L=2^{n-2}+\frac{3}{4}(-1)^n\widehat{I_1}(1)+\frac{1}{2}\left(1-(-1)^n\right)$, where $ \widehat{I_1}(1)=1-\sum_{t=0}^{\lfloor n/2\rfloor}(-1)^{n-t}\frac{n}{n-t}{{n-t}\choose {t}}2^t $.
+% where $\widehat{I_1}(1)$ can be computed using Lemma~\ref{L:Kloostermansumsone}.
+\end{lemma}
+
+Let $F$ be an $(n,m)$-function. For any $\gamma,\eta\in\F_{2^n}$ and
+$\omega\in\F_{2^m}$, let us define
+\begin{equation}
+\label{2nddrivative}
+\mathcal{N}_F(\gamma,\eta,\omega)=\#\left\{x\in\F_{2^n} : F(x)+F(x+\gamma)+F(x+\eta)+F(x+\eta+\gamma)=\omega\right\}.
+\end{equation}
+It is clear that for $\gamma=0$ or $\eta=0$ or $\gamma=\eta$, we have $\mathcal{N}_F(\gamma,\eta,0)=2^n$, and when $\omega\neq 0$, $\mathcal{N}_F(\gamma,\eta,\omega)=0$. If $F$ is the multiplicative inverse function over $\mathbb F_{2^n}$, we denote $\mathcal{N}_I(\gamma,\eta,\omega)$ by $\mathcal{N}(\gamma,\eta,\omega)$.
+
+\begin{lemma}\cite{tang2022invfunc}\label{Secondderivativesolution}
+Let $n\geq 3$ be a positive integer and $\mathcal{N}(\gamma,\eta,\omega)$ be defined as in \eqref{2nddrivative}.
+Let $\gamma,\eta$ be two elements of $\F_{2^n}^*$ such that $\gamma\neq \eta$. Then for any $\omega\in\F_{2^n}$,  we have $\mathcal{N}(\gamma,\eta,\omega)\in \{0,4,8\}$.
+Moreover, the number of $(\gamma,\eta,\omega)\in\F_{2^n}^3$ such that $\mathcal{N}(\gamma,\eta,\omega)=8$ is
+$$\left(2^{n-2}+\frac{3}{4}(-1)^{n}\widehat{I_1}(1)-\frac{5}{2}(-1)^{n}-\frac{3}{2}\right)\left(2^n-1\right).$$
+\end{lemma}
+
+%   \begin{tikzpicture}[
+%     node distance = 5ex,
+%     scale = 3,
+%     thick,
+%     > = latex,
+%     % change the 
+%     z = {(0.35, -0.4)},
+%     edge/.style = {draw, thick, -, black},
+%     sinal/.style = {inner sep = 1pt, thin, opacity = 0.4,
+%       fill = blue, circle, text opacity = 1},
+%     mtx/.style = {
+%   %     matrix of math nodes,
+%       matrix of nodes,
+%       every node/.style = {
+%         anchor = base,
+%         text width = 2em,
+%         text height = 1em,
+%         align = center,
+%       }
+%     },
+%     ]
+
+%     \def\dist{0.1}
+%     \def\cube{
+%         % Vertices. (A,B,C), A x轴  B z轴  C y轴
+        
+        
+%         % \node[left] (v0) at (0,0,0) {$ A $};
+%         % note that command above can construct nodes and label them at the same time, 
+%         % but sometimes you don't need the text, 
+%         % so I just construct the coordinates and then label coordinates 
+%         \coordinate (v0) at (0, 0, 0)  ;
+%         \coordinate (v1) at (0, 1, 0)  ;
+%         \coordinate (v2) at (1, 0, 0)  ;
+%         \coordinate (v3) at (1, 1, 0)  ;
+%         \coordinate (v4) at (0, 0, 1)  ;
+%         \coordinate (v5) at (0, 1, 1)  ;
+%         \coordinate (v6) at (1, 0, 1)  ;
+%         \coordinate (v7) at (1, 1, 1)  ;
+%         \coordinate (v8) at (0, 2, 0)  ;
+%         \coordinate (v9) at (1, 2, 0)  ;
+%         \coordinate (v10) at (0, 2, 1) ;
+%         \coordinate (v11) at (1, 2, 1) ;
+%     }
+%     \begin{scope}[opacity=1] % opacity is the transparent 
+%         \cube{};
+%         % labeling verticals with text A B C at left\right\below\above\below left\below right\above left\above right
+%         \node[left] at (v0) {$ A $};
+%         \node[left] at (v1) {$ B $};
+%         \node[right] at (v2) {$ C $};
+%         \node[above right] at (v3) {$ D $};
+%         \node[left] at (v4) {$ E $};
+%         \node[below left] at (v5) {$ F $};
+%         \node[right] at (v6) {$ G $};
+%         \node[right] at (v7) {$ H $};
+%         \node[left] at (v8) {$ I $};
+%         \node[above right] at (v9) {$ J $};
+%         \node[below left] at (v10) {$ K $};
+%         \node[right] at (v11) {$ L $}; 
+%         % Edges with some differential: alpha gamma beta theta
+%         % arrow with direction from v1 to v0
+
+%         \draw[->] (v2) -- (v3);
+%         \draw[->] (v3) -- (v9);
+%         \draw[->] (v6) -- (v7);
+%         \draw[->] (v7) -- (v11);
+%         % dotted line from v1 to v2 and the middle of line labeled is gamma
+%         \draw[dashed] (v0) -- node[fill = white] {$ \gamma $} (v2) ;
+%         \draw[dashed] (v4) -- node[fill = white] {$ \gamma $} (v6);
+%         \draw[dashed] (v1) -- node[fill = white] {$ \beta $} (v5) -- node[fill = white] {$ \theta $} (v7) -- node[fill = white] {$ \beta $}(v3) -- node[fill = white] {$ \theta $} (v1);
+%         \draw[dashed] (v8) -- node[fill = white] {$ \alpha $}(v10);
+%         \draw[dashed] (v11) -- node[fill = white] {$ \alpha $}(v9);
+%     \end{scope}
+        
+%     \begin{scope}[opacity=0.2]
+%         % the pics in this part are transparent 0.2, 
+%         % if not want this condition, delete the commands.
+%         \draw[<-] (v0) -- (v1);
+%         \draw[<-] (v1) -- (v8);
+%         \draw[<-] (v4) -- (v5);
+%         \draw[<-] (v5) -- (v10);
+%     \end{scope}
+        
+%         % \foreach \i in {0, 1, ..., 11}{ \draw[fill = black] (v\i) circle (0.1pt); }
+%         % } % boomerang attack model
+        
+%         \begin{scope}[]
+%             % 
+%             \coordinate (E0)  at (2, 0-0.4, 0);
+%             \coordinate (E0L) at (2-0.3, 0-0.4, 0);
+%             \coordinate (E0R) at (2+0.15, 0-0.4, 0);
+%             \coordinate (E1)  at (2, 1-0.4, 0);
+%             \coordinate (E1L) at (2-0.3, 1-0.4, 0);
+%             \coordinate (E1R) at (2+0.15, 1-0.4, 0);
+%             \coordinate (E2)  at (2, 2-0.4, 0);
+%             \coordinate (E2L) at (2-0.3, 2-0.4, 0);
+%             \coordinate (E2R) at (2+0.15, 2-0.4, 0);
+%             \draw[->] (E0) -- node[right] {$ E_1^{-1} $} (E1);
+%             \draw[->] (E2) -- node[right] {$ E_0 $} (E1);
+%             % dotted line with transparent 
+%             \draw[dashed,opacity=.5] (E0R) -- (E0) -- (E0L);
+%             \draw[dashed,opacity=.5] (E1R) -- (E1) -- (E1L);
+%             \draw[dashed,opacity=.5] (E2R) -- (E2) -- (E2L);
+%         % \foreach \i in {0, 1, ..., 11}{
+%         %   \node at (v\i) {\i}; 
+%         % }
+%       \end{scope}
+    
+%     \end{tikzpicture}%
+
+    A theorem is introduced for efficiently bounding from below 
+    the nonlinearity profile of a given function when lower bounds exist
+    for the $ (r-1) $-th order nonlinearities of the derivatives of $ f $:
+   \begin{theorem}\cite{C2007book}\label{thm:High_order_nl_bound}
+        Let $ f $ be a $ n $-variable Boolean function, and let $ 0<r<n $ be an integer. We have 
+        \[nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{a\in\F_2^n}nl_{r-1}(D_af)}.\] 
+   \end{theorem}
+  
+\section{The third-order nonlinearity of the simplest $ \mathcal{PS} $ bent function}
+
+    Dillon presented a $ \mathcal{PS} $ bent function class $ f(x,y) $ from $ \F_{2^n}=\F_{2^k}^2 $ 
+    to $ \F_2 $ as 
+    \begin{eqnarray*}\label{Eqn_PS_bent}
+        \mathcal{D}(x,y)=g\left({x\over y}\right)
+    \end{eqnarray*}
+    where $ g $ is a balanced Boolean function on $ \F_{2^{k}} $ with $ g(0)=0 $, 
+    and ${ x\over y }$ is defined to be $ 0 $ if $ y=0 $ 
+    (we shall always assume this kind of convention in the sequel).
+
+    In this paper, our goal is to give a lower bound on the third-order nonlinearity of the simplest 
+    $ \mathcal{PS} $ bent function, \emph{i.e.}
+    \begin{eqnarray}\label{sub-bent}
+        f(x,y)=\TRACE\left(\frac{\lambda x}{y}\right)
+    \end{eqnarray}
+    where $ (x,y)\in\F_{2^k}^2 $, $ \lambda\in\F_{2^k}^{*} $ 
+    and $ \TRACE(x)=\sum\limits_{i=0}^{n-1}x^{2^i} $ is the trace function from
+    $ \F_{2^k} $ to $ \F_2 $.
+
+    \subsection{A lower bound on the third-order nonlinearity of the simplest $ \mathcal{PS} $ bent function}
+
+    Before giving the lower bound of third-order nonlinearity of the simplest $ \mathcal{PS} $ bent function, 
+    We first introduce two useful lemmas that are needed in the sequel.
+
+    % We explictly give the number of solutions of systems of two or three trace functions since  
+    % trace functions are balanced and $ \F_2 $-linear in finite field $ \F_{2^n} $.
+    \begin{lemma}\label{lemma:N_ij_trace}
+        Assume  $ k\ge 3 $, let 
+        \[ N_{i,j} =\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=i,\TRACE\left(\theta_2x+\gamma_2\right)=j\right\}\right\rvert, \]
+        where  $ \gamma_1,\gamma_2\in\F_{2^k} $ and $ \theta_1,\theta_2\in\F_{2^k}^* $ are distinct. Then $ N_{0,0} =2^{k-2} $.
+% 	 N_{0,1}=N_{1,0}=N_{1,1}= 
+    \end{lemma}   
+   
+   \begin{proof}
+    % $ N_{0,0}+N_{0,1}+N_{1,0}+N_{1,1}=2^k $. 
+       We have 
+       \begin{empheq}[left=\empheqbiglbrace]{align*}
+            N_{0,0}+N_{0,1}&=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=0\right\}\right\rvert=2^{k-1}\\
+            N_{1,1}+N_{0,1}&=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_2x+\gamma_2\right)=1\right\}\right\rvert=2^{k-1}, 
+       \end{empheq}
+       then we get $ N_{0,0} = N_{1,1} $. 
+       Besides, $ N_{0,0}+N_{1,1} = \left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left((\theta_1+\theta_2)x+(\gamma_1+\gamma_2)\right)=0\right\}\right\rvert=2^{k-1} $ 
+       since the trace function is balanced if $ \theta_1\ne \theta_2 $ . 
+        Therefore $ N_{0,0}=2^{k-2} $. This completes the proof.
+%    	 and $ N_{0,1}=N_{1,0}=2^{k-2} $.
+   \end{proof}
+   
+  \begin{lemma}\label{lemma:N_ijk_trace}
+     Assume  $ k\ge 3 $, 
+   % Assume $ V_i=\left\{x\in\F_{2^k}\middle| \TRACE\left(\theta_ix+c_i\right)=0 \right\} $ for $ i=1,2,3 $. 
+   % It's obvious that $ \operatorname{dim}_{\F_2}(V_i)=k-1 $ for $ i=1,2,3 $ 
+   % and $ \operatorname{dim}_{\F_2}(V_i\cap V_j)=k-2 $ for $ i\ne j $ 
+   % and $ \operatorname{dim}_{\F_2}(V_1+V_2+V_3)=k $, then we have 
+   % \begin{align*}
+   %     \operatorname{dim}_{\F_2}(V_1\cap V_2\cap V_3)&=\operatorname{dim}_{\F_2}(V_1+V_2+V_3)-\sum_{i=1,2,3}\operatorname{dim}_{\F_2}(V_i)+\sum_{1\le i<j\le 3}\operatorname{dim}_{\F_2}(V_i\cap V_j)+\\
+   %     &=k-3*(k-1)+3*(k-2)\\
+   %     &=k-3.
+   % \end{align*}
+   let 
+   \[ N_{i_1,i_2,i_3}=\left\lvert\left\{x\in\F_{2^k}\middle| \TRACE\left(\theta_1x+\gamma_1\right)=i_1,\TRACE\left(\theta_2x+\gamma_2\right)=i_2,\TRACE\left(\theta_3x+\gamma_3\right)=i_3 \right\} \right\rvert,\] 
+   where  $ \gamma_1,\gamma_2,\gamma_3\in\F_{2^k} $ and $ \theta_1,\theta_2,\theta_3\in\F_{2^k}^* $ are distinct and satisfy 
+   $ \theta_3\ne\theta_1+\theta_2 $. Then $ N_{0,0,0}= 2^{k-3} $.
+    \end{lemma}
+
+    \begin{proof}
+        Using Lemma \ref{lemma:N_ij_trace} we have  
+        \begin{equation}\label{eq:from_lemma_1}\left\{\begin{alignedat}{3}
+        &N_{0,0,0}+N_{0,0,1}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=0, \TRACE\left(\theta_2x+\gamma_2\right)=0\right\}\right\rvert=2^{k-2}\\
+        &N_{0,0,0}+N_{0,1,0}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=0, \TRACE\left(\theta_3x+\gamma_3\right)=0\right\}\right\rvert=2^{k-2}\\
+        &N_{0,0,0}+N_{1,0,0}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_2x+\gamma_2\right)=0, \TRACE\left(\theta_3x+\gamma_3\right)=0\right\}\right\rvert=2^{k-2}.\\
+        \end{alignedat}\right.\end{equation}
+        Thus, $ N_{0,0,1}=N_{0,1,0}=N_{1,0,0} $. With the same reason we can also obtain  $ N_{0,1,1}=N_{1,0,1}=N_{1,1,0} $. 
+
+        Because of $ \theta_1+\theta_2+\theta_3\ne 0 $, we have 
+        \begin{equation}\label{eq:sum_three_trace} \left\{\begin{alignedat}{2}
+            &N_{0,0,1}+N_{0,1,0}+N_{1,0,0}+N_{1,1,1}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\left(\theta_1+\theta_2+\theta_3\right)x+\left(\gamma_1+\gamma_2+\gamma_3\right)\right)=1\right\}\right\rvert=2^{k-1}\\
+            &N_{0,1,1}+N_{1,0,1}+N_{1,1,0}+N_{0,0,0}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\left(\theta_1+\theta_2+\theta_3\right)x+\left(\gamma_1+\gamma_2+\gamma_3\right)\right)=0\right\}\right\rvert=2^{k-1}.
+        \end{alignedat}\right.\end{equation}
+        Combine equations \eqref{eq:sum_three_trace} with $ N_{0,0,1}=N_{0,1,0}=N_{1,0,0} $, $ N_{0,1,1}=N_{1,0,1}=N_{1,1,0} $ and equations  
+        \begin{equation}\label{eq:sum_N_0jk}\left\{\begin{alignedat}{2}
+            &N_{0,0,0}+N_{0,0,1}+N_{0,1,0}+N_{0,1,1}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=0\right\}\right\rvert=2^{k-1}\\
+            &N_{1,0,0}+N_{1,0,1}+N_{1,1,0}+N_{1,1,1}=\left\lvert\left\{x\in\F_{2^k}\middle|\TRACE\left(\theta_1x+\gamma_1\right)=1\right\}\right\rvert=2^{k-1},\\
+        \end{alignedat}\right.\end{equation}
+        we obtain $ N_{0,0,1}=N_{0,1,1} $. 
+        Therefore from equations \eqref{eq:from_lemma_1} and equations \eqref{eq:sum_N_0jk}, the system 
+        \begin{equation}\left\{\begin{alignedat}{2}
+            &N_{0,0,0}+N_{0,0,1}=2^{k-2}\\
+            &N_{0,0,0}+3N_{0,0,1}=2^{k-1} 
+        \end{alignedat}\right.\end{equation}
+        has the solution $ N_{0,0,0}=N_{0,0,1}=2^{k-3} $. This completes the proof.
+    \end{proof}
+
+    \begin{theorem}\label{thm:nl_DaDbf}
+        Let $ k\ge 3 $ be an integer and $ n=2k $. 
+        For the nonlinearity of the second-order derivative of 
+        the simplest $ \mathcal{PS} $ bent function $ f(x,y)=\TRACE(\frac{\lambda x}{y}) $, 
+        we have three cases based on the value of $ \alpha $:
+        \begin{enumerate}[label=(\arabic{*})]
+            \item For every $ \alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k} $ with $ \alpha_2\ne 0 $, 
+            when $ \beta $ ranges over $ \F_{2^n} $, we have 
+            \begin{equation}\label{res:nontrivil_nl}
+                nl(D_{\beta}D_{\alpha}f)=\begin{cases}
+                    2^{2k-1}-2^{k+2},&2^kL\text{~times}\\
+                    2^{2k-1}-2^{k+1},&2^k(2^k-2-L)\text{~times}\\
+                    0,&1\text{~time},%\footnote[1]{This happends if $ \beta=0 $},
+                \end{cases}
+            \end{equation}
+            with $ nl(D_{\beta}D_{\alpha}f)\ge 2^{2k-1}-** $ occuring $ 2^{k+1}-1 $ times.
+            \item For every $ \alpha=(\alpha_1,0)\in\F_{2^k}^*\times\{0\} $, when $ \beta $ ranges over $ \F_{2^n} $, 
+            we have $ nl(D_{\beta}D_{\alpha}f)=0 $ for $ \beta=(\beta_1,0)\in\F_{2^k}\times\{0\} $, 
+            otherwise, $ nl(D_{\beta}D_{\alpha}f)\ge *** $. 
+            \item For $ \alpha=(0,0) $, we have $ nl(D_{\beta}D_{\alpha}f) = 0 $ for all $ \beta\in\F_{2^n} $.
+        \end{enumerate} 
+    \end{theorem}
+
+    \begin{proof}        
+    Let us consider the Walsh transform of the second-order derivative of 
+    $ f(x,y)=\TRACE\left(\frac{\lambda x}{y}\right) $ at the points 
+    $ \alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}^2 $ with $ \lambda\in\F_{2^k}^* $.
+    We have 
+    \begin{align}\label{eq:secondordersum}
+        &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+        =&\sum_{x\in\F_{2^k}}\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda x}{y}+\frac{\lambda (x+\alpha_1)}{y+\alpha_2}+\frac{\lambda (x+\beta_1)}{y+\beta_2}+\frac{\lambda (x+\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\mu x+\nu y\right)}\nonumber\\
+        =&\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}\nonumber\\
+        &\times \sum_{x\in\F_{2^k}}(-1)^{\TRACE\left(\left(\frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}+\mu\right)x\right)}\nonumber\\
+        =&\begin{cases}
+            2^k\sum_{y\in S}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)},&~\text{if}~\frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}=\mu~\text{has solutions}\\
+            0, &~\text{otherwise}, 
+        \end{cases}
+    \end{align}
+    where $ S $ is the set of solutions of equation 
+    \begin{equation}\label{eq:coefficient}
+        \frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}=\mu.
+    \end{equation}
+    % $ \frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}=\mu $.
+
+    Note that  $ nl(D_{\beta}D_{\alpha}f)=2^{2k-1}-\frac{1}{2}\max_{\mu,\nu}\left\lvert W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\rvert\right. $, 
+    we only need to consider $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)| $ for every points $ \alpha,\beta $. 
+    % According to the proof of Lemma \ref{Secondderivativesolution} in \cite{tang2022invfunc}, 
+    % for $ \alpha_2,\beta_2\in\F_{2^k}^* $ such that $ \alpha_2\ne\beta_2 $, 
+    % we can always find some $ \mu\in\F_{2^k} $ such that equation
+    % has at least $ 4 $ solutions. 
+    % Besides, when $ \alpha_2=\beta_2\in\F_{2^k}^* $ or $ \alpha_2=0 $ or $ \beta_2=0 $, 
+    % equation \eqref{eq:coefficient} has $ 2^k $ solutions for $ \mu=0 $.
+    So we only consider $ \left\lvert W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\rvert\right. $ 
+    for some $ \mu $ such that equation \eqref{eq:coefficient} has solutions, since we have 
+    %  $ \max_{\mu,\nu}\left\lvert W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\rvert\right. $ must occur in the case 
+    $ 2^k\left\lvert \sum_{y\in S}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}\right\rvert \ge 0 $.
+    Therefore, two steps are needed for all points 
+    $ \alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}^2 $ with $ \lambda\in\F_{2^k}^* $:  
+    \begin{enumerate}[label=\roman{*})]
+        \item Find all $ (\mu,\nu)\in\F_{2^k}^2 $ such that equation \eqref{eq:coefficient}
+        has solutions.
+        \item Calculate the value $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)| $ among those $ (\mu,\nu) $.
+    \end{enumerate} 
+    
+    So we first give the conditions such that equation \eqref{eq:coefficient} has solutions, 
+    whose proof is analogue to the proof of Lemma 13 in \cite{tang2022invfunc} and we omit it: 
+    \begin{enumerate}[label=\arabic{*})]
+        \item If $ \alpha_2=\beta_2\in\F_{2^k}^* $ or $ \alpha_2=0 $ or $ \beta_2=0 $, 
+        then \eqref{eq:coefficient} has $ 2^k $ solution when $ \mu = 0 $.
+        \item If $ \alpha_2,\beta_2\in\F_{2^k}^* $ such that $ \alpha_2\ne\beta_2 $, then we have: 
+        \begin{enumerate}
+            \item If $ \lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)+\mu(\alpha_2^2\beta_2+\alpha_2\beta_2^2)=0 $, 
+            $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $ are four solutions of \eqref{eq:coefficient}.
+            % \item when $ \mu=0 $, we have \eqref{eq:coefficient} in the form 
+            % \[\frac{\lambda\alpha_2}{y(y+\alpha_2)}+\frac{\lambda\alpha_2}{y(y+\alpha_2)+\alpha_2\beta_2+\beta_2^2}=0.\]
+            % It has solutions only when $ \alpha_2=0 $ or $ \beta_2=0 $ or $ \alpha_2=\beta_2 $, contradiction, so it has 
+            % $ 0 $ solution;
+            \item If $ \mu\ne 0 $, $ \TRACE\left(\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}\right)=0 $ and 
+            % $ \TRACE\left(u\left(\left(\frac{\beta_2}{\alpha_2}\right)^2+\frac{\beta_2}{\alpha_2}\right)\right)=0\Leftrightarrow
+            $ \TRACE\left(\frac{\lambda\beta_2}{\mu\alpha_2(\alpha_2+\beta_2)}\right)=0 $, 
+            $ \{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\} $ are four solutions of \eqref{eq:coefficient}, where $ y_0 $ is a solution of \eqref{eq:coefficient} 
+            and $ y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $. 
+            % $ u $ is the solution of $ t^2+t+\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}=0 $ 
+            % with $ t=\frac{y(y+\alpha_2)}{\alpha_2\beta_2+\beta_2^2} $.
+        \end{enumerate}
+    \end{enumerate} 
+    After finding all $ (\mu,\nu)\in\F_{2^k}^2 $ such that equation \eqref{eq:coefficient} has solutions for every points 
+    $ \alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2) $, we need to calculate maxmial value 
+    $ 2^k\left\lvert \sum_{y\in S}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)} \right\rvert$ 
+    between those $ (\mu,\nu) $.    
+    
+    % Therefore, we divide points $ \alpha,\beta $ into two parts  
+    % owing to the number of solutions of equation \eqref{eq:coefficient}. 
+    
+    \begin{enumerate}[label=\textbf{Case \arabic*}]
+        \item If $ \alpha_2=\beta_2\in\F_{2^k}^* $ or $ \alpha_2=0 $ or $ \beta_2=0 $ 
+    % with $ \mu\ne 0 $, 
+    % then equation \eqref{eq:coefficient} has $ 0 $ solution, then
+    % \[W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=0.\]
+    and $ \mu=0 $, equation \eqref{eq:coefficient} has $ 2^k $ solutions, 
+    which are all elements of $ \F_{2^k} $, 
+    then we have 
+    \begin{equation}\label{eq:case2ksolutions}
+        W_{D_{\beta}D_{\alpha}f}(0,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}.
+    \end{equation}
+
+    % \textbf{CASE.2} ?(nontrivial) If $ \alpha_2=\beta_2 $ or $ \alpha_2=0 $ or $ \beta_2=0 $ with $ \mu=0 $, 
+    % then equation \eqref{eq:coefficient} has $ 2^k $ solutions, we confirm that 
+    % \begin{equation}\label{eq:case2ksolutions}
+    %     W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}.
+    % \end{equation}
+    
+    For the simple cases, if $ \alpha=(\alpha_1,0),\beta=(\beta_1,0)\in\F_{2^k}^*\times\{0\} $ 
+    or $ \alpha=(0,0) $ or $ \beta=(0,0) $, equation \eqref{eq:case2ksolutions} can be transformed into a simple form:
+    \[W_{D_{\beta}D_{\alpha}f}(0,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\nu y\right)}.\]
+    And $ \max_{\nu}|W_{D_{\beta}D_{\alpha}f}(0,\nu)|=|W_{D_{\beta}D_{\alpha}f}(0,0)|=2^{2k} $.
+
+    For other cases we will give the upper bounds of 
+    $ \max_{\nu}|W_{D_{\beta}D_{\alpha}f}(0,\nu)| $: assume 
+    $ \alpha_2=\beta_2\in\F_{2^k}^* $ and $ \alpha_1\ne\beta_1 $, then we have 
+    \[ W_{D_{\beta}D_{\alpha}f}(0,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y}+\nu y\right)}.\]
+
+    % \begin{enumerate}[label=(\arabic{*})]
+    %     \item   If $ \alpha_1=\beta_1 $, then 
+    %     \begin{equation}
+    %         W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\alpha_1}{y+\beta_2}+\nu y\right)}.
+    %     \end{equation}
+    %     \item   If $ \alpha_1=\beta_2=0 $ or $ \alpha_2=\beta_1=0 $, without loss of 
+    %     generality, we assume $ \alpha_1=\beta_2=0 $, then 
+    %     \begin{equation}
+    %         W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda\beta_1}{y+\alpha_2+\beta_2}+\nu y\right)}.
+    %     \end{equation}
+    %     \item   If $ \beta_1=0 $, then 
+    %     \begin{equation}
+    %         W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\alpha_1}{y+\alpha_2+\beta_2}+\nu y\right)}.
+    %     \end{equation}
+    % \end{enumerate}
+    Therefore, in the cases of $ \alpha_2=\beta_2\in\F_{2^k}^* $ or $ \alpha_2=0 $ or $ \beta_2=0 $, 
+    we have the upper bound of the maximial absolute values 
+    \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|\le ***.\]
+
+    
+    % \textbf{CASE.2} If $ \alpha_2\ne\beta_2 $ and $ \alpha_2,\beta_2\in\F_{2^k}^* $, 
+    % we can always  
+    % we confirm \eqref{eq:coefficient} has $ 0 $ solution, then
+    % \[W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=0.\]
+
+
+
+
+
+
+    % \textbf{CASE.2} (trivial) If $ \alpha_2\ne\beta_2 $ and $ \alpha_2,\beta_2\in\F_{2^k}^* $, when $ \mu\ne 0 $, 
+    % $ \lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)+\mu(\alpha_2^2\beta_2+\alpha_2\beta_2^2)\ne 0 $ with $ \TRACE\left(\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}\right)=1 $ or $ \TRACE\left(\frac{\lambda\beta_2}{\mu\alpha_2(\alpha_2+\beta_2)}\right)=1 $, 
+    % then \eqref{eq:coefficient} has $ 0 $ solution, we get 
+    % \[ W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=0. \]
+        \item 
+    % \subsubsection{The case where there are at least four solutions}
+    If $ \alpha_2,\beta_2\in\F_{2^k}^* $ such that $ \alpha_2\ne\beta_2 $ and   
+    $ \mu= \frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2}$, 
+    we are sure that $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $ are solutions of equations \eqref{eq:coefficient}, 
+    then we have two subcases in the following, that is: 
+    \begin{enumerate}[label=\arabic{*})]
+        \item If $ \alpha_2,\beta_2 $ and $ \mu $ satisfy the system 
+        \begin{equation}\label{eq:last_four_solution_condition}\left\{
+            \begin{alignedat}{3}
+                &\mu\ne 0\\
+                &\TRACE\left(\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}\right)=0\\
+                &\TRACE\left(\frac{\lambda\beta_2}{\mu\alpha_2(\alpha_2+\beta_2)}\right)=0,\\
+            \end{alignedat}\right.
+        \end{equation}
+        then $ \{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\} $ are also solutions of equation \eqref{eq:coefficient}, 
+        where $ y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $, 
+        therefore the number of solutions is $ 8 $.
+        \item Otherwise, $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $ are the only $ 4 $ solutions. 
+    \end{enumerate}
+
+
+    So we calculate $ W_{D_{\beta}D_{\alpha}f}(\mu,\nu) $ for some $ (\mu,\nu) $ in two cases.
+    \begin{enumerate}[label=\textbf{Case \Alph{*}},itemindent=*,wide=\parindent]
+        \item 
+        We first consider the case equation \eqref{eq:coefficient} has $ 4 $ solutions 
+        $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $. 
+        Then $ S=\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $ and $ y\in S $, we have 
+    % we confirm that \eqref{eq:coefficient} has $ 4 $ solution, assume $ 4 $ solutions are 
+    % $ S_4=\{y^{\prime},y^{\prime}+\alpha_2,y^{\prime}+\beta_2,y^{\prime}+\alpha_2+\beta_2\} $ 
+    % where $ y^{\prime}=0 $ or  $ y^{\prime}=y_0 $, then we have 
+    % \begin{align}\label{eq:foursolutionsum}
+    %     W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^k&\sum_{y\in S_4}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}\nonumber\\
+    %     =2^k&\left((-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2}+\frac{\lambda\beta_1}{y^{\prime}+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2+\beta_2}+\nu y^{\prime}\right)}+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}}+\frac{\lambda\beta_1}{y^{\prime}+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\beta_2}+\nu (y^{\prime}+\alpha_2)\right)}\right.\nonumber\\
+    %     &\left.+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2+\beta_2}+\frac{\lambda\beta_1}{y^{\prime}}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2}+\nu (y^{\prime}+\beta_2)\right)}
+    %     +(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\beta_2}+\frac{\lambda\beta_1}{y^{\prime}+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}}+\nu (y^{\prime}+\alpha_2+\beta_2)\right)}\right).
+    % \end{align}
+    % We can sum the first and last part of equation \eqref{eq:foursolutionsum} to get 
+    % \begin{align*}
+    %     &(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2}+\frac{\lambda\beta_1}{y^{\prime}+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2+\beta_2}+\nu y^{\prime}\right)}
+    %     +(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\beta_2}+\frac{\lambda\beta_1}{y^{\prime}+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}}+\nu (y^{\prime}+\alpha_2+\beta_2)\right)}\\
+    %     =&(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2}+\frac{\lambda\beta_1}{y^{\prime}+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2+\beta_2}+\nu y^{\prime}\right)}\cdot
+    %     \left[1+(-1)^{\TRACE\left(\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}} \frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2+\beta_2}+\nu (\alpha_2+\beta_2)\right)}\right]\\
+    %     =&(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2}+\frac{\lambda\beta_1}{y^{\prime}+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2+\beta_2}+\nu y^{\prime}\right)}\cdot
+    %     \left[1+(-1)^{\TRACE\left(\mu(\alpha_1+\beta_1)+\nu (\alpha_2+\beta_2)\right)}\right].
+    % \end{align*}
+    % We can also sum the second and third parts of equation \eqref{eq:foursolutionsum} to get
+    % \begin{align*}
+    %     &(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}}+\frac{\lambda\beta_1}{y^{\prime}+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\beta_2}+\nu (y^{\prime}+\alpha_2)\right)}
+    %     +(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}+\alpha_2+\beta_2}+\frac{\lambda\beta_1}{y^{\prime}}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\alpha_2}+\nu (y^{\prime}+\beta_2)\right)}\\
+    %     =&(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y^{\prime}}+\frac{\lambda\beta_1}{y^{\prime}+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y^{\prime}+\beta_2}+\nu (y^{\prime}+\alpha_2)\right)}\cdot
+    %     \left[1+(-1)^{\TRACE\left(\mu(\alpha_1+\beta_1)+\nu (\alpha_2+\beta_2)\right)}\right].
+    % \end{align*}
+    % Then we have 
+    \begin{align}\label{eq:simpleforms_4}
+        &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+        =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\nonumber\\
+        &\cdot
+        \left[(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}+
+        (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y}+\frac{\lambda\beta_1}{y+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\beta_2}+ (y+\alpha_2)\nu\right)}\right]\nonumber\\
+        =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\nonumber\\
+        &\cdot
+        (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}\cdot
+        \left[1+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y}+\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\alpha_1}{y+\beta_2}+\frac{\lambda\alpha_1}{y+\alpha_2+\beta_2}+\nu\alpha_2\right)}\right]\nonumber\\
+        =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+        \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\cdot
+        (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}\nonumber\\
+        =&\begin{cases}
+            2^{k+2}\cdot(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)},&\text{if}~\TRACE\left(\alpha_2\nu+\alpha_1\mu\right)=0 ~
+            \text{and}~\TRACE\left(\beta_2\nu+\beta_1 \mu\right)=0 \\
+            0,~&\text{otherwise}.
+        \end{cases}
+    \end{align}
+    Observing \eqref{eq:simpleforms_4} we can find $ |W_{D_{\beta}D_{\alpha}f}(\mu,\nu)| $ only 
+    has values $ \{0,2^{k+2}\} $. 
+    Furthermore, by Lemma \ref{lemma:N_ij_trace}, 
+    for all $ \alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^* $ such that 
+    $ \alpha_2\ne\beta_2 $ and $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $, 
+    there always exists $ 2^{k-2} $  $ \nu\in\F_{2^k} $ satisfying the system
+    
+        \begin{equation}\label{eq:max_foursolution_condition}\left\{
+        \begin{alignedat}{2}
+            \TRACE\left(\alpha_2\nu+\alpha_1\mu\right)&=0\\
+            \TRACE\left(\beta_2\nu +\beta_1 \mu\right)&=0.
+        \end{alignedat}\right.
+\end{equation}
+    Thus, for all points $ \alpha,\beta\in\F_{2^k}^2 $ with $ \alpha_2,\beta_2\in\F_{2^k}^* $, $ \alpha_2\ne\beta_2 $ 
+    and $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $ 
+    such that don't satisfy equations \eqref{eq:last_four_solution_condition}, we have 
+    \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}.\]
+    
+    % if $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $ are only solutions of equation \eqref{eq:coefficient}, 
+    % we can always 
+    % the values $ \pm 2^{k+2} $, we conclude that $ \TRACE\left(\mu\alpha_1+\nu\alpha_2\right)=0 $ 
+    % and $ \TRACE\left(\mu\beta_1+\nu\beta_2\right)=0 $. 
+
+    \item
+    Next case is that if equation \eqref{eq:coefficient} has $ 8 $ solutions, 
+    that is, $ \alpha_2,\beta_2 $ and $ \mu $ satisfy system \eqref{eq:last_four_solution_condition}. 
+
+    Then we have 
+    \begin{align}
+    &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+        =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+        \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\nonumber\\
+        &\cdot
+        \left[(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right)}+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+ y_0\nu\right)}\right]\nonumber\\
+        =&(-1)^{c_0}2^k\cdot\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+        \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\cdot\left[1+(-1)^{c_0+c_1}\right]\nonumber\\
+        =&\begin{cases}
+            2^{k+3}\cdot(-1)^{c_0},~&\text{if}~ \TRACE\left(\alpha_1\mu+\alpha_2\nu\right)=0 , \TRACE\left(\beta_1\mu+\beta_2\nu\right)=0 ~\text{and}~ c_0+c_1=0\\
+            0,~&\text{otherwise},
+        \end{cases} 
+    \end{align}
+    where $ y_0\notin\{0, \alpha_2, \beta_2, \alpha_2+\beta_2\} $ and 
+    \begin{empheq}[left=\empheqlbrace]{align*}
+        c_0&=\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right)\\
+        c_1&= \TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right).
+    \end{empheq}
+
+    % then equation \eqref{eq:coefficient} has $ 8 $ distinct solutions 
+    % $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2,y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\} $.
+    By Lemma \ref{lemma:N_ijk_trace}, 
+    for all $ \alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^* $ such that 
+    $ \alpha_2\ne\beta_2 $
+    and $ y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $, 
+    there always exists $ 2^{k-3} $ $ \nu\in\F_{2^k} $ satisfying below equations,
+    \begin{empheq}[left=\empheqbiglbrace]{align*}
+        &\TRACE\left(\alpha_2\nu + \alpha_1\mu\right)=0\\
+        &\TRACE\left(\beta_2 \nu + \beta_1\mu \right)=0\\
+        &\TRACE\left(y_0\nu +\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}+\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2} \right)=0.
+    \end{empheq}
+    So we conclude that for all points $ \alpha,\beta $ with $ \alpha_2,\beta_2\in\F_{2^k}^* $ 
+    such that $ \alpha_2\ne\beta_2 $ 
+    and $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $ 
+    satisfying equations \eqref{eq:last_four_solution_condition}, we have 
+    \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+3}.\]
+
+    
+
+    \begin{remark}
+        There must exist some points $ \alpha,\beta $ 
+        such that $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+3} $.
+        Indeed, the conditions $ \alpha_2,\beta_2\in\F_{2^k}^* $, $ \alpha_2\ne\beta_2 $ and $ \mu\ne 0 $ 
+        can tell us $ \mu(\alpha_2^2\beta_2+\alpha_2\beta_2^2)\ne 0 $, 
+        resulting in $ \lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)\ne 0 $, 
+        which implies $ \frac{\beta_2}{\alpha_2}\notin\F_4 $.
+        So take $ \mu=\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)/(\alpha_2^2\beta_2+\alpha_2\beta_2^2) $ 
+        into $ \TRACE\left(\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}\right)=0 $ 
+        and $ \TRACE\left(\frac{\lambda\beta_2}{\mu\alpha_2(\alpha_2+\beta_2)}\right)=0 $ respectively, 
+        we can transform two equations into $ \TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=0 $ 
+        and $ \TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $, 
+        where $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{4} $. 
+        Furthermore, according to Lemma \ref{L:SumInv00}, 
+        the number of $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{4} $ satisfying 
+        $ \TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=0 $ and $ \TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $ 
+        is $ L $, which means that for points $ \alpha=(\alpha_1,\alpha_2)\in\F_{2^k}^2 $ with $ \alpha_2\ne 0 $, there exist 
+        $ L $ $ \beta_2 $ such that $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+3} $. 
+    \end{remark}
+\end{enumerate}
+\item     
+    For every $ \alpha_2,\beta_2\in\F_{2^k}^* $ such that $ \alpha_2\ne\beta_2 $, 
+    there exist some $ \mu $ satifying that $ S=\{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\} $ 
+    are the only $ 4 $ solutions of 
+    equation \eqref{eq:coefficient}, where $ y_0\notin\{0, \alpha_2, \beta_2, \alpha_2+\beta_2\} $. Fortunately, 
+    we don't need to treat with those $ \mu $ since in that case, 
+    the maximal possible value is not greater than the result of Case 1 where equation \eqref{eq:coefficient} has $ 4 $ solutions 
+    $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $, that is, 
+    \[ |W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^k\left\lvert\sum_{y\in S}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}\right\rvert\le 2^{k+2}=|W_{D_{\beta}D_{\alpha}f}(\mu_0,\nu_0)|, \]   
+    where $ \mu_0=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $ 
+    and $ \nu_0 $ satisfy the system \eqref{eq:max_foursolution_condition}. 
+    % are the only four solutions of equation \eqref{eq:coefficient} for some $ \alpha_2,\beta_2 $ and $ \mu $, 
+    % because in the case that $ \{0,\alpha_2,\beta_2, \alpha_2+\beta_2\} $ are only $ 4 $ solutions 
+    % of equation \eqref{eq:coefficient},  
+    % % when $ \{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $,  
+    % That is, 
+    % Note that in the case that $ S=\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\} $, 
+    % $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2} $.
+
+    % So if equation \eqref{eq:coefficient} has only $ 4 $ solutions, 
+    % $ \max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2} $.
+    \end{enumerate}
+    \end{proof}
+        
+    
+
+    % After taking the $ 8 $ solutions into equation \eqref{eq:secondordersum}, we get the summation
+    % \begin{align}\label{eq:case2kplus3}
+    %     &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+    %     =&2^k\left[1+(-1)^{\TRACE\left(\mu(\alpha_1+\beta_1)+\nu (\alpha_2+\beta_2)\right)}\right]\cdot
+    %     \left[1+(-1)^{\TRACE\left(\mu\alpha_1+\nu\alpha_2\right)}\right]\nonumber\\
+    %     &\cdot
+    %     \left[(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right)}+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)}\right]\nonumber\\
+    %     =&(-1)^{c_0}2^k\cdot\left[1+(-1)^{\TRACE\left(\mu(\alpha_1+\beta_1)+\nu (\alpha_2+\beta_2)\right)}\right]\cdot
+    %     \left[1+(-1)^{\TRACE\left(\mu\alpha_1+\nu\alpha_2\right)}\right]\cdot\left[1+(-1)^{c_0+c_1}\right]\nonumber\\
+    %     =&\begin{cases}
+    %         \pm 2^{k+3},~\text{if}~ \TRACE\left(\mu\alpha_1+\nu\alpha_2\right)=0 , \TRACE\left(\mu\beta_1+\nu\beta_2\right)=0 ~\text{and}~ c_0+c_1=0;\\
+    %         0,~\text{otherwise}.
+    %     \end{cases}
+    % \end{align}
+    % where $ c_0=\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right) $ and 
+    % $ c_1= \TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)$.
+
+
+    % If we fix the ratio of $ \beta_2 $ and $ \alpha_2 $: set $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{4} $ which holds $ \TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $, then
+    % we find $ \forall \alpha_1\in\F_{2^k}^* $, 
+    % there always exists $ \beta_1\in\F_{2^k}^* $ s.t. $ W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=\pm 2^{k+3} $, 
+    % besides, we find that only $ \alpha_2,\beta_2,\alpha_1,\beta_1 $ can influence positive or negetive, and for every points 
+    % $ \alpha,\beta $, there are $ 2^{k-3} $ $ \nu $'s leading to $ \pm 2^{k+3} $.
+
+    % Note that $ c_0+c_1=\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}+\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right) $.
+
+    % Therefore we need to determine for every points $ \alpha=(\alpha_1,\alpha_2) $ and $ \beta=(\beta_1,\beta_2) $ 
+    % with $ \gamma = \frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{2^2} $ satisfying 
+    % $ \TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $ 
+    % and $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $,  
+    % whether or not there always exists $ \nu\in\F_{2^k} $ s.t. 
+    % \begin{equation}\label{eq:3trace0}\left\{\begin{alignedat}{3}
+    %     &\TRACE\left(\mu\alpha_1+\nu\alpha_2\right)=0\\ 
+    %     &\TRACE\left(\mu\beta_1+\nu\beta_2\right)=0\\
+    %     &\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}+\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)=0.
+    % \end{alignedat}\right.\end{equation}
+
+    % For every points $ \alpha=(\alpha_1,\alpha_2) $ and $ \beta=(\beta_1,\beta_2) $, equation 
+    % \eqref{eq:3trace0} in fact are three trace functions about $ \nu $ 
+    % with coefficients $ y_0,\alpha_2,\beta_2\in\F_{2^k}^* $ are distinct 
+    % and satifying $ y_0+\alpha_2+\beta_2\ne 0 $. 
+    % since $ \mu $ are fixed once $ \alpha_2,\beta_2 $ are fixed, and 
+    % $ y_0 $ is also fixed since it's one of eight solutions of equation \eqref{eq:coefficient} and equation \eqref{eq:coefficient} is 
+    % determined by $ \lambda,\alpha_2,\beta_2 $ and $ \mu $. 
+    % Thus, using Lemma \ref{lemma:N_ijk_trace}, 
+    % we confirm that equations \eqref{eq:3trace0} have $ 2^{k-3} $ solutions $ \nu\in\F_{2^k} $
+    % for every points $ \alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^* $ and $ \beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^* $ 
+    % with $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{2^2} $ satisfying 
+    % $ \TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $ 
+    % and $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $.
+    
+    % So equation \eqref{eq:case2kplus3} will always have points $ (\mu,\nu) $ leading to values $ \pm 2^{k+3} $ for every points 
+    % $ \alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^* $ and $ \beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^* $ 
+    % with $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{2^2} $ satisfying 
+    % $ \TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0 $. 
+
+    
+    Applying two times Theorem \ref{thm:High_order_nl_bound}, we obtain the relation between the third-order nonlinearity of $ f $ and 
+    the nonlinearity of the second-order derivative of $ f $:
+    \begin{equation}\label{eq:nl3_nlDaDbf}
+        nl_3(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha\in\F_{2^n}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}}.
+    \end{equation} 
+    % Thus we should calculate $ \nl(D_{\beta}D_{\alpha}f) $ for every the points $ \alpha,\beta\in\F_{2^n} $.
+    Therefore, we can give the lower bound of third-order nonlinearity of the simplest $ \mathcal{PS} $ bent function:   
+    \begin{theorem}
+        Let $ k\ge 3 $ be an integer and $ n=2k $. For the third-order nonlinearity of 
+        the simplest $ \mathcal{PS} $ bent function 
+        $ f(x,y)=\TRACE(\frac{\lambda x}{y}) $ with $ x,y\in\F_{2^k} $ and $ \lambda\in\F_{2^k}^* $, we have:
+        \[nl_3(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{A}\]
+        where
+        \begin{align*}
+            A=2^{2n}-.
+        \end{align*}
+        
+        % The low bound of the third-order nonlinearity of the simplest $ \mathcal{PS} $ 
+        % bent function $ f(x,y)=\TRACE(\frac{\lambda x}{y}) $ 
+    \end{theorem}
+    \begin{proof}
+        We have 
+        \begin{align*}
+            nl_3(f)&\ge 2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha\in\F_{2^n}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}}\\
+            &=2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha=(\alpha_1,0)\in\F_{2^k}\times\{0\}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}+\sum_{\substack{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}^2\\\alpha_2\ne 0}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}}\\
+            &\ge 
+            % 2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha_1\in\F_{2^k}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} \nl(D_{\beta}D_{(\alpha_1,0)}f)}+\sum_{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*}\sqrt{2^{2n}-2\sum_{\beta=(\beta_1,\beta_2)\in\F_{2^k}^2} \nl(D_{\beta}D_{\alpha}f)}}
+        \end{align*}
+        where the second sign of inequality comes from Theorem \ref{thm:nl_DaDbf}.
+    \end{proof}
+ 
+    \subsection{Comparison with the known results}
+        Carlet has deduced that the $ r $th-order nonlinearity of an $ (n,n) $ Dillon function is bounded from 
+        below by.... 
+        Therefore, the lower bound on
+        % We give a lower bound 
+    
+    
+    
+   
+
+
+
+
+    % \textbf{Nothing}:
+
+    % We find in that case, $ c_1 $ don't change the value when $ y_0 $ is one of the four solutions such that
+    % \begin{align*}
+    %     c_1=&\TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)\\
+    %     =&\TRACE\left(\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0}+\frac{\lambda(\alpha_1+\beta_1)}{y_0}+\frac{\lambda\alpha_1}{y_0+\beta_2}+\frac{\lambda\beta_1}{y_0+\alpha_2}+\nu y_0\right)\\
+    %     =&\TRACE\left(\mu(\alpha_1+\beta_1)+\frac{\lambda(\alpha_1+\beta_1)}{y_0}+\frac{\lambda\alpha_1}{y_0+\beta_2}+\frac{\lambda\beta_1}{y_0+\alpha_2}+\nu y_0\right)\\
+    %     =&\TRACE\left(\frac{\lambda(\alpha_1+\beta_1)}{y_0}+\frac{\lambda\alpha_1}{y_0+\beta_2}+\frac{\lambda\beta_1}{y_0+\alpha_2}+\nu (y_0+\alpha_2+\beta_2)\right).
+    % \end{align*}
+    % The last equation holds iff both two equations $ \TRACE\left(\mu\alpha_1+\nu\alpha_2\right)=0 $ 
+    % and $ \TRACE\left(\mu\beta_1+\nu\beta_2\right)=0 $ holds.
+
+
+
+    %         % \begin{empheq}[left=\empheqlbrace]{align}
+    %         %     &F_1(\vb*{x})+F_1(\vb*{x}+\vb*{a})=\vb*{b}\label{eq:3-0-1}\\
+    %         %     &f_1(\vb*{x})+f_1(\vb*{x}+\vb*{a})=b_n\label{eq:3-0-2}.
+    %         % \end{empheq}
+    % From the first condition we have $ \mu=\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2} $
+    % and we can subsititute $ \mu $ into the second condition then we have 
+    % \[\TRACE\left(\frac{\lambda\alpha_2}{\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2}\cdot\beta_2(\alpha_2+\beta_2)}\right)=\TRACE\left(\frac{\alpha_2^2}{\alpha_2^2+\beta_2^2+\alpha_2\beta_2}\right)=\TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=0.\]
+    % and 
+    % \[\TRACE\left(\frac{\lambda\beta_2}{\frac{\lambda(\alpha_2^2+\beta_2^2+\alpha_2\beta_2)}{\alpha_2^2\beta_2+\alpha_2\beta_2^2}\cdot\alpha_2(\alpha_2+\beta_2)}\right)=\TRACE\left(\frac{\beta_2^2}{\alpha_2^2+\beta_2^2+\alpha_2\beta_2}\right)=\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0.\]
+    % where $ \gamma=\frac{\beta_2}{\alpha_2}\in\F_{2^k}\setminus\F_{2^2} $ since $ \mu\ne 0 $ and $ \alpha_2\ne\beta_2 $ in condition 1 
+    % means $ \alpha_2^2+\beta_2^2+\alpha_2\beta_2\ne 0 $.
+
+    \bibliographystyle{plain} 
+    \bibliography{mybib}
+
+\end{document}
+
+
+
+% for i in [1..2^5] do
+%     inputvector:=Intseq(i-1,2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~input,(eltvector));
+% end for;
+
+% for i in [1..2^n] do
+%     inputvector:=Intseq(sbox[i],2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~output,(eltvector));
+% end for;
+
+% function newsbox(x)
+%     if x eq 0 then 
+%         return 0; 
+%     end if;
+%     for i in [1..1024] do
+%         if x eq input[i] then
+%             return output[i];
+%         end if;
+%     end for;
+% end function;
+
+
+
+% G:=OrthoTest(newsbox,n);
+% ddtG:=DDTexe(G,n);

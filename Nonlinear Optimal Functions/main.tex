@@ -1,0 +1,318 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage[noadjust]{cite}
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usepackage{soul}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{enumitem,empheq}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{siunitx}
+\usepackage{pifont}
+% \newtheorem{theorem}{Theorem}
+\newcommand{\0}{\textbf{0}}
+\newcommand{\1}{\textbf{1}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\nl}{\mathrm{nl}}
+\newcommand{\Tr}{\mathrm{Tr}_1^n}
+\newcommand{\tr}{\mathrm{tr}_1^k}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbb{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\usepackage{bbding}%characteristic symbol
+\newcommand{\cmark}{\ding{51}}%checkmark 对号
+\newcommand{\xmark}{\ding{55}}%crossmark 错号
+\usetikzlibrary{graphs,quotes}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\makeatletter
+\def\@seccntformat#1{\csname #1ignore\expandafter\endcsname\csname the#1\endcsname\quad}
+\let\sectionignore\@gobbletwo
+\let\latex@numberline\numberline
+\def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
+\makeatother
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}[theorem]
+% \newtheorem{example}{Example}
+% \newtheorem{innercustomthm}{例}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem{remark}{Remark}
+\newtheorem{proof}{Proof}
+\renewcommand{\proof}{\textbf{Proof:}}
+
+\begin{document}
+\pagestyle{plain}
+\title{Construction of Nonlinear Optimal Functions over Finite Fields}
+
+\maketitle
+\section{Introduction}
+
+    Differential analysis and linear analysis are two important symmetric cryptanalysis methods. Resistance to these two kinds of analysis is a problem that designers must consider. Modern block ciphers usually use the iterative structure of simple round functions, and round functions generally include key mixing layer, substitution layer and diffusion layer. This paper mainly focuses on the construction method of diffusion layer. Branch number is a quantitative index to measure the diffusivity of diffusion layer. Combined with the differential (linear) probability of substitution layer, the ability of the whole block cipher to resist differential and linear analysis can be estimated. The larger the branch number, the stronger the ability of block cipher algorithm to resist differential (linear) cryptanalysis. A function is called optimal diffusion function if its branch number reaches the upper bound.
+
+    In 1995, Joan Daemen first proposed a method of constructing optimal linear diffusion function with maximum distance divisible code (MDS)\cite{daemen1995cipher} and successfully applied it to the design of AES algorithm. Since then, many methods for constructing optimal linear diffusion function\cite{youssef1997design,wu2012recursive,sajadieh2015efficient,li2019lightweight} have been put forward. These functions have been widely used in symmetric cryptography algorithm design.
+
+    If an optimal diffusion function is nonlinear at the same time, it will undoubtedly improve the security of the algorithm. At the same time, the use of nonlinear optimal diffusion function makes it possible to omit other nonlinear component in the algorithm, ruducing the implementation circuit cost of the algorithm, especially suitable for the design of lightweight cryptography algorithm. But also because of nonlinear, the research is much more difficult than the linear diffusion function, so far the related research results are very few. Theorem B.1.1 in Appendix B of reference\cite{dawu2003advanced} gives the necessary and sufficient conditions for a (nonlinear) diffusion function to have the maximum difference branch number, and proves that the difference branch number of the optimal diffusion function is equal to the linear branch number, which has strong theoretical value, but no practical construction method is given. In 2005, Alexander Klimov et al gave a method to construct nonlinear optimal diffusion layer based on T function\cite{klimov2005new}, which is the first concrete construction. In 2013, H. Han et al give an example of a nonlinear optimal diffusion function with input 2 output over a finite field\cite{han2013properties}. In 2017, Qu Chengqin proved  There is no linear optimal diffusion function over the ring of integers modulo $2^n$\cite{qu2017A}, and a construction method of 2-input 2-output nonlinear optimal diffusion function is given by using orthogonal latin square. In 2018, Liu Yunwen et al used nonlinear codes to construct nonlinear diffusion functions\cite{liu2018nonlinear}, and designed a class of nonlinear suboptimal diffusion functions based on modular additions. In 2021 reference\cite{shamsabad2021family}, the necessary and sufficient conditions for the 4-input nonlinear optimal diffusion function are given, and a concrete 4-input nonlinear optimal diffusion function is constructed. The existing construction methods are either limited to the simple case of variable number 2, or too complex to have practical value. For example, the implementation complexity of the proposed nonlinear diffusion function in \cite{klimov2005new} is too high. Only part of the component function in nonlinear optimal diffusion function constructed in reference\cite{shamsabad2021family} is nonlinear.
+
+    In this paper, we propose and prove a necessary and sufficient conditions of nonlinear optimal diffusion function based results in reference \cite{shamsabad2021family} , and give  a concrete construction method, which is the first method of constructing nonlinear optimal diffusion function with practical value so far.
+
+    The rest of the paper is organized as follows: Section 2 gives preliminary used throughout the paper. In section 3 a necessary and sufficient conditions is given. We propose a generic construction of a class of nonlinear optimal diffusion function in section 4. Section 5 concludes the paper.
+\section{Preliminary}
+
+    Let $\mathbb{F}_{{q}}$ a finite field with $q$ elements and $\mathbb{F}_q^n$ an extending field of $\mathbb{F}_{{q}}$. 
+    For , $y \in \mathbb{F}_{{q}}$, $x+y$ denotes addition of $x$ and $y, x * y$ denotes the multiplication of $x$ and $y$. 
+    For simplicity, we write $x y$ instead of $x * y$ without causing confusion. 
+    We denote $x-y=x+(-y)$, where $-y$ is additive inverse of $y$. 
+    An element in $\mathbb{F}_q^n$ is represented as a vector $X=$ $\left(x_{1}, x_{2}, \dots, x_{n}\right)$, where $x_{i} \in \mathbb{F}_{{q}}, i=1, \dots, n$. 
+    The Hamming weight of $X$ is defined by $w(X)=$ $w\left(x_{1}, x_{2}, \cdots x_{n}\right)=\#\left\{i \mid x_{i} \neq 0\right\}$, 
+    where $\#\left\{i \mid x_{i} \neq 0\right\}$ means the number of non-zero entry in $\left(x_{1}, x_{2}, \dots x_{n}\right)$.
+
+    For $X=\left(x_{1}, x_{2}, \dots, x_{n}\right), Y=\left(y_{1}, y_{2}, \dots, y_{n}\right) \in \mathbb{F}_q^n$, define function $Y=f(X)$ over $\mathbb{F}_q^n$ as
+    \begin{equation}\label{eq:1}
+        f: \mathbb{F}_q^n \rightarrow \mathbb{F}_q^n:\left(x_{1}, x_{2}, \dots, x_{n}\right) \mapsto\left(y_{1}, y_{2}, \dots, y_{n}\right)
+    \end{equation}
+    Where component functions $y_{i}=f_{i}\left(x_{1}, x_{2}, \dots, x_{n}\right), i=1,2, \dots, n$.
+    The inner product of $X, Y$ is defined as $X \cdot Y=x_{1} y_{1}+x_{2} y_{2}+\cdots+x_{n} y_{n}$. The difference of $X, Y$ is defined as $\Delta=X-Y=\left(x_{1}-y_{1}, x_{2}-y_{2}, \dots, x_{n}-y_{n}\right)$
+    \begin{definition}
+        Let $\mathrm{n}$ be a positive integer, the differential branch number of function $f: \mathbb{F}_q^n \rightarrow\mathbb{F}_q^n, X \mapsto Y=f(X)$ is defined as
+        $$
+        B_{d}(f)=\min _{X, Y \neq X}\{w(X-Y)+w(f(X)-f(Y))\}.
+        $$
+        The linear branch number is defined as
+        $$
+        B_{l}(f)=\min _{x, \alpha, \beta \in \mathbb{F}_{{q}}, \beta \neq 0, \alpha \cdot x=\beta \cdot f(x)}\{w(\alpha)+w(\beta)\}.
+        $$
+        Where "$+$" in the above formula represents the integer addition.
+    \end{definition}
+    For a function $f: \mathbb{F}_q^n \rightarrow \mathbb{F}_q^n$, the upper bound of the differential(linere) branch number is obviously $n+1$. 
+    In general, the difference branch number and the linear branch number of a function are not equal. 
+    When one of them achieves the upper bound they are equal, which is proved in \cite{dawu2003advanced}:
+    \begin{theorem}
+        \cite{dawu2003advanced} A function has the maximum difference branch number if and only if it has the maximum linear branch number.
+    \end{theorem}
+    We call $f:\mathbb{F}_q^n\rightarrow \mathbb{F}_q^n$  optimal diffusion function if its branch number equals to $n+ 1$. 
+    The construction of the first optimal diffusion function based on linear MDS code \cite{daemen1995cipher} in the coding theory. 
+    So it is also commonly called as MDS function in the literature .
+    While constructing a linear optimal diffusion function is very easy, for nonlinear case it is very difficult. 
+    There is no practical methed so far. 
+\section{Conditions for nonlinear optimal diffusion functions}
+    Consider a function $f: \mathbb{F}_{{q}}^{n} \rightarrow \mathbb{F}_{{q}}^{n}$ as follows:
+    \begin{equation}\label{eq:2}
+        f: \mathbb{F}_{{q}}^{n} \rightarrow \mathbb{F}_{{q}}^{n}:\left(x_{1}, x_{2}, \dots, x_{n}\right) \mapsto\left(y_{1}, y_{2}, \dots, y_{n}\right)
+    \end{equation}
+    Where component functions $y_{i}=f_{i}\left(x_{1}, x_{2}, \dots, x_{n}\right), i=1,2, \dots, n.$
+    A necessary and sufficient conditions for nonlinear optimal diffusion function are given in Theorem B.1.1 of \cite{dawu2003advanced} from the point of view of equation. Using a equal expression of
+    (\ref{eq:2}) as:
+    \begin{equation}\label{eq:3}
+        f: \mathbb{F}_{{q}}^{n} \rightarrow \mathbb{F}_{{q}}^{n},\left(x_{1}, x_{2}, \dots, x_{n}\right) \mapsto\left(x_{n+1}, x_{n+2}, \dots, x_{2 n}\right)
+    \end{equation}
+    Consider a partition $\Xi$ of the set $\{1,2, \dots, 2 n\}$ that divides the set of indices in two equally sized subsets $\xi$ and $\overline{\xi}$. Denote the vector with components $x_{i} \in \xi$ by $x_{\xi}$. Define the following set of equations:
+    \begin{equation}\label{eq:4}
+        \left\{\begin{array}{c}
+            \left(x_{1}, x_{2}, \dots, x_{n}\right) \mapsto\left(x_{n+1}, x_{n+2}, \dots, x_{2 n}\right), \\
+            x_{t_{i}}=a_{i}, i \in \xi, a_{i} \in \mathbb{F}_{q} .
+        \end{array}\right.
+    \end{equation}
+    For any partition $\Xi=\xi \sqcup \bar{\xi}, i \in \xi, a_{i} \in \mathbb{F}_{q}$, If all equations in (\ref{eq:4}) have unique solutions, they are the optimal differential diffusion function and vice versa. The following theorem is proved in \cite{dawu2003advanced}:
+    \begin{theorem}
+        \cite{dawu2003advanced}: functions in the form of (\ref{eq:2}) have the maximum number of differential branches, 
+        i.e. $B_{d}(f)=n+1$, iff if any set of equations of form (\ref{eq:4}) has exactly one solution, 
+        whatever the choice of $\xi(\# \xi=n)$ and any $a_{i} \in \mathbb{F}_{q}, i \in \xi$
+    \end{theorem}
+    The authors in \cite{dawu2003advanced} did not give construction method of optimal nonlinear diffusion functions from Theorem 2.
+    It is difficult to determine whether a nonlinear function has the maximum branch number using Theorem 2 because finding the inverse of a nonlinear function is hard. 
+    So this method is not practical. 
+    In the following we will propose a more practical necessary and sufficient conditions of a nonlinear optimal diffusion function. 
+    Based on these conditions we give a method to construct a class of nonlinear optimal functions in generally.
+
+    Let $k$ be an integer, and $0 \leq k \leq n-1$, For any $a_{1}, a_{1}, \dots, a_{k} \in \mathbb{F}_{q}$, we select any $k$ variables and $n-k$ component functions, 
+    say $x_{t_{1}}, x_{t_{2}}, \dots, x_{t_{k}}$ and $y_{s_{1}}, y_{s_{2}}, \dots, y_{s_{n-k}}$. 
+    Let $x_{t_{1}}=$ $a_{1}, x_{t_{2}}=a_{2}, \dots, x_{t_{k}}=a_{k}$. 
+    The function defined by formula (\ref{eq:1}) can be expressed as:
+    \begin{equation}\label{eq:5}
+        \left\{\begin{array}{c}
+            y_{s_{i}}=f_{s_{i}}\left(x_{1}, x_{2}, \dots, x_{n}\right), i=1,2, \dots, n-k \\
+            x_{t_{i}}=a_{i}, i=1,2, \dots, k
+        \end{array}\right.
+    \end{equation}
+    We call (\ref{eq:5}) parameterized function.
+    \begin{theorem}
+        Function in (\ref{eq:1}) is a nonlinear optimal diffusion function iff for any $0 \leq k \leq n-$ 1 , the parameterized function (\ref{eq:5}) is a permutation over $\mathbb{F}_{q}^{n-k}$
+    \end{theorem}
+    \begin{proof}
+        According to Theorem 1, It suffices to show the theorem for differential diffusion function.
+
+        Assume that $f$ is not an optimal diffusion function. 
+        Then there exists a pair of $(\Delta X,\Delta Y)\neq 0$, such that $W(\Delta X)+W(\Delta Y)<n+1$. 
+        Without loss of generality we assume that $ W(\Delta X)=h $
+        and $\Delta X=(\underbrace{\Delta x_{1}, \ldots, \Delta x_{h}}_{h}, \underbrace{0, \ldots, 0}_{n-h}), \Delta Y=(\underbrace{0, \ldots, 0}_{h}, \underbrace{\Delta \mathrm{y}_{h+1}, \ldots, \Delta \mathrm{y}_{n}}_{n-h})$. 
+        For any specified variables $x_{h+1}, \ldots, x_{n}$ and $h$ component functions $f_{i}, i=1,2, \ldots, h$, 
+        there exists a pair of inputs $X=(\underbrace{\mathrm{x}_{1}, \ldots, \mathrm{x}_{h}}_{h}, \underbrace{\mathrm{x}_{h+1}, \ldots, \mathrm{x}_{n}}_{n-h}), X^{\prime}=(\underbrace{\mathrm{x}_{1}-\Delta \mathrm{x}_{1}, \ldots, \mathrm{x}_{h}-\Delta \mathrm{x}_{h}}_{h}, \underbrace{\mathrm{x}_{h+1}, \ldots, \mathrm{x}_{n}}_{m-h})$, 
+        such that the outputs $Y=Y^{\prime}$, where $Y=\left(y_{1}, \dots, y_{h}\right), Y^{\prime}=\left(y_{1}^{\prime}, \dots, y_{h}^{\prime}\right)$. So $\left(y_{1}, \dots, y_{h}\right)=\left(f_{1}, \dots, f_{h}\right)$ is not a permutation on variables $x_{1}, \ldots, x_{h}$. 
+        This contradicts the premise and hence our initial hypothesis is proven to be false. 
+        Therefore, the sufficient conditions are established.
+
+        Conversely, Assume for $0 \leq k \leq n-1$, the function in (\ref{eq:5}) is not a permutation over $\mathbb{F}_{q}^{n-k}$, 
+        then there  exists $ X=(\underbrace{x_{1}, \ldots, x_{n-k}}_{n-k}, \underbrace{x_{n-k+1}, \ldots, x_{n}}_{k}), X^{\prime}=(\underbrace{x_{1}-\Delta x_{1}, \ldots, x_{n-k}-\Delta x_{n-k}}_{n-k}, \underbrace{x_{n-k+1}, \ldots, x_{n}}_{k})$, 
+        and $\Delta X=X-X^{\prime}=(\underbrace{\Delta x_{1}, \ldots, \Delta x_{n-k}}_{n-k}, \underbrace{0, \ldots, 0}_{k}) \neq \mathbf{0}$, 
+        such that $\Delta Y=\left(y_{1}-y_{1}^{\prime}, \ldots, y_{n-k}-y_{n-k}^{\prime}\right)=0$. 
+        This implies that the sum of intput and output differential weight is less than $n$. 
+        This contradicts the prerequisites, and the hypothesis is false. The necessary conditions are proved.
+    \end{proof}
+
+    For function (\ref{eq:1}) there are $\sum_{k=0}^{n-1} q^{k}\left(C_{n}^{n-k}\right)^{2}$ parameterized function with form (\ref{eq:5}), 
+    where $C_{\mathrm{n}}^{n-k}=\frac{n(n-1) \cdots(k+1)}{(n-k)(n-k-1) \cdots 1}$. 
+    From the Theorem 3, We only need check whether each of them is a permutation. 
+    For example, for a $4 \times 4$ function over $\mathbb{F}_{2^{8}}$, 
+    the total number of functions that need to be verified is $\sum_{k=0}^{3} 2^{8 k}\left(C_{4}^{4-k}\right)^{2}=1+2^{12}+9 \times 2^{18}+2^{28}$. 
+    If using Theorem 2 we have to verify $2^{32}$ many $32 \times 32$ functions, which has much more computation compare with theorem 3.
+    Next section we propose a practical construction method of a class of nonlinear optimal diffusion function over finite field.
+\section{A Construction method of nonlinear optimal diffusion function}
+    Consider following vector function $F: \mathbb{F}_{{q}}^n \rightarrow \mathbb{F}_{{q}}^n,\left(x_{1}, \dots, x_{n}\right) \mapsto\left(y_{1}, \dots, y_{n}\right)$ over $\mathbb{F}_{{q}}^n$ :
+    \begin{equation}\label{eq:6}
+        \left\{\begin{array}{c}
+            y_{1}=a_{11} x_{1}+a_{12} x_{2}+\cdots+a_{1 n} x_{n}+f\left(x_{1}+x_{2}+\cdots+x_{n}\right) \\
+            y_{2}=a_{21} x_{1}+a_{22} x_{2}+\cdots+a_{2 n} x_{n}+f\left(x_{1}+x_{2}+\cdots+x_{n}\right) \\
+            \cdots \cdots \\
+            y_{n}=a_{n 1} x_{1}+a_{n 2} x_{2}+\cdots+a_{n n} x_{n}+f\left(x_{1}+x_{2}+\cdots+x_{n}\right)
+        \end{array}\right.
+    \end{equation}
+    Where $a_{i j} \in \mathbb{F}_{{q}}, i, j=1, \dots, n$, and are constants.
+    For simply function (\ref{eq:3}) can be expressed as:
+    $$
+    Y=AX+If.
+    $$
+    Where $Y=\left[\begin{array}{c}y_{1} \\ y_{2} \\ \vdots \\ y_{n}\end{array}\right], A=\left[\begin{array}{ccc}a_{11} & \cdots & a_{1 n} \\ \vdots & \vdots & \vdots \\ a_{n 1} & \cdots & a_{n n}\end{array}\right], I=\left[\begin{array}{c}1 \\ \vdots \\ 1\end{array}\right].$
+    We define $\mathrm{A}_{i}, A_{i}^{\prime}$ matrices obtaining by Replacing the i-th column of the matrix $A$ with unit vector $I$ and vector $Y$ respectively, and define $|A|$ as determinant of matrix $A$. Under the condition $|A| \neq 0$ we can uniquely solve $X$ in the equation (\ref{eq:6}) from $Y$ :
+    \begin{equation}\label{eq:7}
+        x_{i}=-\frac{\left|\mathrm{A}_{i}\right|}{|\mathrm{A}|} f\left(\sum_{i=1}^{n} x_{i}\right)+\frac{\left|A_{i}^{\prime}\right|}{|\mathrm{A}|}, i=1,2, \dots, n,
+    \end{equation}
+    Adding the left and right sides of equation (\ref{eq:7}) we get :
+    \begin{equation}\label{eq:8}
+        \sum_{i=1}^{n} x_{i}=-\frac{\sum_{i=1}^{n}\left|\mathrm{~A}_{i}\right|}{|\mathrm{A}|} f\left(\sum_{i=1}^{n} x_{i}\right)+\frac{\sum_{i=1}^{n}\left|A_{i}^{\prime}\right|}{|\mathrm{A}|}
+    \end{equation}
+    Where symbol $\sum$ represent additions in $\mathbb{F}_{{q}}$.
+    Furthermore we can get $\sum_{i=1}^{n} x_{i}$ from equation (\ref{eq:8}) if certain conditions are met.
+    We distinguish two cases:
+    1) If $\sum_{i=1}^{n}\left|A_{i}\right|=0$, then $\sum_{i=1}^{n} x_{i}=\frac{\sum_{i=1}^{n}\left|A_{i}^{\prime}\right|}{|\mathrm{A}|}$. 
+    Substituting $\sum_{i=1}^{n} x_{i}$ in equation (7) by $ \frac{\sum_{i=1}^{n}\left|A_{i}^{\prime}\right|}{|\mathrm{A}|} $ we get
+    \begin{equation}\label{eq:9}
+        \qquad x_{i}=-\frac{\left|\mathrm{A}_{i}\right|}{|\mathrm{A}|} f\left(\frac{\sum_{i=1}^{n}\left|A_{i}^{\prime}\right|}{|\mathrm{A}|}\right)+\frac{\left|A_{i}^{\prime}\right|}{|\mathrm{A}|}, i=1,2, \dots, n .
+    \end{equation}
+    2) If $\sum_{i=1}^{n}\left|A_{i}\right| \neq 0$, and add a condition that the function
+    \begin{equation}\label{eq:10}
+        \mathrm{y}=x+\frac{\sum_{i=1}^{n}\left|\mathrm{~A}_{i}\right|}{|\mathrm{A}|} f(x)
+    \end{equation}
+    is a permutation over $ \mathbb{F}_q $, then we can obtain a unique solution of (\ref{eq:8}), i.e. 
+    $ \sum_{i=1}^{n}x_i=g\left(\frac{\sum_{i=1}^{n}|A_i^{\prime}|}{|A|}\right) $, where $ g $ is the inverse of 
+    $ y=x+\frac{\sum_{i=1}^{n}|A_i|}{|A|}f(x) $. Substituting it to (\ref{eq:7}) we get:
+    \begin{equation}\label{eq:11}
+        x_i=-\frac{|A_i|}{|A|}f\left(g\left(\frac{\sum_{i=1}^{n}|A_i^{\prime}|}{|A|}\right)\right)+\frac{|A_i^{\prime}|}{|A|}, i=1,2,\dots,n.
+    \end{equation}
+    Therefore, for each $(y_1,y_2,\dots,y_n)\in\mathbb{F}_q^n$, vector function (\ref{eq:6}) has unique inverse $(x_1,x_2,\dots,x_n)$. 
+    Furthermore its expression is given by formula (\ref{eq:9}) or (\ref{eq:11}).
+
+    To sum up, we can get the following theorem:
+    \begin{theorem}
+        The function (\ref{eq:6}) is a permutation over $\mathbb{F}_{{q}}^n$ if the following to conditions hold:
+        \begin{enumerate}[label=\arabic*)]
+            \item $|\mathrm{A}| \neq 0$;
+            \item If $\sum_{i=1}^{n}\left|\mathrm{~A}_{i}\right| \neq 0$, then the function ${y}=x+\frac{\sum_{i=1}^{n}\left|\mathrm{~A}_{i}\right|}{|\mathrm{A}|} f(x)$ is a permutation over $\mathbb{F}_{{q}}$.
+        \end{enumerate}
+    \end{theorem}
+    From theorem 4 , determining whether the function (\ref{eq:3}) is a permutation can be transformed into whether the function (\ref{eq:11}) is a permutation.
+
+    Conditions that function (\ref{eq:3}) is a optimal diffusion can be deduced easily form theorem 3 and theorem 4:
+    \begin{theorem}
+        The function (\ref{eq:3}) is an optimal diffusion function over $\mathbb{F}_{{q}}^{n}$ if the following two conditions hold:
+        \begin{enumerate}[label=\arabic*)]
+            \item For each $k=2,3, \dots n$, the $k \times k$ submatrix of $A$ is nonsingular.
+            \item For each $k=2,3, \dots n$, if $\sum_{i=1}^{n}\left|\mathrm{A}_{i}\right| \neq 0$, 
+        \end{enumerate}
+        then the function ${y}=x+\frac{\sum_{i=1}^{n}\left|\mathrm{A}_{i}\right|}{|\mathrm{A}|} f(x)$ is a permutation over $\mathbb{F}_{{q}}$
+    \end{theorem}
+    \begin{remark}
+        If $\sum_{i=1}^{n}\left|\mathrm{A}_{i}\right| \neq 0$, and $|\mathrm{A}| \neq 0$, 
+        then ${y}=\frac{|\mathrm{A}|}{\sum_{i=1}^{k}\left|\mathrm{A}_{i}\right|} x+f(x)$ is a permutation iff function ${y}=x+\frac{\sum_{i=1}^{n}\left|\mathrm{A}_{i}\right|}{|\mathrm{A}|} f(x)$ is a permutation. 
+        In order to be consistent with the form of orthomorphic permutation\cite{mann1942construction}, we use ${y}=\frac{|\mathrm{A}|}{\sum_{i=1}^{k}\left|\mathrm{A}_{i}\right|} x+f(x)$. 
+        Note when $\frac{|\mathrm{A}|}{\sum_{i=1}^{k}\left|\mathrm{~A}_{i}\right|}=1$, $ {y}=\frac{|\mathrm{A}|}{\sum_{i=1}^{k}\left|\mathrm{A}_{i}\right|} x+f(x)$ is called orthomorphic permutation.
+    \end{remark}
+        
+    It is easy to get example of nonlinear optimal diffusion function with form (\ref{eq:3}) by computer search. 
+    We show two of them here:
+    \begin{example}
+        The function 
+        $$
+        \left(\begin{array}{l}
+        y_{1} \\ y_{2} \\ y_{3} \\y_{4}
+        \end{array}\right)=\mathrm{A}\left(\begin{array}{l}
+        x_{1} \\x_{2} \\x_{3} \\x_{4}
+        \end{array}\right)+\left(\begin{array}{l}
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right)
+        \end{array}\right)
+        $$
+        is nonlinear optimal diffusion function over finite field $\mathbb{F}_{257}$, where
+        $$
+        \begin{gathered}
+        A=\left[\begin{array}{cccc}
+        60 & 212 & 212 & 0 \\
+        212 & 0 & 60 & 212 \\
+        212 & 212 & 0 & 60 \\
+        0 & 60 & 212 & 212
+        \end{array}\right], 
+        f(\mathrm{x})=x^{129}
+        \end{gathered}
+        $$
+    \end{example}
+        \begin{example}
+        Define finite field $\mathbb{F}_{2^{8}}=\mathbb{F}_{2} /\left(x^{8}+x^{4}+x^{3}+x^{2}+1\right)$. Let $w$ be a prime element. The function
+            $$
+        \left(\begin{array}{l}
+        y_{1} \\y_{2} \\y_{3} \\y_{4}
+        \end{array}\right)=\mathrm{A}\left(\begin{array}{l}
+        x_{1} \\x_{2} \\x_{3} \\x_{4}
+        \end{array}\right)+\left(\begin{array}{l}
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right) \\
+        f\left(x_{1}+x_{2}+x_{3}+x_{4}\right)
+        \end{array}\right)
+        $$
+        is nonlinear optimal diffusion function over finite field $\mathbb{F}_{2^{8}}$, where
+        $$
+        \begin{gathered}
+        A=\left[\begin{array}{cccc}
+        w^{19} & w^{91} & w^{145} & w^{19} \\
+        w^{91} & w^{145} & w^{19} & w^{19} \\
+        w^{145} & w^{19} & w^{19} & w^{91} \\
+        w^{19} & w^{19} & w^{91} & w^{145}
+        \end{array}\right], 
+        f(\mathrm{x})=x^{86}+w^{91} x
+        \end{gathered}
+        $$
+    \end{example}
+    \section{Conclusion}
+
+    In this paper, we propose a practical criterion for nonlinear optimal diffusion function. 
+    Using this criterion we construct generally a class of nonlinear optimal diffusion function over finite field. 
+    This is the first practical example of optimal nonlinear diffusion function so far. 
+    These functions can be used in the design of block cipher, stream cipher, hash functions, etc. 
+    It may be used in the construction of nonlinear codes in the field of coding.
+
+    \bibliographystyle{plain}
+    \bibliography{ref.bib}
+\end{document}

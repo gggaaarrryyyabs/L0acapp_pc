@@ -1,0 +1,55 @@
+
+k:=8;
+F<v>:=GF(2,k);
+Z:=Integers();
+lambda:=Random(F);
+function inv(x)
+    return (x eq 0) select 0 else (x^-1);
+end function;
+
+for a1,b1 in F do
+    if a1 eq b1 then continue; end if;
+    // a1:=0;
+    a2_eq_b2_list:=[];
+    // consider a2 = b2 
+    for a2 in F do
+        if a2 eq 0 then continue;end if;
+        seq:=[];
+        // seq is the list of exponential sum of (-1)^tr(f(x)) where f(x)= ...
+        // this is the case a2 = b2
+
+        for nu in F do
+            d:=&+[(-1)^(Z!Trace((y+a2)^(2^k-2)+(y)^(2^k-2)+nu*y)):y in F];
+            if Abs(d) gt 0 then
+                print "d=",d;
+                print "trace(va)=",Trace(nu*a2);
+                print "a1=",a1,"b1=",b1,"a2=b2=",a2,"nu=",nu;
+            end if;
+        end for;
+
+        // this is the case a2 = 0
+        // for nu in F do
+        //     Append(~seq,&+[(-1)^(Z!Trace(lambda*(a1)*inv(y)+lambda*(a1)*inv(y+b2)+nu*y)):y in F]);
+        // end for;
+        // (Max(seq) ge (0-Min(seq))) select Max(seq) else (0-Min(seq));
+        // if Max(seq) ge Abs(Min(seq)) then 
+        //     Append(~a2_eq_b2_list,Max(seq));
+        // else 
+        //     Append(~a2_eq_b2_list,Abs(Min(seq)));
+        // end if;
+        // seq;
+    end for;
+    print "The a1=",a1," b1=",b1;
+    print "When a2=b2 runs over F_{2^k}, we have";   
+    // Max(a2_eq_b2_list);
+    // if Max(a2_eq_b2_list) eq 32 then 
+    // a1,b1;
+    // end if;
+    print "================="; 
+end for;
+
+k   4      5   6     7   8   9   10   11    12
+max [16]   16  [32]  40  64  88  128  176   256?(a1=1,b1=v,a2=b2=v^30)
+[16]大部分情况下都是8, alpha_2遍历 F_{2^4}^*只有一个 alpha_2 有16的结果
+[32]大部分情况下都是24, alpha_2遍历 F_{2^4}^*有少数,几个 alpha_2 有32的结果
+
