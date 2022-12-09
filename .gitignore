@@ -1,0 +1,9 @@
+# ignore all file in excise with .aux/bbl/thm/xdv/out/log/, 
+# in fact they are the intermidate files producted in the compile process of latex.
+*.aux 
+*.bbl
+*.log
+*.out
+*.thm
+*.xdv
+
