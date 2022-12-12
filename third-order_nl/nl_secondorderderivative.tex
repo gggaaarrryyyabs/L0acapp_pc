@@ -44,12 +44,43 @@
 
 
 \section{Introduction}
+    The nonlinearities of Boolean functions are of great interest, for being the most important cryptographic 
+    criteria for the symmetric cryptography, which is 
+    
+    The Boolean functions used in stream ciphers and block ciphers must have high nonlinearities to provide confusion and avoid the fast correlation attack. 
+    
+    Several papers have shown the role of higher-order nonlinearity of Boolean functions against some 
+    cryptanalyses 
+
+    The set $ RM(r,n) $ is another well-known  
+    
+    However, the profile of nonlinearity of Boolean functions 
+
+    For more details, we refer to .
+    Fisrt we recall the notions of the well-known result of 
+
 
 \section{Preliminaries}
-The Walsh transform of $f$ at point $\alpha \in \F_{2^n}$ is defined as
-\begin{equation*}
-    \widehat{f}(\alpha)=\sum_{x \in \F_{2^n}}(-1)^{f(x)+\Tr(\alpha x)}.
-\end{equation*}
+
+    Throughout this work, for $ n\in\Z $, let $ \F_{2^n} $ denote the finite field with $ 2^n $ elements.
+    Every $ n $-dimensional $ \F_2 $-vector space can be equiped with a multiplication and be viewed as 
+    $ \F_{2^n} $. 
+
+    The algebraic degree of the Boolean function $ f $   is defined as 
+    \[\max_{(u_1,...,u_j)|c_{u_1,\dots,u_j}\ne 0}\left( \operatorname{wt}(j_1)+\cdots+\operatorname{wt}(j_t) \right),\]
+    where $ \operatorname{wt}(k) $ denotes the Hamming weight of the binary string of $ k\in\Z $. 
+    Functions with algebraic degree equals to $ 2 $ are always called quadratic functions. 
+
+    Computing the $ r $-th order nonlinearity of a given Boolean function with algebraic
+    degree strictly larger than $ r $ is difficult for $ r > 1 $. 
+    Even the second-order nonlinearity is known only for a few special functions or functions in small 
+    numbers of variables. 
+
+
+    The Walsh transform of $ f $ at point $\alpha \in \F_{2^n}$ is defined as
+    \begin{equation*}
+        \widehat{f}(\alpha)=\sum_{x \in \F_{2^n}}(-1)^{f(x)+\Tr(\alpha x)}.
+    \end{equation*}
 
 
 % \begin{lemma}\label{L:Parsevalrelation}
