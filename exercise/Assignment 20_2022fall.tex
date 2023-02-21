@@ -23,7 +23,7 @@
     \textbf{\Large  } \\
     \textbf{\Large  信息安全的数学基础(1)} \\
     \textbf{\Large  } \\
-    \textbf{\Large  Asignment~20} \\
+    \textbf{\Large  Answer~20} \\
     \textbf{\Large  } \\
     \textbf{\Large 2022年12月19日} \\
   \end{tabular}
@@ -36,11 +36,18 @@
 \subsubsection*{Problem 1}
     将 $ x^3+2x+1\in\Z_3[x] $写成 $ \Z_3 $的某个扩域中的一次因式的乘积.
 
+    解: 设 $ \alpha $ 为 $ x^3+2x+1 $在 $ \Z_3 $某个扩域 $ E $上的根, 那么可以发现, $ (\alpha+1)^3+2(\alpha+1)+1=0 $仍然成立, 所以, 我们有 $ x^3+2x+1=(x-\alpha)(x-(\alpha+1))(x-(\alpha+2)) $.
 \subsubsection*{Problem 2}
     求 $ x^4-x^2+1 $在 $ \Z_3 $上的分裂域.
 
+    解: 有 $ x^4-x^2+1=x^4+2x^2+1=(x^2+1)^2 $, 故其分裂域使 $ x^2+1 $ 可以分解, 显然有 $ x^2+1=(x+\mathrm{i})(x-\mathrm{i}) $, 则分裂域为 $ \Z_3[\mathrm{i}] $.
+
 \subsubsection*{Problem 3}
     求 $ f(x)=x^3+x+1 $在 $ \Z_2 $上的分裂域, 并将 $ f(x) $在该分裂域上分解为一次因式的乘积. 
+    
+    解: 显然 $ f(x) $在 $ \Z_2 $上是不可约的, 设 $ \alpha $ 为 $ x^3+x+1 $在 $ \Z_3 $某个扩域 $ E $上的根, 那么 $ \alpha^2 $也是 $ f(x)=0 $的根: $ f(\alpha^2)=\alpha^6+\alpha^2+1=(\alpha^3+\alpha+1)^2=0 $, 同理 $ \alpha^4 $ 也是根. 同时 $ \alpha,\alpha^2 $和 $ \alpha^4 $均不相同, 所以 $ f(x) $在 $ \Z_2 $上的分裂域为 $ \Z_2(\alpha) $, 此外, 可以根据 $ \alpha^3+\alpha+1=0 $得到 $ \Z_2(\alpha)\cong\F_{2^3} $.
+
+
     
 \end{document}
 
