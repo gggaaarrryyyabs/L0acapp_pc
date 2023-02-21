@@ -7,7 +7,7 @@
 *.thm
 *.xdv
 *.bcf
-*.synctex.gz
+*.gz
 *.run.xml
 
 # add other files that git will ignore
