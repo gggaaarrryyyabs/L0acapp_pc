@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{ctexbook}
+\documentclass[8pt,oneside]{article}
 \usepackage{amsmath,amssymb}
 \usepackage{bm}
 \usepackage{xcolor}
@@ -6,7 +6,7 @@
 \usepackage{tikz-cd}
 \usepackage{forest}
 \usepackage{soul}
-\usepackage[colorlinks=true]{hyperref}
+\usepackage[colorlinks=true,citecolor=blue]{hyperref}
 \usepackage{enumitem,empheq}
 \usepackage{booktabs}
 \usepackage{rotating,tabularx}
@@ -42,12 +42,13 @@
 \def\numberline#1{\if\relax#1\relax\else\latex@numberline{#1}\fi}
 \makeatother
 
-\newtheorem{theorem}{定理}
-\newtheorem{corollary}{推论}[theorem]
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
 % \newtheorem{example}{例}
-\newtheorem{innercustomthm}{例}
+\newtheorem{innercustomthm}{Example}
 \newtheorem{example}{Example}[subsection]
-\newtheorem{lemma}{引理}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
 \newtheorem{remark}{Remark}
 \newtheorem{proof}{Proof}
 \renewcommand{\proof}{\textbf{Proof:}}
@@ -57,7 +58,7 @@
 
 
 \begin{proof}
-    没序号的
+    no 
 \end{proof}
 
 
@@ -76,7 +77,7 @@
         &P_k(x)=P_{k-1}(x)+x^{2^{k-3}}P_{k-2}(x).
     \end{align*}
 
-\section{McEliece's book\cite{mceliece2012finite}}
+\section{Number Theory\cite{mceliece2012finite}}
     \begin{lemma}
         For $ 1\leq e\leq m $,
         \begin{empheq}[left={\gcd (2^e+1,2^m-1)=\empheqlbrace}]{align*}
@@ -86,59 +87,59 @@
     \end{lemma}
     \noindent\rule{\linewidth}{0.4pt}
 
-\section{AES硬件加速的实现方法}
-    下面给出 $ A=a_0 Y+a_1 Y^{16}\in\F_{2^8} $的取逆操作，其中$a_0,a_1\in\F_{2^4} $:
+\section{AES Acceleration}
+    Now we give the process of inversion of $ A=a_0 Y+a_1 Y^{16}\in\F_{2^8} $, where $ a_0,a_1\in\F_{2^4} $: 
     \begin{enumerate}
-        \item 设$ (W,W^2) $是$ \F_{2^2} $ 的基，$(Z^2,Z^8) $ 是 $ \F_{2^4} $ 的基，$ (Y,Y^{16} ) $是 $ \F_{2^8} $的基。
-        \item 计算A的逆元素的方法是: $A^{-1}=(AA^{16} )^{-1}A^{16}=((a_0+a_1 )^2 WZ+a_0 a_1 )^{-1}(a_1 Y+a_0 Y^{16}) $
+        \item Assume $ (W,W^2) $ to be the basis of $ \F_{2^2} $, $(Z^2,Z^8) $ to be the basis of $ \F_{2^4} $, and 
+        $ (Y,Y^{16} ) $ the basis of $ \F_{2^8} $.
+        \item The method to calculate the inversion of $ A $ is $ A^{-1}=(AA^{16} )^{-1}A^{16}=((a_0+a_1 )^2 WZ+a_0 a_1 )^{-1}(a_1 Y+a_0 Y^{16}) $.
     \end{enumerate}
 
-    算法思想：这里需要计算的有 $ T_1=(a_0+a_1);T_2=(WZ) (T_1 )^2;T_3=a_0 a_1;T_4=T_2+T_3;T_5=(T_4 )^{-1};T_6=T_5 a_1;T_7=T_5 a_0 $. 所有的操作都是在 $\F_{2^4} $上，所以等同于对长度为 $4$ 的向量进行操作。
+    The idea in the method: We need to obtain the results of $ T_1=(a_0+a_1);T_2=(WZ) (T_1 )^2;T_3=a_0 a_1;T_4=T_2+T_3;T_5=(T_4 )^{-1};T_6=T_5 a_1;T_7=T_5 a_0 $. 
+    Note that all the calculation is based on $ \F_{2^4} $, which implies we acts on the vectors of length $ 4 $.
     \begin{enumerate}
-        \item $T_1$和$T_4$是向量加法；
-        \item $T_2$是标量乘法，使用变换矩阵$P=\begin{bmatrix}
+        \item $ T_1 $ and $ T_4 $ are vectorial addition.
+        \item $ T_2 $ is the scalar  multiplication, using the matrix $ P=\begin{bmatrix}
             0 &1 &0 &1\\
             1 &0 &1 &0\\
             1 &1 &0 &0\\
             0 &1 &0 &0
-        \end{bmatrix}$即可；
-        \item $T_3, T_6$和$T_7$是向量乘法，需要定义向量乘法$z=x\star y$，具体操作如下页所示；
-        \item $T_5$ 是有限域取逆操作的硬件实现，具体操作如下页所示。
+        \end{bmatrix} $.
+        \item $ T_3, T_6 $ and $ T_7 $ are vectorial multiplication, 
+        and we need to define vectorial multiplication $ z=x\star y $ in the following. 
+        \item $ T_5 $ is the inversion over finite field in hardware, and the inversion is showed in below.
     \end{enumerate}
 
-    向量乘法$z=(z_0,z_1,z_2,z_3 )=x\star y=(x_0,x_1,x_2,x_3 )\star (y_0,y_1,y_2,y_3 )$结果如下：
-
-    
-
+    Vectorial multiplication: $ z=(z_0,z_1,z_2,z_3 )=x\star y=(x_0,x_1,x_2,x_3 )\star (y_0,y_1,y_2,y_3 ) $: 
     \begin{align*}
         z_0&=x_1 y_1+(x_0+x_2 )(y_0+y_2 )+x_3 y_2+x_2 y_3+x_0 y_3+x_3 y_0+x_1 y_2+x_2 y_1\\
         z_1&=x_0 y_0+(x_0+x_2 )(y_0+y_2 )+x_0 y_1+x_1 y_0+(x_1+x_3 )(y_1+y_3 )\\
         z_2&=x_3 y_3+(x_0+x_2 )(y_0+y_2 )+x_0 y_1+x_1 y_0+x_0 y_3+x_3 y_0+x_1 y_2+x_2 y_1\\
-        z_3&=x_2 y_2+(x_0+x_2 )(y_0+y_2 )+x_3 y_2+x_2 y_3+(x_1+x_3 )(y_1+y_3 )\\
+        z_3&=x_2 y_2+(x_0+x_2 )(y_0+y_2 )+x_3 y_2+x_2 y_3+(x_1+x_3 )(y_1+y_3 ),\\
     \end{align*}
-    可以暂时优化一下, 得到$10$次乘法的结果
+    after some calculation, we have another form of $ 10 $ multiplication, 
     \begin{empheq}{align*}
         z_0&=(x_1 +x_2)(y_1+y_2) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +(x_0 +x_3)(y_0 +y_3) +x_0 y_0\\
         z_1&=(x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) +x_1 y_1\\
         z_2&=(x_0 +x_3)(y_0+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1)(y_0+y_1) +(x_1 +x_2)(y_1 +y_2) +x_2 y_2\\
-        z_3&=(x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +x_3 y_3
+        z_3&=(x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) +x_3 y_3.
     \end{empheq}
-        取逆操作$ y=(y_0,y_1,y_2,y_3 )=x^{-1}= (x_0,x_1,x_2,x_3 )^{-1}$ 结果如下(直观上看着是$8$次乘法)：
+    Inversion: $ y=(y_0,y_1,y_2,y_3 )=x^{-1}= (x_0,x_1,x_2,x_3 )^{-1}$ has $ 8 $ multiplication: 
     \begin{empheq}[left=\empheqlbrace]{align*}
         -y_0&=x_1 x_2 x_3+x_0 x_2+x_1 x_2+x_2+x_3\\
         -y_1&=x_0 x_2 x_3+x_0 x_2+x_1 x_2+x_1 x_3+x_3\\
         -y_2&=x_1 x_0 x_3+x_0 x_2+x_0 x_3+x_0+x_1\\
         -y_3&=x_1 x_2 x_0+x_0 x_2+x_0 x_3+x_1 x_3+x_1
     \end{empheq}
-    注意可以使用复用来减少乘法的次数($5$次乘法)
+    The reuseness of some intermediate variables can decrease the times of multiplication ($ 5 $ multiplication): 
     \begin{empheq}[left=\empheqlbrace]{align*}
         -\mathbin{\color{blue}y_1}&=(\mathbin{\color{red}x_0 x_2} +x_1)(x_2 +x_3) +x_3\\
         -\mathbin{\color{green}y_3}&=(\mathbin{\color{red}x_0 x_2} +x_3)(x_0 +x_1) +x_1\\
         -y_0&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{blue}y_1})x_3 +\mathbin{\color{blue}y_1} +x_2+x_3\\
-        -y_2&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{green}y_3})x_3 +\mathbin{\color{green}y_3} +x_0+x_1
+        -y_2&=(\mathbin{\color{red}x_0 x_2} +\mathbin{\color{green}y_3})x_3 +\mathbin{\color{green}y_3} +x_0+x_1.
     \end{empheq}
 
-    现在寻求能不能继续减少乘法的数量：先尝试把所有的 $ T_i $表示出来吧.
+    List all $ T_i $: 
     \[a_0=\begin{pmatrix}
         x_0\\x_1\\x_2\\x_3
     \end{pmatrix},a_1=\begin{pmatrix}
@@ -162,8 +163,7 @@
         (x_0 +x_3)(y_0+y_3) +(x_0+x_2)(y_0+y_2) +(x_0 +x_1+1)(y_0+y_1+1) +(x_1 +x_2)(y_1 +y_2) +x_2 y_2+1\\
         (x_1 +x_3)(y_1+y_3) +(x_0+x_2)(y_0+y_2) +(x_2 +x_3)(y_2+y_3) + x_3  y_3+x_1+y_1
     \end{pmatrix}\]
-    感觉看着就不大行, 不大能继续化简的样子
-
+    Difficult
     \noindent\rule{\linewidth}{0.4pt}
 
     Lylia APN function\cite{Budaghyan2005}
@@ -353,7 +353,7 @@
     }
     \end{remark}
 
-\section{APN functions}
+\section{APN Functions}
     Until now, only a single instance of an APN permutation in even dimension is known, namely for $ n = 6 $\cite{Browning2010sixbitAPN}: 
     \[K:\F_{2^6}\rightarrow\F_{2^6},\quad x\mapsto x^3+x^{10}+gx^{24},\]
     where $ g $ is an element in $ \F_{2^6}^* $ with minimal polynomial $ X^6+X^4+X^3 + X + 1\in \F_2[X] $. 
@@ -530,14 +530,55 @@
     Note that $ y\in\F_{2^{2m}} $ can be decomposed by Trace-$ 0 $/Trace-$ 1 $ Decomposition, then $ y=xg $,  
     where $ g\in\mathcal{T} $, can hold this property.
 
-\section{Nonlinearity}
+\section{Nonlinearity Profile}
+    Only Iwata and Kurosawa gave a class of Boolean functions with higher order nonlinearities in \cite{IwataK1999highorderbentfunction} before 2008. 
+    In 2008, Carlet\cite{Carlet2008lowbound_NL_profile} gives two lower bounds for the nonlinearity profile of a Boolean function 
+    by the nonlinearity profiles of its derivatives, along with nonlinearity profile of Maiorana-McFarland, Welch, Kasami and Inverse functions.
+    In 2009, Sun and Wu deduce the lower bounds of the second-order nonlinearity of three classes of Boolean functions, 
+    all of three have high nonlinearity\cite{SunW2009NL_2}. 
+    Meanwhile, Sarkar and Gangopadhyay determine a lower bound 
+    of the second-order nonlinearity of a new class of cubic Maiorana-McFarland bent functions\cite{SarkarG2009NL_2MM}. 
+    Next year, Gangopadhyay et al. deduce the lower bounds of the second order nonlinearity of two types of Boolean functions\cite{GangopadhyayST2010NL_2}. 
+    In the same year, Gode and Gangopadhyay obtain a lower bound of the third-order nonlinearities of 
+    Kasami functions $ \operatorname{tr}_1^n(\mu x^{57}) $\cite{GodeG2010NL_3Kasami}, the lower bound is sharper than 
+    those obtained by Carlet in \cite{Carlet2008lowbound_NL_profile}. Then in 2012, Garg and Khalyavin give tighten 
+    bounds on the nonlinearity profile of Kasami functions\cite{GargK2012NLr_Kasami}. 
+    Then in \cite{SunW2011NL_2}, Sun and Wu give a lower bound of the second-order nonlinearity of a class of Boolean functions. 
+    And in 2011, Singh presents lower bounds of two classes of Boolean functions with high nonlinearities\cite{Singh2011NL_2}. 
+    At the same time, Carlet\cite{Carlet2011NL_Profile_Dillon} deduces the nonlinearity profile of the simplest 
+    Dillon's Partial Spread bent functions. 
+    Tang, Carlet and Tang\cite{TangCT2013NL_2bent} improve the lower bounds in \cite{Carlet2011NL_Profile_Dillon} 
+    and obtain nonlinearity profile of a class of Maiorana-McFarland bent functions in 2013. 
+    And Li, Hu and Gao obtain a lower bounds on the second order nonlinearity of cubic monomial Boolean functions\cite{LiHG11BNL_2}, which are better than the existing ones\cite{GodeG2009NL_2_cubicmonomial}.
+    In the next year, Singh deduce the lower bounds on the third-order nonlinearities of two classes of 
+    biquadratic monomial Boolean functions over finite fields\cite{Singh2014NL_3_biquadratic}. 
+    Note that Sun and Wu firstly give the higher-order nonlinearities of Niho type Boolean functions\cite{SunW2015NLr_Niho} in 2015. 
+    In 2016, Wang and Tan deduce a lower bounds on the nonlinearities of a special class of Boolean functions\cite{WangT2016NL_2}. 
+    In 2017, Singh and Paul deduce the lower bounds on the second-order nonlinearities of a class of 
+    Boolean functions, and obtain lower bounds on 4th order nonlinearity of $ 10 $-variable monomial Partial Spreads 
+    $ \phi(x)=\operatorname{tr}_1^{10}(\lambda x^{2^5-1}) $ where $ \lambda\in\F_{2^{10}}^* $\cite{SinghP2017NL_2_4}. 
+    At the same year, Gao and Tang propose a systematic approach for the lower bounds on the second-order nonlinearity of 
+    Maiorana-McFarland bent functions\cite{GaoT2017NL_2_MM}. 
+    In 2019, Tang et al.\cite{TangYZZ2020NL_2bent} completely determine the distributions of the nonlinearities of 
+    the derivatives of a class of bent functions, and present a new lower bound on the second-order nonlinearity of 
+    this class of bent functions, which is better than the previous one. 
+    In 2020, Tang, Mandal and Maitra\cite{TangMM2022inversefunction} derive cryptographic properties of 
+    the multiplicative inverse functions, and give the bounds related to their nonlinearity profile. 
+    At the same year, Yan and Tang improve the lower bounds on the second-order nonlinearity of three classes of Boolean functions\cite{YanT2020NL_2}. 
+    And Liu\cite{Liu2023NL_2} provide the tight lower bounds on the second-order nonlinearity of 
+    three classes of Boolean functions with high nonlinearities. 
+    Meanwhile, Sihem, Kwang and Myong\cite{MesnagerKJ2020NL_2cubic} investigate an upper bound 
+    on the number of the rational zeros of any linearized polynomial over arbitary finite field, 
+    and get tighter estimations of the lower bounds on the second-order nonlinearities of general cubic Boolean functions. 
+    In 2022, Singh et al. provide the lower bounds on 4th order nonlinearity of two classes of Boolean functions 
+    of degree $ 5 $\cite{SinghPKSV2022res_NL_profile}. 
+    Meanwhile, Saini and Garg\cite{SainiG2022NL_r_Niho} present a lower bound on the $ \frac{m}{2} $th-order nonlinearity of a class of 
+    bent Boolean function constructed by Dobbertin et al.\cite{DobbertinLCCFG2006bent_Niho}, and the lower bounds 
+    are better than the results in \cite{GodeG2009NL_2_cubicmonomial,GodeG2010NL_3Kasami,Singh2014NL_3_biquadratic}. 
+    While, Gode, Faruqi and Mishra\cite{GodeFM2022NL_2cubic} obtain improved lower bounds on the second-order 
+    nonlinearities of few classes of degree $ 3 $ monomial Boolean functions for $ 7\le n\le 13 $, compared with 
+    the lower bounds in \cite{GodeG2009NL_2_cubicmonomial,LiHG11BNL_2,MesnagerKJ2020NL_2cubic}.
 
-    In \cite{dobbertin2006niho_dickson_kloosterman}, Dobbertin et al. studied the cross-correlation function between two 
-    $ m $-sequences for Niho type decimation $ d=(2^k-1)s+1 $. 
-    They derived the distribution of six-valued cross-correlation function for $ s=3 $ and odd $ k $. 
-
-    Carlet\cite{Carlet2008lowbound_NL_profile} gives two lower bounds for the nonlinearity profile of a Boolean function 
-    by the nonlinearity profiles of its derivatives: 
     \begin{theorem}\label{TH:NL_onederivate}
         Let $f$ be any $ n $-variable function and $ r $ a positive integer smaller than $ n $. We have:
         \[nl_r(f)\ge\frac{1}{2}\max_{a\in\F_{2^n}nl_{r-1}(D_af)}.\]
@@ -553,17 +594,185 @@
     \begin{remark}
         It's not clear whether Theorem \ref{TH:NL_allderivates} is always better than theorem \ref{TH:NL_onederivate}.
     \end{remark}
-
+    
+    In \cite{dobbertin2006niho_dickson_kloosterman}, Dobbertin et al. studied the cross-correlation function between two 
+    $ m $-sequences for Niho type decimation $ d=(2^k-1)s+1 $. 
+    They derived the distribution of six-valued cross-correlation function for $ s=3 $ and odd $ k $. 
+    
 \section{APN decomposition}
-    The decomposition \cite{BeierleCLP2022ninebitAPNpermutation_error} we introduced 
-    is based on the TU-decomposition, before investigating this pattern, we first need the notion of Walsh zeros.
-    \textbf{definition}
-        Let $ \mathcal{V} $ and $ \mathcal{W} $  be finite-dimensional $\F_2 $-vector spaces. 
+    The decomposition \cite{BeierleCLP2022ninebitAPNpermutation_error} we introduced here
+    is based on the TU-decomposition, but before investigating this pattern, we first need the notion of Walsh zeros.
+    \begin{definition}
+        Let $ \mathcal{V} $ and $ \mathcal{W} $  be finite-dimensional $\F_2 $-vector spaces, 
+        with $ \dim_{\mathcal{V}}=n,\dim_{\mathcal{V}}=m $, respectively. 
         The Walsh zeroes of a function $ F : \mathcal{V}\rightarrow \mathcal{W} $, denoted by $ \mathcal{Z}_F $, 
-        is the set of the coordinates of the zeroes in its Walsh spectrum together with $ (0, 0) $, i.e. 
+        is the set of the coordinates of the zeroes in its Walsh spectrum together with $ (0, 0) $, i.e.,
         \[\mathcal{Z}_F=\left\{ (a,b)\in\mathcal{V}\times\mathcal{W}\mid W_F(a,b)=0 \right\}\cup\left\{ (0,0) \right\}.\]
-    Note that Walsh zeros of a vectorial Boolean function must contain $ \left\{ (0,x):x\in\mathcal{W} \right\} $.
+    \end{definition}
+    Note that Walsh zeros of a vBF must contain $ \left\{ (0,x):x\in\mathcal{V} \right\} $, so discussing Walsh zeros 
+    is valid for all vBF. 
+    
+    For two functions $ F $ and $ G $ mapping from $ \F_2^n $ to $ \F_2^m $, 
+    if $ \Gamma_G=\mathcal{A}(\Gamma_F) $ for some affine permutation $ \mathcal{A} $ of $ \F_2^{n+m} $, 
+    then $ \mathcal{Z}_G=(\mathcal{L}^T)^{-1}(\mathcal{Z}_F) $, where $ \mathcal{L} $ is the linear part of $ \mathcal{A} $. 
+    Thus, there exists a linear subspace $ V $ of $ \mathcal{Z}_G $ with dimension $ n $, 
+    such that $ \mathcal{L}^T(V)=\left\{ (0,x):x\in\mathcal{V} \right\} $. 
+    Therefore, we have 
+    
+\section{Give the upper bounds of the value of sum}
 
-    \bibliographystyle{plain}
+    \begin{lemma}\label{L:genus_K_F}\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}
+        Let $ K=F(X,Y) $, where $ X,Y $ are transcendentals over $ F $. 
+        Then the genus $ g $ of the function field $ K/F $ satisfies: 
+        \[g\le ([K : F(X)] - 1)([K : F(Y)] - 1).\]
+    \end{lemma}
+    \begin{lemma}
+        Let $ k $ be a positive integer greater than $ 3 $ and assume 
+        \[S(\alpha,\beta,v)=\sum_{x\in\F_{2^k}}(-1)^{\tr\left( \frac{\alpha}{x+\beta}+\frac{\alpha}{x}+vx \right)},\]
+        where $ \alpha,\beta,v\in\F_{2^k}^* $. We have 
+        \[\left\lvert S(\alpha,\beta,v)\right\rvert\le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4 .\]
+    \end{lemma}
+    \begin{proof}
+        Note that $ S(1,\beta/\alpha,v\alpha)=S(\alpha,\beta,v) $.
+        Determine the value of $ S(\alpha,\beta,v) $ is equivalent to determining the number of $ x\in\F_{2^k} $ 
+        for which $ \tr\left( \frac{1}{x+\beta}+\frac{1}{x}+vx \right)=0 $. 
+        By Hilbert's Theorem 90, this is equivalent to determining the number of solutions $ (x,y) $ 
+        in $ \F_{2^k} $ of $ y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx $.
+        
+        Let us define 
+        \[\mathcal{S}_{\beta,v}=\left\{(x,y)\in\F_{2^k}\times\F_{2^k}:y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx\right\}.\]
+        Note that $ y\mapsto y^2+y $ is $ 2 $-to-$ 1 $, then we have 
+        \begin{equation}\label{eq:tracesum_S}
+            S(\alpha,\beta,v)=\frac{\#\mathcal{S}_{\beta,v}}{2}-\left(2^k-\frac{\#\mathcal{S}_{\beta,v}}{2}\right)=\#\mathcal{S}_{\beta,v}-2^k.
+        \end{equation}
+        Note that $ \#\mathcal{S}_{\beta,v} $ is even and then $ S(\alpha,\beta,v) $ must be even, too. 
+        Consider the function field $ K=\F_{2^k}(x,y) $ with defining equation 
+        \begin{equation}\label{eq:trace_curve}
+            y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx.
+        \end{equation}
+        By Lemma \ref{L:genus_K_F}, we can easily obtain that the genus of $ K $ is not greater than $ 2-\delta_v $, 
+        where $ \delta_v=1 $ if $ v=0 $ and $ \delta_v=0 $ otherwise. 
+        Denote by $ \mathcal{N} $ the number of the places with degree one of $ K/\F_{2^k} $. 
+        Then by Serre bound\cite{Serre1982serrebound}, we have 
+        \begin{equation}\label{eq:N_genus_inequality}
+            \left\lvert \mathcal{N}-(2^k+1)\right\rvert\le g\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor,
+        \end{equation}
+        where $ g $ is the genus of the function field $ K/\F_{2^k} $. 
+        And we also need to the equality 
+        \begin{equation}\label{eq:N_S_M_equality}
+            \mathcal{N}=\#\mathcal{S}_{\beta,v}-\mathcal{M}_{\beta,v},
+        \end{equation}
+        where $ \mathcal{M}_{\beta,v} $ is the number of the points at infinity of equation \eqref{eq:trace_curve}. 
+        So we homogenize \eqref{eq:trace_curve} to 
+        \begin{equation}\label{eq:homogenize}
+            \left( \frac{Y}{Z} \right)^2+\frac{Y}{Z}=\frac{Z}{X+\beta Z}+\frac{Z}{X}+\frac{vX}{Z}.
+        \end{equation}
+        Multiplying both sides of \eqref{eq:homogenize} by $ Z^2X\left( X+\beta Z \right) $ and then let $ Z=0 $, 
+        we have 
+        \[X^2Y^2=0,\]
+        hence the points at infinite are $ (1:0:0) $ and $ (0:1:0) $. 
+        We now consider the multiplicity of roots of $ (0 : 1 : 0) $ and $ (1 : 0 : 0) $, respectively. 
+        For the point $ (0 : 1 : 0 ) $, i.e., $ Y = 1 $, we have
+        \begin{equation}\label{eq:points_010}
+            \left( \frac{1}{z} \right)^2+\frac{1}{z}=\frac{z}{x+\beta z}+\frac{z}{x}+\frac{vx}{z}.
+        \end{equation}
+        And multiplying \eqref{eq:points_010} by $ z^2x(x+\beta z) $ gives 
+        \[x^2+\beta xz+R_{\beta,v}(x,z)=0,\]
+        where $ R_{\beta,v}(x,z)=\beta xz^2+x^2z+\beta z^4+v\beta x^2z^2+vx^3z $ is a polynomial 
+        such that its every monomial has algebraic degree at least $ 3 $. 
+        This gives $ (0 : 1 : 0) $ is a root of multiplicity $ 2 $. 
+        
+        For the point $ (1 : 0 : 0) $, i.e., $ X = 1 $, we have
+        \begin{equation}\label{eq:points_100}
+            \left( \frac{y}{z} \right)^2+\frac{y}{z}=\frac{z}{1+\beta z}+z+\frac{v}{z}.
+        \end{equation}
+        And multiplying \eqref{eq:points_100} by $ z^2(1+\beta z) $ gives 
+        \[vz+v\beta z^2+y^2+zy+\beta y^2z+\beta yz^2+\beta z^4=0.\]
+        Note that when $ v=0 $, we have 
+        \[y^2+zy+\beta y^2z+\beta yz^2+\beta z^4=0,\]
+        which implies that $ (1:0:0) $ is a root of multiplicity $ 2 $. 
+        Therefore, equation \eqref{eq:trace_curve} has at most $ 4 $ points at infinity, i.e. 
+        $ \mathcal{M}_{\beta,v}\le4 $. 
+
+        Combining \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that 
+        $ S(\alpha,\beta,v) $ is even, we can get our assertion
+        \[S(\alpha,\beta,v)\le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4.\]
+    \end{proof}
+    
+    For other cases, we will give the upper bounds of $ \max_{v}|W_{D_{\beta}D_{\alpha}f}(0,v)| $: 
+    w.l.o.g. assume $ \alpha_2=\beta_2\in\F_{2^k}^* $ and $ \alpha_1\ne\beta_1 $, then we have 
+    \begin{align*}
+        \left\lvert W_{D_{\beta}D_{\alpha}f}(0,v)\right\rvert =2^k\left\lvert \sum_{y\in\F_{2^k}}(-1)^{\tr\left(\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y}+vy\right)}\right\rvert\le 2^{k+1}\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+2^{k+2}
+    \end{align*}
+
+
+
+    
+\bibliographystyle{plain}
 \bibliography{ref.bib}
 \end{document}
+
+n:=8;
+F<v>:=GF(2,n);
+f:=func<x|(x eq 0) select 0 else x^-1>;
+for beta in F do
+    list_rangev:=[];
+    for v in F do
+        count:=0;
+        for x in F do
+            for y in F do
+                if y^2+y eq f(x+beta)+f(x)+v*x then 
+                    count+:=1;
+                    break;
+                end if;
+            end for;
+        end for;
+    Append(~list_rangev,Abs(count-2^(n-1)));
+    end for;    
+    print "beta=",beta;
+    print "list_rangev=",list_rangev;
+    print "max_list_rangev=",Max(list_rangev);
+end for;
+
+
+n=4, tr=0的x的数量-2^(n-1)=8
+n=6, tr=0:16
+n=8, tr=0:32
+n=10, tr=0:60, 计算量比较大, 没看到64, 但应该也是64. 
+
+
+k<w> := GF(2,6);
+kt<t> := PolynomialRing(k);
+kty<y> := PolynomialRing(kt);
+
+for beta in F do
+    if beta eq 0 then continue; end if;
+    Genus_v_list:=[];
+    for v in F do 
+        f:=FunctionField(beta+v*beta*t^2*(t+beta)+(y^2+y)*(t+beta)*t);
+        Append(~Genus_v_list,Genus(f));
+    end for;
+    Genus_v_list;
+end for;
+
+
+
+for beta in F do
+Max([Abs(&+[(-1)^(Integers()!Trace(f(x+beta)+f(x)+v*x)):x in F]):v in F]);
+end for;
+
+
+for beta in GF(2,3) do
+    // if beta in GF(2,3) then continue; end if;
+    count_v:=[];
+    for v in F do
+        count:=0;
+        for x in GF(2,3) do
+            if Trace(f(beta+x)+f(x)+v*x) eq 0 then 
+                count+:=1;
+            end if;
+        end for;
+        Append(~count_v,count);
+    end for;
+    count_v;
+end for;
