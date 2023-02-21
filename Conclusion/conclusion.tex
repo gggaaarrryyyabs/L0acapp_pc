@@ -481,7 +481,7 @@
         &x \mapsto u x^{2^{s}+1}+u^{2^{k}} x^{2^{2 k}+2^{k+s}}+v x^{2^{2 k}+1}+w u^{2^{k}+1} x^{2^{k+s}+2^{s}}
         \end{aligned}
         $$
-        is APN in Theorem 2.1 of \cite{bracken2011afewapn}
+        is APN in Theorem 2.1 of \cite{BrackenBMM2011quadAPN}
         \item 
     \end{enumerate}
 
@@ -592,7 +592,8 @@
         \[nl_r(f) \ge 2^{n-1} -\frac{1}{2}\sqrt{2^{2n}-2\sum_{a\in\F_{2^n}}nl_{r-1}(D_af)}.\]
     \end{theorem}
     \begin{remark}
-        It's not clear whether Theorem \ref{TH:NL_allderivates} is always better than theorem \ref{TH:NL_onederivate}.
+        {\color{red}Theorem \ref{TH:NL_allderivates} is not always better than Theorem \ref{TH:NL_onederivate}}: 
+        In \cite{SihemGJDK2017lowerbound_nl_2_notalwaysbetter}, Sihem et al. construct a class of Boolean functions where the bound on the second order nonlinearity in Theorem \ref{TH:NL_onederivate} is tight but the bound in Theorem \ref{TH:NL_allderivates} is strictly worse than the former. 
     \end{remark}
     
     In \cite{dobbertin2006niho_dickson_kloosterman}, Dobbertin et al. studied the cross-correlation function between two 
@@ -691,10 +692,10 @@
         Note that when $ v=0 $, we have 
         \[y^2+zy+\beta y^2z+\beta yz^2+\beta z^4=0,\]
         which implies that $ (1:0:0) $ is a root of multiplicity $ 2 $. 
+
         Therefore, equation \eqref{eq:trace_curve} has at most $ 4 $ points at infinity, i.e. 
         $ \mathcal{M}_{\beta,v}\le4 $. 
-
-        Combining \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that 
+        So combining \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that 
         $ S(\alpha,\beta,v) $ is even, we can get our assertion
         \[\left\lvert S(\alpha,\beta,v)\right\rvert \le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4.\]
     \end{proof}
@@ -703,9 +704,55 @@
     w.l.o.g. assume $ \alpha_2=\beta_2\in\F_{2^k}^* $ and $ \alpha_1\ne\beta_1 $, then we have 
     \[\left\lvert W_{D_{\beta}D_{\alpha}f}(0,v)\right\rvert =2^k\left\lvert \sum_{y\in\F_{2^k}}(-1)^{\tr\left(\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y}+vy\right)}\right\rvert\le 2^{k+1}\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+2^{k+2}.\]
 
+\section{Introduction}
+    Boolean functions play an important role in the design of the symmetric cryptography and coding theory. 
+    The $ r $-th order nonlinearities of Boolean functions are of great interest, for being the most important cryptographic criteria for the symmetric cryptography. 
+    This cryptographic criterion, denoted by $ nl_r(f) $, measures the minimum Hamming distance of the Boolean function $ f $ in $ n $ variables to the set of all functions in $ n $ variables of algebraic degree at most $ r\le n $, where $ r $ is a positive number. 
+    The Boolean functions used in symmetric cryptography must have high $ r $-th order nonlinearities for being against attacks discussed in several papers \cite{Golic1996lower_order_approximation,IwataK1999highorderbentfunction,KnudsenR1996nonlinear_approximation}. 
+    In coding theory, $ nl_r(f) $ equals the distance from $ f $ to the Reed-Muller code $ RM(r,n) $ of length $ 2^n $ and of order $ r $. 
+    Thus, the maximum $ r $-th order nonlinearity of all Boolean functions in $ n $ variables equals the covering radius of $ RM(r,n) $. 
 
+    However, computing the $ r $-th order nonlinearity of a given Boolean function with algebraic degree strictly greater than $ r $ is a hard task for $ r>1 $, even the second order nonlinearity is known only for a few peculiar functions and functions with small number of variables. 
+    Fortunately, in the case of the first order (we call the first order nonlinearity of $ f $ by the nonlinearity of $ f $ and denote it by $ nl(f) $ instead of $ nl_1(f) $), the nonlinearity is related with Walsh transform, which can be computed by the algorithm, Fast Fourier Transform (FFT). 
+    For the second order nonlinearity, Kabatiansky and Tavernier \cite{KabatianskyT2005listdecoding_RM_2_n} proposed an algorithm using list decoding of second order Reed-Muller codes. 
+    And then Fourquet and Tavernier improved and implemented this algorithm to quadratic Boolean functions up to $ n=11 $ and some special quadratic functions up to $ n=13 $ in \cite{FourquetT2008improved_listdecoding_RM_2_n}.
 
+    It is also a difficult task that proving lower bounds on the $ r $-th order nonlinearity of functions, even for $ r=2 $. 
+    In \cite{Carlet2008lowbound_NL_profile}, Carlet gives two lower bounds for the nonlinearity profile of a Boolean function by a recursive approach. Meanwhile, he derives some lower bounds for the nonlinearity profiles of Maiorana-McFarland, Welch, Kasami and inverse functions. 
+    Thanks to Carlet's recursive approach, numerous authors have obtained lower bounds on $ r $-th order nonlinearities of special functions, mostly for $ r=2,3 $ \cite{}. 
     
+    In this article, we derive the lower bounds on the $ 3 $rd order nonlinearity of the simplest $ \mathcal{PS} $ bent functions $ f(x,y)=\tr\left( \frac{\lambda x}{y} \right) $, where $ \lambda\in\F_{2^k}^* $ and $ \frac{x}{y} $ is defined to be $ 0 $ if $ y=0 $.  
+    Using the Carlet's recursive approach, we only need to determine the nonlinearity of all second order derivatives of $ f(x,y) $. 
+    Using simple algebraic geometry lemmas with the calculation of the number of points at infinite, an upper bound of nonlinearity of $ D_{\beta}D_{\alpha}f(x,y) $ at some special derivative points $ (\alpha,\beta)\in\F_{2^n}^2 $ is deduced. 
+    While for general derivative points, we determine the nonlinearities of $ D_{\beta}D_{\alpha}f(x,y) $ by counting the number of solutions of the system for trace functions. 
+
+    The remainder of this paper is organized as follows.  
+    Section 2 introduces some basic notions which will be used in the manuscript. 
+    In Section 3, we present some lemmas, which are useful in Section 4.  
+    Based on known lemmas, Section 4 determines the lower bounds on the third-order nonlinearities of the simplest $ \mathcal{PS} $ bent functions. 
+    Finally, Section 5 is a conclusion. 
+    Throughout this paper, for any $ m\mid n $, denote $ \operatorname{tr}_m^n $ the trace function from $ \F_{2^n} $ to $ \F_{2^m} $. For any set $ S $, $ \#S $ denotes the cardinality of $ S $.
+
+\section{Preliminaries}
+    \begin{definition}[$ r $-th order nonlinearity]
+        Let $ f $ be an $ n $-variable Boolean function. Let $ r $ be a positive integer such that $ r<n $. 
+        The $ r $-th order nonlinearity of $ f $ is the minimum Hamming distance between fand all elements of $ RM(r,n) $. We denote the $ r $-th order nonlinearity of $ f $ by $ nl_r(f) $.
+    \end{definition}
+
+    Note that the third order nonlinearity of a Boolean function includes the second derivative of the function, so we introduce it in the following.
+    \begin{definition}[Derivatives]
+        The first derivative of a Boolean function $ f $ in the direction of $ \alpha\in\F_{2^n} $ is defined as $ D_{\alpha}f(x)=f(x)+f(x+\alpha) $. And the second derivative of a Boolean function $ f $ in the direction of $ (\alpha,\beta)\in\F_{2^n}^2 $ is defined as $ D_{\beta}D_{\alpha}f(x)=f(x)+f(x+a)+f(x+\beta)+f(x+\alpha+\beta) $.
+    \end{definition}
+
+    One of the essential tools to determine $ nl(f) $ for any Boolean function $ f $ is called Walsh transform, which actually is the FFT of $ (-1)^{f(x)} $. 
+    \begin{definition}[Walsh transform]
+        Let $ f $ be a Boolean function over $ \F_{2^n} $. The Walsh transform of $ f $ at point $ \alpha\in\F_{2^n} $ is defined as 
+        \[W_f(\alpha)=\sum_{x\in\F_{2^n}}(-1)^{f(x)+\tr(\alpha x)}.\]
+    \end{definition}
+    
+    % The Walsh spectrum of $ f $ is the multiplicity set of the values of the Walsh transform of $ f $. 
+    We have the relation 
+    \[nl(f)=2^{n-1}-\frac{1}{2}\max_{\alpha\in\F_{2^n}}\left\lvert W_f(\alpha)\right\rvert. \]    
 \bibliographystyle{plain}
 \bibliography{ref.bib}
 \end{document}
