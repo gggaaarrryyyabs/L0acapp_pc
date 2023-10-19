@@ -1,0 +1,99 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbb{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~19} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年12月12日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    设 $ a,b\in\R $, $ b\ne 0 $. 证明: $ \R(a+b\operatorname{i})=\Com $.
+
+    解: 因为 $ \left[ \Com:\R \right]=\left[ \Com:\R(a+b\operatorname{i}) \right]\left[ \R(a+b\operatorname{i}):\R \right]=2 $, 
+    则 $ \left[ \R(a+b\operatorname{i}):\R \right]\le 2 $. 
+    同时 $ \operatorname{i}\notin\R $, 有 $ \left[ \R(a+b\operatorname{i}):\R \right]>1 $, 
+    故$ \left[ \R(a+b\operatorname{i}):\R \right]= 2 $, 即 $ \R(a+b\operatorname{i})=\Com $.
+
+\subsubsection*{Problem 2}
+    设 $ F $是个域, $ a,b\in F,a\ne 0 $. 如果$ c $属于 $ F $的某个扩域, 证明: $ F(c)=F(ac+b) $(即 $ F $ ``吸收''它自己的元素).
+    
+    解: 因为 $ F(ac+b) $是包含 $ F $和 $ ac+b $的最小域, 且 $ a,b\in F $, $ ac+b\in F(c) $, 则 $ F(c)\supseteq F(ac+b) $;
+    又因为 $ c=a^-1\cdot((ac+b)-b) $, 同理可得 $ F(c)\subseteq F(ac+b) $. 
+    故 $ F(c)=F(ac+b) $.
+
+\subsubsection*{Problem 3}
+    证明: 商环 $ \R[x]/\langle x^2+1\rangle $与复数域 $ \Com $同构. 
+
+    解: 因为 $ \Com=\R(i) $, 即 $ \Com $是 $ \R $的扩域. 
+    所以利用定理5.3.1.
+    \begin{enumerate}[label=(\arabic{*})]
+      \item 显然 $ i $ 是 $ x^2+1=0 $的根, 即$ i $ 是 $ \R $上的代数元.
+      \item 注意到 $ x^2+1 $ 是 $ \R[x] $中的以 $ i $为根的不可约多项式, 
+    \end{enumerate}
+    故 $ \R[x]/\langle x^2+1\rangle $同构于 $ \R(i) $, 即商环 $ \R[x]/\langle x^2+1\rangle $与复数域 $ \Com $同构. 
+\end{document}
+
+
+
+F<v>:=GF(2,3);
+F_l<w>:=GF(2,9);
+function likangquan(i)
+  q:=2^i;
+  tt:=[];
+  for x,y,z in F do
+    Append(~tt,(x^(q+1)+x*z^q+y^q*z)+(x^q*z+y^(q+1))*w+(x^q*y+y*z^q+z^(q+1))*w^2);
+  end for;
+  return tt;
+end function;
+tt:=likangquan(1);
+index_y:=[Eltseq(tt[i]):i in [1..2^9]];
+truthtable_y:=[&+[Integers()!(index_y[j][i])*2^(9-i):i in [1..9]]:j in [1..2^9]];
+
+function isAPN(F,n)
+    Field:=FiniteField(2,n);
+	for a in Field do
+		if a eq 0 then
+			continue;
+		end if;
+		derivative_image := { F(x) + F(x+a) : x in Field };
+		if #derivative_image ne 2^(n-1) then
+			return false;
+		end if;
+	end for;
+	return true;
+end function;
+
+
+
+index_x:=[Eltseq(x+y*w+z*w^2):x,y,z in F];
+truthtable_x:=[&+[Integers()!(index_x[j][i])*2^(9-i):i in [1..9]]:j in [1..2^9]];
+
+
+

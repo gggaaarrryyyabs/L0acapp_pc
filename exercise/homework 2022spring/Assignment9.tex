@@ -1,0 +1,103 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\usepackage{tikz-cd}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+% \title{NIS2312-2 Spring 2022 Homework~1}
+% \author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 Spring 2021-2022} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)}\\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~9 } \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年6月1日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+  % 在这个练习中, 带 * 的题目属于数论方面, 可以不做的 (考试不会单独考数论的题).  
+\subsubsection*{Problem 1}
+    证明实数域 $ \R $ 的任意子域必定包含有理数域 $ \Q $.
+
+    解：子域必然包含单位元 $ 1 $, 所以子域必然包含整数环 $ \Z $, 因此可以得到field of fraction $ \Q $. 
+\subsubsection*{Problem 2}
+    给出高斯整环 $ \Z[i] $的单位.
+
+    解: 假设 $ \alpha=a+bi $是高斯整环中的单位, 则存在 $ \beta=c+di\in\Z[i] $满足 $ \alpha\beta=1 $. 定义范数 $ N(\alpha)=a^2+b^2 $,
+    那么 $ N(\alpha\beta)=N(1)=1 $, 则 $ N(\alpha)=\pm 1 $, 也就是 $ a^2+b^2=\pm 1 $, 其整数解仅有 $ a=\pm 1,b=0 $或者 $ a=0,b=\pm 1 $, 
+    因此高斯整环的单位是 $ \pm 1,\pm i $.
+\subsubsection*{Problem 3}
+    证明 $ 7 $ 不是环 $ \Z[\sqrt{2}] $ 的一个素元, $ 5 $ 是环 $ \Z[\sqrt{2}] $ 的一个素元.
+    (Hint: $ 5\mid a^2-2b^2 $可以得到 $ 5\mid a,5\mid b $, 方法就是列表所有的 $ a^2 \mod{5},2b^2\mod{5} $, 两者相减就能得到结论)
+
+    解: 注意到 $ 7=(3+\sqrt{2})(3-\sqrt{2}) $, 并且 $ 7\nmid 3\pm\sqrt{2} $, 则$ 7 $ 不是环 $ \Z[\sqrt{2}] $ 的一个素元;
+
+    假设 $ 5\mid (a+b\sqrt{2})(c+d\sqrt{2}) $, 取范数可以得到 $ 25\mid (a^2+b^2)(c^2+d^2) $. 排除 $ a^2+b^2=1 $的情况, 可以确定 $ 5\mid a^2+b^2 $
+    或者 $ 25\mid a^2+b^2 $. 根据提示得到 $ 5\mid a,5\mid b $, 也就是说 $ 5\mid a+b\sqrt{2} $, 所以 $ 5 $ 是环 $ \Z[\sqrt{2}] $ 的一个素元.
+\subsubsection*{Problem 4}
+    假设 $ R=\{a+b\sqrt{10}\mid a,b\in\Z\} $, 证明:
+    \begin{enumerate}
+      \item $ 2, 4+\sqrt{10} $ 是 $ R $中的不可约元;
+      \item $ 2, 4+\sqrt{10} $ 不是 $ R $中的素元;
+    \end{enumerate}
+    (Hint: $ a^2-10b^2=\pm 2 $没有整数解, 方法同上)
+
+    解: \begin{enumerate}
+      \item $ (4+\sqrt{10})(4-\sqrt{10})=6=2\times 3 $, 且 $ 2\nmid 4+\sqrt{10} $, $ 4+\sqrt{10}\nmid 2 $, 则 $ 2, 4+\sqrt{10} $ 不是 $ R $中的素元;
+      \item 假设 $ 2=xy $, 其中 $ x,y\in R $. 取范数得到 $ 4=N(x)N(y) $, 范数形式  $ N(a+b\sqrt{10})=a^2-10b^2 $, 则假设 $ N(x)=\pm 2,N(y)=\pm 2 $, 根据
+      提示, 可以确定不存在 $ N(x)=N(a+b\sqrt{10})=\pm 2 $. 所以 $ N(x)=\pm 1 $或者 $ N(y)=\pm 1 $, i.e. $ x $或者 $ y $是单位, 所以 $ 2 $ 是不可约元. 
+      同样假设 $ 4+\sqrt{10}=xy $, 得到 $ 6=N(x)N(y) $, 因此假设 $ N(x)=\pm 2 $或者 $ N(y)=\pm 2 $, 同样的方法可以确定不存在这样的 $ x,y $. 因此 $ 4+\sqrt{10} $是 $ R $
+      的不可约元. 
+    \end{enumerate}
+\subsubsection*{Problem 5}
+    \begin{enumerate}
+      \item $ F $是一个域, 那么 $ F[x,y] $是否为主理想整环?
+      \item 证明主理想整环对素理想做的商环仍然是主理想整环.
+    \end{enumerate}
+
+    解:\begin{enumerate}
+      \item 不是主理想环, 因为 $ F[x,y]/<x,y>\cong F $是一个域, 所以 $ <x,y> $是极大理想, 但是 $ <x,y> $无法用单个元素生成, 不是主理想, 所以 $ F[x,y] $不是主理想环;
+      \item 主理想环 $ R $的素理想 $ I $也是极大理想, 因此商环 $ R/I $是一个域, 而域仅有平凡理想 $ <0> $和 $ <1> $, 因此商环是一个主理想环. 
+    \end{enumerate}
+\subsubsection*{Problem 6}
+    证明高斯整环 $ \Z[i] $的任意商环 $ \Z[i]/I $ 都是有限的, 其中 $ I $是非零理想. (Hint: $ \Z[i] $是 PID, 同时考虑商环元素的范数)
+
+    解: 高斯整环是欧几里得整环, 也是主理想环, 其范数定义为 $ N(a+bi)=a^2+b^2 $. 主理想整环 $ \Z[i] $ 的任意的理想 $ I $, 
+    都能找到某个元素 $ \alpha\in \Z[i] $使得 $ I=<\alpha> $. 因此考虑商环的元素 $ a+bi+I\in\Z[i]/I $, 使用带余除法有  $ a+bi=q\alpha+r $, 其中 $ q,r\in\Z[i] $
+    且 $ N(r)<N(\alpha) $. 所以 $ a+bi+I=r+q\alpha+I=r+I $, 也就是说, 商环的元素都是可以用 $ r+I $表示, 且 $ N(r)<N(\alpha) $. 
+    又因为 $ N(r)=x^2+y^2<N(\alpha) $的整数解数量必定有限, 所以商环是个有限环.
+\subsubsection*{Problem 7*}
+    证明 $ \Z[\sqrt{2}] $是欧几里得整环. 
+
+    解: 假设$\alpha=a_{1}+a_{2} \sqrt{2}, \beta=b_{1}+b_{2} \sqrt{2}$ 是环 $\Z[\sqrt{2}]$ 的元素, 且 $\beta \neq 0$. 目标是证明存在 $\gamma,\delta\in\Z[\sqrt{2}]$ 使得 $\alpha=\gamma \beta+\delta$ 且 $N(\delta)<N(\beta)$. 
+    
+    注意到, 在$\Q(\sqrt{2})$中, 有$\frac{\alpha}{\beta}=c_{1}+c_{2} \sqrt{2}$, 其中 $c_{1}=\frac{a_{1} b_{1}-2 a_{2} b_{2}}{b_{1}^{2}-2 b_{2}^{2}}$ 和 $c_{2}=\frac{a_{2} b_{1}-a_{1} b_{2}}{b_{1}^{2}-2 b_{2}^{2}}$.
+    令 $q_{1}$ 是和 $c_{1}$ 举例最近的整数, $q_{2}$ 是和 $c_{2}$距离最近的整数, 则 $\left|c_{1}-q_{1}\right| \leq 1 / 2$, $\left|c_{2}-q_{2}\right| \leq 1 / 2$. 因此 设$\gamma=q_{1}+q_{2} \sqrt{2} \in \Z[\sqrt{2}]$. 那么, 令 $\theta=\left(c_{1}-q_{1}\right)+\left(c_{2}-q_{2}\right) \sqrt{2}$. 有 $\theta=\frac{\alpha}{\beta}-\gamma$, 因此 $\theta \beta=\alpha-\gamma \beta$.
+    
+    假设 $\delta=\theta \beta$, 可以得到 $\alpha=\gamma \beta+\delta$. 注意到
+    \[
+    N(\theta)=\left|\left(c_{1}-q_{1}\right)^{2}-2\left(c_{2}-q_{2}\right)^{2}\right| \leq\left|\left(c_{1}-q_{1}\right)^{2}\right|+\left|-2\left(c_{2}-q_{2}\right)^{2}\right|.
+    \]
+    因此有
+    \[
+    N(\theta) \leq\left(c_{1}-q_{1}\right)^{2}+2\left(c_{2}-q_{2}\right)^{2} \leq(1 / 2)^{2}+2(1 / 2)^{2}=3 / 4 .
+    \]
+    最终得到结论 $N(\delta) \leq \frac{3}{4} N(\beta)$ .
+\end{document}

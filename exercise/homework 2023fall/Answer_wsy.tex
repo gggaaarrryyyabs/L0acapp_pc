@@ -1,0 +1,29 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+% \newtheorem{example}{例}
+\newtheorem{innercustomthm}{Example}
+\newtheorem{example}{Example}[subsection]
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{remark}{Remark}
+\newtheorem{proof}{Proof}
+
+
+\begin{document}
+    Assume $[a,b]=q_1\frac{ab}{(a,b)}+r_1$, where $0\le r_1<\frac{ab}{(a,b)}$. 
+    When $r_1\ge[a,b]$, we have $[a,b]\mid r_1$, so we set $r_1=q_3[a,b]$, where $q_3>0$ is an integer, causing $q_1<0$ (we do not consider the trivil case $q_1=0$ since it is $[a,b]=0+[a,b]$). 
+    After your calculation, we obtain
+    \[\frac{ab}{(a,b)}=q_2[a,b], q_2>0.\]
+    Therefore we have 
+    \[[a,b]=q_1q_2[a,b]+q_3[a,b]\Rightarrow q_1q_2+q_3=1.\]
+    Note that we have $0\le r_1=q_3[a,b]<\frac{ab}{(a,b)}=q_2[a,b]$, so $0<q_3<q_2$, which means $(1+q_1)q_2>1$, contradiction with $q_1<0$.
+    So we have $r_1<[a,b]$, that is, $r_1=0$.
+\end{document}

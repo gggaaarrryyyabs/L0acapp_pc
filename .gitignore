@@ -1,5 +1,13 @@
 # ignore all file in excise with .aux/bbl/thm/xdv/out/log/, 
 # in fact they are the intermidate files producted in the compile process of latex.
+*
+!.gitignore
+!*.c
+!*.cpp
+!*.tex
+!*.bib
+!*.h
+!*/
 *.aux 
 *.bbl
 *.log
@@ -9,5 +17,8 @@
 *.bcf
 *.gz
 *.run.xml
-
+*.cmake
+*.pdf
+*.synctex.gz
 # add other files that git will ignore
+build/*

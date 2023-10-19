@@ -1,0 +1,51 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+\title{NIS2312-01 Fall 2023 Homework~8}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-01 Fall 2023-2024} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~8} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2023年10月14日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{Problem 1}
+  判断下列映射是否为同态映射:
+  \begin{enumerate}[label=(\arabic{*})]
+    \item 定义映射$\phi:\R^*\rightarrow \left\{ \pm 1 \right\}$, 其中$\phi(x)=\frac{x}{|x|}$, $x\in \R^*$, $|x|$代表$x$的绝对值.
+    \item 定义映射$\pi:\Com^*\rightarrow\R^*$, 其中$\pi(a+b\sqrt{-1})=a^2+b^2$.
+    \item 定义映射$\varphi:\R^2\rightarrow\R$, 其中$\varphi((x,y))=x+y$.
+  \end{enumerate}
+
+\subsubsection*{Problem 2} 
+  [hint: 考虑单位元的象]能否找到一个非平凡映射$\phi$, 此映射将群$(\Z_4,+)$映射到群$(\Z_5,+)$. 
+  (平凡映射指将任意元素映射为单位元, 见书82页例1).
+\subsubsection*{Problem 3} 
+  假设$G_1$和$G_2$是两个有限群且满足条件$(|G_1|,|G_2|)=1$, 同时假设$\phi:G_1\rightarrow G_2$是一个群同态. 证明: 
+  \begin{enumerate}[label=(\arabic{*})]
+    \item $\forall y\in G_2$, $\ord(y)\mid |G_1|$;
+    \item $ker(\phi)=G$.
+  \end{enumerate}
+\end{document}

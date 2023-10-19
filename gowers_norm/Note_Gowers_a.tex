@@ -1,0 +1,822 @@
+\documentclass[12 pt]{article}
+%\usepackage[letterpaper,hmargin=1in,vmargin=1.5in]{geometry}
+\usepackage{indentfirst,mathrsfs}
+\usepackage{amsfonts,bm}
+\usepackage{enumitem}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[colorlinks,linkcolor=black,
+            pdftitle={title},
+              pdfauthor={author},
+              pdfkeywords={}]{hyperref}
+
+\renewcommand{\baselinestretch}{1.2}
+
+\setlength{\oddsidemargin}{0.1in} \setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{-0.25in} \setlength{\textheight}{8.7in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{Example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{construction}{Construction}
+\newtheorem{remark}{Remark}
+\newtheorem{exm}{Example}
+\newtheorem{lemma}{Lemma}
+\def\E{{\mathbb E}}
+\def\F{{\mathbb F}}
+
+\newcommand{\tr}{\operatorname{tr}_1^n}
+\newcommand{\Tr}{\operatorname{Tr}}
+% \newcommand{\deg}{\operatorname{deg}}
+
+\begin{document}
+%\setpagewiselinenumbers
+%\modulolinenumbers[5]
+
+
+\begin{center}
+\Large{New Results on the  Gowers Uniformity Norm of S-boxes}
+\end{center}
+
+\begin{center}
+Deng Tang
+\end{center}
+
+\section{Preliminaries}
+  Let $ \F_2 $ be the finite field consisting of two elements $ 0 $ and $ 1 $. 
+  For any positive integer $n$, $\F_2^n$ denotes the vector space of $ n $-tuples over the finite field $\F_2$.  
+  We denote by $\F_{2^n}$ the finite field of order $2^n$. 
+  For simplicity, we denote by ${\F_2^n}^\ast$ the set $\F_2^{n}\setminus\{\bm{0}_n\}$ where $\bm{0}_n$ is the all-zero vector, and $\F_{2^n}^*$ denotes the set $\F_{2^n}\setminus\{0\}$. 
+  It is well-known that the vector space $\F_2^n$ is isomorphic to the finite field $\F_{2^n}$ through the choice of some basis of $\F_{2^n}$ over $\F_2$. 
+  Indeed, if $(\lambda_1, \lambda_2, \ldots, \lambda_n)$ is a basis of $\F_{2^n}$ over $\F_2$, then every vector $x = (x_1,x_2,\ldots,x_n)$ of $\F_2^n$ can be identified with the element $x_1\lambda_1+x_2\lambda_2+\cdots+x_n\lambda_n\in\F_{2^n}$. 
+  Then, the finite field $\F_{2^n}$ can be viewed as an $n$-dimensional vector space over $\F_2$. 
+  The Hamming weight of an vector $x\in\mathbb F_2^n$, denoted by $wt(x)$, is defined by $wt(x)=\sum_{i=1}^nx_i$, where the sum is over the integers. 
+  The cardinality of a set $S$ is denoted by $\#S$. 
+  The inner product of $x, y \in \mathbb F_2^n$ is defined as $x\cdot y=x_1y_1+x_2y_2+\cdots+x_ny_n$, where the sum is over the integers.
+
+\subsection{S-boxes over vector space $\F_2^n$ and finite field $\F_{2^n}$}
+  Any function from $\F_2^n$ to $\F_2$ is called an $ n $-variable Boolean function. 
+  We denote the set of all $n$-variable Boolean functions by $\mathcal{B}_n$. 
+  The functions from $ \F_2^n $ to $ \F_2^m $ are called $ (n,m) $-functions or vectorial Boolean functions for simplicity if two numbers $ n $ and $ m $ are not specified. 
+  And an $ n\times m $ S-box actually is an $ (n,m) $-function. 
+  Given such function $ F $, the $ m $ Boolean functions in $ n $ variables $ f_i:\F_2^n\rightarrow\F $ where $ 1\le i\le m $, are called the coordinate functions of $ F $ as $ F(x)=\left( f_1(x),f_2(x),\dots,f_m(x) \right) $ for all $ x\in\F_2^n $.  
+  Furthermore, the linear combinations with non all-zero coefficients of the coordinate functions of $F$ are called the component
+  functions of $F$. 
+  The component functions of $F$ can then be expressed as $v\cdot F$, where $v\in\F_2^{m*}$. 
+  Since the vector space $ \F_2^n $ will often be identified with the finite field $ \F_{2^n} $, the component functions $v\cdot F$ of $F$ can be expressed as $\Tr_1^m(vF)$, where $v\in\F_{2^m}^*$ and $\Tr_1^m(x)=\sum_{i=0}^{m-1} x^{2^i}$.
+
+\subsection{Cryptographic properties of S-boxes}
+  We now briefly review the basic definitions regarding the cryptographic properties of Boolean functions and then extend those definitions to S-boxes by using component functions. 
+
+  The Hamming weight of $f\in\mathcal B_n$ is defined as the cardinality of the support of $f$ in which the support of $f$ is defined as ${\rm supp}(f)=\{x\in\F_2^n:f(x)\ne 0\}$.  
+  A Boolean function $f\in\mathcal{B}_n$ is said to be balanced if the Hamming weight of $f$ is $2^{n-1}$. 
+  Given two $n$-variable Boolean functions $f$ and $g$, the Hamming distance between $f$ and $g$ is defined as $d_H(f,g)=\#\{x\in\F_2^n:f(x)\ne g(x)\}$. 
+  Any Boolean function $f$ in $n$ variables can also be expressed in terms of a polynomial in $\F_2[x_1,x_2,\ldots,x_n]/(x_1^2+x_1,x_2^2+x_2,\ldots,x_n^2+ x_n)$:
+  \begin{equation*}\label{D:ANF}
+    f(x_1,x_2,\ldots,x_n)=\sum_{u\in\F_2^n}a_u\left( \prod_{j=1}^n x_j^{u_j} \right)=\sum_{u\in\F_2^n}a_u x^u,
+  \end{equation*}
+  where $a_u\in\F_2$. 
+  This representation is called the algebraic normal form (ANF) of $f$. 
+  The algebraic degree, denoted by $\deg(f)$, is the maximal value of $wt(u)$ such that $a_u\ne 0$. 
+  Hence, the algebraic degree of an S-box is defined as the maximum algebraic degree of its coordinate functions and it is also the maximum algebraic degree of its component functions. 
+  Recall that $\F_{2^n}$ is isomorphic as a $\F_2$-vector space to $\F_2^n$.  
+  A Boolean function defined over $\F_{2^n}$ can be uniquely expressed by a univariate polynomial over $\F_{2^n}[x]/(x^{2^n}+x)$:
+  \begin{equation*}\label{Ploynoimal}
+    f(x) =\sum_{i=0}^{2^n-1} a_i x^i,
+  \end{equation*}
+  where $a_0,a_{2^n-1}\in\F_2$ and $a_{i}\in\F_{2^n}$ for $1\le i\le 2^n-2$ such that $a_i=a_{2i\pmod{2^n-1}}$. 
+  The algebraic degree $\deg(f)$ under this representation is equal to $\max\left\{ wt(\overline{i}):a_i\ne 0, 0\le i\le 2^n-1 \right\}$, where $\overline{i}$ is the binary expansion of $i$ (see e.g., \cite{Carlet10}). 
+  
+  The $r$-th order nonlinearity of a Boolean function $f\in\mathcal{B}_n$ is defined as its minimum Hamming distance from all the $n$-variable Boolean functions of degree at most $r$, $nl_r(f)=\min_{g\in\mathcal{B}_n,\deg(g)\le r}\{d_H(f,g)\}$. 
+  The nonlinearity profile of a function $f$ is the sequence of those values $nl_r(f)$ for $r$ ranging from integers $1$ to $n-1$. The first order nonlinearity of $f$ is simply called the nonlinearity of $f$ and is denoted by $nl(f)$. 
+  The nonlinearity $nl(f)$ is the minimum Hamming distance between $f$ and all the functions with algebraic degree at most $1$.
+  The nonlinearity of $f$ can also be expressed by means of its Walsh--Hadamard transform. 
+  Let $x=(x_1,x_2,\ldots,x_n)$ and $\omega=(\omega_1,\omega_2,\ldots,\omega_n)$ both belong to $\F_2^n$ and let $x\cdot\omega$ be the usual inner product in $\F_2^n$, then the Walsh--Hadamard transform of $f\in\mathcal{B}_n$ at point $\omega$ is defined by
+  \begin{equation*}
+    \widehat{f}(\omega)=\sum_{x\in\F_2^n}(-1)^{f(x)+\omega\cdot x}.
+  \end{equation*}
+  The multiset constituted by the values of the Walsh--Hadamard transform is called the Walsh--Hadamard spectrum of $f$. 
+  Over $\F_{2^n}$, the Walsh--Hadamard transform of $f$ at point $\alpha$ can be defined by $\widehat{f}(\alpha)=\sum_{x\in\mathbb F_{2^n}}(-1)^{f(x)+\mathrm{Tr}_1^n(\alpha x)}$. 
+  It can be easily seen that, for any Boolean function $f\in\mathcal{B}_n$, its nonlinearity can be computed as 
+  \begin{equation*}\label{N_f}
+    nl(f)= 2^{n-1}-\frac{1}{2}\max_{\omega\in\F_2^n}\left\lvert \widehat{f}(\omega) \right\rvert. 
+  \end{equation*}
+  And $nl(f)= 2^{n-1}-\frac{1}{2}\max_{\alpha\in\F_{2^n}}\left\lvert \widehat{f}(\alpha) \right\rvert$, when $f$ is defined over $\F_{2^n}$. 
+  The nonlinearity of an $(n,m)$-function $F$ is defined by the minimum nonlineartiy of all its component functions, that is,
+  \begin{equation*}
+    nl(F)=\min_{\alpha\in\F_2^{m*}}\left\{ nl(\alpha\cdot F) \right\}=2^{n-1}-\frac{1}{2}\max_{\beta\in\F_2^n,\alpha\in\F_2^{m*}} \left\lvert \widehat{\alpha\cdot F}(\beta) \right\rvert.
+  \end{equation*}
+  The nonlinearity $nl(F)$ is upper bounded by $2^{n-1}-2^{\frac{n-1}{2}}$ when $m=n$. 
+  This upper bound is tight for odd $n=m$. 
+  For even $m=n$, the best known value of the nonlinearity of $(n,n)$-functions is $2^{n-1}-2^{\frac{n}{2}}$. 
+  Similar with the $r$-th order nonlinearity of Boolean functions, the $r$-th order nonlinearity of an $(n,m)$-function $F$ is the minimum $r$-th order nonlineartiy of all its component functions. 
+
+  The derivative of $f\in\mathcal{B}_n$ with respect to $a\in\F_2^n$, denoted by $D_af$, is defined as $D_af(x)=f(x+a)+f(x)$. 
+  By successively taking derivatives with respect to any $k$ linearly independent vectors in $\F_2^n$ we obtain the $k$th-derivative of $f\in\mathcal{B}_n$. 
+  Suppose $u_1,u_2,\ldots,u_k$ are linearly independent vectors of $\F_2^n$ generating the subspace $V_k$ of $\F_2^n$. The $k$th-derivative of $f\in\mathcal{B}_n$ with respect to $u_1,u_2,\ldots,u_k$, or alternatively with respect to the subspace $V_k$, is defined as
+  \begin{equation*} \label{kderiv}
+    D_{u_1,u_2,\ldots,u_k}f(x)=D_{V_k}f(x)=\sum_{(a_1,a_2,\ldots,a_k)\in\F_2^k}f(x+a_1u_1+a_2u_2+\cdots+a_ku_k)=\sum_{v\in V_k}f(x+v).
+  \end{equation*}
+  It can be seen that $D_{V_k}f$ is independent of the choice of basis for $V_k$. 
+  Similar with Boolean functions, we can define $k$th-derivative for S-boxes. 
+  The $k$th-derivative of an $(n,m)$-function $F$ with respect to $V_k$ is defined as $D_{V_k}F(x)=\sum_{v\in V_k}F(x+v)$. 
+  The $k$-th order differential of an S-box $F$ \cite[Definition 4.2]{LRK95} is related to the number of inputs $x\in\F_2^n$ such that
+  \begin{equation}\label{equi-kdiff}
+    \sum_{v\in V_k}F(x+v)=\beta,\quad\beta\in\F_2^m.
+  \end{equation}
+  \begin{definition}\label{d1}
+    An $n\times m$ S-box $F$ is called $k$-th order differentially $\delta_k$-uniform if the equation $\sum_{v\in V_k}F(x+v) = \beta$ has at most $\delta_k$ solutions for all $k$-dimensional vector space $V_k$ and $\beta\in\F_2^m$. 
+    Accordingly, $\delta_k$ is called $k$-th order differential uniformity of $F$. 
+  \end{definition}
+  It is clear that if $x\in\F_2^n$ satisfies equaiton \eqref{equi-kdiff}, then $x+v$, for any $v\in V$, satisfies equation \eqref{equi-kdiff} as well. 
+  Thus, the cardinality of the solution spaces of \eqref{equi-kdiff} for any $k$-dimensional subspace of $\F_2^n$ and $\beta\in\F_2^m$ is divisible by $2^k$. 
+  The minimum value of $\delta_k$ is $2^k$, and then the cardinality of the set $\left\{ \sum_{v\in V_k}F(x+v): x\in\F_2^n \right\}$ is $2^{n-k}$ for any $k$ dimensional subspace $V_k$ of $\F_2^n$.
+  \begin{remark}
+    Let $\delta_k$ be the $k$-th order differential uniformity of an S-box $F$. Then $\delta_k\equiv 0\pmod{2^k}$.
+  \end{remark}
+  The first order differential uniformity $\delta_1$, simply denoted by $\delta$, of $F$ is well-known as differential uniformity which was introduced by Nyberg in \cite{Nyberg94} to evaluate the resistance of $F$ to the differential attack \cite{BS91}. 
+  The smaller $\delta$ is, the better is the contribution of $F$ to resist the differential attack. 
+  The values of $\delta$ are always even since if $x$ is a solution of equation $F(x)+ F(x+\gamma)=\beta$ then $x+\gamma$ is also a solution. 
+  This implies that the differential uniformity of an $(n,m)$-function is greater or equal to $2^{n-m}$ and for $n=m$ the smallest possible value is $2$. 
+  A function achieving this value is called an almost perfect nonlinear (APN) function. 
+  A cryptographically desirable S-box is expected to have low differential uniformity ($\delta=2$ is optimal, $\delta=4$ is good), which makes the probability of occurrence of a particular pair of input and output differences $(\gamma,\beta)$ low, and hence provides resistance against differential cryptanalysis. 
+  
+  For every $k$-dimensional vector space $V_k$ and every $\beta\in\F_2^m$, we denote by $\delta_k(V_k,\beta)$ the cardinality of the set $\left\{x\in\F_2^n:\sum_{v\in V_k}F(x+v)=\beta\right\}$ and therefore $\delta_k$ equals the maximum value of $\delta_k(V_k,\beta)$. 
+  The multi-set $ \left[ \delta_k(V_k,\beta):V_k\subseteq\F_2^n,\dim(V_k)=k,\beta\in\F_2^m \right] $ is called the $k$-th order differential spectrum of $F$. 
+  For $k=1$, this spectrum is represented as a well known table, called the difference distribution table (DDT), and the maximum value of the DDT is therefore the differential uniformity of $F$.
+
+\subsection{Gowers uniformity norms}
+  In this section we introduce Gowers uniformity norms. 
+  Let $f : V \rightarrow \mathbb{R}$ be any function on a finite set $V$ and $B \subseteq V$. 
+  Then $\E_{x\in B}\left[ f(x) \right]=\frac{1}{\#B}\sum_{x\in B}f(x)$ is defined as the average of $f$ over $B$. 
+  Gowers \cite{GOW01} introduced a new measure for Boolean functions, called the Gowers uniformity norms. 
+  \begin{definition}[{\cite[Definition 2.2.1]{CHEN}}]
+    Let $f:\F_2^n\rightarrow\mathbb{R}$. 
+    For every $k\in\mathbb{Z}^+$, we define the $k$th-dimension Gowers uniformity norm (the $U_k$ norm) of $f$ to be
+    \begin{equation*}
+      \left\lVert f \right\rVert_{U_k}=\left( \E_{x,u_1,u_2,\ldots,u_k\in\F_2^n}
+      \left[ \prod_{S\subseteq\{1,2,\ldots,k\}} f\left( x+\sum_{i\in S}u_i \right) \right] \right)^{\frac{1}{2^k}}.
+    \end{equation*}
+  \end{definition}
+  Since for $k=1$, Gowers uniformity norm may not be positive defined, it is a semi-norm for $k=1$, and for other $k\geq2$ Gowers norms satisfy all the norm properties. 
+  Gowers norms for $k = 1, 2, 3$ are explicitly presented below (see \cite{CHEN,Tao}).
+  % \allowdisplaybreaks[4]
+  \begin{align*}
+    \left\lVert f \right\rVert_{U_1} & =\left\lvert \E_{x,u\in\F_2^n}\left[f(x)f(x+u)\right]\right\rvert^{\frac{1}{2}}= \left\lvert \E_{x\in\F_2^n} \left[f(x)\right] \right\rvert.\\
+    \left\lVert f \right\rVert_{U_2} & =\left\lvert \E_{x,u_1,u_2\in\F_2^n}\left[f(x)f(x+u_1)f(x+u_2)f(x+u_1+u_2)\right] \right\rvert^{\frac{1}{4}} \\
+      & = \left\lvert\E_{u_1\in\F_2^n} \left\lvert\E_{x\in\F_2^n}\left[f(x)f(x+u_1)\right] \right\rvert^2 \right\rvert^{\frac{1}{4}}.\\
+    \left\lVert f \right\rVert_{U_3} & =\left\lvert \E_{x,u_1,u_2,u_3\in\F_2^n}\left[f(x)f(x+u_1)f(x+u_2)f(x+u_1+u_2)\right.\right.\\
+      &\qquad\left.\left.\times f(x+u_3)f(x+u_1+u_3)f(x+u_2+u_3)f(x+u_1+u_2+u_3)\right]\right\rvert^{\frac{1}{8}}.
+  \end{align*}
+  The connection between the Gowers uniformity norms and correlation of a function with polynomials with a certain degree bound is described by the results obtained by Gowers, Green and Tao \cite{GOW01,GT06}. 
+  For a survey we refer to Chen \cite{CHEN}.
+  \begin{theorem}[{\cite{CHEN,GOW01,GT06}}]\label{direct}
+    Let $k\in\mathbb{Z}^+$, $\epsilon>0$. 
+    Let $P:\F_2^n\rightarrow\F_2$ be a polynomial of degree at most $k$, and $f:\F_2^n\rightarrow\mathbb{R}$. 
+    Suppose $\left\lvert \mathbb{E}_{x}\left[f(x)(-1)^{P(x)}\right] \right\rvert\ge\epsilon$. 
+    Then $\left\lVert f \right\rVert_{U_{k+1}} \ge\epsilon$.
+  \end{theorem}
+  Suppose $f\in\mathcal{B}_n$. From the above results, we get $nl_k(f)\le 2^{n-1}(1-\epsilon)\Rightarrow\left\lVert(-1)^f\right\rVert_{U_{k+1}} \ge\epsilon$, that is, if the $k$-th order nonlinearity of a Boolean function is bounded above by high (low) value, then its Gowers $U_{k+1}$ norm is bounded below by low (high) value. 
+  We know \cite{GT06,SamSTOCy07} that the converse of Theorem \ref{direct} is also true for $k=1,2$. 
+  Samorodnitsky \cite{SamSTOCy07} proved that a Boolean function with a large Gowers $U_3$ norm is somewhat close to a quadratic polynomial.
+  \begin{theorem}[{\cite[Theorem 2.3]{SamSTOCy07}}]\label{inverse-2nd}
+    Let $f\in\mathcal{B}_n$ such that $\left\lVert(-1)^f\right\rVert_{U_3}\ge\varepsilon$, $\varepsilon\ge 0$. 
+    Then there exists a quadratic Boolean function $g$ such that the distance between $f$ and $g$ is at most $\frac{1}{2}-\varepsilon'$, where $\varepsilon'=\Omega(e^{-{\varepsilon^{-C}}})$ for an absolute constant $C$.
+  \end{theorem}
+  Thus, the second order nonlinearity of a Boolean function is bounded above by high (low) value if and only if its Gowers $U_{3}$ norm is bounded below by low (high) value. 
+  Note that for any $n$-variable Boolean function $g$, $(-1)^{g}\in\{\pm 1\}$ is a two-valued function. 
+  Gangopadhyay et al. \cite{GMS18} first derived Gowers $U_3$ norms of some classes of Boolean functions with certain properties. 
+  Let $n$ be a positive integer and $f$ be an arbitrary $n$-variable Boolean function. 
+  One may note that for the two-valued function $(-1)^f\in\{-1,1\}\subseteq\mathbb{R}$, we have
+  \begin{equation}\label{L:U3}
+    \left\lVert (-1)^{f} \right\rVert_{U_3}=2^{-{\frac{n}{2}}}\left\lvert\sum_{(\tau,\gamma)\in\F_2^n\times\F_2^n}\left(\sum_{x\in\F_2^n}(-1)^{f(x)+f(x+\tau)+f(x+\gamma)+f(x+\tau+\gamma)}\right)^2\right\rvert^{\frac{1}{8}}.
+  \end{equation}
+
+  %\subsection{The multiplicative inverse function}
+  %For any finite field $\F_{2^n}$, the multiplicative inverse function of $\F_{2^n}$, denoted by $I$, is defined as $I(x)=x^{2^n-2}$. In the sequel, we will use $x^{-1}$ or $\frac{1}{x}$ to
+  %denote $x^{2^n-2}$ with the convention that $x^{-1}=\frac{1}{x}=0$ when $x=0$. We recall that, for any $v \neq 0$, $I_v(x) = \mathrm{Tr}_1^n(vx^{-1})$ is a component function of $I$.
+  %The Walsh--Hadamard transform of $I_1$ at any point $\alpha$ is commonly known as Kloosterman sum over $\F_{2^n}$ at $\alpha$, which is usually denoted by $\mathcal{K}(\alpha)$,
+  %i.e., $\mathcal{K}(\alpha)=\widehat{I_1}(\alpha)=\sum_{x\in\F_{2^n}}(-1)^{\mathrm{Tr}_1^n(x^{-1}+\alpha x)}$.
+  %The original Kloosterman sums are generally defined on the multiplicative group $\F_{2^n}^*$. We extend them to $0$ by assuming $(-1)^0=1$. Regarding the Kloosterman sums,
+  %the following results are well known and we will use them in the sequel.
+  \begin{lemma}\cite{CarlitzKloo1969}\label{L:Kloostermansumsone}
+    For any integer $n>0$, $\widehat{I_1}(1)=1-\sum_{t=0}^{\lfloor n/2\rfloor}(-1)^{n-t}\frac{n}{n-t}{{n-t}\choose{t}}2^t$.
+  \end{lemma}
+%\begin{lemma}\cite{LW90}
+%\label{inverse-nl}
+%For any positive integer $n$ and arbitrary $a\in\F_{2^n}^*$, the Walsh--Hadamard spectrum of $I_1(x)$ defined on $\F_{2^n}$ can take any value divisible by $4$ in the range
+%$[-2^{{n/2}+1}+1,2^{{n/2}+1}+1]$.
+%\end{lemma}
+%Let $n=2t+1$ be an odd integer and $P$ be the largest positive integer such that $P \equiv 0 \pmod 4$ and $P\leq 2^{t+1}\sqrt{2}+1$.
+%\begin{remark}
+%\label{rem-max-min}
+%The possible maximum absolute value of Walsh--Hadamard spectrum of $I_1$ over $\mathbb F_{2^n}$ is
+%\begin{eqnarray*}
+%\max_{\alpha\in\mathbb F_{2^n}^*}|\widehat{I_1}(\alpha)|=\left\{
+%\begin{array}{llll}
+%2^{\frac{n}{2}+1}, &\mbox{ if } n \mbox{ is even}\\
+%P, &\mbox{ if } n \mbox{ is odd}
+%\end{array}
+%\right.,
+%\end{eqnarray*}
+%where $P$ is as defined above.
+%\end{remark}
+
+\section{Gowers $U_3$ norm of the multiplicative inverse function}\label{sec:gw}
+  In this section we calculate the Gowers $U_3$ norm of the multiplicative inverse function. 
+  Let $f\in\mathcal{B}_n$ be any quadratic Boolean function. 
+  Since $\deg(f)\le 2$, any second derivative of $f$ is constant. 
+  Thus, from \eqref{L:U3} we have $\|(-1)^f\|_{U_3}=1$. 
+  Let us now consider the case of S-boxes. 
+  Suppose $F$ is an S-box of input length $n$ and output length $m$, and $f_i\in\mathcal{B}_n, 1\le i\le m$, is the $i$-th coordinate function of $F$. 
+  Any nonzero component function of $F$ can be written by $a\cdot F$, $a\in\F_2^{m*}$. 
+  Let us first define the Gowers uniformity norms for vectorial Boolean functions. 
+  \begin{definition}[\cite{InverseFuncDAM2021}]\label{def-gower}
+    Let $n,m$ be two positive integers and $F$ be an $(n,m)$-function. 
+    For any positive integer $k$, the Gowers $U_k$ norm of $(-1)^F$  is defined by
+    \begin{align*}
+      \left\lVert(-1)^F\right\rVert_{U_k}=&\max_{a\in\F_2^{m*}} \left\lVert(-1)^{a\cdot F}\right\rVert_{U_k}\\
+       =&\max_{a\in\F_2^{m*}}\left( \E_{x, u_1,u_2,\ldots,u_k\in\F_2^n}\left[ (-1)^{\sum_{S\subseteq\{1,2,\ldots,k\}}a\cdot F\left(x+\sum_{i\in S}u_i \right)} \right] \right)^{\frac{1}{2^k}}.
+    \end{align*}
+  \end{definition}
+  Note that, it is clear that $F$ being a vectorial Boolean function, $(-1)^F$ has no specific meaning. 
+  This is just a notation following the idea of single output Boolean function. 
+  Thus in the following text in this paper, $(-1)^F$ should only be considered as a notation. 
+
+  In particular for $k=3$, the Gowers $U_3$ norm of $(-1)^F$ is
+  \begin{align*}
+    \left\lVert(-1)^F\right\rVert_{U_3}=&\max_{a\in\F_2^{m*}} \left\lVert(-1)^{a\cdot F}\right\rVert_{U_3}\\
+    =&2^{-{\frac{n}{2}}}\max_{a\in\F_2^{m*}}\left|\sum_{(\tau,\gamma)\in\F_{2^n}^2}\left(\sum_{x\in\F_{2^n}}(-1)^{a\cdot F(x)+a\cdot F(x+\tau)+a\cdot F(x+\gamma)+a\cdot F(x+\tau+\gamma)}\right)^2\right|^{\frac{1}{8}}.
+  \end{align*}
+  Thus, the $k$th-dimension Gowers uniformity norm of an S-box is determined by the maximum $k$th-dimension Gowers uniformity norm among all the component functions.
+
+
+  \begin{theorem}[\cite{InverseFuncDAM2021}]\label{T:FFTSolution}
+  For any positive integer {$n\geq 4$}, we have
+  \begin{eqnarray*}
+  \left\| (-1)^{I_1}\right\| _{U_3}=2^{-{\frac n2}}\bigg|3\cdot2^{3n+1}+2^{n+3}\cdot\left[(-1)^n\left(3\widehat{I_1}(1)-10\right)-6\right]\bigg|^{\frac 18},
+  \end{eqnarray*}
+  where $\widehat{I_1}(1)$ can be computed using Lemma~\ref{L:Kloostermansumsone}.
+  \end{theorem}
+\section{Main results}
+  \begin{lemma}\label{L:SumSqur}
+  Let $F$ be an arbitrary $(n, n)$-function. For any $\gamma,\eta,\omega\in\F_2^n$, we define
+  \[\mathcal{N}(\gamma,\eta,\omega)=\#\left\{x\in\F_{2^n} : F(x)+F(x+\gamma)+F(x+\eta)+F(x+\gamma+\eta)=\omega\right\}.\]
+  Then we have
+  \[\sum_{\gamma,\eta,\omega\in\F_2^n}\mathcal{N}(\gamma,\eta,\omega)=2^{3n}\]
+  and
+  \[\sum_{\gamma,\eta,v \in\F_2^n}\left(\sum_{x\in\F_2^n}(-1)^{v\cdot\left(F(x)+F(x+\gamma)+F(x+\eta)+F(x+\gamma+\eta)\right)}\right)^2=2^n\sum_{\gamma,\eta,\omega\in\F_2^n}\mathcal{N}(\gamma,\eta,\omega)^2.\]
+  \end{lemma}
+  \begin{proof}
+  Note that for any $v\in\F_2^n$ we have $$\sum_{\gamma,\eta\in\F_2^n}\sum_{x \in \F_2^n}(-1)^{v \cdot(F(x)+F(x+\gamma)+F(x+\eta)+F(x+\gamma+\eta))} =\sum_{\gamma,\eta\in\F_2^n}\sum_{\omega \in \F_2^n}(-1)^{v \cdot \omega}\mathcal{N}(\gamma,\eta,\omega).$$
+  On the one hand, by applying this relation with $v=0$, we get  $\sum_{\gamma,\eta,\omega\in\F_2^n}\mathcal{N}(\gamma,\eta,\omega)=2^{3n}$.  On the other hand,
+  by applying this relation with the Parseval's relation, we immediately get our rest assertion. This completes the proof.
+  \end{proof}
+
+  \begin{lemma}\label{L:SumSqurNew}
+    Let $F$ be an arbitrary $(n, n)$-function and $T=\left\{\eta_1,\eta_2,\ldots,\eta_t\right\}\subseteq\F_2^n$, 
+    where $\eta_1, \eta_2, \ldots, \eta_t$ are any $t$ vectors in $\F_2^n$.
+    For any $\omega\in\F_2^n$, we define
+    \[\mathcal{N}_\omega(T)=\#\left\{x\in\F_{2^n} : \sum_{y\in T}F(x+y)=\omega\right\}.\]
+    Then we have
+    \[ \sum_{\eta_1,\eta_2,\ldots,\eta_t\in\F_2^n}\sum_{\omega\in\F_2^n}\mathcal{N}_\omega(T)=2^{n(t+1)}\]
+    and
+    \begin{equation*}
+      \sum_{\eta_1,\eta_2,\ldots,\eta_t,v\in\F_2^n}\left(\sum_{x\in\F_2^n}(-1)^{v\cdot\left(\sum_{y\in T}F(x+y)\right)}\right)^2=2^n\sum_{\eta_1,\eta_2,\ldots,\eta_t\in\F_2^n}\sum_{\omega\in\F_2^n}\left( \mathcal{N}_{\omega}(T) \right)^2.
+    \end{equation*}
+  \end{lemma}
+
+  \begin{proof}
+    Note that for any $ v\in\F_2^n $ we have 
+    \begin{equation}\label{eq:orignal_sum}
+      \sum_{x\in\F_2^n}(-1)^{v\cdot\left(\sum_{y\in T}F(x+y)\right)}=\sum_{\omega\in\F_2^n}(-1)^{v\cdot\omega}\mathcal{N}_{\omega}(T).
+    \end{equation}
+    When $ v=0 $ and $ \eta_i $ ranges over $ \F_2^n $ for $ i=1,2,...,t $, 
+    we have $ \sum_{\eta_1,\eta_2,\dots,\eta_t\in\F_2^n}\sum_{\omega\in\F_2^n}\mathcal{N}_{\omega}(T)=\sum_{\eta_1,\eta_2,\dots,\eta_t\in\F_2^n}\sum_{x\in\F_2^n}(-1)^0=2^{n(t+1)} $.  
+    Furthermore, we can apply Parseval's relation to the right part of equation \eqref{eq:orignal_sum} 
+    since it is actually the value of Fourier Transform of $ \mathcal{N}_{\omega}(T) $ at the point $ v $. 
+    Therefore, we have 
+    \[\sum_{v\in\F_2^n}\left( \sum_{\omega\in\F_2^n}(-1)^{v\cdot\omega}\mathcal{N}_{\omega}(T)\right)^2 = 2^n\sum_{\omega\in\F_2^n}\left( \mathcal{N}_{\omega}(T) \right)^2.\]
+    Sum all results as $ \eta_i $ ranging over $ \F_2^n $, where $ 1\le i\le n $, then this will complete the proof. 
+    % $ \sum_{\eta_1,\eta_2,\dots,\eta_t\in\F_2^n}\sum_{\omega\in\F_2^n}\mathcal{N}_\omega(T)=2^{n(t+1)} $.
+    % By applying Parseval's relation to above equation, we get 
+    % \[\sum_{\eta_1,\eta_2,\dots,\eta_t\in\F_2^n}\sum_{v\in\F_2^n}\left( \sum_{\omega\in\F_2^n}(-1)^{v\cdot\omega}\mathcal{N}_{\omega}(T) \right)^2 = 2^n\sum_{\eta_1,\eta_2,\dots,\eta_t\in\F_2^n}\sum_{\omega\in\F_2^n}\left( \mathcal{N}_{\omega}(T) \right)^2.\]
+  \end{proof}
+  \begin{corollary}
+    If $ f $ is a power permutation over the finite field $ \F_{2^n} $, its Gowers $ U_k $ norm is uniquely determined by the entry $ \sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x\in\F_{2^n}}(-1)^{\tr\left(\sum_{y\in T}f(x+y)\right)}\right)^2 $. 
+    \begin{proof}
+      Assume $ f=x^d $ with $ \gcd(d,2^n-1)=1 $ is a power permutation over the finite field $ \F_{2^n} $, 
+      then for all $ v\in\F_{2^{n}}^* $, we have 
+      \begin{align*}
+        &\sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x\in\F_{2^n}}(-1)^{\tr\left( v\left(\sum_{y\in T}f(x+y)\right)\right)}\right)^2\\=&\sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x\in\F_{2^n}}(-1)^{\tr\left( v\left(\sum_{y\in T}(x+y)^d \right)\right)}\right)^2\\
+        =&\sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x\in\F_{2^n}}(-1)^{\tr\left(\sum_{y\in T}\left(v^{\frac{1}{d}}x+v^{\frac{1}{d}}y\right)^d\right)}\right)^2\\
+        =&\sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x^{\prime}\in\F_{2^n}}(-1)^{\tr\left(\sum_{y^{\prime}\in T}\left(x^{\prime}+y^{\prime}\right)^d\right)}\right)^2.
+      \end{align*}
+      This implies that the Gowers $ U_k $ norm of a power permutation is uniquely defined by the entries 
+      $ \sum_{\eta_1,\eta_2, \cdots, \eta_t \in\F_{2^n}}\left(\sum_{x\in\F_{2^n}}(-1)^{\tr\left(\sum_{y\in T}f(x+y)\right)}\right)^2 $.  
+      
+      Besides, 
+    \end{proof}
+  \end{corollary}
+
+
+By equation \eqref{L:U3} and Theorem~\ref{T:FFTSolution}, we can get 
+
+The Bracken-Leander function is a cubic permutation with differential uniformity $ 4 $. 
+In the following, we determine the low bound of second-order of the Bracken-Leander function.
+
+\begin{theorem}
+  Let $ F(x) = x^d \in\F_{2^n}[x] $, where $ d=q^2+q+1 $, $ q = 2^m $ and $ n=4m $. 
+  Then for any nonzero $ u,v $, the second-order 
+\end{theorem}
+
+\begin{proof}
+  For any $ \gamma,\eta,\omega\in\F_{2^n} $, we have
+  \[\mathcal{N}_F(\gamma,\eta,\omega)=\#\left\{ x\in\F_{2^n}:x^d+(x+\gamma)^d+(x+\eta)^d+(x+\gamma+\eta)^d=\omega \right\}.\]
+  
+  First consider the simple cases, such that $ \gamma=0,\eta\ne 0 $ or $ \eta=0,\gamma\ne 0 $ or $ \gamma=\eta\in\F_{2^n} $. 
+  In those three cases, it's easy to get that $ \mathcal{N}_F(\gamma,\eta,\omega)=\#\left\{ x\in\F_{2^n}:\omega=0 \right\} $. 
+  
+  So we have for $ \gamma=0,\eta\ne 0 $ or $ \eta=0,\gamma\ne 0 $ or $ \gamma=\eta\in\F_{2^n} $, when $ \omega $ ranges over 
+  $ \F_{2^n} $, we have 
+  \begin{equation}\label{eq:N_F_trivil} 
+    \mathcal{N}_F(\gamma,\eta,\omega)=\begin{cases}
+      0,&(2^n-1)(3\cdot 2^{n}-2)\text{~times}\\
+      2^n,&(3\cdot 2^{n}-2) \text{~times}
+    \end{cases}
+  \end{equation}
+
+  Then for those $ \gamma,\eta\in\F_{2^n}^* $ such that $ \gamma\ne\eta $, 
+   we can rewrite $ \mathcal{N}_F(\gamma,\eta,\omega) $ as 
+  \[\mathcal{N}_F(\gamma,\eta,\omega^{\prime})=\#\left\{ x\in\F_{2^n}:f_{\gamma,\eta}(x)=\omega^{\prime} \right\}\]
+  where 
+  \begin{equation}\label{eq:linearized_f}
+	f_{\gamma,\eta}(x) =\left( \gamma^q\eta+\gamma\eta^q \right)x^{q^2}+\left( \gamma^{q^2}\eta+\gamma\eta^{q^2} \right)x^q+\left( \gamma^{q^2}\eta^q+\gamma^q\eta^{q^2} \right)x
+\end{equation}
+  and 
+  \[ \omega^{\prime}=\omega+(\gamma+\eta)^{q^2+q+1}+\gamma^{q^2+q+1}+\eta^{q^2+q+1}. \]
+
+  Therefore, we consider $ \mathcal{N}_F(\gamma,\eta,\omega^{\prime}) $ for all $ \gamma,\eta,\omega\in\F_{2^n} $.
+
+
+  % Once $ \gamma,\eta $ fixed, when $ \omega $ ranges over $ \F_{2^n} $, we always have $ \mathcal{N}_F(\gamma,\eta,\omega)=\mathcal{N}_F(\gamma,\eta,cons+\omega) $
+
+  For equation \eqref{eq:linearized_f} and for all $ \omega\in\F_{2^n} $, we have 
+  \begin{equation}\label{eq:linearized_f_omega}
+    \left( \gamma^q\eta+\gamma\eta^q \right)x^{q^2}+\left( \gamma^{q^2}\eta+\gamma\eta^{q^2} \right)x^q+\left( \gamma^{q^2}\eta^q+\gamma^q\eta^{q^2} \right)x = \omega.
+  \end{equation}
+  \begin{enumerate}[label=(\arabic{*})]
+    \item If $ \gamma^q\eta+\gamma\eta^q=0 $, i.e. $ \frac{\gamma}{\eta}\in\F_q\setminus\F_2 $, 
+    coefficients of equaiton \eqref{eq:linearized_f_omega} become zero, then the number of solutions of equaiton \eqref{eq:linearized_f_omega} 
+    is $ 0 $ if $ \omega\ne 0 $ and $ 2^n $ otherwise.
+    \item If $ \gamma^q\eta+\gamma\eta^q\ne 0 $, i.e. $ \frac{\gamma}{\eta}\in\F_{2^n}\setminus\F_q $, 
+    divides equation \eqref{eq:linearized_f_omega} by $ \eta^{q^2+q+1} $, then we have 
+    % \begin{equation}
+    %   \left( \left( \frac{\gamma}{\eta} \right)^q    +\frac{\gamma}{\eta} \right)\left( \frac{x}{\eta} \right)^{q^2}+
+    %   \left( \left( \frac{\gamma}{\eta} \right)^{q^2}+\frac{\gamma}{\eta} \right)\left( \frac{x}{\eta} \right)^{q}+
+    %   \left( \left( \frac{\gamma}{\eta} \right)^{q^2}+\left( \frac{\gamma}{\eta}  \right)^q\right) \frac{x}{\eta} 
+    %   = \frac{\omega}{\eta^{q^2+q+1}}.
+    % \end{equation}
+    \begin{equation}\label{eq:linearized_y_theta_alpha}
+      \left( \theta^q+\theta \right)y^{q^2}+\left( \theta^{q^2}+\theta \right)y^q+\left( \theta^{q^2}+\theta^q \right)y = \alpha,
+    \end{equation}
+    where $ \theta=\frac{\gamma}{\eta}\in\F_{2^n}\setminus\F_q $, 
+    $ y=\frac{x}{\eta} $ and $ \alpha=\frac{\omega}{\eta^{q^2+q+1}} $.
+
+    Since 
+    \begin{align*}
+      &\left( \theta^q+\theta \right)y^{q^2}+\left( \theta^{q^2}+\theta^q+\theta^q+\theta \right)y^q+\left( \theta^{q^2}+\theta^q \right)y\\ 
+      =& \left( \theta^q+\theta \right)(y^{q^2}+y^q)+\left( \theta^{q^2}+\theta^q \right)(y^q+y)\\
+      =& \left( \theta^q+\theta \right)(y^{q}+y)^q+\left( \theta^{q}+\theta \right)^q(y^q+y)\\
+      =& \left( \theta^q+\theta \right)^{q+1}\left[ \left(\frac{y^{q}+y}{\theta^q+\theta}\right)^q+\frac{y^q+y}{\theta^q+\theta} \right]\\
+      =&\alpha.
+    \end{align*}
+    Equation \eqref{eq:linearized_y_theta_alpha} becomes 
+    \begin{equation}\label{eq:dontnkwb}
+      z^q+z=\beta
+    \end{equation}
+    where $ z=\frac{y^q+y}{\theta^q+\theta} $ and $ \beta=\frac{\alpha}{\left( \theta^q+\theta \right)^{q+1}} $.
+
+    Note that both $ y^q+y,z^q+z $ are $ q $ to $ 1 $ linearized polynomials, so when $ y $ ranges over $ \F_{2^n} $, 
+    we have $ 2^{3m}=2^n/q $ different $ z=\frac{y^q+y}{\theta^q+\theta} $. And those $ z $ lead to $ 2^{2m}=2^{3m}/q $ 
+    different $ \beta $. 
+    
+    Indeed, % if there exists $ z\in\F_{2^n} $ satisfying $ \beta=z^q+z $, then 
+    if there exist $ z_1,z_2 $ such that $ z_1^q+z_1=z_2^q+z_2=\beta $. we have 
+    $ z_1+z_2\in\F_q $, in other words, there are two $ y_1,y_2 $ such that $ z_1=\frac{y_1^q+y_1}{\theta^q+\theta} $ 
+    and $ z_2=\frac{y_2^q+y_2}{\theta^q+\theta} $, satisfying $  (y_1+y_2)^q+(y_1+y_2)\in\left( \theta^q+\theta \right)\F_q $. 
+    Hence we assume $ (y_1+y_2)^q+(y_1+y_2)=\left( \theta^q+\theta \right)v $ for $ v\in\F_q $, so 
+    \[(y_1+y_2+\theta v)^q+(y_1+y_2+\theta v)=0,\]
+    implies that $ y_1+y_2\in \theta v+\F_q $. 
+    In other words, if equation \eqref{eq:linearized_y_theta_alpha} has solutions, then the number of solutions is $ 2^{2m} $.
+
+    Therefore, we obtain that there are $ 2^{2m} $ $ \omega $ 
+    such that the number of solutions of equation \eqref{eq:linearized_f_omega} is $ 2^{2m} $, besides, 
+    $ 2^{n}-2^{2m} $ is the number of $ \omega $ where equation \eqref{eq:linearized_f_omega} cannnot have solutions.
+
+    % \begin{enumerate}[label=(\roman{*})]
+    %   \item If 
+    % \end{enumerate}
+  \end{enumerate}
+  Therefore, for all $ \gamma,\eta\in\F_{2^n}^* $ with $ \gamma\ne\eta $, when $ \omega $ ranges over $ \F_{2^n} $, we have 
+  \begin{enumerate}[label=(\arabic{*})]
+    \item If $ \frac{\gamma}{\eta}\in\F_q\setminus\F_2 $, 
+    \begin{equation}
+      \mathcal{N}_F(\gamma,\eta,\omega)=\begin{cases}
+        0,&2^n-1\text{~times}\\
+        2^{n},&1\text{~times},
+      \end{cases}
+    \end{equation}
+    \item If $ \frac{\gamma}{\eta}\in\F_{2^n}\setminus\F_q $, 
+    \begin{equation}
+      \mathcal{N}_F(\gamma,\eta,\omega)=\begin{cases}
+        0,&2^n-2^{2m}\text{~times}\\
+        2^{2m},&2^{2m}\text{~times},
+      \end{cases}
+    \end{equation}
+  \end{enumerate}
+  So we conclude that for $ \gamma,\eta\in\F_{2^n}^* $ and $ \omega\in\F_{2^n} $, we have 
+  \[\mathcal{N}_F(\gamma,\eta,\omega)=\begin{cases}
+    0,&(2^n-1)(2^n-1)(2^m-2)+(2^n-2^{2m})(2^n-1)(2^n-2^m)\text{~times}\\
+    2^{2m},&2^{2m}(2^n-1)(2^n-2^m)\text{~times}\\
+    2^n,&(2^n-1)(2^m-2)\text{~times}\\
+  \end{cases}\]
+  Combine two results of $ \mathcal{N}_F(\gamma,\eta,\omega)  $, 
+  when $ \gamma,\eta,\omega $ range over $ \F_{2^n} $, we have
+  \[\mathcal{N}_F(\gamma,\eta,\omega)=\begin{cases}
+    0,&(2^n-1)\left[ (2^n-1)(2^m-2)+(2^n-2^{2m})(2^n-2^m)+3\cdot 2^n-2 \right]\text{~times}\\
+    2^{2m},&2^{2m}(2^n-1)(2^n-2^m)\text{~times}\\
+    2^n,&(2^n-1)(2^m-2)+3\cdot 2^n-2\text{~times}\\
+  \end{cases}\]
+\end{proof}
+
+
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{BF20160315_Tang}
+\end{document}
+
+
+
+
+n:=5;
+F<v>:=GF(2,n);
+Z:=Integers();
+W:=VectorSpace(GF(2),n);
+function nsol(gamma,eta,omega)
+  count:=0;
+  for x in F do
+    if func<x|x^3>(x)+func<x|x^3>(x+gamma)+func<x|x^3>(x+eta)+func<x|x^3>(x+gamma+eta) eq omega then
+      count +:= 1;
+    end if;
+  end for;
+  return count;
+end function;
+
+for d in [1..2^n-2] do
+for gamma,eta in F do
+  l_sum:=0;
+  r_sum:=0;
+  
+  for nu in F do
+    l_sum +:= (&+[(-1)^Z!Trace((func<x|x^d>(x)+func<x|x^d>(x+gamma)+func<x|x^d>(x+eta)+func<x|x^d>(x+gamma+eta))*nu):x in F])^2;
+  end for;
+  //l_sum;
+  if l_sum ne 32768 then
+    print "erro";
+    d;
+  end if;
+end for;
+end for;
+  for omega in F do
+    r_sum +:=(nsol(gamma,eta,omega))^2;
+  end for;
+  if l_sum ne r_sum*2^n then
+    print "error!";
+  end if;
+end for;
+
+  for gamma,eta,omega in F do
+    nsol(gamma,eta,omega);
+  end for;
+
+
+
+
+  4----7,11,13
+  5----7,11,13,14,15,19,21,22,23,25,26,27,28,29,30,
+
+
+
+
+  k:=3;
+  q:=2^k;
+  n:=q^4;
+  F<v>:=GF(n);
+  P<x>:=PolynomialRing(F);
+  Z:=Integers();
+  function Walsh2d(func,a,b)
+  intrace := [ b*Evaluate(func,x) + a*x : x in F ];
+  traces := [ AbsoluteTrace(F ! x) : x in intrace ];
+  traces := [ (x eq 0) select (Z ! 0) else (Z ! 1) : x in traces];
+  powers := [ (-1)^( Z ! x ) : x in traces ];
+  return &+powers;
+  end function;
+
+  for a,b in F do
+    if b*a^-1 in GF(q) then continue; end if;
+    f:=func<x|x^(q^2+q+1)>;
+    seq:=[];
+    for w in F do
+      d:=#{x:x in F|f(x)+f(x+a)+f(x+b)+f(x+a+b) eq w};
+      if d ne 0 then Append(~seq,d); end if;
+    end for;
+    seq;
+    print "number of nonzero values",#seq;
+  end for;
+
+
+
+
+  count64:=0;  
+  for a in F do 
+    f:=x^(q^2+q+1)+(x+a)^(q^2+q+1);
+    seq:=[];
+    for u in F do
+      Append(~seq,Abs(Walsh2d(f,u,v^22)));
+    end for;
+
+    if Max(seq) eq 64 then
+      count64+:=1;
+    else 
+      Max(seq);
+    end if;
+  end for;
+  count64;
+
+
+
+
+
+  for a in F do
+    if #{x:x in F|(a^q+a^(q^2))*x^(q^3)+(a^q+a^(q^3))*x^(q^2)+(a^(q^3)+a^(q^2))*x^q eq 0} eq q^2 then
+      count+:=1;
+    else 
+    #{x:x in F|(a^q+a^(q^2))*x^(q^3)+(a^q+a^(q^3))*x^(q^2)+(a^(q^3)+a^(q^2))*x^q eq 0};
+    end if;
+  end for;
+  count;
+
+
+  for a in F do
+    seq:=[];
+    for u in F do
+      Append(~seq,&+[(-1)^Z!Trace(u*x^5+x+f(x)+f(x+a)):x in F]);
+    end for;
+    seq;
+  end for;
+
+  for a in F do
+    // seq:=[0,a+a^q,a+a^(q^2),a^q+a^(q^2),a^q+a^(q^2),a^q+a^(q^3),a^(q^2)+a^(q^3),0,a^(q^2)+a,a+a^(q^3),0,a^(q^2)+a^(q^3),a+a^q,0,a^(q^3)+a,a^(q^3)+a^q];
+    seq:=[0,a^q+a^(q^2),a+a^(q^2),a^q+a^(q^2),0,a^(q^2)+a^(q^3),a+a^(q^2),a^(q^2)+a^(q^3),0];
+    Rank(Matrix(3,3,seq));
+  end for;
+
+=======================================================================
+测试 Kasami function N_F(a,b,c) 的结果, 不是那么有规律, 但大部分在{0,4,8,12}之中, 有情况能取到16 (比如n=11,i=3,6),20 (比如n=8,i=3,每一对ab,只有12个c有N=20的结果,), 继续检测, 
+
+F<v>:=GF(2,13);  
+i:=3;
+d:=2^(2*i)-2^i+1; 
+f:=func<x|x^d>;
+for gamma,eta in F do
+  for omega in F do
+    if gamma eq eta or gamma*eta eq 0 then 
+      break;
+    end if;
+    num:=#{x:x in F|f(x)+f(x+gamma)+f(x+eta)+f(x+gamma+eta) eq omega};
+    if num eq 20 then
+      num;
+      print "gamma,eta,omega=",gamma,eta,omega;
+    end if;
+  end for;
+end for;
+
+===============================================================================
+测试 bracken leander function N_F(a,b,c) 的结果, n=8, 理论应该是 1028160 和 1276, 一晚上的结果显示是这个数值.
+
+k:=3;
+n:=4*k;
+F<v>:=GF(2,n);
+q:=2^k;
+count0:=0;
+count64:=0;
+count256:=0;
+f:=func<x|x^(q^2+q+1)>;
+//for gamma,eta in F do
+  
+//if gamma*eta eq 0 or gamma eq eta then
+  for gamma in F do
+  if gamma eq 0 then continue; end if;
+   Eta:={x:x in F|x*gamma^-1 in GF(2,3) and x*gamma^-1 notin GF(2)};
+  // Eta:={x:x in F|x*gamma^-1 notin GF(2,3)};
+  eta:=Random(Eta);
+    for omega in F do
+      d:=#{x:x in F|f(x)+f(x+gamma)+f(x+eta)+f(x+gamma+eta) eq omega};
+      if d eq 0 then count0+:=1;end if;
+      if d eq 2^(2*k) then count64+:=1;end if;
+      if d eq 2^n then count256+:=1;end if;
+    end for;
+  //end if;
+end for;
+count64;
+count256;
+
+
+==============================================================
+for m in [4..10] do
+F<v>:=GF(2,2*m);
+nu:={x:x in F|x^(2^m+1) eq 1};
+{func<x|x^3+x+1>(x):x in nu};
+end for;
+
+
+for m in [4..10] do
+F<v>:=GF(2,2*m);
+f1:=func<x|x^2+x^(2^m+1)+x^(3*2^m-1)>;
+f2:=func<x|x^4+x^(2^(m)+2)+x^(3*2^(m)+1)>;
+f3:=func<x|x^(2^m+4)+x^(2^(m+1)+3)+x^(2^(m+2)+1)>;
+#{f1(x):x in F};
+end for;
+============================================
+
+计算所有满足条件的 n,k
+m:=9;
+F<v>:=GF(2,2*m);
+seq:=[];
+for n,k in [1..m] do 
+if n-k le 1 then continue; end if;
+if Gcd(2^m+1,2^n-2^k-1) eq 1 and Gcd(m,n-k) eq Gcd(m,2*(n-k)) and Gcd(2*m,n-k) eq Gcd(m,n-k) then 
+Append(~seq,[n,k]);
+end if;
+end for;
+
+
+
+nu:={x:x in F|x^(2^m+1) eq 1};
+for i in [1..#seq] do
+  n:=seq[i][1];
+  k:=seq[i][2];
+  b:=2^n+2^k;
+  a:=2^k;
+  f:=func<x|x^b*(1+x^a+x^b)^(2^m-1)>;
+  if {f(x):x in nu} eq nu then
+    [n,k];
+  end if;
+  //order:={Order((1+x*y)^(2^n)*(x+y)^(-2^n)+(1+x*y)^(2^k)*(x+y)^(-2^k)+ (x^a*y^(b-a)+x^(b-a)*y^a)*((x+y)^b)^-1):x,y in nu|x ne y};
+  //order;
+end for;
+
+===============================================================
+
+m:=9;
+F<v>:=GF(2,2*m);
+nu:={v^i|x^(2^m+1) eq 1};
+if Trace(((xy)*(y+x)^-1)^(2^n+2^k)) eq 1 then
+  x;y;
+end if;
+
+
+m=13的结果
+[ 4, 1 ]
+[ 6, 1 ]
+[ 6, 3 ]
+[ 8, 1 ]
+[ 8, 3 ]
+[ 8, 5 ]
+[ 10, 1 ]
+[ 10, 3 ]
+[ 10, 5 ]
+[ 10, 7 ]
+[ 12, 1 ]
+[ 12, 3 ]
+[ 12, 5 ]
+[ 12, 7 ]
+[ 12, 9 ]
+
+m=12的结果
+[ 5, 1 ]
+[ 6, 2 ]
+[ 8, 4 ]
+[ 9, 5 ]
+[ 10, 6 ]
+[ 11, 7 ]
+[ 12, 8 ]
+
+m=11的结果
+[ 4, 1 ]
+[ 6, 1 ]
+[ 6, 3 ]
+[ 8, 1 ]
+[ 8, 3 ]
+[ 8, 5 ]
+[ 10, 1 ]
+[ 10, 3 ]
+[ 10, 5 ]
+[ 10, 7 ]
+
+m=10 的结果
+[ 4, 2 ]
+[ 5, 3 ]
+[ 6, 4 ]
+[ 8, 2 ]
+[ 8, 6 ]
+[ 9, 3 ]
+[ 9, 7 ]
+[ 10, 4 ]
+[ 10, 8 ]
+
+m=9的结果
+[ 4, 1 ]
+[ 6, 1 ]
+[ 6, 3 ]
+[ 8, 1 ]
+[ 8, 5 ] 
+
+m=8的结果
+
+无结果
+
+m=7的结果
+[ 4, 1 ]
+[ 6, 1 ]
+[ 6, 3 ]
+======================
+
+
+for x,y in nu do
+  if x eq y then continue; end if;
+  if Trace((x^(2^n)*y^(2^k))*(x+y)^(-2^n-2^k)) ne 0 then
+    x;y;
+  end if;
+  r:=y*x^-1;
+  &+[(func<r|(1+r^(2^n+2^k))*((1+r)^(2^n)*(1+r)^(2^k))^-1>(r))^(2^i):i in [0..m-1]];
+end for;
+
+
+=======================================================
+
+
+m:=9;
+F<v>:=GF(2,2*m);
+seq:=[];
+for n,k in [1..m] do 
+if n-k le 1 then continue; end if;
+if Gcd(2^m+1,2^n-2^k-1) eq 1 and Gcd(m,n-k) eq Gcd(m,2*(n-k)) and Gcd(2*m,n-k) eq Gcd(m,n-k) then 
+Append(~seq,[n,k]);
+end if;
+end for;
+
+nu:={x:x in F|x^(2^m+1) eq 1};
+for i in [1..#seq] do
+  n:=seq[i][1];
+  k:=seq[i][2];
+  b:=2^n+2^k;
+  a:=2^k;
+  //res_l:={ ((y*x^-1)^(2^(n-k))+y*x^-1)*((1+y*x^-1)^-1)^(2^(n-k)+1):y,x in nu|y ne x };
+  //res_l:={ (x^(2^k)*y^(2^n)+y^(2^k)*x^(2^n))*((x+y)^-1)^(2^(n)+2^k):y,x in nu|y ne x };
+  u:=Random(nu);
+  list_gamma:={ (1+x^2*u)*((x+x*u)^-1)^(2^(n-k))+(1+x^2*u)*((x+x*u)^-1):x in nu };
+  delta:={((u)^(2^(n-k))+u)*((1+u)^-1)^(2^(n-k)+1)};
+  delta subset list_gamma;
+  [Order(x):x in list_gamma|x ne 0];
+  #delta;
+  //{x: x in GF(2,m)} meet (res join res_r);
+  //{* (1+x*y)*((x+y)^-1)^(2^(n-k))+(1+x*y)*((x+y)^-1):y,x in nu|y ne x *};
+end for;
+====================================================================
+m:=9;
+F<v>:=GF(2,2*m);
+seq:=[];
+for n,k in [1..m] do 
+if n-k le 1 then continue; end if;
+if Gcd(2^m+1,2^n-2^k-1) eq 1 and Gcd(m,n-k) eq Gcd(m,2*(n-k)) and Gcd(2*m,n-k) eq Gcd(m,n-k) then 
+Append(~seq,[n,k]);
+end if;
+end for;
+
+nu:=[x:x in F|x^(2^m+1) eq 1];
+n:=seq[1][1];
+k:=seq[1][2];
+for u in nu do 
+  if u eq 1 then continue; end if;
+  if 0 in {u^(2^(n-k)+1)+(x^2+x)*u^(2^(n-k))+(x^(2^(n-k)+1)+x+1)*u+x^2+x^(2^(n-k)+1):x in nu} then 
+    index:=Index([u^(2^(n-k)+1)+(x^2+x)*u^(2^(n-k))+(x^(2^(n-k)+1)+x+1)*u+x^2+x^(2^(n-k)+1):x in nu],0);
+    nu[index];
+    u;
+  end if;
+end for;

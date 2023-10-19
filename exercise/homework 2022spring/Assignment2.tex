@@ -1,0 +1,71 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\usepackage{CJKfntef}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+% \title{NIS2312-2 Spring 2022 Homework~1}
+% \author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 Spring 2021-2022} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~2} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年2月24日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{Problem 1}
+    举例: 一个无限群 $ G $和它的一个集合 $ H $, 集合元素个数无限且元素之间的运算满足封闭性, 但不构成群.
+\subsubsection*{Problem 2}
+    群(\CJKunderdot{\textbf{此题群的(G2)和(G3)直接写出群的单位元和任意元素的逆元即可}})和子群的判定: 设 $ G $为群, $ S $为$ G $的任意子集, $ H $是 $ G $的子群:
+    \begin{enumerate}
+        \item 假设 $ n\in\Z^+ $, $ F $为任意数域, \CJKunderdot{\textbf{判断}}矩阵集合 $ H=\{(a_{ij})\in GL_n(F)\mid a_{ij}=0~\text{如果}~i>j\} $在矩阵乘法运算下是否构成 $ GL_n(F) $的子群.
+        \item 假设集合 $ S=\{(a,b):a,b\in\R\} $, 且集合元素之间的运算定义 $ (a,b)\star (c,d)=(ac-bd,ad+bc) $. \CJKunderdot{\textbf{判断}}该集合 $ S $关于运算 $ \star $是否构成群. 
+        如果 $ S $是一个群, 那么集合 $ T=\{(a,0)\mid a\in\R\} $关于运算 $ \star $是否构成群, 是否构成 $ S $的子群.
+        
+        \item 假设集合 $ S=\{(1,1),(1,-1),(-1,1),(-1,-1)\} $且集合元素之间的运算是按位乘法, 即 $ (a,b)(c,d)=(ac,bd) $, 其中 $ ac,bd $是数域上的乘法. \CJKunderdot{\textbf{判断}}该集合 $ S $ 是否为群. 
+        如果集合 $ S $ 是群, 尝试给出该群的两个非平凡子群.
+        \item 定义集合 $ N(S) = \{x\in G \mid xS = Sx\} $, \CJKunderdot{\textbf{判断}}~$ N(S) $是否为群, 是否为 $ G $的子群.
+        \item 定义一个二元运算: $ \left[x,y\right]=xyx^{-1}y^{-1} $, 其中$ x,y\in G $. 设 $ G' $是所有的形如 $ \left[x,y\right] $元素构成的集合.
+        \CJKunderdot{\textbf{判断}} ~$ G' $关于 $ G $的运算是否为群, 是否为 $ G $的子群.
+        \item 对于任意的 $ g\in G $, \CJKunderdot{\textbf{判断}} ~$ gHg^{-1} $是否为 $ G $的子群, $ \bigcap_{g\in G}gHg^{-1} $是否为 $ G $的子群.
+        \item 假设 $ G $是阿贝尔群, 给定整数 $ n\in\Z^+ $, \CJKunderdot{\textbf{判断}}集合 $ \{a^n\mid a\in G\} $是否为 $ G $的子群, 集合 $ \{a\mid a^n=e,a\in G\} $是否为 $ G $的子群, 其中 $ e $为单位元.
+    \end{enumerate}
+\subsubsection*{Problem 3} 
+    \begin{enumerate}[label=(\arabic*)]
+        \item 假设 $ \gcd(n,m)=1 $, 定义 $ \Z_n\times\Z_m=\{(a,b):a\in\Z_n, b\in\Z_m\} $和元素之间的加法 $ (a,b)+(c,d)=(a+c,b+d) $, 其中 $ a+c,b+d $的加法分别是 $ \Z_n,\Z_m $中定义的加法.
+        证明: $ \Z_n\times\Z_m $构成群(思考是否是循环群), $ \Z_n\times\{0\} $也构成群并且是$ \Z_n\times\Z_m $的子群. 
+        \item 假设 $ \gcd(n,m)=1 $, 现在有循环群 $ \Z_{nm} $. 证明: $ n\Z_{nm}=\{0,1n,2n,3n,\dots,(m-1)n\} $和 $ m\Z_{nm} $是群, 且均为 $ \Z_{nm} $的子群.
+        \item 思考, 根据(1)和(2), 假设 $ \gcd(n,m)=1 $, 是否可以构造一种映射(一一映射) $ f:\Z_n\times\Z_m\rightarrow\Z_{nm} $, 同时将$ \Z_n\times\Z_m $的单位元映射到 $ \Z_{nm} $的单位元. 
+        \item (中国剩余定理)给定一个正整数 $ n $, 如果 $ n\equiv 1\mod{3} $且 $ n\equiv 2\mod{5} $, \CJKunderdot{直接给出} ~$ n\mod{15} $的结果.
+    \end{enumerate} 
+\subsubsection*{Problem 4}
+    设群 $ G $的子群有如下包含关系: $ H_1\leq H_2\leq H_3\leq\cdots $, 证明: $ \bigcup_{i=1}^{\infty}H_i $是 $ G $的一个子群.
+\subsubsection*{Problem 5}
+    设 $ H $是有理数加法群 $ \Q $的子群, 且满足 $\forall x\in H^*, 1/x\in H $, 证明: $ H=\{0\} $或 $ \Q $.
+% \subsubsection*{Problem 6}
+%     设 $ G=\{x\in \R\mid 0\leq x<1\} $且 $ x\star y $是 $ x+y $的小数部分.
+%     证明: $ G $关于 $ \star $构成阿贝尔群.
+% \subsubsection*{Problem 7}
+%     设 $ G $是一个群, 证明: $ (gh)^{-1}=h^{-1}g^{-1},\forall h,g\in G $.
+% \subsubsection*{Problem 8}
+%     证明: 一个有限群是阿贝尔群当且仅当它的群表是对称矩阵.
+\end{document}

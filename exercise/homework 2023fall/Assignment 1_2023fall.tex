@@ -1,0 +1,62 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+\title{NIS2312-01 Fall 2023 Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-01 Fall 2023-2024} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~1} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2023年9月14日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{Problem 1}
+    设$a,b$是任意两个正整数, 则: 
+    \begin{enumerate}[label=(\arabic{*})]
+        \item $a,b$的所有公倍数就是$\left[ a,b \right]$的所有倍数; 
+        \item $\left[ a,b \right]=\frac{ab}{(a,b)}$.
+    \end{enumerate}
+    解: 
+    \begin{enumerate}[label=(\arabic{*})]
+        \item 设正整数$c=\left[ a,b\right]$, 正整数$d$为$a,b$的任意公倍数, 即$a\mid d,b\mid d$. 故对于两个正整数$c,d$, 由定理3(带余除法)可知一定存在整数$q,r$使得$d=qc+r$, 其中$0\le r\le c-1$. 由于$a\mid c$, $a\mid d$和$r=d-qc$, 故有$a\mid r$, 同理有$b\mid r$, 故$r$是$a,b$的公倍数. 又因为$r\le c-1$, 故$r=0$, 即$d=qc$, 证毕.
+        \item  设正整数$d=\gcd(a,b)$和正整数$l=\left[ a,b \right]$. 由$d\mid a$且$d\mid b$可假设 $a=da_0,b=db_0$, 其中$a_0$和$b_0$互素, 故$\frac{ab}{d}=a_0b=b_0a$是$a,b$的公倍数, 则由本题(1)结论可知$l\mid \frac{ab}{d}$. 假设$m$是$a,b$的非零公倍数, 故有$m=ka=ka_0d$和 $b=b_0d\mid m$, 因此有$b_0\mid ka_0$, 但$a_0$和$b_0$互素, 故有推论11(2)得到$b_0\mid k$, 因此有$\frac{ab}{\gcd(a,b)}=a_0b_0d\mid m$. 因为$m$是$a,b$的公倍数而$l$是$a,b$的最小公倍数, 故$\frac{ab}{\gcd(a,b)}=l=\left[ a,b \right]$.
+    \end{enumerate}
+\subsubsection*{Problem 2} 
+    \begin{enumerate}[label=(\arabic{*})]
+        \item 利用辗转相除法计算$13$和$31$的最大公因数;
+        \item 设$a,b$是任意两个互素的正整数, 证明$\gcd(a,a+b^2)=1$且$\gcd(ab,a^2+b^2)=1$.
+    \end{enumerate}
+    解: 
+         \begin{enumerate}[label=(\arabic{*})]
+            \item 我们有 \begin{align*}
+                31&=2\times 31&+5\\
+                13&=2\times 5 &+3\\
+                 5&=1\times 3 &+2\\
+                 3&=1\times 2 &+1\\
+                 2&=2\times 1&
+            \end{align*}
+            因此$13$和$31$的最大公因数为$1$.
+            \item 由定理10可知, 根据$\gcd(a,b)=1$, 有$\gcd(a,b^2)=1$, 由定理12的注12.1可知, $\gcd(a,a+b^2)=\gcd(a,b^2)=1$; 同样根据定理12的注12.1可知$\gcd(a,a^2+b^2)=\gcd(a,b^2)=1$, 同理$\gcd(b,a^2+b^2)=1$, 故由推论11的(1)得到结论$\gcd(ab,a^2+b^2)=1$.
+        \end{enumerate}
+\end{document}

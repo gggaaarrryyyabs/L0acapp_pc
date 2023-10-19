@@ -1,0 +1,526 @@
+% !TeX TS-program = xelatex
+% This is SJTUBeamermin v1.0
+% For more detailed desciption, see
+% https://github.com/LogCreative/SJTUBeamermin/blob/main/doc/sjtubeamermintheme.pdf
+%
+\documentclass[
+    % draft,                             % 草稿模式
+    aspectratio=169,                   % 使用 16:9 比例
+]{beamer}
+\mode<presentation>
+\usetheme[
+    navigation=subsections,            % 使用子章节进度显示
+     lang=en,                           % 使用英文
+    % cjk=true,                          % 使用CJK而不是ctex
+    color=blue,                         % 使用红色主题
+    % pattern=all,                        % 使用全图案装饰
+    % gbt=bibtex,                        % 使用 gbt (使用 bibtex 编译)
+]{sjtubeamermin}
+% \usecolortheme[]{beaver}                 % 使用其他颜色主题
+% \addbibresource{ref.bib}               % gbt!=bibtex
+
+\usepackage{amsmath,amsthm}
+\usepackage{bm}
+\usepackage{tikz-cd}
+\usepackage{tikz}
+\usetikzlibrary{trees,circuits.logic.US,circuits.ee.IEC}
+\usepackage{empheq}
+\usepackage{tabularx}
+\usepackage{pifont}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage[boxruled]{algorithm2e}
+\usepackage{hyperref}
+\usepackage{amsfonts}
+\usepackage{tasks}
+\usepackage{fontspec}
+\usepackage{mdframed} % Add easy frames to paragraphs
+\usepackage{color,soul}
+\usepackage{xparse} % Add support for \NewDocumentEnvironment
+\usepackage{biblatex}
+\addbibresource{refs.bib}
+
+
+\usepackage[customcolors]{hf-tikz}
+\tikzset{style green/.style={
+    set fill color=green!50!lime!60,
+    set border color=white,
+  },
+  style cyan/.style={
+    set fill color=cyan!90!blue!60,
+  },
+  style orange/.style={
+    set fill color=orange!80!red!60,
+  },
+  hor/.style={
+    above left offset={-0.31,0.31},
+    below right offset={0.31,-0.2},
+    #1
+  },
+  ver/.style={
+    above left offset={-0.1,0.3},
+    below right offset={0.15,-0.15},
+    #1
+  }
+}
+
+\renewcommand{\Bbb}{\mathbb}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\GR}{\mathbb{GR}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Fns}{\mathbb{F}_{2^n}^*}
+\newcommand{\Fn}{\mathbb{F}_{2^n}}
+\newcommand{\Fks}{\mathbb{F}_{2^k}^*}
+\newcommand{\Fk}{\mathbb{F}_{2^k}}
+\newcommand{\df}{\delta_F}
+\newcommand{\tr}{\operatorname{tr}_1^k}
+\newcommand{\gtr}{\operatorname{T}}
+\newcommand{\Bn}{\mathcal{B}_n}
+% The symbol of sharing
+\newcommand{\Sh}{\operatorname{Sh}}
+
+
+\newcommand{\dis}{\operatorname{\widetilde{d}}}
+\newcommand{\wt}{\operatorname{\widetilde{wt}}}
+\newcommand{\nnl}{\operatorname{d}_{\mathcal{A}}}
+\newcommand{\disl}{\operatorname{d}_{\mathcal{L}}}
+
+% The symbol of Teichmuller sets
+\newcommand{\teich}{\textit{Teichm$\ddot{u}$ller sets}}
+
+% \newtheorem*{definition}{Definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{proposition}{Proposition}
+\definecolor{graylight}{cmyk}{.30,0,0,.67} % define color using xcolor syntax
+\setbeamertemplate{itemize items}[default]
+
+% modify the footnote symbol 
+% \makeatother
+% \renewcommand{\thefootnote}{\ifcase\value{footnote}\or\dagger\or(\#\#)\or(\#\#\#)\or(\#\#\#\#)\or(\#\#\#\#\#)\fi}
+% \makeatletter
+
+
+
+\newmdenv[ % Define mdframe settings and store as leftrule
+  linecolor=red,
+  topline=false,
+  bottomline=false,
+  rightline=false,
+  skipabove=\topsep,
+  skipbelow=\topsep
+]{leftrule}
+
+% \NewDocumentEnvironment{example}{O{\textbf{Example:}}} % Define example environment
+% {\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+% {\end{leftrule}}
+\setbeamertemplate{footline}[frame number]
+
+\NewDocumentEnvironment{question}{O{\textbf{Something:}}} % Define something environment
+{\begin{leftrule}\noindent\textcolor{graylight}{#1}\par}
+{\end{leftrule}}
+
+\NewDocumentEnvironment{remark}{O{\textbf{Remark:}}} % Define remark environment
+{\begin{leftrule}\noindent\textcolor{blue}{#1}\par}
+{\end{leftrule}}
+
+\begin{document}
+    \institute[School of Electronic Information and Electrical Engineering]{电子信息与电气工程学院}   % 组织
+    % \logo{
+    %     \includegraphics{support/cnlogored.pdf}  % 重定义 logo
+    % }
+    \titlegraphic{                         % 标题图像
+        \begin{stampbox}[white]
+            \includegraphics[width=0.3\textwidth]{support/head.png}
+        \end{stampbox}
+    }
+    \title{Estimate the Nonlinearity of Boolean\\ Functions on Probabilistic Affine Tests}  % 标题
+ %   \subtitle{SJTUBeamer \fbox{\textsc{min}} Template}         % 副标题
+    \author{Zhaole Li}                  % 作者
+    \date{\textcolor{red}{2023/5/24}}                          % 日期
+    \maketitle                             % 创建标题页
+
+
+\AtBeginSection[]{
+   \begin{frame}
+       % \tableofcontents[currentsection]           % 传统节目录             
+       \sectionpage                   % 节页
+   \end{frame}
+}
+
+% 使用小节目录
+%\AtBeginSubsection[]{                  % 在每小节开始
+ %   \begin{frame}
+        % \tableofcontents[currentsection,currentsubsection]             % 传统小节目录             
+  %      \subsectionpage                % 小节页
+ %   \end{frame}
+%}
+
+\section{Introduction}
+%\subsection{第 1 小节}
+    \begin{frame}
+        \frametitle{The Nonlinearity of a Boolean Function}
+        \begin{itemize}
+            \item Boolean functions are central objects for the design and the security of symmetric cryptosystems.
+            \item It is important that Boolean functions used in many symmetric cryptosystems are not affine, and not even close (with respect to Hamming distance) to being affine.
+            \item The nonlinearity of an $n$-variable Boolean function $f$, denoted $\nnl(f)$, defined as the minimum Hamming distance to
+            any affine function in $n$ variables, is therefore an important cryptographic property. 
+            \item In theory, the nonlinearity of an $n$-variable Boolean function $f$ can be efficiently computed by the Walsh transform in time $O(n\log n)$.
+            \item In practice, when $n$ is large (e.g., $n\ge 70$), computing the Walsh transform is infeasible.
+        \end{itemize}
+        
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{The Estimation of the Nonlinearity of a Boolean Function}
+        \begin{itemize}
+            \item Consider a probabilistic test which has a outcome based on the values of $f$ at some fixed number of points in $\F_2^n$ and denote by $P(f)$ the probability of failing the test.
+            \item Assume $P(f)$ is related with the $\nnl(f)$ and can be bounded by some functions in $\nnl(f)$, namely $\operatorname{LowerBound}(\nnl(f))\le P(f)\le \operatorname{UpperBound}(\nnl(f))$.
+            \item We can estimate $\nnl(f)$ by 
+            \[\nnl(f)\in\left[ \min(\operatorname{UpperBound}^{-1}(P(f))),\max(\operatorname{LowerBound}^{-1}(P(f))) \right],\]
+            where $F^{-1}(x)$ means the preimage of $x$ under the function $F$.
+        \end{itemize}
+    \end{frame}
+        
+    \begin{frame}
+        \frametitle{Preliminaries}
+        
+        \begin{itemize}
+            \item Boolean functions in $n$ variables are functions $f:\F_2^n\rightarrow\F_2$, where $\F_2$ is the binary finite field, and $\F_2^n$ is the $n$ dimensional vector space over $\F_2$.
+            \item Define the (normalized) Hamming weight and Hamming distance for any two vectors $a=(a_1,a_2,...,a_n)$ and $b=(b_1,b_2,...,b_n)\in\F_2^n$ as:
+            \begin{align*}
+                &\wt(a) =\frac{1}{n}\# \left\{ 1\le i\le n\mid a_i\ne 0 \right\},\\
+                &\dis(a,b)=\frac{1}{n}\#\left\{ 1\le i\le n\mid a_i\ne b_i \right\}.
+            \end{align*}
+            \item The truth table (TT) is the most well-known way to uniquely represent Boolean functions, that is, for an $n$-variable Boolean function $f$, we have 
+            \[\operatorname{TT}_f=\left[ f(0,0,\dots,0),f(1,0,\dots,0),\dots,f(0,1,\dots,1),f(1,1,\dots,1) \right].\]
+            
+        \end{itemize} 
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Preliminaries (cont.)}
+        \begin{itemize}
+            \item Any Boolean function $f$ in variables $x_1,x_2,\dots,x_n$ can also be uniquely represented in its ANF (Algebraic Normal Form):
+            \[f(x_1,x_2,\dots,x_n) = \bigoplus_{u\in\F_2^n}a_ux^u,\]
+            where $x=(x_1,x_2,\dots,x_n)\in\F_2^n$, $u=(u_1,u_2,\dots,u_n)\in\F_2^n$, $a_u\in\F_2$.
+            \item The algebraic degree of $f$ is denoted by $\operatorname{deg}(f)=\max\left\{ n\wt(u):u\in\F_2^n, a_u\ne 0 \right\}$.
+            \item Functions of algebraic degree at most one are called affine; affine functions with zero constant are called linear. 
+            \item Denote by $\mathcal{A}_n$ (resp. $\mathcal{L}_n$) the set of affine (resp. linear) functions in $n$ variables over $\F_2$. We will omit the subscript $n$ if the content is clear.
+        \end{itemize}
+        
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Preliminaries (cont.)}
+        \begin{itemize}
+            \item The (normalized) Hamming weight of a Boolean function $f$, denoted by $\wt(f)$, is $\wt(\operatorname{TT}_f)$; The (normalized) Hamming distance between two Boolean function $f$ and $g$, denoted by $\dis(f,g)$, is $\dis(\operatorname{TT}_f,\operatorname{TT}_g)$. 
+            \item We denote by $\disl(f)$ the minimum distance between $f$ and linear functions in $\mathcal{L}$.
+            \item  The minimum distance between $f$ and affine functions in $\mathcal{A}$ is called the (normalized) nonlinearity of $f$, and we denote it $\nnl(f)$.
+            \item From definition we have $\nnl(f)=\min\left\{ \disl(f),\disl(f+1) \right\}$.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Walsh Transform}
+        
+        \begin{definition}[Walsh Transform]
+            The Walsh transform of a function $f:\F_2^n\rightarrow\F_2$ is the function $\widetilde{W_f}:\F_2^n\rightarrow\R$ defined as 
+            \[\widetilde{W_f}(u)=\frac{1}{2^n}\sum_{x\in\F_2^n}(-1)^{f(x)+u\cdot x},\]
+            where the operator ``$\cdot$'' is the usual inner product and defined as $u\cdot x=\sum_{i=1}^{n}u_ix_i$. 
+        \end{definition}
+        There exists the so-called Parseval's identity 
+        \[\sum_{u\in\F_2^n}\left( \widetilde{W_f}(u) \right)^2=1,\]
+        which holds for any $n$-variable Boolean function $f$.
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The Walsh Transform and Hamming Distance}
+        It is easy to see that the Walsh transform of a Boolean function $f$ expresses its distance to $\mathcal{L}$, and consequently the distance between $f$ to $\mathcal{A}$.
+
+        Denoting $l_{a}(u)=a\cdot u$, we have 
+        \begin{align*}
+            \dis(f,l_a)  &=\frac{1}{2}\left( 1-\widetilde{W_f}(a) \right),\\
+            \dis(f,l_a+1)&=\frac{1}{2}\left( 1+\widetilde{W_f}(a) \right),\\
+            \disl(f)     &=\frac{1}{2}\left( 1-\max_{v\in\F_2^n}\widetilde{W_f}(a) \right),\\
+            \nnl(f)      &=\frac{1}{2}\left( 1-\max_{v\in\F_2^n}\left|\widetilde{W_f}(a)\right| \right).
+        \end{align*}
+    \end{frame}
+    \begin{frame}
+        \frametitle{BLR Linearity Testing}
+        \begin{itemize}
+            \item The linearity test most widely used, which is often called the BLR (Blum-Luby-Rubinfeld) Linearity Testing, is based on the definition of a linear function, \emph{i.e.}, $f(u+v)=f(u)+f(v)$.
+            \begin{algorithm}[H]
+                \caption{BLR Linearity Testing}
+                 Sample $u,v\sim \mathbb{U}_{\F_2^n}$\; 
+                 Evaluate $x = f(u), y=f(v)$ and $z = f(u + v)$\; 
+                 Return ($x+y==z$)\; 
+            \end{algorithm}
+            \item If $f$ passes this test for many pairs $(u, v)$, then $f$ is probably linear.
+            \item If $f$ fails the test for at least one pair $(u, v)$, then $f$ is certainly not linear. 
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{BLR Linearity Testing (cont.)}
+        \begin{itemize}
+            \item Sometimes we are not so much interested in whether the function $f$ is linear, but rather whether it is affine.     
+            \item In this case, we can use the BLR Linearity Testing to check whether $f(x)-f(0)$ is linear, \emph{i.e.}, check whether $f (u + v) + f (u) + f (v) + f (0) = 0$ holds, where $u,v$ chosen uniformly at random.
+            \item Another test for deciding whether a Boolean function $f$ is affine is to 
+            check whether the equation $f (u + v + w) + f (u) + f (v) + f (w) = 0$ holds, for some $u, v, w\in\F_2^n$ chosen uniformly at random:
+            \begin{itemize}
+                \item If $f$ passes the test for many triples $(u, v, w)$, then $f$ is probably affine.
+                \item If $f$ fails the test for at least one pair $(u, v, w)$, then $f$ is certainly not affine. 
+            \end{itemize}
+        \end{itemize}
+            
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{A Generalization of BLR Linearity Testing}
+    
+        A generalization of these tests above was proposed by Zhang and Zheng\footnote{Zhang, X.-M., Zheng, Y.: The nonhomomorphicity of Boolean functions. In: Tavares, S., Meijer,
+        H. (eds.) Selected Areas in Cryptography, SAC, pp. 280-295. Springer (1999)}.
+
+        To decide whether a Boolean function $f$ is affine (resp. linear), we choose $u_1,u_2,...,u_k\in\F_2^n$ uniformly at random to check whether the equation $f (u_1 +u_2+\cdots + u_k) + f (u_1) + f(u_2)+\cdots + f (u_k) = 0$ holds:
+        \begin{itemize}
+            \item When $k$ is even (resp. odd), if $f$ passes the test for many tuples $(u_1,u_2,...,u_k)$, then f is probably linear (resp. affine).
+            \item When $k$ is even (resp. odd), if $f$ fails the test for at least one pair $(u_1,u_2,...,u_k)$, then $f$ is certainly not linear (resp. affine).
+        \end{itemize}
+            
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{The Defintition of the Nonhomomorphicity}
+
+        Above test tells us that, if an $n$-variable Boolean function $f$ satisfies $f (u_1 +u_2+\cdots + u_k) + f (u_1) + f(u_2)+\cdots + f (u_k) = 0$ for a large number of tuples $(u_1,u_2,...,u_k)$, then the function behaves more like an affine function. 
+        This leads to the definition of the nonhomomorphicity:
+        \begin{definition}[$(k + 1)$-th order nonhomomorphicity]
+            Let $f : \F_2^n\rightarrow \F_2$ be a Boolean function in $n$ variables and let $k\ge 2$ be an integer.
+            The $(k + 1)$-th order nonhomomorphicity  is defined as the 
+            probability that the equation $f (\sum_{i=1}^{k}u_i) + f (u_1) + f(u_2)+\cdots + f (u_k) = 0$ does not hold, \emph{i.e.},
+            \begin{align*}
+                &P_k(f)\\
+                =&\frac{\#\left\{ (u_1,u_2,\dots,u_k)\in\F_2^{nk} :f (\sum_{i=1}^{k}u_i) + f (u_1) + f(u_2)+\cdots + f (u_k) = 0 \right\}}{2^{nk}}.
+            \end{align*}
+        \end{definition}
+    
+    \end{frame}
+    \begin{frame}
+        \frametitle{The Nonhomomorphicity}
+    
+        \begin{itemize}
+            \item $f$ is affine iff $P_k(f)\in\{0,1\}$. Indeed, for odd $k$, $f$ is affine iff $P_k(f)=0$; for even $k$, $f$ is linear iff $P_k(f)=0$ and $f+1$ is linear iff $P_k(f)=1$.
+            \item The nonhomomorphicity is concerned over all absolute values of the Walsh transform of $f$ as shown in the sequel, the nonlinearity focuses on the maximum absolute value of the Walsh transform of $f$.
+            \item BLR test corresponds to the particular case of $k = 2$.
+        \end{itemize}
+    
+    \end{frame}
+\section{Estimate the Nonlinearity of Boolean Functions\\ on Probabilistic Affine Tests} 
+
+    \begin{frame}
+        \frametitle{The Walsh Transform and the Nonhomomorphicity}
+        
+        Assume $k\ge 2$, for any $n$-variable Boolean function $f$, we have 
+        \begin{align*}
+            &\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^{k+1}=\sum_{u\in\F_2^n}\prod_{i=1}^{k+1}\left( \frac{1}{2^n}\sum_{x_i\in\F_2^n}(-1)^{f(x_i)+u\cdot x_i} \right)\\
+            =&\frac{1}{2^{n(k+1)}}\sum_{(x_1,x_2,...,x_{k+1})\in\F_2^{n(k+1)}}^{}(-1)^{f(x_1)+f(x_2)+\cdots+f(x_{k+1})}\sum_{u\in\F_2^n}^{}(-1)^{u\cdot(x_1+x_2+\cdots+x_{k+1})}\\ 
+            =&\frac{2^n}{2^{n(k+1)}}\sum_{(x_1,x_2,...,x_{k})\in\F_2^{nk}}^{}(-1)^{f(x_1)+f(x_2)+\cdots+f(x_{k})+f(x_1+x_2+\cdots+x_k)}\\
+            =&\frac{1}{2^{nk}}\sum_{(x_1,x_2,...,x_{k})\in\F_2^{nk}}^{}\left\{ 1-2(f(x_1)+f(x_2)+\cdots+f(x_{k})+f(x_1+x_2+\cdots+x_k)) \right\}\\
+            =&1-2P_{k}(f).
+        \end{align*}
+    \end{frame}
+    
+
+
+    \begin{frame}
+        \frametitle{The Lower and Upper Bounds on $P_k(f)$}
+        For $\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^{k+1}=1-2P_{k}(f)$, we have 
+        \begin{itemize}
+            \item Lower bound:
+            \[\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^{k+1}\le\max_{u\in\F_2^n}\left( \widetilde{W_f}(u) \right)^{k-1}\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^2=\max_{u\in\F_2^n}\left( \widetilde{W_f}(u) \right)^{k-1}. \]
+            \item Upper bound for odd $k$:
+            \begin{itemize}
+                \item In general, $\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^{k+1}\ge \max_{u\in\F_2^n}\left( \widetilde{W_f}(u) \right)^{k+1}$.
+                \item A complicated bound related with $n$ and $k$:
+                \begin{align*}
+                    &\sum_{u\in\F_2^n}^{}\left( \widetilde{W_f}(u) \right)^{k+1}=\left| \widetilde{W_f}(u_0) \right|^{k+1}+\sum_{u\in\F_2^n\setminus\{u_0\}}\left( \left( \widetilde{W_f}(u) \right)^2 \right)^{\frac{k+1}{2}}\\
+                    \ge&\left| \widetilde{W_f}(u_0) \right|^{k+1}+(2^n-1)\left( \frac{1}{(2^n-1)}\sum_{u\in\F_2^n\setminus\{u_0\}}\left( \widetilde{W_f}(u) \right)^2 \right)^{\frac{k+1}{2}}
+                \end{align*}
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The Lower and Upper Bounds on $P_k(f)$ (cont.)}
+        \[\ge\left| \widetilde{W_f}(u_0) \right|^{k+1}+(2^n-1)\left( \frac{1}{(2^n-1)}\left( 1- \widetilde{W_f}(u_0)^2\right) \right)^{\frac{k+1}{2}},\]
+        where $u_0$ is the element of $\F_2^n$ such that $|\widetilde{W_f}(u_0)|=\max_{u\in\F_2^n}|\widetilde{W_f}(u)|$.
+        \begin{itemize}
+            \item From the relation between $P_k(f)$ and the Walsh transform, a lower bound and an upper bound can be derived, where the upper bound holds for odd $k$.
+            \item However, there exists lower and upper bounds on $P_k(f)$ depending on $\disl(f)$, which contribute to no knowledge about results regarding the lower and upper bounds on $P_k(f)$ in terms of the Walsh transform for even $k$. 
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The Equation from the Defintition of $P_k(f)$}
+    
+        \begin{itemize}
+            \item $P_k(f)$ is the probability that the equation $f (u_1 +u_2+\cdots + u_k) + f (u_1) + f(u_2)+\cdots + f (u_k) = 0$ fails for $(u_1,u_2,...,u_k)\in\F_2^{nk}$, where $f$ is an $n$-variable Boolean function.
+            \item Given an arbitrary linear (resp. affine) function $l$ in $n$ variables for $k$ even (resp. odd), it must pass the test.
+            \item Clearly the failure means there are odd number of values $g(u_1),g(u_2),...,g(u_k),g(u_{k+1})$ equals to $1$, where $g(u_i)=f(u_i)-l(u_i)$ and $u_{k+1}=u_1+u_2+\cdots+u_k$. 
+            \item Denote by $A_j$ the probability that the first $j$ of these $k + 1$ values are equal to $1$ and the left are equal to $0$, \emph{i.e.}, 
+            \[A_j=P(g(u_1)=1,g(u_2)=1,...,g(u_j)=1,g(u_{j+1})=0,g(u_{j+2})=0,...,g(u_{k+1})=0),\]
+            where the probability is taken over all $(u_1,u_2,...,u_{k+1})\in\F_2^{n(k+1)}$ and $u_{k+1}=u_1+u_2+\cdots+u_k$.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{The Equation from the Defintition of $P_k(f)$ (cont.)}
+    
+        \begin{itemize}
+            \item It can be easily seen that there are $\binom{k+1}{j}$ subsets of $\{1,2,...,k+1\}$ of cardinality $j$.
+            \item Thus we have \[P_k(f)=\sum_{\substack{1\le j\le k+1\\ j\text{ odd}}} \binom{k+1}{j}A_j.\]
+            \item Additionally,  $P(g(u_i)=1)=P(f(u_i)-l(u_i)=1)=\dis(f,l)$ as $u_i\in\F_2^n$, 
+            therefore, we have 
+            \begin{align*}
+                A_j=&P(g(u_1)=1,...,g(u_j)=1,g(u_{j+1})=0,...,g(u_{k})=0)\\
+                &\quad-P(g(u_1)=1,...,g(u_j)=1,g(u_{j+1})=0,...,g(u_{k+1})=1)\\
+                =&x^j(1-x)^{k-j}-A_{j+1}=\cdots=\sum_{i=j}^{k}(-1)^{i-j}x^i(1-x)^{k-i}+(-1)^{k-j+1}A_{k+1},
+            \end{align*}
+            where $x=\dis(f,l)$.
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{$P_k(f), A_{k+1}$ and $\dis(f,l)$}
+    
+        We obtain 
+        \begin{align*}
+            P_k(f)=& \sum_{\substack{1\le j\le k+1\\j\text{ odd}}}\binom{k+1}{j}\left( \sum_{i=j}^{k}(-1)^{i-j}x^i(1-x)^{k-i}+(-1)^{k-j+1}A_{k+1} \right)\\
+            =&\frac{1}{2}\left( 1-(1-2x)^{k+1}+(-2)^{k+1}(x^{k+1}-A_{k+1}) \right).
+        \end{align*}
+        where $x=\dis(f,l)$ and $A_{k+1}=P(g(u_1)=1,...,g(\sum_{i=1}^{k}u_i)=1)\ge 0$ with the probability taken over all $(u_1,u_2,...,u_k)\in\F_2^{nk}$.
+        \begin{itemize}
+            \item When $k$ even, $P_k(f)$ is positively correlated with $x=\dis(f,l)$ and $A_{k+1}$. So we choose $l$ be the linear function with the minimum distance to $f$ and assume $A_{k+1}=0$, \emph{i.e.}, 
+            \[P_k(f)\ge\frac{1}{2}\left( 1-(1-2x)^{k+1}-(2x)^{k+1} \right).\]
+        \end{itemize}
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{$P_k(f),A_{k+1}$ and $\dis(f,l)$ (cont.)}
+    
+        \begin{itemize}
+            \item When $k$ is odd, we have $A_{k+1}\le P(g(u_1)=1,...,g(u_k)=1)=\dis(f,l)^k$, where $l$ is any affine function. So we have 
+            \[P_k(f)\ge\frac{1}{2}\left( 1-(1-2x)^{k+1}+2^{k+1}(x^{k+1}-x^k)\right),\]
+            where $x=\dis(f,l_0)$ and $l_0$ is an affine function with the minimum distance to $f$.
+            \item When $k$ is odd, we have obtained a lower bound on $P_k(f)$ by the equation with $\nnl(f)$; when $k$ is even, a lower bound on $P_k(f)$ involved $\disl(f)$ can be derived.
+        \end{itemize}
+    \end{frame}
+\begin{frame}
+        \frametitle{The Lower and Upper Bounds on $\overline{P_2}(f)$}
+        \begin{itemize}
+            \item Bellare et al.\footnote{Bellare, M., Coppersmith, D., H$\mathring{\text{a}}$stad, J., Kiwi, M., Sudan, M.: Linearity testing in characteristic two. IEEE Trans. Inf. Theory 42(6), 1781-1795 (1996)} showed a connection between the linearity testing problem and the Walsh transform.
+            Namely, \[\operatorname{Lower}_2(\disl(f))\le P_2(f)\le \operatorname{Upper}_2(\disl(f)).\]
+            \item Since affine test is equivalent to testing both $f$ and $f + 1$ for linearity, we consider $\overline{P_2}(f)=\min\{P_2(f),P_2(f+1)\}$.
+            \item Then $\overline{P_2}(f)$ can be bounded in terms of $\nnl(f)$:
+            \[\operatorname{Lower}_2(\nnl(f))\le \overline{P_2}(f)\le\min\left\{ \frac{1}{2},  \operatorname{Upper}_2(\nnl(f))\right\}.\]
+        \end{itemize}
+    \end{frame}
+    \begin{frame}
+        \frametitle{Estimate the Nonhomomorphicity}
+        \begin{itemize}
+            \item The nonhomomorphicity of a function $f$ can be determined precisely by its definition, but the calculation needs us to search through the entire $\F_2^{nk}$.
+            \item This calculation is also infeasible when $n$ and $k$ large. 
+            \item We introduce a statistical method to estimate the nonhomomorphicity\footnote{Zhang, X.-M., Zheng, Y.: The nonhomomorphicity of Boolean functions. In: Tavares, S., Meijer,
+            H. (eds.) Selected Areas in Cryptography, SAC, pp. 280-295. Springer (1999)}.
+            \item The nonhomomorphicity can be fast estimated and the result is reliable if the parameters of this estimation are well chosen.
+        \end{itemize}
+    
+    \end{frame}
+    
+    \begin{frame}
+        \frametitle{Estimate the Nonhomomorphicity}
+    
+        \begin{itemize}
+            \item Denote the function $t$ on $\F_2^{n(k+1)}$ as follows:
+            \begin{equation*}
+                t(u_1,u_2,\dots,u_{k+1})=\begin{cases}
+                    1,\text{if }f(u_1)+f(u_2)+\cdots+f(u_{k+1})=1;\\
+                    0,\text{otherwise}.
+                \end{cases}
+            \end{equation*}
+            \item Then from the definition of nonhomomorphicity we have $P_k(f)=\sum_{(u_1,u_2,...,u_k)\in\F_2^{nk}}^{}t(u_1,u_2,...,u_{k+1})/2^{nk}$.
+            \item Let $\Omega$ be a random subset of $\F_2^{n(k+1)}$, then the sample mean is 
+            \[\overline{t}=\frac{1}{\#\Omega}\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}t(u_1,u_2,...,u_{k+1}).\]
+        \end{itemize}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Estimate the Nonhomomorphicity}
+    
+        \begin{itemize}
+            \item Since  
+            \begin{align*}
+                &\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}(t(u_1,u_2,...,u_{k+1})-\overline{t})^2\\
+                =&\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}t^2(u_1,u_2,...,u_{k+1})-2\overline{t}\cdot\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}t(u_1,u_2,...,u_{k+1})+\#\Omega\cdot\overline{t}^2\\
+                =&\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}t(u_1,u_2,...,u_{k+1})-2\overline{t}\cdot\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}t(u_1,u_2,...,u_{k+1})+\#\Omega\cdot\overline{t}^2\\
+                =&\#\Omega\cdot\overline{t}(1-\overline{t}).
+            \end{align*}
+            \item So we have the sample standard deviation $s$ as follows 
+            \[s=\sqrt{\frac{1}{\#\Omega-1}\sum_{(u_1,u_2,...,u_k)\in\Omega}^{}(t(u_1,u_2,...,u_{k+1})-\overline{t})^2}=\sqrt{\frac{\#\Omega\cdot\overline{t}(1-\overline{t})}{\#\Omega-1}}.\]
+        \end{itemize}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Estimate the Nonhomomorphicity}
+    
+        \begin{itemize}
+            \item Therefore $P\left( \left| \frac{P_k(f)-\overline{t}}{s/\sqrt{\#\Omega}}\right|<Z_{\alpha/2} \right)=1-\alpha$, where $Z_{\alpha/2}$ denotes the value of a standard normal distribution which to
+            its right a fraction $\alpha/2$ of the data.
+            \item We have $\overline{t}(1-\overline{t})\le 1/4$ since $0\le\overline{t}\le 1$, so $s\le\sqrt{\frac{\#\Omega/4}{\#\Omega-1}} $. Thus we obtain that 
+            \[\overline{t}-\frac{Z_{\alpha/2}}{2\sqrt{\#\Omega-1}}< P_k(f) <\overline{t}+\frac{Z_{\alpha/2}}{2\sqrt{\#\Omega-1}} \]
+            holds with the probability $1-\alpha$.
+            \item If $\#\Omega$ is large (e.g. $\#\Omega>Z_{\alpha/2}^2 10^{2p}$, where $p\ge 1$), the lower bound and upper bound are closer to each other, which means we have more information about $P_k(f)$.
+        \end{itemize}
+    
+    \end{frame}
+
+    \begin{frame}
+        \frametitle{Examples of estimating the nonlinearity}
+        \begin{table}
+            \small
+            \begin{tabular}{|ccccc|}
+            \hline 
+            Function & $\mathrm{d}_{\mathcal{A}}$ & $k=3$, estimated $\mathrm{d}_{\mathcal{A}}$ & $k=5$, estimated $\mathrm{d}_{\mathcal{A}}$ & $k=7$, estimated $\mathrm{d}_{\mathcal{A}}$ \\
+            \hline
+            $x_1 x_2$ & $\frac{1}{4}$ & $\left[\frac{1}{4}-0.10355, \frac{1}{4}\right]$ & $\left[ \frac{1}{4}-0.06498, \frac{1}{4} \right]$ & $\left[\frac{1}{4}-0.0473, \frac{1}{4}\right]$ \\
+            $x_1 x_2+x_3 x_4$ & $\frac{3}{8}$ & $\left[\frac{3}{8}-0.125, \frac{3}{8}\right]$ & $\left[\frac{3}{8}-0.07343, \frac{3}{8}\right]$ & $\left[\frac{3}{8}-0.05178, \frac{3}{8}\right]$ \\
+            $\begin{array}{c}x_1 x_2+x_3 x_4 \\ +x_5 x_6\end{array}$ & $\frac{7}{16}$ & $\left[\frac{7}{16}-0.11428, \frac{7}{16}\right]$ & $\left[\frac{7}{16}-0.0625, \frac{7}{16}\right]$ & $\left[\frac{7}{16}-0.04261, \frac{7}{16}\right]$ \\
+            $\begin{array}{c}x_1 x_2+x_3 x_4\\+x_5 x_6+x_7 x_8\end{array}$ & $\frac{31}{32}$ & $\left[\frac{31}{32}-0.09375, \frac{31}{32}\right]$ & $\left[\frac{31}{32}-0.0475, \frac{31}{32}\right]$ & $\left[\frac{31}{32}-0.03125, \frac{31}{32}\right]$ \\
+            $x_1 x_2 x_3$ & $\frac{1}{8}$ & $\left[ \frac{1}{8}-7.85 \cdot 10^{-3}, \frac{1}{8} \right]$ & $\left[ \frac{1}{8}-5.98 \cdot 10^{-4}, \frac{1}{8} \right]$ & {$\left[\frac{1}{8}-5.00 \cdot 10^{-5}, \frac{1}{8}\right.$} \\
+            $x_1 x_2 x_3 x_4$ & $\frac{1}{16}$ & $\left[ \frac{1}{16}-6.82 \cdot 10^{-4}, \frac{1}{16} \right]$ & $\left[ \frac{1}{16}-9.30 \cdot 10^{-6}, \frac{1}{16} \right]$ & $\left[ \frac{1}{16}-1.42 \cdot 10^{-7}, \frac{1}{16} \right]$ \\
+            $x_1 \cdots x_5$ & $\frac{1}{32}$ & $\left[ \frac{1}{32}-7.17 \cdot 10^{-5}, \frac{1}{32} \right]$ & $\left[ \frac{1}{32}-2.13 \cdot 10^{-7}, \frac{1}{32} \right]$ & $\left[ \frac{1}{32}-7.09 \cdot 10^{-10},\frac{1}{32} \right]$ \\
+            $x_1 \cdots x_6$ & $\frac{1}{64}$ & $\left[ \frac{1}{64}-8.26 \cdot 10^{-6}, \frac{1}{64} \right]$ & {$\left[\frac{1}{64}-5.73 \cdot 10^{-9}, \frac{1}{64}\right]$} & $\left[ \frac{1}{64}-4.47 \cdot 10^{-12},\frac{1}{64} \right]$ \\
+            \hline
+            \end{tabular}
+            \caption{Examples of estimating the nonlinearity}
+
+        \end{table}
+    
+    \end{frame}
+
+    \makebottom     % 创建尾页  % 非标准命令
+
+    
+    % \begin{frame}[t,allowframebreaks]
+    %     \nocite{*}
+    %     \frametitle{References}
+    %     \printbibliography
+    % \end{frame}
+
+
+\end{document}

@@ -8,26 +8,32 @@
 #include <array>
 #include <set>
 
+
+
 using namespace std;
 
-char file_walshspec[]  = "14.1.txt";
-char file_solution[]   = "14.1sol.txt";
-char file_solution1[]  = "14.1sol2.txt";
+char file_walshspec[]  = "18.1.txt";
+char file_solution[]   = "18.1sol.txt";
+char file_solution1[]  = "18.1sol2.txt";
 
-constexpr double THRESHOLD = 2;
-constexpr int N     = 14;
-constexpr int times = 0;
+constexpr double THRESHOLD = 0.8;
+constexpr int N     = 18;
+constexpr int times = 2;
 // constexpr int LEN = 363009;
 // constexpr int LEN = 281177;
 // constexpr int LEN = 119757;
+// constexpr int LEN = 123044;
+// constexpr int LEN = 55716;
+// constexpr int LEN = 58991;
 // constexpr int LEN = 30756;
 // constexpr int LEN = 31955;
 // constexpr int LEN = 18713;
 // constexpr int LEN = 17609;
-// constexpr int LEN = 58991;
-constexpr int LEN = 7986;
+// constexpr int LEN = 7709;
+// constexpr int LEN = 7986; 
 // constexpr int LEN = 4701;
 // constexpr int LEN = 4405;
+//   constexpr  int value_0 = -204;
 
 
 constexpr int N_CONSTRAINT = 4405;
@@ -70,12 +76,99 @@ void GenerateWalshOriginal(){
 
 int main(){
     FileRead_part_walshspec(file_walshspec,position,value);
-    // int d = EstimateTTByPro(tt, N, position, value, LEN, THRESHOLD);
-    // cout << "The truthtable has left " << d << " values indetermined" << endl;
-    // vector<int> bit_reverse {};
+    int d = EstimateTTByPro(tt, N, position, value, LEN, THRESHOLD);
+    // int d = EstimateTT_nTimes(THRESHOLD);
+    cout << "The truthtable has left " << d << " values indetermined" << endl;
+    WalshTransformPart(tt, wf, N);
+
+		for (int i = 0; i < LEN; i++)
+			wf[position[i]] = value[i];
+		array<int,1<<N> pos;
+		for (int i = 0; i < 1 << N; i++)
+			pos[i] = i;
+
+    d = EstimateTTByPro(tt, N, pos, wf, 1 << N, THRESHOLD);
+    cout << "The truthtable has left " << d << " values indetermined" << endl;
+    // FileRead_solution(file_solution,tt);
+    // tt1 = tt;
+    // WalshTransform(tt,wf,N);
+
+    // vector<int> bit_reverse1 {3394,3541,12051,12164};
+    // vector<int> bit_reverse2 {6059,6407,13677,15297,};
+    // vector<int> wf_different{};
+    // for (auto i : bit_reverse1)
+    // {
+    //     tt1[i] ^= 1;
+    //     // cout << (i^3394) << " ";
+    // }
+    // for (auto i : bit_reverse2)
+    // { 
+    //     cout << (i^6059) << " ";
+    // }
+    // WalshTransform(tt1, wf1, N);
+    // for (auto i = 0; i < 1 << N; ++i)
+    //     if (wf[i] != wf1[i])
+    //         wf_different.push_back(i);
+
+    // int i1 = wf_different[0];
+    // for (auto i : position)
+    // {
+    //     int sum = 0, sum_0 = 0;
+    //     for (auto j : bit_reverse1)
+    //     {
+    //        if(InnerProduct(i, j, N) & 1)
+    //            sum++;
+    //         else
+    //             sum_0++;
+    //     }
+    //     cout << sum << sum_0<<endl;
+    // }
     // FindSolBySubspace(bit_reverse,tt,tt1,wf);
     // vector<int> tt_indetermined;
+ 
+    // array<int,1<<N> sum_1 {};
+    // vector<int> tt_0 {}, tt_1 {};
 
+    // Count_TT_0_1(tt,tt_0,tt_1);
+    // auto tt_0_inner = new int [LEN][((1<<N) + value_0)/2];
+
+    // for (auto col = 0 ; col < tt_0.size();++col)
+    // {
+    //     for (auto row = 0 ; row < LEN; ++row)
+    //     {
+    //         tt_0_inner[row][col] = InnerProduct(position[row],tt_0[col],N) & 1; 
+    //     }
+    // }
+
+    // int min_sum_1 = 0;
+    // for (auto i = 1; i < 1 << N; i++)    
+    //     for (auto j = 0; j < LEN; j++)
+    //         if (InnerProduct(position[j], i, N) & 1)
+    //             sum_1[i]++;
+    // auto index = min_element(sum_1.begin() + 1,sum_1.end());
+
+    // int x4 = distance(sum_1.begin(),index);
+    // cout << "the most orthogonal point is " << x4 << endl;
+
+    // for (auto i = 0; i < 1<<N; ++i)
+    // {
+    //     for (auto j = i + 1; j < 1<<N; ++j)
+    //     {
+
+    //     }
+    // }
+    // vector<int> part_position, part_value;
+    // for (auto i = 0; i < position.size();++i)
+    // {
+    //     if (!(InnerProduct(x4,position[i],N) & 1))
+    //     {
+    //         part_position.push_back(position[i]);
+    //         part_value.push_back(value[i]);
+    //     }
+    // }
+
+    // std::cout << "the size of position left is "
+    //     << part_position.size() << "\n";
 
     // int b = 0b10001011000110;
 
@@ -99,7 +192,6 @@ int main(){
     // set_difference(position.begin(),position.end(),nonzero_position.begin(),nonzero_position.end(),inserter(zero_position,zero_position.begin()));
     // cout << F2MatrixRank(zero_position,zero_position.size(),N) << endl;
 
-    FileRead_solution(file_solution,tt);
     // vector<int> bit_reverse_4 {3394,3541,12051,12164,};
     // vector<int> bit_reverse_4_2 {6059,6407,13677,15297,};
     // vector<int> bit_reverse_8 {3394,3541,6059,6407,12051,12164,13677,15297,};
@@ -145,76 +237,61 @@ int main(){
     // for (auto &i : wf_diff)
     //     i ^= diff;
 
-    
-    array<int,1<<N> sum_1 {};
-    vector<int> tt_0 {}, tt_1 {};
-    Count_TT_0_1(tt,tt_0,tt_1);
+       // vector<int> position_left {};
+    // vector<int> position_0 {};
+    // for (auto i = 0; i < LEN; i++)
+    // {
+    //     if (InnerProduct(position[i], x4, N) & 1)
+    //         position_left.push_back(position[i]);
+    //     else
+    //         position_0.push_back(position[i]);
+    // }
+    // cout << "position_left complete and those position are\n";
+    // for (auto i:position_left)
+    //     cout << i << " ";
+    // cout << endl;
+    // vector<int> tt_1_xor_x4(tt_1);
 
-    int min_sum_1 = 0;
-    for (auto i = 1; i < 1 << N; i++)
-        for (auto j = 0; j < LEN; j++)
-            if (InnerProduct(position[j], i, N) & 1)
-                sum_1[i]++;
-    auto index = min_element(sum_1.begin() + 1,sum_1.end());
+    // for (auto &i:tt_1_xor_x4)
+    //     i ^= x4;
+    // sort(tt_1_xor_x4.begin(),tt_1_xor_x4.end());
+    // cout << "sort complete\n";
+    // // cout << tt_1_xor_x4.size();
+    // vector<int> intersect{};
+    // vector<int> combination{};
+    // // 1056,2029,3541,4197,6407,7128,8134,9200,12164,12272,13677,15784,
+    // set_intersection(tt_1_xor_x4.begin(), tt_1_xor_x4.end(), tt_0.begin(), tt_0.end(), inserter(intersect, intersect.begin()));
+    // cout << "intersection complete and the elements in intersection are\n";
+    // for (auto i : intersect)
+    //     printf("%d,",i);
+    // cout << endl << "Right result are below:" << endl; 
 
-    int x4 = distance(sum_1.begin(),index);
-    cout << "the most orthogonal point is " << x4 << endl;
-
-    vector<int> position_left {};
-    vector<int> position_0 {};
-    for (auto i = 0; i < LEN; i++)
-    {
-        if (InnerProduct(position[i], x4, N) & 1)
-            position_left.push_back(position[i]);
-        else
-            position_0.push_back(position[i]);
-    }
-    cout << "position_left complete and those position are\n";
-    for (auto i:position_left)
-        cout << i << " ";
-    cout << endl;
-    vector<int> tt_1_xor_x4(tt_1);
-
-    for (auto &i:tt_1_xor_x4)
-        i ^= x4;
-    sort(tt_1_xor_x4.begin(),tt_1_xor_x4.end());
-    cout << "sort complete\n";
-    // cout << tt_1_xor_x4.size();
-    vector<int> intersect{};
-    vector<int> combination{};
-    // 1056,2029,3541,4197,6407,7128,8134,9200,12164,12272,13677,15784,
-    set_intersection(tt_1_xor_x4.begin(), tt_1_xor_x4.end(), tt_0.begin(), tt_0.end(), inserter(intersect, intersect.begin()));
-    cout << "intersection complete and the elements in intersection are\n";
-    for (auto i : intersect)
-        printf("%d,",i);
-    cout << endl << "Right result are below:" << endl; 
-
-    int K = 2;
-    for (auto x1 = 1; x1 < 1 << N; ++x1)
-        for (auto x5 = x1 + 1; x5 < 1 << N; ++x5)
-            for (auto a : position_0)
-            {
-                if (InnerProduct(a, x1 ^ x5, N) & 1)
-                    break;
-                if (a == position_0[position_0.size() - 1])
-                {
-                    Combination_NchooseK(combination, position_left.size() - 1, K);
-                    for (auto rth = 0; rth < (combination.size() / K); ++rth)
-                        for (auto b : position_left)
-                            if ((InnerProduct(b, intersect[combination[rth * K + 0]], N) & 1) + (InnerProduct(b, intersect[combination[rth * K + 1]], N) & 1))
-                                if (InnerProduct(b, x1 ^ x5, N) & 1)
-                                    for (auto i = 0; i < 1 << N; i++)
-                                        if (!tt[i] && !tt[i^x1] && !tt[i^intersect[combination[rth * K + 0]]] && !tt[intersect[combination[rth * K + 1]]^i] && tt[x4 ^ i] && tt[x5 ^ i] && (i < i ^ x1))
-                                        {
-                                            vector<int> res {i,x1 ^ i,i ^ intersect[combination[rth * K + 0]],i ^ intersect[combination[rth * K + 1]],x4 ^ i,x5 ^ i,i ^ intersect[combination[rth * K + 0]] ^ x4,i ^ intersect[combination[rth * K + 1]] ^ x4};
-                                            tt1 = tt;
-                                            for (auto x:res)
-                                                tt1[x] ^= 1;
-                                            if (TestSolution(tt1,position,value))
-                                                printf("%d,%d,%d,%d,%d,%d,%d,%d\n",i,x1 ^ i,i ^ intersect[combination[rth * K + 0]],i ^ intersect[combination[rth * K + 1]],x4 ^ i,x5 ^ i,i ^ intersect[combination[rth * K + 0]] ^ x4,i ^ intersect[combination[rth * K + 1]] ^ x4);
-                                        }
-                }
-            }
+    // int K = 2;
+    // for (auto x1 = 1; x1 < 1 << N; ++x1)
+    //     for (auto x5 = x1 + 1; x5 < 1 << N; ++x5)
+    //         for (auto a : position_0)
+    //         {
+    //             if (InnerProduct(a, x1 ^ x5, N) & 1)
+    //                 break;
+    //             if (a == position_0[position_0.size() - 1])
+    //             {
+    //                 Combination_NchooseK(combination, position_left.size() - 1, K);
+    //                 for (auto rth = 0; rth < (combination.size() / K); ++rth)
+    //                     for (auto b : position_left)
+    //                         if ((InnerProduct(b, intersect[combination[rth * K + 0]], N) & 1) + (InnerProduct(b, intersect[combination[rth * K + 1]], N) & 1))
+    //                             if (InnerProduct(b, x1 ^ x5, N) & 1)
+    //                                 for (auto i = 0; i < 1 << N; i++)
+    //                                     if (!tt[i] && !tt[i^x1] && !tt[i^intersect[combination[rth * K + 0]]] && !tt[intersect[combination[rth * K + 1]]^i] && tt[x4 ^ i] && tt[x5 ^ i] && (i < i ^ x1))
+    //                                     {
+    //                                         vector<int> res {i,x1 ^ i,i ^ intersect[combination[rth * K + 0]],i ^ intersect[combination[rth * K + 1]],x4 ^ i,x5 ^ i,i ^ intersect[combination[rth * K + 0]] ^ x4,i ^ intersect[combination[rth * K + 1]] ^ x4};
+    //                                         tt1 = tt;
+    //                                         for (auto x:res)
+    //                                             tt1[x] ^= 1;
+    //                                         if (TestSolution(tt1,position,value))
+    //                                             printf("%d,%d,%d,%d,%d,%d,%d,%d\n",i,x1 ^ i,i ^ intersect[combination[rth * K + 0]],i ^ intersect[combination[rth * K + 1]],x4 ^ i,x5 ^ i,i ^ intersect[combination[rth * K + 0]] ^ x4,i ^ intersect[combination[rth * K + 1]] ^ x4);
+    //                                     }
+    //             }
+    //         }
 
     // int a[] = {12051,12272,16246,14520,3541,3382,7600,6782};
     // for (auto i:a)

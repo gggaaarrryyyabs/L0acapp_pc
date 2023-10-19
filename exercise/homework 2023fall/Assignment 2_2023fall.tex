@@ -1,0 +1,56 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+
+\title{NIS2312-01 Fall 2023 Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-01 Fall 2023-2024} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~2} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2023年9月15日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{Problem 1}
+  若 $a\equiv b\pmod{m_i}$, $i =1,2,\dots,k$, 证明
+  \[a\equiv b\pmod{\left[ m_1,m_2,\dots,m_k \right]}.\]
+  证明: 因为$a\equiv b\pmod{m_i}$, 故$m_i\mid a-b$, 其中$i=1,2,\dots,k$, 则$a-b$是$m_1,m_2,\dots,m_k$的公倍数. 又因为$\left[ m_1,m_2,\dots,m_k \right]$整除$m_1,m_2,\dots,m_k$的公倍数, 即$\left[ m_1,m_2,\dots,m_k \right]\mid a-b$, 故$a\equiv b\pmod{\left[ m_1,m_2,\dots,m_k \right]}$.
+\subsubsection*{Problem 2} 
+  设$m,n$是两个互素的正整数. $x_1, x_2,\dots , x_{\phi(m)}$是模$m$的一个简化剩余系, $y_1, y_2, \dots , y_{\phi(n)}$是模$n$的一个化剩余系, 证明$my_1 + nx_1, my_1 + nx_2, \dots , my_1 + nx_{\phi(m)}, \dots , my_{\phi(n)} + nx_1, my_{\phi(n)} + nx_2, \dots , my_{\phi(n)} + nx_{\phi(m)}$ 是模$mn$的一个简化剩余系.
+  
+  证明: 首先证明这 $\varphi(m) \varphi(n)$ 个数都与 $m n$ 互素. 只需证明对任 意 $1 \leq i \leq \varphi(n), 1 \leq j \leq \varphi(m)$ 都有 $\left(m y_i+n x_j, m n\right)=1$ 即可. 利用反证法. 假设存在 $1 \leq i^{\prime} \leq \varphi(n), 1 \leq j^{\prime} \leq \varphi(m)$ 使得 $m y_{i^{\prime}}+n x_{j^{\prime}}$ 与 $m n$ 不互素, 则必定存在素数 $p$ 使得 $p \mid m y_{i^{\prime}}+n x_{j^{\prime}}$ 且 $p \mid m n$. 现证明 $p \mid m n$ 不成立, 从而可推出假 设不成立. 若 $p \mid m n$ 成立, 则由推论 11 第 (3) 条知必有 $p \mid m$ 或 $p \mid n$. 
+
+  情形 1. 若 $p \mid m$, 则 $p \mid n x_{j^{\prime}}$. 因 $p \nmid x_{j^{\prime}}$ (否则 $p$ 为 $m, x_{j^{\prime}}$ 的因 子, 这与 $\left(m, x_{j^{\prime}}\right)=1$ 矛盾), 故 $p \mid n$, 这与 $(m, n)=1$ 矛盾;
+
+  情形 2. 若 $p \mid n$, 则 $p \mid m y_{i^{\prime}}$. 因 $p \nmid y_{i^{\prime}}$, 故 $p \mid m$, 这与 $(m, n)=1$ 矛盾.
+
+  因此, $p \nmid m$ 且 $p \nmid n$, 从而 $p \mid m n$ 不成立, 从而假设不成立. 于是, 对任意 $1 \leq i \leq \varphi(n), 1 \leq j \leq \varphi(m)$ 都有 $\left(m y_i+n x_j, m n\right)=1$. 
+
+  其次证明对于模$mn$的一个简化剩余系, 其元素均有$my_i+nx_j$的形式, 其中$1\le i\le \varphi(n),1\le j\le\varphi(m)$.
+  进一步, 由注 22.1 第(1)条()以及定理28(这$\varphi(mn)$个数对模$mn$两两不同余)可知, 若能证明对任意 $x, y \in \mathbb{Z}$ 使得 $(m y+n x, m n)=1$ 时必有 $(x, m)=(y, n)=1$ 则 定理成立. 由 $(m y+n x, m n)=1$ 可得$(m y+n x, m)=(m y+n x, n)=1$ (否则若$(m y+n x, m)=d>1$则显然 $(m y+n x, m n) \geq d)$. 于是由定理 3 或注 12.1 可得 $(n x, m)=(m y, n)=1$.
+\end{document}
+
+
+
+

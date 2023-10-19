@@ -1,0 +1,1188 @@
+\documentclass{article}
+\usepackage{fullpage,enumitem,amsthm,amsmath,amssymb,graphicx,empheq,bm}
+\usepackage{physics}
+\usepackage{tcolorbox}
+\usepackage[citecolor=blue]{hyperref}
+\usepackage{tikz}
+\usepackage[noadjust]{cite}
+\usepackage{multirow}
+\usepackage{threeparttable}
+\usepackage{authblk}
+\usepackage{float}
+
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\0}{\textbf{0}}
+\newcommand{\1}{\textbf{1}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\nl}{\mathrm{nl}}
+\newcommand{\TRACE}{\operatorname{Tr}_1^k}
+\newcommand{\TrN}{\operatorname{Tr}_1^n}
+\theoremstyle{plain}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{remark}{Remark}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+% \theoremstyle{nonumberplain}
+
+
+
+\newtheorem{construction}{Construction}
+% \newcommand{\Tr}{\mathrm{Tr}_1^n}
+% \newcommand{\tr}{\mathrm{Tr}_1^k}
+
+\title{A Lower Bound on the Third-order Nonlinearity of the Simplest $\mathcal{PS}_{ap}$ Bent Functions}
+\author[a]{Zhaole Li}
+\author[b]{Bing Shen}
+\author[a,b]{Deng Tang}
+
+
+
+\affil[a]{School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai 200240, China}
+\affil[b]{Science and Technology on Communication Security Laboratory, Chengdu 610041, Sichuan, China}
+% Zhaole Li, Bing Shen, and Deng Tang
+
+% z.l.li@foxmail.com (Z. Li)
+
+% dtang@foxmail.com (D. Tang)
+
+\begin{document}
+ \maketitle
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+\begin{abstract}
+Boolean functions used in symmetric-key encryption should have high higher-order nonlinearity to resist several known cryptographic attacks,
+such as algebraic attacks and low-degree approximation attacks.
+The higher-order nonlinearity also play an important role in coding theory and theoretical computer science, since they relate to the covering radius of Reed-Muller codes and the Gowers norm, respectively.
+It is well-known that bent functions have the highest nonlinearity in even number of variables and thus they possess
+the best ability to withstand the best affine approximation attack and fast correlation attack.
+However, there is currently limited knowledge regarding the higher-order nonlinearity of bent functions
+because computing the higher-order nonlinearity, or even providing tight lower bounds, is an extremely hard task.
+In 1974, Dillon proposed two well-known classes of bent functions based on partial spread (in brief, $\mathcal{PS}$), called
+$\mathcal{PS}^-$ and $\mathcal{PS}^+$, respectively. He also exhibited a subclass of bent functions in $\mathcal{PS}^-$, known as
+partial spread affine plane ($\mathcal{PS}_{ap}$ for short).
+In this paper, we provide a lower bound on the third-order nonlinearity of the $n$-variable, where $n\ge 6$ is even, simplest $\mathcal{PS}_{ap}$ bent functions by calculating the nonlinearity of all second-order derivatives of this kind of bent functions.
+Compared to the two known lower bounds on the third-order nonlinearity given by Carlet and Tang et al. respectively,
+our lower bound is much better than these two ones.
+\end{abstract}
+
+\section{Introduction}
+    Boolean functions play an important role in the design of symmetric-key encryption, coding theory and theoretical computer science, see \cite{Carlet2020book,BhattacharyyaKSSZ2010gowers,CohenHLL1997RMcodecover} for instances.
+    Let $f$ be an $n$-variable Boolean function. The $r$-th order nonlinearity of $f$, denoted by $nl_r(f)$,
+    is defined as the minimum Hamming distance from $f$ to all the $n$-variable Boolean functions of degree at most $r$.
+    The first-order nonlinearity of $f$ is simply called the nonlinearity of $f$ and
+    the $r$-th order nonlinearity with $r\ge 2$ is called the higher-order nonlinearity of $f$ if $r$ is omitted.
+    Indeed, the higher-order nonlinearity is an important parameter for symmetric-key encryption since
+    it contributes to the knowledge on the Boolean functions  to resist  several known cryptographic attacks, for examples,
+    the (fast) algebraic attacks \cite{CM03,CFAA03,FAA06,WT10} and low-degree approximation attacks \cite{Golic1996lower_order_approximation,IwataK1999highorderbentfunction,KnudsenR1996nonlinear_approximation,Courtois2002XL_algorithm_and_NL_r}.
+    In coding theory, the value of $nl_r(f)$ equals the minimum Hamming distance from $f$ to the Reed-Muller code $\mathcal{RM}(r,n)$ of length $2^n$ and of order $r$.
+    Thus, the maximum $r$-th order nonlinearity of all Boolean functions in $n$ variables equals the covering radius of $\mathcal{RM}(r,n)$ \cite{CohenHLL1997RMcodecover}.
+    The higher-order nonlinearity of Boolean functions is also related to the Gowers norm in theoretical computer science, since the correlation between a
+    Boolean function $f$ to its closest polynomial of degree $d$ is at most the $(d+1)$-th Gowers norm of $f$ \cite{BhattacharyyaKSSZ2010gowers}.
+
+    % Computing algorithmically the $r$-th order nonlinearity of an $n$-variable Boolean function is hard for $r>1$.
+    As mentioned before, Boolean functions used in symmetric-key encryption should have high higher-order nonlinearity to resist several known attacks.
+    Till date, however, only a few lower bounds on the higher-order nonlinearity of several classes of Boolean functions have been obtained.
+    Indeed, it is a challenging task to compute the $r$-th order nonlinearity of a general Boolean function of algebraic degree strictly greater than $r$ for $r>1$,
+    both theoretically and algorithmically.
+    Even for $r=2$,
+    % determining the second-order nonlinearity of Boolean functions is only possible for those in special forms or with a small number of variables.
+    the second-order nonlinearity can only be determined for Boolean functions that are in special forms or have a small number of variables.
+    % only functions, which are in special forms or in a small number of variables, can be  to determine their second-order nonlinearity.
+    % determining the second-order nonlinearity is possible only for a few functions in special forms and functions in small number of variables.
+    With regards to algorithms, the nonlinearity is related with the Walsh spectrum, which can be efficiently computed by a divide-and-conquer butterfly algorithm.
+    As for the second-order nonlinearity of Boolean functions, Kabatiansky and Tavernier \cite{KabatianskyT2005listdecoding_RM_2_n} proposed a nice algorithm by using list decoding of second-order Reed-Muller codes.
+    Soon, this algorithm was improved and implemented to quadratic Boolean functions up to $n=11$ in general and up to $n=13$ in some special cases \cite{FourquetT2008improved_listdecoding_RM_2_n}.
+    This algorithm can also be applied to the higher-order nonlinearity but only for small number of variables.
+    There is currently a lack of knowledge regarding algorithms that are related to the $r$-th order nonlinearity for $r\ge 3$.
+    It is, therefore, important to provide lower bounds on the $r$-th order nonlinearity of Boolean functions.
+    However, it is still a difficult task, even for $r=2$.
+    Fortunately, Carlet \cite{Carlet2008lowbound_NL_profile} gave two lemmas about lower bounds on the $r$-th order nonlinearity of a given Boolean function.
+    Based on those two lemmas, he derived some lower bounds on the $r$-th order nonlinearity of Maiorana-McFarland, Welch, Kasami and inverse functions.
+    Owing to Carlet's lemmas for efficiently lower bounding the $r$-th order nonlinearity, numerous authors have obtained lower bounds on
+    the $r$-th order nonlinearity of different functions, mostly for $r=2,3$, see for \cite{Carlet2011NL_Profile_Dillon,YanT2020NL_2,Liu2023NL_2,TangYZZ2020NL_2bent,SihemKJ2020NL_2cubic,SunW2009NL_2,SarkarG2009NL_2MM,GangopadhyayST2010NL_2,SunW2011NL_2,GaoT2017NL_2_MM,TangCT2013NL_2bent,GodeG2010NL_3Kasami,Singh2014NL_3_biquadratic}.
+
+    Bent functions, which achieve maximum possible nonlinearity in even number of variables,
+    have attracted a lot of researches due to their best resistance against fast correlation attack \cite{MS1988fast_correlation_attack} and best affine approximation attack \cite{DingXS1991book} in cryptography and relations to several mathematical objects, such as difference sets, strongly regular graphs and complementary sequences \cite{Carlet2020book}.
+    However, there is limited knowledge about the higher-order nonlinearity of bent functions due to the challenge of providing lower bounds on the higher-order nonlinearity.
+    Additionally, all functions possess explicit mathematical expressions in the $\mathcal{PS}_{ap}$ bent functions (where ``$ap$ '' means ``affine plane''), which is a subclass of the $\mathcal{PS}^-$ class, one of the most well-known bent function classes based on a kind of partial spread proposed by Dillon \cite{Dillon1974PSbent}.
+    The explicit and simplest expressions of this kind of bent functions will ensure that the proof of our lower bound remains low complexity and high feasibility.
+    % This is another reason why we concentrate on them.
+    Due to the two aforementioned reasons,
+    %  our attention is directed towards the third-order nonlinearity of bent functions in this class.
+    % More specifically,
+    in this paper, we derive a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+
+
+    In this paper, we aim to derive a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    To this end, we only need to determine the nonlinearity of the second-order derivatives of the $n$-variable Boolean function $f(x,y)$ for all possible pairs $(\alpha,\beta)\in\F_{2^k}\times\F_{2^k}$, where $n=2k$ and $x,y\in\F_{2^k}$, according to Carlet's lemma.
+    To determine the nonlinearity of $D_{\beta}D_{\alpha}f(x,y)$ with the pair $(\alpha,\beta)\in\F_{2^k}^2$, it is equivalent to find the maximal absolute values of the corresponding character sums with $(\mu,\nu)$ ranging over $\F_{2^k}^2$.
+    By simple algebraic geometry lemmas and some calculations, a lower bound on the nonlinearity of $D_{\beta}D_{\alpha}f(x,y)$ for all trivial pairs $(\alpha,\beta)$ is derived.
+    While for the general pairs $(\alpha,\beta)$, we obtain the corresponding nonlinearity by determining the number of solutions for systems of trace functions.
+    We derive then a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    As a result,
+    %In the present paper,
+    % we derive a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent function.
+    we improve the previous two lower bounds in \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon}, and the comparison of three lower bounds can be found in Table \ref{table:MyTableLabel} for small concrete values.
+    Specifically, our lower bound is asymptotically equivalent to $2^{n-1}-2^{\frac{7n}{8}-\frac{1}{2}}$, whose
+    % comparing with the best known lower bound, Carlet bound in \cite{Carlet2011NL_Profile_Dillon},
+    improvement is approximately equal to $(\sqrt{2}-1)2^{\frac{7n}{8}-\frac{1}{2}}$, compared with Carlet's lower bound.
+    Additionally, our lower bound is much more better than the previous two lower bounds when $n\le 18$ as we have showed.
+
+    The remainder of this paper is organized as follows:
+    Section 2 introduces some basic notions which will be used in the sequel.
+    In Section 3, we  obtain a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    Finally, Section 4 concludes this paper.
+    % Throughout this work, for the integer $n$, denote $|n|$ the absolute value of $n$.
+
+\section{Preliminaries}
+    Let $\F_2$ be the field with two elements $\{0,1\}$ and $\F_2^n$ be the vector space of $n$-tuples over $\F_2$.
+    Let $\F_{2^n}$ be the finite field of order $2^n$.
+    The Hamming weight of an arbitrary vector $a=(a_1,a_2,\dots,a_n)\in\F_2^n$ is defined as $\wt(a)=\#\left\{ 1\le i\le n:a_i\ne 0 \right\}$, where $\#S$ denotes the cardinality of a given set $S$.
+    For any integer $0\le i \le 2^n-1$, we denote by $\overline{i}=(i_1,i_2,\dots,i_n)\in\F_2^n$ the binary expansion of $i$, \emph{i.e.}, $i=\sum_{j=0}^{n-1}i_{j+1}2^j$.
+    In the rest of this paper, we use $+$ (resp. $\Sigma$) to denote the addition (resp. multiple sums) in the set of the integers $\Z$ or the finite field $\F_{2^n}$, and use $\oplus$ (resp. $\bigoplus$) to denote the addition (resp. multiple sums) in $\F_2$ or $\F_2^n$.
+    If the context is clear, we shall use $+$ (resp. $\Sigma$) to replace $\oplus$ (resp. $\bigoplus$).
+    The Hamming distance between any two vectors $a=(a_1,a_2,\dots,a_n),b=(b_1,b_2,\dots,b_n)\in\F_2^n$ is defined as $d_H(a,b)=\#\left\{ 1\le i\le n : a_i\ne b_i \right\}$, and it can be easily checked that $d_H(a,b)=\wt(a\oplus b)$.
+
+    A Boolean function of $n$ variables is a mapping from $\F_2^n$ to $\F_2$.
+    The set of all $n$-variable Boolean functions from $\F_2^n$ to $\F_2$ is denoted by $\mathcal{B}_n$.
+    The most well-known representation of an $n$-variable Boolean function $f$ is by its truth table (in brief, TT), \emph{i.e.},
+    \[f=\left[ f(0,0,\dots,0),f(1,0,\dots,0),\dots,f(0,1,\dots,1),f(1,1,\dots,1) \right].\]
+    Clearly, this representation is unique.
+    The support of $f$, denoted by $\operatorname{supp}(f)$, is defined as the set $\left\{ x\in\F_2^n : f(x)\ne 0 \right\}$.
+    The Hamming weight of $f$, denoted by $\wt(f)$, is defined as the cardinality of the support of $f$.
+    It is well-known that any $f\in\mathcal{B}_n$ in variables $x_1,x_2,\dots,x_n$ can also be represented by its algebraic normal form (in brief, ANF)
+    \[f(x_1,x_2,\dots,x_n) = \bigoplus_{u\in\F_2^n}a_ux^u,\]
+    where $x=(x_1,x_2,\dots,x_n)\in\F_2^n$, $u=(u_1,u_2,\dots,u_n)\in\F_2^n$, $a_u\in\F_2$ and the term $x^{u}=\prod_{i=1}^nx_i^{u_i}$ is called a monomial.
+    The algebraic degree of $f$ is then denoted by $\deg(f)=\max\left\{ \wt(u) :  u\in\F_2^n, a_u\ne 0 \right\}$.
+    If a Boolean function has algebraic degree at most $1$, we say that it is an affine function.
+    The set of all affine functions in $n$ variables is denoted by $A_n$.
+    And we shall call quadratic functions the Boolean functions of algebraic degree at most $2$.
+    It is known that the vector space $\F_2^n$ is isomorphic to the finite field $\F_{2^n}$ through a choice of a basis of $\F_{2^n}$ over $\F_2$.
+    Indeed, if $(\lambda_1,\lambda_2,\dots,\lambda_n)$ is a basis of $\F_{2^n}$ over $\F_2$, then every vector $x=(x_1,x_2,\dots,x_n)\in\F_2^n$ can be
+    identified with the element $x_1\lambda_1+x_2\lambda_2+\cdots+x_n\lambda_n\in\F_{2^n}$ and thus $\F_{2^n}$ can be viewed as an $n$-dimensional vector space over $\F_2$.
+    Therefore, any $n$-variable Boolean function can also be defined over $\F_{2^n}$ and uniquely represented by a univariate polynomial in variable $x\in\F_{2^n}$ over $\F_{2^n}$
+    \[f(x) = \sum_{i=0}^{2^n-1}\sigma_ix^i,\]
+    where $\sigma_0,\sigma_{2^n-1}\in\F_2$ and, for every $i\in\{1,2,\dots,2^n-2\}$, $\sigma_{2i\pmod{2^n-1}}=\sigma_i^2$.
+    In this case, the algebraic degree of $f$ can be computed by $\max\left\{ \wt(\overline{i}) : \sigma_i\ne 0, 0\le i\le 2^n-1 \right\}$ and the set $A_n$ is constituted by the functions $\Tr_1^n(\alpha x)\oplus c$, where $\alpha\in\F_{2^n}, c\in\F_2$ and $ \Tr_m^n(x)=x+x^{2^m}+x^{2^{2m}}+\cdots+x^{2^{n-m}}$ is the (absolute) trace function from $\F_{2^n}$ to $\F_{2^m}$ with $m\mid n$.
+    Particularly, when $n$ is even, any $n$-variable Boolean function $f$ can be uniquely expressed by a bivariate polynomial in variables $x,y\in\F_{2^{n/2}}$ over $\F_{2^{n/2}}$
+    \[f(x,y)=\sum_{0\le i,j\le 2^{n/2}-1}f_{i,j}x^iy^j,\]
+    where $f_{i,j}$'s are elements in the finite field $\F_{2^{n/2}}$.
+    In this case, the algebraic degree of $f$ can be computed by $\max\left\{ \wt(\overline{i})+\wt(\overline{j}) : f_{i,j}\ne 0, 0\le i,j\le 2^{n/2}-1 \right\}$ and the set $A_n$ is constituted by the function $\Tr_1^{n/2}(\alpha x+\beta y)\oplus c$, where $\alpha,\beta\in\F_{2^{n/2}}$ and $c\in\F_2$.
+
+    In coding theory, a binary linear code $\mathcal{C}$ with length $N$ is a subspace of $\F_2^N$ and $\F_2$-dimension of this subspace is called the dimension of $\mathcal{C}$.
+    The minimum distance of $\mathcal{C}$ is defined as the minimum Hamming weight of all nonzero vectors (called codewords in coding theory).
+    A binary linear code has length $N$, dimension $k$ and minimum distance $d$ is called an $\left[ N,k,d \right]$-code.
+    The Reed-Muller code of order $r$, denoted by $\mathcal{RM}(r,n)$, where $1\le r\le n$, is formed by the truth tables of all $n$-variable Boolean functions of algebraic degree at most $r$. The covering radius of a binary $\left[ N,k,d \right]$-code is defined as the smallest integer $\rho$ such that all
+    vectors in $\F_2^N$ are within Hamming distance $\rho$ of some codewords (see more details in \cite{MS1977}).
+    Thus, the maximum $r$-th order nonlinearity of all Boolean functions in $n$ variables equals the covering radius of $\mathcal{RM}(r,n)$, \emph{i.e.},
+    \[\max_{f\in \mathcal{B}_n}nl_r(f)=\max_{f\in\mathcal{B}_n}d_H(f,\mathcal{RM}(r,n)).\]
+    % For more details about the covering radius, see \cite{CohenHLL1997RMcodecover}.
+    \begin{definition}
+        The $r$-th order nonlinearity of a Boolean function $f\in\mathcal{B}_n$ is defined as its minimum Hamming distance from $f$ to all $n$-variable Boolean functions of degree at most $r$
+        \[nl_r(f)=\min_{g\in\mathcal{B}_n,\deg(g)\le r} d_H(f,g),\]
+        where $d_H(f,g)$ denotes the Hamming distance between $f$ and $g$, i.e., $d_H(f,g)=\#\left\{ x\in\F_2^n : f(x)\ne g(x) \right\}$.
+    \end{definition}
+    The first-order nonlinearity of $f$ is simply called the nonlinearity of $f$ and is denoted by $nl(f)$.
+    The nonlinearity $nl(f)$ is the minimum Hamming distance from $f$ to all affine functions.
+    In order to be resistant against the best affine approximation attack \cite{DingXS1991book} and the fast correlation attack \cite{MS1988fast_correlation_attack}, Boolean functions used in symmetric-key encryption must have high nonlinearity.
+    % It should be noted that the maximal $r$-th order nonlinearity of all Boolean functions in $n$ variables is equal to the covering radius of $\mathcal{RM}(r, n)$ (see more details in \cite{CohenHLL1997RMcodecover}).
+    The nonlinearity of any Boolean function can also be expressed by means of its Walsh transform.
+    Let $x=(x_1,x_2,\dots,x_n)$ and $a=(a_1,a_2,\dots,a_n)$ be two vectors in $\F_2^n$ and $a\cdot x=a_1x_1\oplus a_2x_2\oplus\cdots\oplus a_nx_n$ be the usual inner product in $\F_2^n$.
+    The Walsh transform of any $n$-variable Boolean function $f$ at a point $a\in\F_2^n$ is defined as
+    \[W_f(a)=\sum_{x\in\F_2^n}(-1)^{f(x)+a\cdot x}.\]
+    The multiset formed by the values of the Walsh transform is called the Walsh spectrum of $f$.
+    If $f$ is defined over $\F_{2^n}$, the Walsh transform of $f$ at a point $\alpha\in\F_{2^n}$ is defined as
+    \[W_f(\alpha)=\sum_{x\in\F_{2^n}}(-1)^{f(x)+\TrN(\alpha x)}.\]
+    In addition, if $n=2k$ is even and $f(x,y)\in\mathcal{B}_n$ is the bivariate polynomial form of $f$, the Walsh transform of $f$ at any pair $(\alpha,\beta)\in\F_{2^k}^2$ is defined as
+    \[W_f(\alpha,\beta)=\sum_{(x,y)\in\F_{2^k}^2}(-1)^{f(x,y)+\Tr_1^k(\alpha x+\beta y)}.\]
+    Observing the Walsh transform, we can easily get that the nonlinearity of any Boolean function $f\in\mathcal{B}_n$ can be computed as
+    \begin{align*}
+        nl(f) &= 2^{n-1} - \frac{1}{2}\max_{a\in\F_2^n}|W_f(a)|\\
+              &= 2^{n-1} - \frac{1}{2}\max_{\alpha\in\F_{2^n}}|W_f(\alpha)|\\
+              &= 2^{n-1} - \frac{1}{2}\max_{(\alpha,\beta)\in\F_{2^k}^2}|W_f(\alpha,\beta)|~(\text{if }n=2k\text{ is even}).
+    \end{align*}
+    As mentioned before, Boolean functions used in symmetric-key encryption should have high nonlinearity to resist the best affine approximation attack and the fast correlation attack.
+   Let $f$ be any $n$-variables Boolean function. It follows from the well-known Parseval relation that $\sum_{a\in\F_2^n}W_f^2(a)=2^{2n}$.
+   This implies that $\max_{a\in\F_2^n}\left\lvert W_f(a)\right\rvert \geq  2^{n/2}$ and thus we can see that
+   the nonlinearity of any $n$-variable Boolean function is upper-bounded by $2^{n-1}-2^{\frac{n}{2}-1}$.
+    This bound is tight for even $n$ but is not tight for odd $n\geq 3$.
+    If a Boolean function $f$ has nonlinearity achieving the upper bound with the equality,
+    we say that $f$ is a bent function and clearly bent functions only exist in even number of variables.
+
+    There exists a simple divide-and-conquer butterfly algorithm with complexity $O(n2^n)$ to compute the Walsh spectrum of any $n$-variable Boolean function from its truth table.
+    Hence, it is easy to compute the nonlinearity of a Boolean function from its truth table in a large number of variables (around $30$ variables in a personal computer).
+    However, as mentioned in Introduction, there is a limited amount of results on the higher-order nonlinearity of Boolean functions
+    because computing the higher-order nonlinearity, or even providing a tight lower bound, of a general Boolean function with high algebraic degree is an extremely hard task.
+    In 2008, Carlet showed in \cite{Carlet2008lowbound_NL_profile} that a lower bound on the $r$-th order nonlinearity of a Boolean function can be deduced from its $(r-1)$th-order nonlinearity of the first-order derivatives of this Boolean function.
+    Thus, to obtain a lower bound on the third-order nonlinearity of a Boolean function, we need to introduce the first-order and second-order derivatives of Boolean functions.
+    \begin{definition}
+        The first-order derivative of a Boolean function $f$ over $\F_{2^n}$ at a point $\alpha\in\F_{2^n}$ is defined as $D_{\alpha}f(x)=f(x)+f(x+\alpha)$.
+        And the second-order derivative of a Boolean function $f$ at a pair $(\alpha,\beta)\in\F_{2^n}^2$ is defined as $D_{\beta}D_{\alpha}f(x)=f(x)+f(x+\alpha)+f(x+\beta)+f(x+\alpha+\beta)$.
+    \end{definition}
+    With the notions above, Carlet proposed the following lemma which can efficiently provide a lower bound on the $r$-th order nonlinearity of a given Boolean function,
+    provided that the $(r-1)$-th order nonlinearity of all first-order derivatives of $f$ are known.
+    \begin{lemma}[\cite{Carlet2008lowbound_NL_profile}]\label{thm:High_order_nl_bound1}
+        Let $f$ be an $n$-variable Boolean function, and let $r<n$ be a positive integer.
+        We have
+        \[nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{a\in\F_2^n}nl_{r-1}(D_af)}.\]
+    \end{lemma}
+
+    There is a class of character sums with polynomial arguments needed to be treated for proving the main result of this paper.
+    To this end, we need the following two lemmas about the existence of solutions of the quadratic polynomial over the finite field $\F_{2^n}$ and algebraic geometry (we refer the reader to the original book~\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes} for more details).
+    \begin{lemma}[\cite{Lidl1997FiniteFieldBook}]\label{lemma:hilbert90}
+        Let $\F_{2^n}$ be the finite field of order $2^n$.
+        Then $x^2+x=\alpha$ with $\alpha\in\F_{2^n}$ has a solution (actually two solutions) in $\F_{2^n}$, if and only if $\Tr_1^n(\alpha)=0$.
+    \end{lemma}
+    % the genus of the algebraic function field.
+    \begin{lemma}[\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}]\label{L:genus_K_F}
+        Let $K=F(X,Y)$, where $X,Y$ are transcendentals over $F$.
+        Then the genus $g$ of the function field $K/F$ satisfies
+        \[g\le ([K : F(X)] - 1)([K : F(Y)] - 1).\]
+    \end{lemma}
+
+\section{A lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions}
+
+In this section, we focus on providing a lower bound on the third-order nonlinearity of the simplest
+partial spread affine plane ($\mathcal{PS}_{ap}$ for short) bent functions.
+We first introduce the definition of the $\mathcal{PS}_{ap}$ bent functions.
+Then we determine the nonlinearities of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions
+except for the trivial case, and a lower bound on the nonlinearities of the second-order derivatives is given in trivial case.
+So we can obtain a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$
+bent functions.
+
+  \subsection{The simplest $\mathcal{PS}_{ap}$ bent functions}
+
+In this subsection, we present the basic definition of the $\mathcal{PS}_{ap}$ bent functions.
+Let $\left\{ E_1,E_2,\dots,E_s \right\}$ be a set of pairwise disjoint $k$-dimensional subspaces of $\F_2^n$, {\em i.e.,}
+$E_i\cap E_j = \{\bm{0}_n\}$ for $1\le i<j\le s$, where $\bm{0}_n$ is the all-zero vector in $\F_2^n$.
+Any collection of $\left\{ E_1,E_2,\dots,E_s \right\}$ is called a partial $k$-spread of $\F_2^n$.
+Further, a partial spread is called a spread, if it covers $\F_2^n$, \emph{i.e.}, the union of $E_i$ is equal to $\F_2^n$, where $1\le i\le s$.
+Particularly, when $n=2k$, a partial $k$-spread of $\F_2^n$ is a set of pairwise supplementary of $k$-dimensional subspaces of $\F_2^n$,
+\emph{i.e.},  the sum of any two of them is direct and equals $\F_2^n$.
+Assume $n=2k$ and we then have $\F_{2^n}$ being isomorphic to the affine plane $\F_{2^k}\times\F_{2^k}$,
+in which  an affine plane is a vector space of dimension two in which one has ``forgotten'' where the origin is.
+Considering $\F_{2^k}\times\F_{2^k}$, we then have $2^k+1$ pairwise disjoint $n/2$-dimensional $\F_2$-subspaces of $\F_2^n$, which are
+$E_a=\left\{(x,ax) : x\in\F_{2^k}\right\}$ for $a\in\F_{2^k}$ and $E_{\emptyset}=\left\{(0,x) : x\in\F_{2^k}\right\}$.
+It can be seen that all elements $(x,y)$ of $E_a$ constitute a line $y=ax$ over $\F_{2^k}$ for every $a\in\F_{2^k}$ and
+$E_{\emptyset}$ can be viewed as a line $y\in\F_{2^k}$ and all $2^k+1$ lines intersect only at the origin.
+This is the reason why these subspaces are called ``affine plane''.
+%That is why we use the term ``affine plane''.
+These $2^k+1$ $n/2$-dimensional $\F_2$-subspaces of $\F_2^n$ constitute a spread, which is the well-known Desarguesian spread.
+
+In \cite{Dillon1974PSbent}, Dillon proposed constructions of bent functions in the $\mathcal{PS}^-$ (resp. $\mathcal{PS}^+$) class in $n$ variables, whose supports are the unions of $2^{k-1}$ (resp. $2^{k-1}+1$) different elements of a partial $k$-spread, where $n=2k$.
+Especially, Dillon exhibited the so-called $\mathcal{PS}_{ap}$ bent functions over finite fields, which is a subclass of the $\mathcal{PS}^-$ class.
+%By taking any $2^{k-1}$ elements of the Desarguesian spread except $E_0$ and $E_{\emptyset}$ as the supports of a Boolean function will lead to a bent function in the $\mathcal{PS}_{ap}$ class, in the form
+Any $\mathcal{PS}_{ap}$ bent function can be written as
+\begin{equation*}\label{Eqn_PS_bent}
+    f_0(x,y)=g\left(xy^{2^k-2}\right)=g\left(\frac{x}{y}\right),
+\end{equation*}
+where $g$ is a balanced Boolean function on $\F_{2^{k}}$ with $g(0)=0$, and $\frac{x}{y}$ is defined to be $0$ if $y=0$ (we shall always assume this kind of convention in the sequel).
+We can see that the support of $f_0$ is constituted by $2^{k-1}$ elements of the Desarguesian spread except $E_0$ and $E_{\emptyset}$.
+In this paper, let $g$ be the simplest balanced Boolean function on $\F_{2^k}$, \emph{i.e.}, the trace function $\TRACE(x)$, then
+$f_0$ can be written as
+\begin{equation*}\label{sub-bent}
+    f(x,y)=\TRACE\left(\frac{\lambda x}{y}\right),
+\end{equation*}
+where $(x,y)\in\F_{2^k}^2$, $\lambda\in\F_{2^k}^{*}$ and $\TRACE(x)=\sum\limits_{i=0}^{k-1}x^{2^i}$ is the trace function from $\F_{2^k}$ to $\F_2$.
+In this paper, $f$ is called a simplest $\mathcal{PS}_{ap}$ bent function.
+
+    % Note that all $f_{\lambda}$, $\lambda\ne 0$, are affinely equivalent to each others and then they have the same $r$-th order nonlinearity.
+    % Thus, we can use $f$ instead of $f_{\lambda}$ for simplicity.
+    % In this paper, our aim is to obtain a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    \subsection{The nonlinearity of the second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions}
+    As mentioned in Introduction,
+    we need to determine the nonlinearities of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions to derive a lower bound on the third-order nonlinearity.
+    To this end, we begin by introducing two lemmas involved to the multiplicative inverse functions,
+    as well as providing a lower bound on a class of character sums by algebraic geometry.
+    Additionally, we present two lemmas about determining the number of solutions for systems of trace functions.
+    These results will be important in the sequel for proving our main result.
+
+    For the finite field $\F_{2^k}$, the multiplicative inverse function over $\F_{2^k}$ is defined as $I(x)=x^{2^k-2}$ (we shall use $x^{-1}$ to denote $x^{2^k-2}$ with the convention that $x^{-1}=\frac{1}{x}=0$ if $x=0$).
+    Besides, for any $v\in\F_{2^k}^*$ we also define $I_v(x)=\Tr_1^k(vx^{-1})$.
+    Regarding the multiplicative inverse function, the following two lemmas will be used in the sequel.
+
+    \begin{lemma}[\cite{TangMM2022inversefunction}]\label{L:SumInv00}
+        Let $k\geq 3$ be an arbitrary integer.
+        We define
+        $$L=\#\left\{c\in\F_{2^k}  :  \mathrm{Tr}_1^k\left(\frac{1}{c^2+c+1}\right)=\mathrm{Tr}_1^k\left(\frac{c^2}{c^2+c+1}\right)=0\right\}.$$
+        Then we have $L=2^{k-2}+\frac{3}{4}(-1)^kW_{I_1}(1)+\frac{1}{2}\left(1-(-1)^k\right)$, where $W_{I_1}(1)=1-\sum_{t=0}^{\lfloor k/2\rfloor}(-1)^{k-t}\frac{k}{k-t}{{k-t}\choose {t}}2^t$.
+    \end{lemma}
+
+    % Let $f$ be a function from $\F_{2^n}$ to $\F_{2^m}$.
+    % For any $\gamma,\eta\in\F_{2^n}$ and $\omega\in\F_{2^m}$, let us define
+    % \[\mathcal{S}_f(\gamma,\eta,\omega),\]
+    % associated with $\mathcal{N}_f(\gamma,\eta,\omega)=\#\mathcal{S}_f(\gamma,\eta,\omega)$.
+
+    \begin{lemma}\label{lemma:num_sol_second_dev}
+        Let $k\ge 3$ be an integer.
+        For $a,b,\mu\in\F_{2^k}$ with $\lambda\in\F_{2^k}^*$, define $F_{\lambda}(x)=\lambda x^{-1}$ and
+        \begin{align*}
+            U_{F_{\lambda}}(a,b,\mu)=&\left\{x\in\F_{2^k} : F_{\lambda}(x)+F_{\lambda}(x+a)+F_{\lambda}(x+b)+F_{\lambda}(x+a+b)=\mu\right\}\\
+            =&\left\{ x\in\F_{2^k} : \frac{\lambda}{x}+\frac{\lambda}{x+a}+\frac{\lambda}{x+b}+\frac{\lambda}{x+a+b}=\mu \right\},
+        \end{align*}
+        then we have
+        \[\# U_{F_{\lambda}}(a,b,\mu) = \left\{
+            \begin{alignedat}{2}
+                &2^k,&&\text{ if }(a,b)\in M\text{ and }\mu = 0,\\
+                &8,&&\text{ if both two \textsf{Conditions~A}}\text{ and~\textsf{B}}\text{ hold,}\\
+                &4,&&\text{ if either \textsf{Condition~A}}\text{ or~\textsf{Condition B}} \text{ holds,}\\
+                &0,&&\text{ otherwise},
+            \end{alignedat}\right.\]
+        where $M=\left\{ (x,x):x\in\F_{2^k}^* \right\}\cup\left\{ (x,0):x\in\F_{2^k} \right\}\cup\left\{ (0,y):y\in\F_{2^k}^* \right\}$, and the two conditions are listed as follows:
+
+        \noindent $-$  \textsf{Condition A}. $a\ne b\in\F_{2^k}^*$ and $\lambda(a^2+b^2+ab)+\mu(a^2b+ab^2)=0$.\label{item_a}
+        
+        \noindent $-$  \textsf{Condition B}. $a\ne b\in\F_{2^k}^*$, $\mu\ne 0$, $\TRACE\left(\frac{\lambda a}{\mu b(a+b)}\right)=0$ and $\TRACE\left(\frac{\lambda b}{\mu a(a+b)}\right)=0$.\label{item_b}
+        
+        % \begin{enumerate}[label= \textsf{Condition \Alph{*}},labelindent=\parindent,leftmargin=*]
+        %     \item $a\ne b\in\F_{2^k}^*$ and $\lambda(a^2+b^2+ab)+\mu(a^2b+ab^2)=0$.
+        %     \item. 
+        % \end{enumerate}
+    \end{lemma}
+    \begin{proof}
+        The proof is analogue to the proof of Lemma 13 in \cite{TangMM2022inversefunction} and we omit it.
+    \end{proof}
+    \begin{remark}
+        Note that if \hyperref[item_a]{\textsf{Condition A}} holds, we have $\{0,a,b,a+b\}\subseteq U_{F_{\lambda} }(a,b,\mu)$.
+        If \hyperref[item_b]{\textsf{Condition B}} holds, we have $\{y_0,y_0+a,y_0+b,y_0+a+b\}\subseteq U_{F_{\lambda}}(a,b,\mu)$ where $y_0\notin\{0,a,b,a+b\}$.
+    \end{remark}
+    \begin{remark}
+        For any $a\in\F_{2^k}^*$, it follows from \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}} that there exist $L-4$ distinct values of $b$
+        such that $\#U_{F_{\lambda}}(a,b,\mu)=8$ for some fixed $\lambda\in\F_{2^k}^*$ and $\mu\in\F_{2^k}$,
+        where $L$ is given by Lemma~\ref{L:SumInv00}.
+        %Let us see more details for Condition \ref{item_a} and Condition \ref{item_b}.
+       Indeed, note that $a,b$ be two distinct elements of $\F_{2^k}^*$ and $\mu\ne 0$,
+        we have $\mu(a^2b+ab^2)\ne 0$.
+        In \hyperref[item_a]{\textsf{Condition A}}, this indicates $\lambda(a^2+b^2+ab)\ne 0$,
+        which implies $\frac{b}{a}\notin\F_4$.
+        So assume $\mu=\frac{\lambda(a^2+b^2+ab)}{a^2b+ab^2}$,
+        then by  $\TRACE\left(\frac{\lambda a}{\mu b(a+b)}\right)=0$
+        and $\TRACE\left(\frac{\lambda b}{\mu a(a+b)}\right)=0$
+        we obtain $\TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=0$ and $\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0$ respectively,
+        where $\gamma=\frac{b}{a}\in\F_{2^k}\setminus\F_{4}$.
+        Therefore, according to Lemma \ref{L:SumInv00},
+        the number of $\gamma=\frac{b}{a}\in\F_{2^k}\setminus\F_{4}$ satisfying
+        $\TRACE\left(\frac{1}{\gamma^2+\gamma+1}\right)=0$ and $\TRACE\left(\frac{\gamma^2}{\gamma^2+\gamma+1}\right)=0$
+        is $L-4$ since we need to exclude the cases $\gamma\in\F_4$.
+    \end{remark}
+
+
+The following lemma provides a lower bound on a class of character sums by some basic knowledge about algebraic geometry (see more details in \cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}).
+    \begin{lemma}\label{lemma:charactersums}
+        Let $k\ge 3$ be a positive integer and assume
+        \[S(\alpha,\beta,v)=\sum_{x\in\F_{2^k}}(-1)^{\TRACE\left( \frac{\alpha}{x+\beta}+\frac{\alpha}{x}+vx \right)},\]
+        where $\alpha,\beta,v\in\F_{2^k}^*$.
+        We have
+        \[\left\lvert S(\alpha,\beta,v)\right\rvert\le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4 .\]
+    \end{lemma}
+    \begin{proof}
+        Note that $S(1,\beta/\alpha,v\alpha)=S(\alpha,\beta,v)$.
+        So we only need to determine the values of $S(1,\beta,v)$.
+        In other words, we need to obtain the number of $x\in\F_{2^k}$ such that $\TRACE\left( \frac{1}{x+\beta}+\frac{1}{x}+vx \right)=0$.
+        By Lemma $\ref{lemma:hilbert90}$, it is equivalent to calculate the number of solutions $(x,y)\in\F_{2^k}^2$ of $y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx$.
+
+        Let us define
+        \[\mathcal{S}_{\beta,v}=\left\{(x,y)\in\F_{2^k}\times\F_{2^k} : y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx\right\}.\]
+        Note that $y\mapsto y^2+y$ is a $2$-to-$1$ mapping, then we have
+        \begin{equation}\label{eq:tracesum_S}
+            S(\alpha,\beta,v)=\frac{\#\mathcal{S}_{\beta,v}}{2}-\left(2^k-\frac{\#\mathcal{S}_{\beta,v}}{2}\right)=\#\mathcal{S}_{\beta,v}-2^k.
+        \end{equation}
+        Note that $\#\mathcal{S}_{\beta,v}$ is even and then $S(\alpha,\beta,v)$ must be even as well.
+        Consider the function field $K=\F_{2^k}(x,y)$ with defining equation
+        \begin{equation}\label{eq:trace_curve}
+            y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx.
+        \end{equation}
+        By Lemma \ref{L:genus_K_F}, we can easily obtain that the genus of $K$ is at most $2-\delta_v$,
+        where $\delta_v=1$ if $v=0$ and $\delta_v=0$ otherwise.
+        We denote by $\mathcal{N}$ the number of the places with degree one of $K/\F_{2^k}$.
+        Then by Serre bound \cite{Serre1982serrebound}, we have
+        \begin{equation}\label{eq:N_genus_inequality}
+            \left\lvert \mathcal{N}-(2^k+1)\right\rvert\le g\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor,
+        \end{equation}
+        where $g$ is the genus of the function field $K/\F_{2^k}$.
+        It is known (see for instance~\cite{Serre1982serrebound}) that
+         \begin{equation}\label{eq:N_S_M_equality}
+            \mathcal{N}=\#\mathcal{S}_{\beta,v}-\mathcal{M}_{\beta,v},
+        \end{equation}
+   where $\mathcal{M}_{\beta,v}$ is the number of the points at infinity of Equation \eqref{eq:trace_curve}.
+   Thus, to estimate the value of $|S(\alpha,\beta,v)|$, we need to compute the value of $\mathcal{M}_{\beta,v}$.
+   We homogenize Equation \eqref{eq:trace_curve} to
+        \begin{equation}\label{eq:homogenize}
+            \left( \frac{Y}{Z} \right)^2+\frac{Y}{Z}=\frac{Z}{X+\beta Z}+\frac{Z}{X}+\frac{vX}{Z}.
+        \end{equation}
+        Multiplying both sides of Equation \eqref{eq:homogenize} by $Z^2X\left( X+\beta Z \right)$ and then let $Z=0$,
+        we have
+        \[X^2Y^2=0,\]
+        hence the points at infinite are $(1:0:0)$ and $(0:1:0)$.
+
+        We now consider the multiplicity of roots of $(0 : 1 : 0)$ and $(1 : 0 : 0)$, respectively.
+        For the point $(0 : 1 : 0 )$, \emph{i.e.}, $Y = 1$, we have
+        \begin{equation}\label{eq:points_010}
+            \left( \frac{1}{z} \right)^2+\frac{1}{z}=\frac{z}{x+\beta z}+\frac{z}{x}+\frac{vx}{z}.
+        \end{equation}
+        And multiplying Equation \eqref{eq:points_010} by $z^2x(x+\beta z)$ gives
+        \[x^2+\beta xz+R_{\beta,v}(x,z)=0,\]
+        where $R_{\beta,v}(x,z)=\beta xz^2+x^2z+\beta z^4+v\beta x^2z^2+vx^3z$ is a polynomial
+        such that its every monomial has algebraic degree at least $3$.
+        This gives $(0 : 1 : 0)$ is a root of multiplicity $2$.
+        For the point $(1 : 0 : 0)$, \emph{i.e.}, $X = 1$, we have
+        \begin{equation}\label{eq:points_100}
+            \left( \frac{y}{z} \right)^2+\frac{y}{z}=\frac{z}{1+\beta z}+z+\frac{v}{z}.
+        \end{equation}
+        And multiplying Equation \eqref{eq:points_100} by $z^2(1+\beta z)$ gives
+        \[vz+v\beta z^2+y^2+zy+\beta y^2z+\beta yz^2+\beta z^4=0.\]
+        Note that when $v=0$, we have
+        \[y^2+zy+\beta y^2z+\beta yz^2+\beta z^4=0,\]
+        which implies that $(1:0:0)$ is a root of multiplicity $2$.
+
+        Therefore, Equation \eqref{eq:trace_curve} has at most $4$ points at infinity, \emph{i.e.},
+        $\mathcal{M}_{\beta,v}\le 4$.
+        Thus, combining \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that
+        $S(\alpha,\beta,v)$ is even we can get our assertion
+        \[\left\lvert S(\alpha,\beta,v)\right\rvert \le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4.\]
+        This finishes the proof.
+    \end{proof}
+
+    \begin{lemma}\label{lemma:N_ij_trace}
+        Let $k\ge 3$ be a positive integer.  We define 
+        \[ N_{i,j} =\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=i,\TRACE\left(\theta_2x+\gamma_2\right)=j\right\}, \]
+        where  $\gamma_1,\gamma_2\in\F_{2^k}$ and $\theta_1\ne\theta_2\in\F_{2^k}^*$. Then $N_{0,0} =2^{k-2}$.
+    \end{lemma}
+
+   \begin{proof}
+        Clearly, we can see that
+        \[N_{0,0}+N_{0,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=0\right\}=2^{k-1}\]
+        and
+        \[N_{1,1}+N_{0,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_2x+\gamma_2\right)=1\right\}=2^{k-1}.\]
+        Then we have $N_{0,0} = N_{1,1}$.
+        Besides, since $\theta_1\ne\theta_2$, the trace function $\TRACE\left((\theta_1+\theta_2)x+(\gamma_1+\gamma_2)\right)$ is balanced.
+        So we have $N_{0,0}+N_{1,1} = \#\left\{x\in\F_{2^k} : \TRACE\left((\theta_1+\theta_2)x+(\gamma_1+\gamma_2)\right)=0\right\}=2^{k-1}$.
+        Therefore $N_{0,0}=2^{k-2}$. This completes the proof.
+   \end{proof}
+
+    \begin{lemma}\label{lemma:N_ijk_trace}
+        Assume $k\ge 3$ be a positive integer, let
+        \[ N_{i_1,i_2,i_3}=\#\left\{x\in\F_{2^k} :  \TRACE\left(\theta_1x+\gamma_1\right)=i_1,\TRACE\left(\theta_2x+\gamma_2\right)=i_2,\TRACE\left(\theta_3x+\gamma_3\right)=i_3 \right\},\]
+        where  $\gamma_1,\gamma_2,\gamma_3\in\F_{2^k}$, and $\theta_1,\theta_2,\theta_3$ are three pairwise distinct elements of $\F_{2^k}^*$ such that $\theta_3\ne\theta_1+\theta_2$. Then $N_{0,0,0}= 2^{k-3}$.
+    \end{lemma}
+
+    \begin{proof}
+        By Lemma \ref{lemma:N_ij_trace} we have
+        \begin{equation}\label{eq:from_lemma_1}\left\{\begin{alignedat}{3}
+        &N_{0,0,0}+N_{0,0,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=0, \TRACE\left(\theta_2x+\gamma_2\right)=0\right\}=2^{k-2}\\
+        &N_{0,0,0}+N_{0,1,0}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=0, \TRACE\left(\theta_3x+\gamma_3\right)=0\right\}=2^{k-2}\\
+        &N_{0,0,0}+N_{1,0,0}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_2x+\gamma_2\right)=0, \TRACE\left(\theta_3x+\gamma_3\right)=0\right\}=2^{k-2}.\\
+        \end{alignedat}\right.\end{equation}
+        Thus, $N_{0,0,1}=N_{0,1,0}=N_{1,0,0}$. With the same reason we can also obtain  $N_{0,1,1}=N_{1,0,1}=N_{1,1,0}$.
+        Recall that $\theta_1+\theta_2+\theta_3\ne 0$, we obtain equations
+        \begin{equation}\label{eq:sum_three_trace_1}
+            N_{0,0,1}+N_{0,1,0}+N_{1,0,0}+N_{1,1,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\left(\theta_1+\theta_2+\theta_3\right)x+\left(\gamma_1+\gamma_2+\gamma_3\right)\right)=1\right\}=2^{k-1}
+        \end{equation}
+        and
+        \begin{equation}\label{eq:sum_three_trace_2}
+            N_{0,1,1}+N_{1,0,1}+N_{1,1,0}+N_{0,0,0}=\#\left\{x\in\F_{2^k} : \TRACE\left(\left(\theta_1+\theta_2+\theta_3\right)x+\left(\gamma_1+\gamma_2+\gamma_3\right)\right)=0\right\}=2^{k-1}.
+        \end{equation}
+        Combining Equation \eqref{eq:sum_three_trace_1}, Equation \eqref{eq:sum_three_trace_2} and the following equations
+        \begin{equation}\label{eq:sum_N_0jk}\left\{\begin{alignedat}{2}
+            &N_{0,0,0}+N_{0,0,1}+N_{0,1,0}+N_{0,1,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=0\right\}=2^{k-1}\\
+            &N_{1,0,0}+N_{1,0,1}+N_{1,1,0}+N_{1,1,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=1\right\}=2^{k-1}\\
+            &N_{0,0,1}=N_{0,1,0}=N_{1,0,0}\\
+            &N_{0,1,1}=N_{1,0,1}=N_{1,1,0},
+        \end{alignedat}\right.\end{equation}
+        we obtain $N_{0,0,1}=N_{0,1,1}$.
+        Consequently, Equations \eqref{eq:from_lemma_1} and Equations \eqref{eq:sum_N_0jk} can be transformed into
+        $N_{0,0,0}+N_{0,0,1}=2^{k-2}$ and $N_{0,0,0}+3N_{0,0,1}=2^{k-1}$, respectively.
+        So we have $N_{0,0,0}=N_{0,0,1}=2^{k-3}$. This completes the proof.
+    \end{proof}
+
+    With the five lemmas above, we can determine or provide a lower bound on the nonlinearities of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    \begin{theorem}\label{thm:nl_DaDbf}
+        Let $k\ge 3$ be an integer and $n=2k$ and $f(x,y)=\TRACE\left(\frac{\lambda x}{y}\right)$ be a simplest $\mathcal{PS}_{ap}$ bent function, $\lambda\in\F_{2^k}^*$.
+        Then for $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}$, we have
+        \begin{equation}\label{res:nontrivil_nl}
+            nl(D_{\beta}D_{\alpha}f)=\begin{cases}
+                2^{2k-1}-2^{k+2},&\text{if both }\hyperref[item_a]{\textsf{Conditions A}}\text{ and }\hyperref[item_b]{\textsf{B}} \text{ hold},\\
+                2^{2k-1}-2^{k+1},&\text{if either }\hyperref[item_a]{\textsf{Condition A}}\text{ or }\hyperref[item_b]{\textsf{Condition B}}\text{ holds},\\
+                0,&\text{if }(\alpha,\beta)\in \mathcal{C},%\footnote[1]{This happends if $ \beta=0 $},
+            \end{cases}
+        \end{equation}
+        and $nl(D_{\beta}D_{\alpha}f)\ge 2^{2k-1}-2^k\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor-2^{k+1}$ otherwise,
+        where $\mathcal{C}=\{(x_1,x_2,x_1,x_2):x_1\in\F_{2^k},x_2\in\F_{2^k}^*\}\cup\{(x_1,0,x_2,0):x_1,x_2\in\F_{2^k}\}$.
+    \end{theorem}
+
+    \begin{proof}
+        Let us consider the Walsh transform of the second-order derivative of $f(x,y)=\TRACE\left(\frac{\lambda x}{y}\right)$ at
+        pair $(\alpha, \beta)\in\F_{2^n}\times\F_{2^n}$, where $\lambda\in\F_{2^k}^*$.
+        Assume that $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}$, then
+        we have
+        \begin{align*}\label{eq:secondordersum}
+            &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+            =&\sum_{x\in\F_{2^k}}\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda x}{y}+\frac{\lambda (x+\alpha_1)}{y+\alpha_2}+\frac{\lambda (x+\beta_1)}{y+\beta_2}+\frac{\lambda (x+\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\mu x+\nu y\right)}\nonumber\\
+            =&\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}\nonumber\\
+            &\times \sum_{x\in\F_{2^k}}(-1)^{\TRACE\left(\left(\frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}+\mu\right)x\right)}\nonumber\\
+            =&\begin{cases}
+                2^k\sum_{y\in U}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)},&~\text{if}~\frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}=\mu~\text{has solutions},\\
+                0, &~\text{otherwise},
+            \end{cases}
+        \end{align*}
+        where $U$ is the set of solutions of equation
+        \begin{equation}\label{eq:coefficient}
+            \frac{\lambda}{y}+\frac{\lambda}{y+\alpha_2}+\frac{\lambda}{y+\beta_2}+\frac{\lambda}{y+\alpha_2+\beta_2}=\mu.
+        \end{equation}
+        Note that the number of solutions of Equation \eqref{eq:coefficient} is fully determined in Lemma \ref{lemma:num_sol_second_dev}.
+
+        For the nonlinearity of $D_{\beta}D_{\alpha}f$, we only need to consider $\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|$ for every pair $(\alpha,\beta)$.
+        Note that if Equation \eqref{eq:coefficient} has no solutions we have $\left\lvert W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\right\rvert=0$.
+        So we only need to consider the case that Equation \eqref{eq:coefficient} has solutions.
+        According to values of $\alpha_2$ and $\beta_2$ in Lemma \ref{lemma:num_sol_second_dev}, the values of $W_{D_{\beta}D_{\alpha}f}(\mu,\nu)$
+        can be divided into the following three cases.
+
+        \begin{enumerate}[label=\textbf{Case \arabic*},wide = 0pt]
+            \item The trivial case $\mu=0$, $(\alpha_1,\beta_1)\in\F_{2^k}\times\F_{2^k}$ and $(\alpha_2,\beta_2)\in M$, where $M$ is defined in Lemma \ref{lemma:num_sol_second_dev}.
+            It can be easily verified that any $y\in \F_{2^k}$ is a solution of Equation \eqref{eq:coefficient}.
+            Thus, Equation \eqref{eq:coefficient} has $2^k$ solutions in this case.
+            So we have
+            \begin{equation}\label{eq:case2ksolutions}
+                W_{D_{\beta}D_{\alpha}f}(0,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+\nu y\right)}.
+            \end{equation}
+
+            In the case of
+            $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\{(x_1,x_2,x_1,x_2):x_1\in\F_{2^k},x_2\in\F_{2^k}^*\}\cup\{(x_1,0,x_2,0):x_1,x_2\in\F_{2^k}\}$,
+            % $(\alpha_1,\beta_1)\in\{(x,x):x\in\F_{2^k}\}$ with $(\alpha_2,\beta_2)\in\left\{ (x,x):x\in\F_{2^k}^* \right\}$,
+            Equation \eqref{eq:case2ksolutions} will be in a simple form:
+            \[W_{D_{\beta}D_{\alpha}f}(0,\nu)=2^k\sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\nu y\right)}.\]
+            Clearly $\max_{\nu}|W_{D_{\beta}D_{\alpha}f}(0,\nu)|=W_{D_{\beta}D_{\alpha}f}(0,0)=2^{2k}$.
+            % Note that another case $(\alpha_1,\beta_1)\in\F_{2^k}\times\F_{2^k}$ with $(\alpha_2,\beta_2)=(0,0)$ will
+            % $\cup\left\{ (x,y):x\in\F_{2^k}\times\{0\},y\in\F_{2^k}\times\{0\} \right\}$,
+            For other cases, we will give an upper bound on $\max_{v}|W_{D_{\beta}D_{\alpha}f}(0,v)|$.
+            Consider the case $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\{(x_1,x_2,x_3,x_2):x_1\ne x_3\in\F_{2^k},x_2\in\F_{2^k}^*\}$,
+            % $\alpha_2=\beta_2\in\F_{2^k}^*$ and $\alpha_1\ne\beta_1$,
+            by Lemma \ref{lemma:charactersums} we then have
+            \[\left\lvert W_{D_{\beta}D_{\alpha}f}(0,v)\right\rvert =2^k\left\lvert \sum_{y\in\F_{2^k}}(-1)^{\TRACE\left(\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2}+\frac{\lambda(\alpha_1+\beta_1)}{y}+vy\right)}\right\rvert\le 2^{k+1}\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+2^{k+2}.\]
+
+            The case $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\F_{2^k}^*\times\{0\}\times\F_{2^k}\times\F_{2^k}^*$ and the case $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^*\times\F_{2^k}^*\times\{0\}$ will lead to analogue proofs with the same upper bounds and we omit them.
+            % Therefore, in the cases of $\alpha_2=\beta_2\in\F_{2^k}^*$ or $\alpha_2=0$ or $\beta_2=0$, we have
+            % \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|\le 2^{k+1}\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+2^{k+2}.\]
+
+            \item If both \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}} hold,\label{case_2}
+            it can be guaranteed that Equation~\eqref{eq:coefficient} has $8$ solutions $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2,y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\}$, where $y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$, according to Lemma \ref{lemma:num_sol_second_dev}.
+            % Then we have two subcases based on the number of solutions of Equation \eqref{eq:coefficient} is $8$ or $4$:
+            % \begin{enumerate}[label=(\arabic{*})]
+            %     \item When $\mu\ne 0$, if two different elements $\alpha_2,\beta_2\in\F_{2^k}^*$ satisfy
+            %     \begin{equation}\label{eq:last_four_solution_condition}
+            %         \TRACE\left(\frac{\lambda\alpha_2}{\mu\beta_2(\alpha_2+\beta_2)}\right)=\TRACE\left(\frac{\lambda\beta_2}{\mu\alpha_2(\alpha_2+\beta_2)}\right)=0,
+            %     \end{equation}
+            %     then $\{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\}$ are another $4$ solutions of Equation \eqref{eq:coefficient}, where $y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$, that is, the number of solutions of Equation \eqref{eq:coefficient} is $8$.
+            %     \item Otherwise, $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$ are the only $4$ solutions of Equation \eqref{eq:coefficient}.
+            % \end{enumerate}
+            % So we can calculate $W_{D_{\beta}D_{\alpha}f}(\mu,\nu)$ for two subcases based on whether or not Condition \ref{item_b} holds.
+            % \begin{enumerate}[label=\textbf{Subcase \Alph{*}},itemindent=*,wide=\parindent]
+            %     \item Consider the case where Equation \eqref{eq:coefficient} has $8$ solutions,
+                % that is, both Condition \ref{item_a} and Condition \ref{item_b} holds.
+            Then we have
+            \begin{align*}
+            &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+                =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+                \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\nonumber\\
+                &\cdot
+                \left[(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right)}+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+ y_0\nu\right)}\right]\nonumber\\
+                =&(-1)^{c_0}2^k\cdot\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+                \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\cdot\left[1+(-1)^{c_0+c_1}\right]\nonumber\\
+                =&\begin{cases}
+                    2^{k+3}\cdot(-1)^{c_0},&\text{if }\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)=\TRACE\left(\beta_1\mu+\beta_2\nu\right)=c_0+c_1=0,\\
+                    0,&\text{otherwise},
+                \end{cases}
+            \end{align*}
+            where
+            $c_0=\TRACE\left(\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}\right)$
+            and
+            $c_1= \TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)$.
+            By Lemma \ref{lemma:N_ijk_trace},
+            for any points $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^*$ such that
+            $\alpha_2\ne\beta_2$ and satisfying both \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}},
+            the number of solutions $\nu\in\F_{2^k}$ for the system
+            \begin{empheq}[left=\empheqbiglbrace]{align*}
+                &\TRACE\left(\alpha_2\nu + \alpha_1\mu\right)=0\\
+                &\TRACE\left(\beta_2 \nu + \beta_1\mu \right)=0\\
+                &\TRACE\left(y_0\nu +\frac{\lambda\alpha_1}{\alpha_2}+\frac{\lambda\beta_1}{\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{\alpha_2+\beta_2}+\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2} \right)=0,
+            \end{empheq}
+            is $2^{k-3}\ge 1$.
+            This implies there exists $(\mu,\nu)\in\F_{2^k}\times\F_{2^k}$ such that $W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^{k+3}\cdot(-1)^{c_0}$.
+            So in this case, we have
+            \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+3}.\]
+            \item If either \hyperref[item_a]{\textsf{Condition A}} or \hyperref[item_b]{\textsf{Condition B}} holds,\label{case_3}
+            it can be seen that Equation \eqref{eq:coefficient} has only $4$ solutions.
+            Assume \hyperref[item_a]{\textsf{Condition A}} is satisfied, then $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$ are the only $4$ solutions of Equation \eqref{eq:coefficient}.
+            So we have
+            \begin{align}\label{eq:simpleforms_4}
+                &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
+                =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\nonumber\\
+                &\cdot
+                \left[(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}+
+                (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y}+\frac{\lambda\beta_1}{y+\alpha_2+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\beta_2}+ (y+\alpha_2)\nu\right)}\right]\nonumber\\
+                =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\nonumber\\
+                &\cdot
+                (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}\cdot
+                \left[1+(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y}+\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\alpha_1}{y+\beta_2}+\frac{\lambda\alpha_1}{y+\alpha_2+\beta_2}+\nu\alpha_2\right)}\right]\nonumber\\
+                =&2^k\left[1+(-1)^{\TRACE\left((\alpha_1+\beta_1)\mu+ (\alpha_2+\beta_2)\nu\right)}\right]\cdot
+                \left[1+(-1)^{\TRACE\left(\alpha_1\mu+\alpha_2\nu\right)}\right]\cdot
+                (-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)}\nonumber\\
+                =&\begin{cases}
+                    2^{k+2}\cdot(-1)^{\TRACE\left(\frac{\lambda\alpha_1}{y+\alpha_2}+\frac{\lambda\beta_1}{y+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y+\alpha_2+\beta_2}+ y\nu\right)},&\text{if}~\TRACE\left(\alpha_2\nu+\alpha_1\mu\right)=0 ~
+                    \text{and}~\TRACE\left(\beta_2\nu+\beta_1 \mu\right)=0 \\
+                    0,~&\text{otherwise}.
+                \end{cases}
+            \end{align}
+            % Observing \eqref{eq:simpleforms_4} we can find that $|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|$ only has two possible values $\{0,2^{k+2}\}$.
+            According to Lemma \ref{lemma:N_ij_trace}, for any $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^*$ such that $\alpha_2\ne\beta_2$, the number of solutions $\nu\in\F_{2^k}$ for the system
+            \begin{equation}\label{eq:max_foursolution_condition}
+                \left\{
+                \begin{alignedat}{2}
+                    \TRACE\left(\alpha_2\nu+\alpha_1\mu\right)&=0\\
+                    \TRACE\left(\beta_2\nu +\beta_1 \mu\right)&=0
+                \end{alignedat}
+                \right.
+            \end{equation}
+            is $2^{k-2}$.
+            Thus, in the case where \hyperref[item_a]{\textsf{Condition A}} holds, we have
+            \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}.\]
+            Assume \hyperref[item_b]{\textsf{Condition B}} holds,
+            it can be seen that $\{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\}$
+            are the only $4$ solutions of
+            Equation \eqref{eq:coefficient}, where $y_0\notin\{0, \alpha_2, \beta_2, \alpha_2+\beta_2\}$.
+            The rest of proof  is similar to the case where only Condition \hyperref[item_a]{\textsf{Condition A}} holds, so we omit it and
+            straightforwardly present the result $\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}$.
+            Therefore, in the case where Equation \eqref{eq:coefficient} has only $4$ solutions, we have
+            \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}.\]
+        \end{enumerate}
+        This completes the proof.
+    \end{proof}
+
+\subsection{A lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions}
+
+In this subsection,  we can derive a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+%by Lemma \ref{thm:High_order_nl_bound1}.
+%    After obtaining the nonlinearities of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions, we can derive a lower bound on the third-order nonlinearity by Lemma \ref{thm:High_order_nl_bound1}.
+Applying twice Lemma \ref{thm:High_order_nl_bound1}, that is, taking
+    \[nl_{r-1}(D_{\alpha}f) \ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\beta\in\F_2^n}nl_{r-2}(D_{\beta}D_{\alpha}f)},\]
+    into the right-hand side of the following inequality
+    \[nl_r(f) \ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\alpha\in\F_2^n}nl_{r-1}(D_{\alpha}f)}.\]
+    Then we can obtain a relation between the $r$-th order nonlinearity of $f$ and the $(r-2)$-th order nonlinearities of all second-order derivatives of $f$:
+    \begin{equation}\label{eq:nl3_nlDaDbf}
+        nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha\in\F_{2^n}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl_{r-2}(D_{\beta}D_{\alpha}f)}}.
+    \end{equation}
+    Therefore, combining Theorem \ref{thm:nl_DaDbf} and Equation \eqref{eq:nl3_nlDaDbf} we can obtain the following theorem.
+%    consider $r=3$ in Inequality \eqref{eq:nl3_nlDaDbf} with Theorem \ref{thm:nl_DaDbf}, we can provide a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    \begin{theorem}\label{th:our_lower_bound}
+        Let $k\ge 3$ be an integer and $n=2k$. For the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent function $f(x,y)=\TRACE(\frac{\lambda x}{y})$ with $x,y\in\F_{2^k}$ and $\lambda\in\F_{2^k}^*$, we have:
+        \[nl_3(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{A},\]
+        % \approx 2^{n-1}-2^{\frac{7n}{8}+\frac{1}{2}}.
+        where
+        \begin{align*}
+            A=2^n+&(2^{\frac{n}{2}}-1)\sqrt{(2^{\frac{3n}{2}+1}-2^{n+1})\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor+5\cdot 2^{\frac{3n}{2}}-2^{n+2}}\\
+            +&(2^n-2^{\frac{n}{2}})\sqrt{2^{\frac{3n}{2}+2}-15\cdot 2^n-2^{\frac{n}{2}+2}+(2^{n+2}-2^{\frac{n}{2}+1})\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor+2^{n+2}L},
+        \end{align*}
+       in which $L$ is given in Lemma \ref{L:SumInv00}.
+    \end{theorem}
+    \begin{proof}
+        We have
+        \begin{align*}
+            nl_3(f)&\ge 2^{n-1}-\frac{1}{2}\sqrt{\sum_{\alpha\in\F_{2^n}}\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}}\\
+            &=2^{n-1}-\frac{1}{2}\sqrt{\left( \sum_{\alpha=(0,0)}+\sum_{\alpha=(\alpha_1,0)\in\F_{2^k}^*\times\{0\}}+\sum_{\substack{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*}} \right)\sqrt{2^{2n}-2\sum_{\beta\in\F_{2^n}} nl(D_{\beta}D_{\alpha}f)}}\\
+            &\ge 2^{n-1}-\frac{1}{2}\left[2^n+(2^{\frac{n}{2}}-1)\sqrt{2^{2n}-2(2^n-2^{\frac{n}{2}})(2^{n-1}-2^{\frac{n}{2}}\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor-2^{\frac{n}{2}+1})}\right.\\
+            &\qquad\qquad\qquad\left.+(2^n-2^{\frac{n}{2}})\sqrt{2^{2n}-2\left( (2^{n-1}-2^{\frac{n}{2}+1})(2^n-1)-(2^{n+1}-2^{\frac{n}{2}})\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor+2^{n+3}-2^{n+1}L \right)}\right]^{\frac{1}{2}}\\
+            &=2^{n-1}-\frac{1}{2}\sqrt{A},
+        \end{align*}
+        where the last but one equation comes from Theorem \ref{thm:nl_DaDbf}.
+  %      Then, we have
+%        \begin{align*}
+%            A=2^n+&(2^{\frac{n}{2}}-1)\sqrt{(2^{\frac{3n}{2}+1}-2^{n+1})\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor+5\cdot 2^{\frac{3n}{2}}-2^{n+2}}\\
+%            +&(2^n-2^{\frac{n}{2}})\sqrt{2^{\frac{3n}{2}+2}-15\cdot 2^n-2^{\frac{n}{2}+2}+(2^{n+2}-2^{\frac{n}{2}+1})\left\lfloor 2^{\frac{n}{4}+1}\right\rfloor+2^{n+2}L}.
+%        \end{align*}
+        This completes the proof.
+    \end{proof}
+    \begin{corollary}
+        Let $n\ge 6$ be an arbitrary even integer. The lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions in $n$ variables is 
+        approximately equal to $2^{n-1}-2^{\frac{7n}{8}-\frac{1}{2}}$.
+    \end{corollary}
+    \begin{corollary}
+        Let $n=2k\ge 6$ be an arbitrary even integer and $4\le r\le n-2$ be an arbitrary integer. 
+        Let $f$ be an $n$-variable  simplest $\mathcal{PS}_{ap}$ bent function. Then we have 
+        \[nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n+1}-2^{\frac{n}{2}+2}(2^{\frac{n}{2}}-1)nl_{r-1}(f)+2^{n+1}l_{r-1}},\]
+        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}-1)+2^{\frac{n}{2}-2 }}$ for $c\geq 2$.
+    \end{corollary}
+    \begin{proof}
+        In \cite{Carlet2008lowbound_NL_profile}, Carlet proved that
+        \[\forall\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*, nl_r(D_{\alpha}f)\ge 2nl_r(f)-2^{n-1}-2^{\frac{n}{2}},\]
+        and
+        \[\forall\alpha=(\alpha_1,0)\in\F_{2^k}\times\{0\}, nl_r(D_{\alpha}f)\ge 2^{n-1}-2^{\frac{n}{2}}(l_r+1),\]
+        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}-1)+2^{\frac{n}{2}-2 }}$.
+        Therefore, by Lemma \ref{thm:High_order_nl_bound1}, we have
+        \begin{align*}
+            nl_r(f)
+            \ge& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\alpha\in\F_{2^n}} nl_{r-1}(D_{\alpha}f)}\\
+            =& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}}nl_{r-1}(D_{\alpha}f)}\\
+            =& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*}nl_{r-1}(D_{\alpha}f)-2\sum_{\alpha=(\alpha_1,0)\in\F_{2^k}\times\{0\}}nl_{r-1}(D_{\alpha}f)} \\
+            \ge& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*}\left(2nl_{r-1}(f)-2^{n-1}-2^{\frac{n}{2}}\right)-2\sum_{\alpha=(\alpha_1,0)\in\F_{2^k}\times\{0\}}\left(2^{n-1}-2^{\frac{n}{2}}(l_{r-1}+1)\right)}\\
+            =& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2^{k+1}(2^k-1)\left(2nl_{r-1}(f)-2^{n-1}-2^{\frac{n}{2}}\right)-2^{k+1}\left(2^{n-1}-2^{\frac{n}{2}}(l_{r-1}+1)\right)} \\
+            =& 2^{n-1}-\frac{1}{2}\sqrt{2^{2n+1}-2^{\frac{n}{2}+2}(2^{\frac{n}{2}}-1)nl_{r-1}(f)+2^{n+1}l_{r-1}}.
+        \end{align*}
+        This completes the proof.
+    \end{proof}
+    
+    \subsection{Comparison}
+    In this subsection, we will compare our lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions with two lower bounds in \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon}.
+
+    The three lower bounds on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions 
+    are all derived by Lemma \ref{thm:High_order_nl_bound1}.
+    This implies the three lower bounds are dependent on nonlinearities of all second-order derivatives.
+    Note that we have obtained better nonlinearities of all second-order derivatives in this paper compared to those in \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon}.  
+    Particularly in \hyperref[case_2]{Case 2} and \hyperref[case_3]{Case 3}, we have  
+    % when both \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}} hold, 
+     $nl(D_{\beta}D_{\alpha})(f)=2^{n-1}-2^{\frac{n}{2}+2}$ 
+    %  when either \hyperref[item_a]{\textsf{Condition A}} or \hyperref[item_b]{\textsf{Condition B}} holds, 
+    and $nl(D_{\beta}D_{\alpha})(f)=2^{n-1}-2^{\frac{n}{2}+1}$, respectively.
+    % Compared to , 
+    Our results for nonlinearities of the second-order derivatives are much better than the ones in \cite{Carlet2011NL_Profile_Dillon}, where $nl(D_{\beta}D_{\alpha})(f)\ge 2^{n-1}-\sqrt{2^n+(2^{n+2}+2^{\frac{3n}{4}+1}+2^{\frac{n}{2}+1})(2^{\frac{n}{2}}-1)}-2^{\frac{n}{2}}$ for both \hyperref[case_2]{Cases 2} and \hyperref[case_3]{3}.
+    Therefore, our lower bound is better than the other two.
+
+    % Note that lower bounds \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon} rely on the imprecise nonlinearities of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions deduced from some inequalities.
+    % In contrast, we are able to determine the nonlinearity of all second-order derivatives of the simplest $\mathcal{PS}_{ap}$ bent functions, except the trivial cases for which only a lower bound on the nonlinearities of the second-order derivatives can be derived.
+    % Fortunately, compared with the number of nontrivial cases, the number of the trivial cases is negligible.
+    % This means our lower bound is almost determined by those nontrivial cases.
+    % That means our lower bound almost relies on the precise nonlinearities of the second-order derivatives.
+    \newcommand{\rb}[1]{\raisebox{1.5ex}[0pt]{#1}}
+    We compare in Table \ref{table:MyTableLabel} our lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions with the other two lower bounds in \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon} for even $n$ ranging from $6$ to $26$.
+    It can be seen that our lower bound on the third-order nonlinearity is always better than the other two,
+    and when $6\le n\le 18$, our lower bound is significantly better.
+    \begin{table} 
+        \centering
+        \caption{Comparison of lower bounds on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions}
+        \begin{threeparttable}
+            \begin{tabular}{|c|c|c|c|c|}
+                \hline
+                        & Tang-Carlet-Tang bound      & Carlet bound                            & Our bound& \\
+                \rb{$n$}& in \cite{TangCT2013NL_2bent}& in \cite{Carlet2011NL_Profile_Dillon} & in Theorem \ref{th:our_lower_bound}     &\rb{Difference\tnote{1}}   \\
+                \hline
+                $6  $ &  $ -           $       & $ -        $     & $ 1        $     & $  -       $ \\  \hline
+                $8  $ &  $ -           $       & $ -        $     & $ 26       $     & $  -       $ \\  \hline
+                $10 $ &  $ 55          $       & $ 63       $     & $ 186      $     & $  123     $ \\  \hline
+                $12 $ &  $ 533         $       & $ 553      $     & $ 932      $     & $  379     $ \\  \hline
+                $14 $ &  $ 3156        $       & $ 3205     $     & $ 4372     $     & $  1167    $ \\  \hline
+                $16 $ &  $ 15985       $       & $ 16103    $     & $ 19986    $     & $  3883    $ \\  \hline
+                $18 $ &  $ 75003       $       & $ 75292    $     & $ 89028    $     & $  13736   $ \\  \hline
+                $20 $ &  $ 336634      $       & $ 337330   $     & $ 384926   $     & $  47596   $ \\  \hline
+                $22 $ &  $ 1468219     $       & $ 1469893  $     & $ 1628771  $     & $  158878  $ \\  \hline
+                $24 $ &  $ 6278535     $       & $ 6282551  $     & $ 6807315  $     & $  524764  $ \\  \hline
+                $26 $ &  $ 26469867    $       & $ 26479472 $     & $ 28238083 $     & $  1758611 $ \\  \hline
+            \end{tabular}
+            \begin{tablenotes}
+                \footnotesize
+                % \item[$\star$] All concrete values of lower bounds in this table have been rounded up to the nearest integer.
+                \item[1] The values in the table are the difference of our bound's values with  Carlet bound's values.
+            \end{tablenotes}
+        \end{threeparttable}
+        \label{table:MyTableLabel}
+    \end{table}
+
+
+\section{Conclusion}
+    The ability of symmetric-key encryption to withstand some known attacks, such as algebraic attacks and low-degree approximation attacks, can be evaluated by the higher-order nonlinearity of Boolean functions used in symmetric-key encryption.
+    % The higher-order nonlinearity of Boolean functions measure the ability of cryptosystems to resist some attacks like algebraic attacks and low-degree approximation.
+    Consequently, it is crucial that Boolean functions employed in the design of symmetric-key encryption meet this cryptographic criterion.
+    In this paper, we derived a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
+    Our lower bound improved the previous two lower bounds in earlier works \cite{TangCT2013NL_2bent,Carlet2011NL_Profile_Dillon}.
+    We hope that the result obtained in this paper will play an important role with respect to countermeasures against these known attacks.
+
+\bibliographystyle{plain}
+\bibliography{mybib}
+
+\end{document}
+
+
+
+% for i in [1..2^5] do
+%     inputvector:=Intseq(i-1,2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~input,(eltvector));
+% end for;
+
+% for i in [1..2^n] do
+%     inputvector:=Intseq(sbox[i],2,n);
+%     eltvector:=&+[inputvector[j]*v^(j-1):j in [1..n]];
+%     Append(~output,(eltvector));
+% end for;
+
+% function newsbox(x)
+%     if x eq 0 then
+%         return 0;
+%     end if;
+%     for i in [1..1024] do
+%         if x eq input[i] then
+%             return output[i];
+%         end if;
+%     end for;
+% end function;
+
+
+
+% G:=OrthoTest(newsbox,n);
+% ddtG:=DDTexe(G,n);
+
+
+
+%   \begin{tikzpicture}[
+%     node distance = 5ex,
+%     scale = 3,
+%     thick,
+%     > = latex,
+%     % change the
+%     z = {(0.35, -0.4)},
+%     edge/.style = {draw, thick, -, black},
+%     sinal/.style = {inner sep = 1pt, thin, opacity = 0.4,
+%       fill = blue, circle, text opacity = 1},
+%     mtx/.style = {
+%   %     matrix of math nodes,
+%       matrix of nodes,
+%       every node/.style = {
+%         anchor = base,
+%         text width = 2em,
+%         text height = 1em,
+%         align = center,
+%       }
+%     },
+%     ]
+
+%     \def\dist{0.1}
+%     \def\cube{
+%         % Vertices. (A,B,C), A x轴  B z轴  C y轴
+
+
+%         % \node[left] (v0) at (0,0,0) {$ A $};
+%         % note that command above can construct nodes and label them at the same time,
+%         % but sometimes you don't need the text,
+%         % so I just construct the coordinates and then label coordinates
+%         \coordinate (v0) at (0, 0, 0)  ;
+%         \coordinate (v1) at (0, 1, 0)  ;
+%         \coordinate (v2) at (1, 0, 0)  ;
+%         \coordinate (v3) at (1, 1, 0)  ;
+%         \coordinate (v4) at (0, 0, 1)  ;
+%         \coordinate (v5) at (0, 1, 1)  ;
+%         \coordinate (v6) at (1, 0, 1)  ;
+%         \coordinate (v7) at (1, 1, 1)  ;
+%         \coordinate (v8) at (0, 2, 0)  ;
+%         \coordinate (v9) at (1, 2, 0)  ;
+%         \coordinate (v10) at (0, 2, 1) ;
+%         \coordinate (v11) at (1, 2, 1) ;
+%     }
+%     \begin{scope}[opacity=1] % opacity is the transparent
+%         \cube{};
+%         % labeling verticals with text A B C at left\right\below\above\below left\below right\above left\above right
+%         \node[left] at (v0) {$ A $};
+%         \node[left] at (v1) {$ B $};
+%         \node[right] at (v2) {$ C $};
+%         \node[above right] at (v3) {$ D $};
+%         \node[left] at (v4) {$ E $};
+%         \node[below left] at (v5) {$ F $};
+%         \node[right] at (v6) {$ G $};
+%         \node[right] at (v7) {$ H $};
+%         \node[left] at (v8) {$ I $};
+%         \node[above right] at (v9) {$ J $};
+%         \node[below left] at (v10) {$ K $};
+%         \node[right] at (v11) {$ L $};
+%         % Edges with some differential: alpha gamma beta theta
+%         % arrow with direction from v1 to v0
+
+%         \draw[->] (v2) -- (v3);
+%         \draw[->] (v3) -- (v9);
+%         \draw[->] (v6) -- (v7);
+%         \draw[->] (v7) -- (v11);
+%         % dotted line from v1 to v2 and the middle of line labeled is gamma
+%         \draw[dashed] (v0) -- node[fill = white] {$ \gamma $} (v2) ;
+%         \draw[dashed] (v4) -- node[fill = white] {$ \gamma $} (v6);
+%         \draw[dashed] (v1) -- node[fill = white] {$ \beta $} (v5) -- node[fill = white] {$ \theta $} (v7) -- node[fill = white] {$ \beta $}(v3) -- node[fill = white] {$ \theta $} (v1);
+%         \draw[dashed] (v8) -- node[fill = white] {$ \alpha $}(v10);
+%         \draw[dashed] (v11) -- node[fill = white] {$ \alpha $}(v9);
+%     \end{scope}
+
+%     \begin{scope}[opacity=0.2]
+%         % the pics in this part are transparent 0.2,
+%         % if not want this condition, delete the commands.
+%         \draw[<-] (v0) -- (v1);
+%         \draw[<-] (v1) -- (v8);
+%         \draw[<-] (v4) -- (v5);
+%         \draw[<-] (v5) -- (v10);
+%     \end{scope}
+
+%         % \foreach \i in {0, 1, ..., 11}{ \draw[fill = black] (v\i) circle (0.1pt); }
+%         % } % boomerang attack model
+
+%         \begin{scope}[]
+%             %
+%             \coordinate (E0)  at (2, 0-0.4, 0);
+%             \coordinate (E0L) at (2-0.3, 0-0.4, 0);
+%             \coordinate (E0R) at (2+0.15, 0-0.4, 0);
+%             \coordinate (E1)  at (2, 1-0.4, 0);
+%             \coordinate (E1L) at (2-0.3, 1-0.4, 0);
+%             \coordinate (E1R) at (2+0.15, 1-0.4, 0);
+%             \coordinate (E2)  at (2, 2-0.4, 0);
+%             \coordinate (E2L) at (2-0.3, 2-0.4, 0);
+%             \coordinate (E2R) at (2+0.15, 2-0.4, 0);
+%             \draw[->] (E0) -- node[right] {$ E_1^{-1} $} (E1);
+%             \draw[->] (E2) -- node[right] {$ E_0 $} (E1);
+%             % dotted line with transparent
+%             \draw[dashed,opacity=.5] (E0R) -- (E0) -- (E0L);
+%             \draw[dashed,opacity=.5] (E1R) -- (E1) -- (E1L);
+%             \draw[dashed,opacity=.5] (E2R) -- (E2) -- (E2L);
+%         % \foreach \i in {0, 1, ..., 11}{
+%         %   \node at (v\i) {\i};
+%         % }
+%       \end{scope}
+
+%     \end{tikzpicture}%
+
+F<v>:=GF(2,8);
+G:=[x:x in F|x^8 + x^4 + x^3 + x^2 + 1 eq 0];
+for g in G do
+    g:=v;
+    // sbox=[0, 152, 136, 56, 65, 217, 149, 189, 142, 95, 147, 214, 10, 103, 171, 213, 185, 4, 3, 20, 93, 54, 199, 202, 198, 116, 227, 33, 124, 181, 56, 196, 106, 5, 53, 40, 169, 194, 117, 56, 58, 122, 82, 103, 60, 9, 178, 182, 111, 194, 132, 67, 83, 248, 191, 27, 228, 122, 186, 157, 232, 61, 96, 24, 26, 6, 145, 122, 45, 76, 121, 25, 204, 64, 58, 52, 142, 177, 11, 37, 254, 244, 188, 143, 2, 206, 39, 59, 105, 140, 48, 101, 28, 161, 241, 228, 182, 193, 124, 211, 65, 13, 0, 116, 55, 254, 4, 9, 218, 12, 100, 24, 233, 116, 140, 54, 224, 53, 158, 51, 153, 73, 222, 88, 22, 68, 45, 182, 165, 33, 134, 12, 150, 118, 162, 210, 49, 123, 233, 9, 154, 56, 207, 176, 203, 54, 164, 210, 218, 159, 66, 222, 89, 139, 220, 22, 143, 187, 37, 83, 142, 112, 152, 202, 179, 251, 33, 15, 114, 126, 132, 163, 158, 222, 216, 110, 245, 153, 76, 173, 197, 226, 232, 254, 45, 109, 110, 55, 247, 95, 56, 107, 7, 102, 152, 14, 29, 231, 100, 169, 255, 145, 63, 22, 236, 121, 200, 154, 38, 237, 17, 76, 223, 46, 7, 92, 60, 6, 110, 38, 222, 149, 45, 69, 32, 242, 189, 200, 151, 193, 38, 176, 195, 88, 100, 204, 28, 232, 181, 193, 66, 146, 67, 137, 8, 86, 47, 216, 111, 218, 174, 6, 172, 113, 104, 103 ];
+
+    nonlinearity v:=v^24
+    f:=func<x|x^3 + g^60*x^5 + g^191*x^6 + g^198*x^9 + g^232*x^10 + g^120*x^12+ g^54*x^17 + g^64*x^18 + g^159*x^20 + g^144*x^24 + g^248*x^33+ g^203*x^34 + g^32*x^36 + g^18*x^40 + g^216*x^48 + g^78*x^65+g^46*x^66 + g^91*x^68 + g^27*x^72 + g^70*x^80 + g^52*x^96+ g^224*x^129 + g^18*x^130 + g^197*x^136 + g^253*x^144 + x^160>;
+    for b in F do
+        if b eq 0 then continue; end if;
+        Walsh_spectra:=[];
+        for a in F do
+            Append(~Walsh_spectra,Abs(&+[(-1)^(Integers()!Trace(b*f(x)+a*x)):x in F]));
+        end for;
+        Set(Walsh_spectra);
+        //if Max(Walsh_spectra) eq 128 then
+        //    print "b=",b;
+        //end if;
+    end for;
+end for;
+
+F<v>:=GF(2,8);
+g:=v;
+for i in [10..255] do
+    i:=24;
+    f:=func<x|Trace(v^i*(x^3 + g^60*x^5 + g^191*x^6 + g^198*x^9 + g^232*x^10 + g^120*x^12+ g^54*x^17 + g^64*x^18 + g^159*x^20 + g^144*x^24 + g^248*x^33+ g^203*x^34 + g^32*x^36 + g^18*x^40 + g^216*x^48 + g^78*x^65+g^46*x^66 + g^91*x^68 + g^27*x^72 + g^70*x^80 + g^52*x^96+ g^224*x^129 + g^18*x^130 + g^197*x^136 + g^253*x^144 + x^160))>;
+    if Max([&+[(-1)^(Integers()!(f(x)+Trace(a*x))):x in F]:a in F]) eq 128 then
+    wf:=[&+[(-1)^(Integers()!(f(x)+Trace(a*x))):x in F]:a in F];
+    i;
+    end if;
+end for;
+
+subspace_set:={};
+for a,b in GF(2,4) do
+    if a eq b then continue; end if;
+    flag:=0;
+    for x in F do
+        if f(x)+f(x+a)+f(x+b)+f(x+a+b) ne 0 then
+            flag:=1;
+            break;
+        end if;
+    end for;
+    if flag eq 1 then
+        print "not a subspace";
+        break;
+    end if;
+end for;
+
+
+
+
+% for g=v, we have b=v^24 s.t. bf is an affine function.
+======================================================================================
+
+diff_spec:=[
+    [ 0, 2, 6, 595386, 416361, 35805 ],
+    [ 0, 2, 4, 6, 8, 12, 713031, 211761, 92070, 15345, 5115, 10230 ],
+    [ 0, 2, 4, 6, 8, 629331, 330336, 72540, 13020, 2325 ],
+    [ 0, 2, 4, 6, 8, 628401, 329871, 75330, 12555, 1395 ],
+    [ 0, 2, 4, 6, 8, 10, 633636, 322701, 75045, 13980, 1905, 285 ],
+    [ 0, 2, 4, 6, 8, 10, 12, 630216, 327081, 76215, 12150, 1665, 195, 30 ],
+    [ 0, 2, 4, 6, 8, 10, 635314, 317626, 80290, 11780, 2480, 62 ],
+    [ 0, 2, 4, 6, 8, 10, 631811, 322617, 80197, 11098, 1674, 155 ],
+    [ 0, 2, 4, 6, 8, 10, 633733, 320695, 78399, 12803, 1736, 186 ],
+    [ 0, 2, 4, 6, 8, 10, 641514, 307706, 81375, 14880, 1705, 372 ],
+    [ 0, 2, 4, 6, 8, 10, 634260, 321036, 76353, 13857, 1767, 279 ],
+    [ 0, 2, 4, 6, 8, 10, 12, 14, 630664, 324942, 78647, 11842, 1364, 31, 31, 31 ],
+    [ 0, 2, 4, 6, 8, 22, 636306, 315018, 82335, 11715, 2145, 33 ],
+    [ 0, 2, 4, 6, 8, 637701, 313131, 80910, 14415, 1395 ],
+    [ 0, 2, 4, 6, 8, 626541, 330336, 79515, 10230, 930 ],
+    [ 0, 2, 4, 6, 8, 10, 634291, 318401, 81995, 10385, 2170, 310 ],
+    [ 0, 2, 4, 6, 8, 640491, 304296, 89280, 13020, 465 ],
+    [ 0, 2, 4, 6, 8, 10, 12, 632431, 322958, 77562, 13020, 1333, 186, 62 ],
+    [ 0, 2, 4, 6, 8, 624216, 334986, 76725, 11160, 465 ],
+    [ 0, 2, 4, 6, 8, 10, 639045, 311861, 80410, 13860, 2365, 11 ]
+];
+
+=====================================================================================
+// we want to find 10 bit quadratic APN, and test whether they are ccz-eq to some APN classes or instances
+// f(x)=x^d+x^i+beta*x^j is a trinomial, it ccz eq to x^d +alpha*x^i+beta*x^j, so we confirm that no new APN instance for trinomial.
+// d = 5,6,9,10,12,17,33,34,40,48,65,66,68,72,80,96,129,130,132,136,144,160,192,257,258,260,264, 272, 288, 320, 384, 513, 514, 516, 520, 528, 544, 576, 640, 768 no APN instance
+
+// test x^d + x^i + beta x^j, exclude the case of EA s.t. L2 . F . L1
+n:=10;
+Z:=Integers();
+F<v>:=GF(2,n);
+F5<w>:=GF(2,n div 2);
+Fstar:=[v^i:i in [0..2^n-2]];
+P<x>:=PolynomialRing(F);
+index_wt_2:={2^i+2^j:i,j in [0..n-1]|i ne j};
+
+load "DiffSpecOdExe.m";
+for d in D do
+    for i,j in index_wt_2 do
+        if i eq d or j eq d or i eq j then continue; end if;
+        //exclude the case of L2=a x^2i + b x^2j + x and F = x^3
+        if i in {2^k*3:k in [0..n-1]} and j in {2^k*3:k in [0..n-1]} then continue; end if;
+        if i in {2^k*3^2:k in [0..n-1]} and j in {2^k*3^2:k in [0..n-1]} then continue; end if;
+        ccz_coef_set:={};
+        i,j;
+        for beta in Fstar do
+            if #{x^(2^i):x in ccz_coef_set,i in [1..n-1]} eq 2^n-1 then break; end if;
+            // exclude the case of L2=2^{n-i},L1=2^i
+            if beta in {x^(2^i):x in ccz_coef_set,i in [1..n-1]} then continue; end if;
+            f:=x^d+x^i+beta*x^j;
+            if IsAPN(f) eq true then
+                print "f is APN and parameters [i,j,beta] are:";
+                i,j,beta;
+                ddtS:=DiffSpecOd(func<x|x^d+x^i+beta*x^j>,n);
+                ddtS;
+                if ddtS notin diff_spec then
+                    print "new diff_spec_od,i=",i;
+                    Write("APN_10bit_new_instance.txt",[i,j]);
+                    Write("APN_10bit_new_instance.txt",beta);
+                else
+                    print "existing instance!";
+                    // exclude the case of L2=a^d x,L1=x/a
+                    Include(~ccz_coef_set,beta);
+                end if;
+            else
+                //print "not APN";
+                Include(~ccz_coef_set,beta);
+            end if;
+        end for;
+    end for;
+end for;
+
+
+//another f(x) is a quadrinomial, f = x^9 + a*Tr_2^n(b*x^i)
+
+n:=10;
+d:=9;
+Z:=Integers();
+F<v>:=GF(2,n);
+Fstar:=[v^i:i in [0..2^n-2]];
+P<x>:=PolynomialRing(F);
+index_wt_2:={2^i+2^j:i,j in [0..n-1]|i ne j};
+
+for i in index_wt_2 do
+    if i in [2^j*d:j in [0..n-1]] then continue; end if;
+    i;
+    ccz_coef_set:={};
+    for beta in Fstar do
+        if #{x^(2^i):x in ccz_coef_set,i in [1..n-1]} eq 2^n-1 then break; end if;
+        // exclude the case of L2=2^{n-i},L1=2^i
+        if beta in {x^(2^i):x in ccz_coef_set,i in [1..n-1]} then continue; end if;
+        f:=func<x|x^d+ v^2*(&+[(beta*x^i)^((2^2)^(j-1)):j in [1..n div 2]])>;
+        if IsAPN(f,n) eq true then
+            print "f is APN and parameters [i,j,beta] are:";
+            i,beta;
+            ddtS:=DiffSpecOd(f,n);
+            ddtS;
+            if ddtS notin diff_spec then
+                print "new diff_spec_od,i=",i,"beta=",beta;
+                Write("APN_10bit_new_instance.txt",i);
+                Write("APN_10bit_new_instance.txt",beta);
+            else
+                print "existing instance!";
+                // exclude the case of L2=a^d x,L1=x/a
+                Include(~ccz_coef_set,beta);
+            end if;
+        else
+            //print "not APN";
+            Include(~ccz_coef_set,beta);
+        end if;
+    end for;
+end for;
+
+
+
+=====================================================================================
+
+
+
+function Sbox2ff(inputsbox)
+    Z:=Integers();
+    n:=Ilog2(#inputsbox);
+    F<v>:=GF(2,n);
+    list:=[];
+    for i in [0..2^n-2] do
+        Append(~list,&+[Intseq(inputsbox[&+[Z!Eltseq(v^i)[j]*2^(j-1):j in [1..n]]+1],2,n)[k]*v^(k-1):k in [1..n]]);
+    end for;
+    Append(~list,F!0);
+    function ff_fromsbox(x)
+        return (x eq 0) select F!0 else list[Log(x)+1];
+    end function;
+    return ff_fromsbox;
+end function;
+
+
+======================================================================================
+
+function IsAPN(f,variables)
+    n:=variables;
+    F<al>:=GF(2,n);
+    for i in [0..2^n-2] do
+        a:=al^i;
+        set_b:={}; set_a:={};
+        for y in F do
+            if not y in set_a then
+                b:=f(y+a)-f(y);
+                if b notin set_b then
+                    Include(~set_b,b);
+                else
+                    return false;
+                end if;
+                Include(~set_a,y+a);
+            end if;
+        end for;
+    end for;
+    return true;
+end function;
+
+
+function IsAPN(f)
+    P:=Parent(f);
+    F<al>:=BaseRing(P);
+    n:=Degree(F);
+    for i in [0..2^n-2] do
+    a:=al^i;
+    set_b:={}; set_a:={};
+    for y in F do if not y in set_a then
+    b:=Evaluate(f,y+a)-Evaluate(f,y);
+    if b notin set_b then Include(~set_b,b);
+    else
+    return false; end if;
+    Include(~set_a,y+a); end if;
+    end for; end for;
+    return true;
+end function;
+
+
+Z:=Integers();
+F<v>:=GF(2,8);
+[&+[Z!Eltseq(x)[i]*2^(i-1):i in [1..8]]:x in F]; 

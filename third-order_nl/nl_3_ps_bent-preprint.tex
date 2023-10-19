@@ -106,7 +106,7 @@ our lower bound is much better than these two ones.
     The higher-order nonlinearity of Boolean functions is also related to the Gowers norm in theoretical computer science, since the correlation between a
     Boolean function $f$ and its closest polynomial of degree $d$ is at most the $(d+1)$-th Gowers norm of $f$ \cite{BhattacharyyaKSSZ2010gowers}.
 
-    As mentioned in ABSTRACT, 
+    As mentioned in Abstract, 
     in order to withstand several known attacks, Boolean functions employed in symmetric-key encryption should have high higher-order nonlinearity.
     % Boolean functions used in symmetric-key encryption should have high higher-order nonlinearity to resist several known attacks.
     Till date, however, 
@@ -130,7 +130,7 @@ our lower bound is much better than these two ones.
     Fortunately, Carlet \cite{Carlet2008lowbound_NL_profile} gave two lemmas about lower bounds on the $r$-th order nonlinearity of a given Boolean function.
     Based on those two lemmas, he derived lower bounds on the $r$-th order nonlinearity of Maiorana-McFarland, Welch, Kasami and inverse functions.
     Owing to Carlet's lemmas for efficiently lower bounding the $r$-th order nonlinearity, many authors have obtained lower bounds on
-    the $r$-th order nonlinearity of different functions, mostly for $r=2,3$, see for \cite{Carlet2011NL_Profile_Dillon,GangopadhyayST2010NL_2,GaoT2017NL_2_MM,GodeG2010NL_3Kasami,Liu2023NL_2,SihemKJ2020NL_2cubic,SarkarG2009NL_2MM,Singh2014NL_3_biquadratic,SunW2009NL_2,SunW2011NL_2,TangCT2013NL_2bent,TangYZZ2020NL_2bent,YanT2020NL_2}.
+    the $r$-th order nonlinearity of different functions, mostly for $r=2,3$, see for \cite{Carlet2011NL_Profile_Dillon,GangopadhyayST2010NL_2,GaoT2017NL_2_MM,GodeG2010NL_3Kasami,Liu2023NL_2,SihemKJ2020NL_2cubic,Singh2014NL_3_biquadratic,SunW2009NL_2,SunW2011NL_2,TangCT2013NL_2bent,TangYZZ2020NL_2bent,YanT2020NL_2}.
 
     Bent functions, which achieve maximum possible nonlinearity in even number of variables,
     have attracted a lot of researches due to their best resistance against fast correlation attacks \cite{MS1988fast_correlation_attack} and best affine approximation attacks \cite{DingXS1991book} in cryptography and relations to several mathematical objects, such as difference sets, strongly regular graphs and complementary sequences \cite{Carlet2020book}.
@@ -146,7 +146,7 @@ our lower bound is much better than these two ones.
     In order to achieve this objective, we only need to determine the nonlinearity of the second-order derivatives of the $n$-variable Boolean function $f(x,y)$ for all possible pairs $(\alpha,\beta)\in\F_{2^k}\times\F_{2^k}$, where $n=2k$ and $x,y\in\F_{2^k}$, according to Carlet's lemma.
     
     To determine the nonlinearity of $D_{\beta}D_{\alpha}f(x,y)$ with the pair $(\alpha,\beta)\in\F_{2^k}\times\F_{2^k}$, it is equivalent to find the maximal absolute values of the corresponding character sums with $(\mu,\nu)$ ranging over $\F_{2^k}\times\F_{2^k}$.
-    By simple algebraic geometry lemmas and some calculations, a lower bound on the nonlinearity of $D_{\beta}D_{\alpha}f(x,y)$ for all trivial pairs $(\alpha,\beta)$ is derived.
+    By Serre bound and some knowledge about algebraic curves, we can give an upper bound on the absolute value of a class of character sums, therefore a lower bound on the nonlinearity of $D_{\beta}D_{\alpha}f(x,y)$ for all trivial pairs $(\alpha,\beta)$ is  derived.
     While for the general pairs $(\alpha,\beta)$, we obtain the corresponding nonlinearity by determining the number of solutions for systems of trace functions.
     We derive then a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions.
     As a result,
@@ -206,7 +206,7 @@ our lower bound is much better than these two ones.
     vectors in $\F_2^N$ are within Hamming distance $\rho$ of some codewords (see more details in \cite{MS1977}).
     Thus, the maximum $r$-th order nonlinearity of all Boolean functions in $n$ variables equals the covering radius of $\mathcal{RM}(r,n)$, \emph{i.e.},
     \[\max_{f\in \mathcal{B}_n}nl_r(f)=\max_{f\in\mathcal{B}_n}d_H(f,\mathcal{RM}(r,n)).\]
-    \begin{definition}
+    \begin{definition}[\cite{Carlet2020book}]
         The $r$-th order nonlinearity of a Boolean function $f\in\mathcal{B}_n$ is defined as its minimum Hamming distance from $f$ to all $n$-variable Boolean functions of degree at most $r$
         \[nl_r(f)=\min_{g\in\mathcal{B}_n,\deg(g)\le r} d_H(f,g),\]
         where $d_H(f,g)$ denotes the Hamming distance between $f$ and $g$, i.e., $d_H(f,g)=\#\left\{ x\in\F_2^n : f(x)\ne g(x) \right\}$.
@@ -248,7 +248,7 @@ our lower bound is much better than these two ones.
     Given the truth table of an $n$-variable Boolean function, there exists an efficient divide-and-conquer algorithm for computing the Walsh spectrum with complexity $O(n2^n)$. 
     % There exists a simple divide-and-conquer butterfly algorithm with complexity $O(n2^n)$ to compute the Walsh spectrum of any $n$-variable Boolean function from its truth table.
     Hence, it is easy to compute the nonlinearity of a Boolean function from its truth table in a large number of variables (around $30$ variables in a personal computer).
-    However, as mentioned in INTRODUCTION, there is a limited amount of results on the higher-order nonlinearity of Boolean functions. 
+    However, as mentioned in Introduction, there is a limited amount of results on the higher-order nonlinearity of Boolean functions. 
     This is due to the difficulty of computing the higher-order nonlinearity, or even providing a tight lower bound, of a general Boolean function with a high algebraic degree.
     In 2008, Carlet showed in \cite{Carlet2008lowbound_NL_profile} that a lower bound on the $r$-th order nonlinearity of a Boolean function can be deduced from its all $(r-1)$th-order nonlinearities of the first-order derivatives of this Boolean function.
     Thus, to obtain a lower bound on the third-order nonlinearity of a Boolean function, we need to introduce the first-order and second-order derivatives of Boolean functions.
@@ -258,23 +258,57 @@ our lower bound is much better than these two ones.
     \end{definition}
     With the notions above, Carlet proposed the following lemma which can efficiently provide a lower bound on the $r$-th order nonlinearity of a given Boolean function,
     provided that the $(r-1)$-th order nonlinearities of all first-order derivatives of $f$ are known.
-    \begin{lemma}[\cite{Carlet2008lowbound_NL_profile}]\label{thm:High_order_nl_bound1}
+    \begin{lemma}[Proposition 3 of \cite{Carlet2008lowbound_NL_profile}]\label{thm:High_order_nl_bound1}
         Let $f$ be any Boolean function in $n$ variables, and let $0<r<n$ be an integer.
         We have
         \[nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n}-2\sum_{a\in\F_2^n}nl_{r-1}(D_af)}.\]
     \end{lemma}
 
     There is a class of character sums with polynomial arguments needed to be treated for proving the main result of this paper.
-    To this end, we need the following two lemmas about the existence of solutions of the quadratic polynomial over the finite field $\F_{2^n}$ and algebraic geometry (we refer the reader to the original book~\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes} for more details).
+    To this end, we need the following three lemmas about the existence of solutions of the quadratic polynomial over the finite field $\F_{2^n}$, the number of the genus of a function field and the Serre bound (we refer the reader to the original book~\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes} for more details).
     \begin{lemma}[\cite{Lidl1997FiniteFieldBook}]\label{lemma:hilbert90}
         Let $\F_{2^n}$ be the finite field of order $2^n$.
         Then $x^2+x=\alpha$ with $\alpha\in\F_{2^n}$ has a solution (actually two solutions) in $\F_{2^n}$, if and only if $\Tr_1^n(\alpha)=0$.
     \end{lemma}
-    \begin{lemma}[\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}]\label{L:genus_K_F}
+
+    Before introducing the other two lemmas about the genus of a function field and the Serre bound, we need the following basic knowledge refer to algebraic geometry. 
+
+    % If $\mathcal{C}$ is such a curve, then 
+    % we write $g(\mathcal{C})$  for the genus of $\mathcal{C}$. 
+    \begin{definition}[\cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}]
+        An algebraic function field $K/F$ of one variables over a field $F$ is an extension field $K\supseteq F$ such that $K$ is a finite algebraic extension of $F(x)$ for some elements $x\in K$ which is transcendental over $F$.
+    \end{definition}
+    For brevity we shall simply refer to $K/F$ as a function field.
+    A place $P$ of the function field $K/F$ is the maximal ideal of some valuation ring $\mathcal{O}$ of $K/F$ and $\deg(P):=\left[K:F\right]$ is called the degree of $P$. 
+    We write $g(K)$ for the genus of $K/F$ and $N(K)$ for the number of places of degree one of $K/F$.
+    % It will be convenient to replace the language of algebraic curves over finite fields by the equivalent language of global function fields, \emph{i.e.}, of algebraic function fields with finite constant fields.
+    % For an algebraic curve $\mathcal{C}$ over $\F_q$, the field $K$ of $\F_q$-rational functions on $\mathcal{C}$ is a function field with full constant field $\F_q$, that is, with $\F_q$ algebraically closed in $K$.
+    % We use the notation $K/\F_q$ to emphasize the fact that $\F_q$ is the full constant field of $K$.
+    With every function field $K/\F_q$ we can associate an algebraic curve $\mathcal{C}$ over $\F_q$. 
+    When we speak of an algebraic curve $\mathcal{C}$ over the finite field $\F_q$, we always mean a smooth, projective and absolutely irreducible algebraic curve defined over $\F_q$. 
+    A point of $\mathcal{C}$ is called $\F_q$-rational if it has has homogeneous coordinates which all belong to $\F_q$.
+    Let $N(\mathcal{C})$ denote the number of $\F_q$-rational points of $\mathcal{C}$. 
+    In the correspondence between the curve $\mathcal{C}$ and its function field $K/\F_q$, 
+    the $\F_q$-rational points of $\mathcal{C}$ can be identified with the places of degree one of $K/\F_q$, so that $N(\mathcal{C}) = N(K)$ (more details see for instance \cite{Serre1982serrebound}). 
+    
+    % the closed points of $\mathcal{C}$ can be identified with the places of $K$ and 
+    % Furthermore, we have $g(\mathcal{C})=g(K)$.  
+    \begin{lemma}[Corollary 3.11.4 of \cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}]\label{L:genus_K_F}
         Let $K=F(X,Y)$, where $X,Y$ are transcendentals over $F$.
         Then the genus $g$ of the function field $K/F$ satisfies
         \[g\le ([K : F(X)] - 1)([K : F(Y)] - 1).\]
     \end{lemma}
+
+    In the last of this section, we briefly present a well-known bound, the Serre bound, which is useful in deriving an upper bound on the absolute value of a class of character sums.
+    It provides a bound for the number of places of degree one of a function field $K/F$ in terms of its genus and the ground field size $|F|$.
+    \begin{lemma}[Theorem 5.3.1 of \cite{Stichtenoth2008book_algebraicfunctionfieldsandcodes}]\label{L:Serrebound}
+        For a function field $K/\F_q$ of genus $g$, the number $N(K)$ of places of degree one is bounded by 
+        \[\lvert N(K)-(q+1)\rvert\le g\lfloor 2q^{1/2}\rfloor,\]
+        where $\lfloor x\rfloor$ denotes the greatest integer not exceeding the real number $x$.
+    \end{lemma}
+
+
+     
 
 \section{A lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions}
 
@@ -334,7 +368,7 @@ In this paper, $f$ is called a simplest $\mathcal{PS}_{ap}$ bent function.
     Besides, for any $v\in\F_{2^k}^*$ we also define $I_v(x)=\Tr_1^k(vx^{-1})$.
     Regarding the multiplicative inverse function, the following two lemmas will be used in the sequel.
 
-    \begin{lemma}[\cite{TangMM2022inversefunction}]\label{L:SumInv00}
+    \begin{lemma}[Lemma 12 of \cite{TangMM2022inversefunction}]\label{L:SumInv00}
         Let $k\geq 3$ be an arbitrary integer.
         We define
         $$L=\#\left\{c\in\F_{2^k}  :  \mathrm{Tr}_1^k\left(\frac{1}{c^2+c+1}\right)=\mathrm{Tr}_1^k\left(\frac{c^2}{c^2+c+1}\right)=0\right\}.$$
@@ -352,31 +386,32 @@ In this paper, $f$ is called a simplest $\mathcal{PS}_{ap}$ bent function.
         \[\# U_{F_{\lambda}}(a,b,\mu) = \left\{
             \begin{alignedat}{2}
                 &2^k,&&\text{ if }(a,b)\in M\text{ and }\mu = 0,\\
-                &8,&&\text{ if both two \textsf{Conditions~A}}\text{ and~\textsf{B}}\text{ hold,}\\
-                &4,&&\text{ if either \textsf{Condition~A}}\text{ or~\textsf{Condition B}} \text{ holds,}\\
+                &8,&&\text{ if both two Conditions~A}\text{ and~B}\text{ hold,}\\
+                &4,&&\text{ if either Condition~A}\text{ or Condition B} \text{ holds,}\\
                 &0,&&\text{ otherwise},
             \end{alignedat}\right.\]
         where $M=\left\{ (x,x):x\in\F_{2^k}^* \right\}\cup\left\{ (x,0):x\in\F_{2^k} \right\}\cup\left\{ (0,y):y\in\F_{2^k}^* \right\}$, and the two conditions are listed as follows:
 
-        \noindent $-$  \textsf{Condition A}. $a\ne b\in\F_{2^k}^*$ and $\lambda(a^2+b^2+ab)+\mu(a^2b+ab^2)=0$.\label{item_a}
+        \noindent $-$  Condition A: $a\ne b\in\F_{2^k}^*$ and $\lambda(a^2+b^2+ab)+\mu(a^2b+ab^2)=0$.\label{item_a}
 
-        \noindent $-$  \textsf{Condition B}. $a\ne b\in\F_{2^k}^*$, $\mu\ne 0$, $\TRACE\left(\frac{\lambda a}{\mu b(a+b)}\right)=0$ and $\TRACE\left(\frac{\lambda b}{\mu a(a+b)}\right)=0$.\label{item_b}
+        \noindent $-$  Condition B: $a\ne b\in\F_{2^k}^*$, $\mu\ne 0$, $\TRACE\left(\frac{\lambda a}{\mu b(a+b)}\right)=0$ and $\TRACE\left(\frac{\lambda b}{\mu a(a+b)}\right)=0$.\label{item_b}
 
     \end{lemma}
     \begin{proof}
-        The proof is analogue to the proof of Lemma 13 in \cite{TangMM2022inversefunction} and we omit it.
+        For any fixed $\lambda\in\F_{2^k}^*$, we have $U_{F_{\lambda}}(a,b,\mu)=U_{F_1}(a,b,\mu/\lambda)=\left\{ x\in\F_{2^k} : \frac{1}{x}+\frac{1}{x+a}+\frac{1}{x+b}+\frac{1}{x+a+b}=\frac{\mu}{\lambda} \right\}$.
+        And the rest of the proof is the same as the proof of Lemma 13 in \cite{TangMM2022inversefunction} if we treat $\mu/\lambda$ as an entry, so we omit it. 
     \end{proof}
     \begin{remark}
-        Note that if \hyperref[item_a]{\textsf{Condition A}} holds, we have $\{0,a,b,a+b\}\subseteq U_{F_{\lambda} }(a,b,\mu)$.
-        If \hyperref[item_b]{\textsf{Condition B}} holds, we have $\{y_0,y_0+a,y_0+b,y_0+a+b\}\subseteq U_{F_{\lambda}}(a,b,\mu)$ where $y_0\notin\{0,a,b,a+b\}$.
+        Note that if \hyperref[item_a]{Condition A} holds, we have $\{0,a,b,a+b\}\subseteq U_{F_{\lambda} }(a,b,\mu)$.
+        If \hyperref[item_b]{Condition B} holds, we have $\{y_0,y_0+a,y_0+b,y_0+a+b\}\subseteq U_{F_{\lambda}}(a,b,\mu)$ where $y_0\notin\{0,a,b,a+b\}$.
     \end{remark}
     \begin{remark}
-        For any $a\in\F_{2^k}^*$, it follows from \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}} that there exist $L-4$ distinct values of $b$
+        For any $a\in\F_{2^k}^*$, it follows from \hyperref[item_a]{Conditions A} and \hyperref[item_b]{B} that there exist $L-4$ distinct values of $b$
         such that $\#U_{F_{\lambda}}(a,b,\mu)=8$ for some fixed $\lambda\in\F_{2^k}^*$ and $\mu\in\F_{2^k}$,
         where $L$ is given by Lemma~\ref{L:SumInv00}.
        Indeed, note that $a,b$ be two distinct elements of $\F_{2^k}^*$ and $\mu\ne 0$,
         we have $\mu(a^2b+ab^2)\ne 0$.
-        In \hyperref[item_a]{\textsf{Condition A}}, this indicates $\lambda(a^2+b^2+ab)\ne 0$,
+        In \hyperref[item_a]{Condition A}, this indicates $\lambda(a^2+b^2+ab)\ne 0$,
         which implies $\frac{b}{a}\notin\F_4$.
         So assume $\mu=\frac{\lambda(a^2+b^2+ab)}{a^2b+ab^2}$,
         then by  $\TRACE\left(\frac{\lambda a}{\mu b(a+b)}\right)=0$
@@ -404,29 +439,29 @@ The following lemma provides a lower bound on a class of character sums by some 
         In other words, we need to obtain the number of solution $x\in\F_{2^k}$ of $\TRACE\left( \frac{1}{x+\beta}+\frac{1}{x}+vx \right)=0$.
         By Lemma $\ref{lemma:hilbert90}$, it is equivalent to calculate the number of solutions $(x,y)\in\F_{2^k}^2$ of $y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx$.
 
-        Let us define
+        Let us define  
         \[\mathcal{S}_{\beta,v}=\left\{(x,y)\in\F_{2^k}\times\F_{2^k} : y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx\right\}.\]
-        Note that $y\mapsto y^2+y$ is a $2$-to-$1$ mapping, then we have
+        Since $y\mapsto y^2+y$ is a $2$-to-$1$ mapping, we have
         \begin{equation}\label{eq:tracesum_S}
             S(\alpha,\beta,v)=\frac{\#\mathcal{S}_{\beta,v}}{2}-\left(2^k-\frac{\#\mathcal{S}_{\beta,v}}{2}\right)=\#\mathcal{S}_{\beta,v}-2^k.
         \end{equation}
         Note that $\#\mathcal{S}_{\beta,v}$ is even and then $S(\alpha,\beta,v)$ must be even as well.
-        Consider the equation in the function field $K=\F_{2^k}(x,y)$, 
+        Consider  the function field $K=\F_{2^k}(x,y)$ with defining equation
         \begin{equation}\label{eq:trace_curve}
             y^2+y=\frac{1}{x+\beta}+\frac{1}{x}+vx.
         \end{equation}
         Using Lemma \ref{L:genus_K_F}, it can be deduced that the maximum possible genus of $K$ is $2-\delta_v$,
         where $\delta_v=1$ if $v=0$ and $\delta_v=0$ otherwise.
         % We denote by $\mathcal{N}$ the number of the places with degree one of $K/\F_{2^k}$.
-        The number of the places with degree one of $K/\F_{2^k}$ is denoted $\mathcal{N}$.
+        The number of the places of degree one of $K/\F_{2^k}$ is denoted by $N(K)$.
         Then we have
         \begin{equation}\label{eq:N_genus_inequality}
-            \left\lvert \mathcal{N}-(2^k+1)\right\rvert\le g\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor,
+            \left\lvert N(K)-(2^k+1)\right\rvert\le g\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor,
         \end{equation}
-        where $g$ is the genus of the function field $K/\F_{2^k}$, according to Serre bound \cite{Serre1982serrebound}.
-        It is known (see for instance~\cite{Serre1982serrebound}) that
+        where $g$ is the genus of the function field $K/\F_{2^k}$, according to Lemma \ref{L:Serrebound}.
+        It is known that
          \begin{equation}\label{eq:N_S_M_equality}
-            \mathcal{N}=\#\mathcal{S}_{\beta,v}-\mathcal{M}_{\beta,v},
+            N(K)=\#\mathcal{S}_{\beta,v}-\mathcal{M}_{\beta,v},
         \end{equation}
         where $\mathcal{M}_{\beta,v}$ is the number of the points at infinity of Equation \eqref{eq:trace_curve}.
         Thus, to estimate the value of $|S(\alpha,\beta,v)|$, we need to compute the value of $\mathcal{M}_{\beta,v}$.
@@ -461,11 +496,36 @@ The following lemma provides a lower bound on a class of character sums by some 
 
         Therefore, there exists at most $4$ points at infinity for Equation \eqref{eq:trace_curve}, \emph{i.e.},
         $\mathcal{M}_{\beta,v}\le 4$.
-        Thus, combining \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that
+        Thus, combining Equations \eqref{eq:tracesum_S},\eqref{eq:N_genus_inequality},\eqref{eq:N_S_M_equality} and the fact that
         $S(\alpha,\beta,v)$ is even we can get our assertion
         \[\left\lvert S(\alpha,\beta,v)\right\rvert \le 2\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor+4.\]
         This ends the proof.
     \end{proof}
+
+    To verify our upper bound on the values of $|S(\alpha,\beta,\mu)|$, we give the Table \ref{table:Lemma6table} about the exact values of $\max_{\alpha,\beta,\mu\in\F_{2^k}^*}|S(\alpha,\beta,\mu)|$ and the estimation provided by our upper bound on small number of variables.
+
+    \begin{table}
+        \centering
+        \caption{The exact values of $\max_{\alpha,\beta,\mu\in\F_{2^k}^*}|S(\alpha,\beta,\mu)|$ for $6\le k\le 14$}
+        \begin{threeparttable}
+            \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+                \hline
+                $k$ &$6$ &  $ 7 $ & $ 8 $     & $ 9 $     & $  10 $ & $11$ &$12$ &$13$ &$14$\\  \hline 
+                Exact value  &  $32$  & $40$ & $64$ &$88$  &$128^*$ &$176^*$ &$256^*$ & $360^*$ & $504^*$\\ \hline
+                Our upper bound in Lemma \ref{lemma:charactersums}& $36$  & $48$ & $68$ & $94$ & $132$ & $184$& $260$ & $366$ & $516$\\ \hline
+                Difference$^{\dagger}$ & $4$ & $8$& $4$& $6$ &$-$ &$-$ &$-$&$-$ &$-$ \\ \hline
+            \end{tabular}
+            \begin{tablenotes}
+                \footnotesize
+                % \item[$\star$] All concrete values of lower bounds in this table have been rounded up to the nearest integer.
+                \item[$\dagger$]  The values in the table are the difference between the exact values of $\max_{\alpha,\beta,\mu\in\F_{2^k}^*}|S(\alpha,\beta,\mu)|$ and our upper bound.
+                \item[*] The entries marked with an asterisk mean that we have not yet exhausted all possible values of $|S(\alpha,\beta,\mu)|$ due to the large computational space.
+            \end{tablenotes}
+        \end{threeparttable}
+        \label{table:Lemma6table}
+    \end{table}
+
+
     The next two lemmas are intended to determine the number of solutions for systems of trace functions by properties of the trace functions over finite fields.
     \begin{lemma}\label{lemma:N_ij_trace}
         Let $k\ge 3$ be a positive integer.  We define
@@ -506,7 +566,7 @@ The following lemma provides a lower bound on a class of character sums by some 
         \begin{equation}\label{eq:sum_three_trace_2}
             N_{0,1,1}+N_{1,0,1}+N_{1,1,0}+N_{0,0,0}=\#\left\{x\in\F_{2^k} : \TRACE\left(\left(\theta_1+\theta_2+\theta_3\right)x+\left(\gamma_1+\gamma_2+\gamma_3\right)\right)=0\right\}=2^{k-1}.
         \end{equation}
-        Combining Equation \eqref{eq:sum_three_trace_1}, Equation \eqref{eq:sum_three_trace_2} and the following equations
+        Combining Equation \eqref{eq:sum_three_trace_1}, \eqref{eq:sum_three_trace_2} and the following equations
         \begin{equation}\label{eq:sum_N_0jk}\left\{\begin{alignedat}{2}
             &N_{0,0,0}+N_{0,0,1}+N_{0,1,0}+N_{0,1,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=0\right\}=2^{k-1}\\
             &N_{1,0,0}+N_{1,0,1}+N_{1,1,0}+N_{1,1,1}=\#\left\{x\in\F_{2^k} : \TRACE\left(\theta_1x+\gamma_1\right)=1\right\}=2^{k-1}\\
@@ -514,7 +574,7 @@ The following lemma provides a lower bound on a class of character sums by some 
             &N_{0,1,1}=N_{1,0,1}=N_{1,1,0},
         \end{alignedat}\right.\end{equation}
         we obtain $N_{0,0,1}=N_{0,1,1}$.
-        Consequently, Equations \eqref{eq:from_lemma_1} and Equations \eqref{eq:sum_N_0jk} can be transformed into
+        Consequently, Equations \eqref{eq:from_lemma_1} and \eqref{eq:sum_N_0jk} can be transformed into
         $N_{0,0,0}+N_{0,0,1}=2^{k-2}$ and $N_{0,0,0}+3N_{0,0,1}=2^{k-1}$, respectively.
         So we have $N_{0,0,0}=N_{0,0,1}=2^{k-3}$. This completes the proof.
     \end{proof}
@@ -525,13 +585,13 @@ The following lemma provides a lower bound on a class of character sums by some 
         Then for $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}$, we have
         \begin{equation}\label{res:nontrivil_nl}
             nl(D_{\beta}D_{\alpha}f)=\begin{cases}
-                2^{2k-1}-2^{k+2},&\text{if both }\hyperref[item_a]{\textsf{Conditions A}}\text{ and }\hyperref[item_b]{\textsf{B}} \text{ hold},\\
-                2^{2k-1}-2^{k+1},&\text{if either }\hyperref[item_a]{\textsf{Condition A}}\text{ or }\hyperref[item_b]{\textsf{Condition B}}\text{ holds},\\
-                0,&\text{if }(\alpha,\beta)\in \mathcal{C},%\footnote[1]{This happends if $ \beta=0 $},
+                2^{2k-1}-2^{k+2},&\text{if both }\hyperref[item_a]{{Conditions~A}}\text{ and }\hyperref[item_b]{{B}} \text{ hold},\\
+                2^{2k-1}-2^{k+1},&\text{if either }\hyperref[item_a]{{Condition~A}}\text{ or }\hyperref[item_b]{Condition~B}\text{ holds},\\
+                0,&\text{if }(\alpha,\beta)\in \mathcal{E},%\footnote[1]{This happends if $ \beta=0 $},
             \end{cases}
         \end{equation}
         and $nl(D_{\beta}D_{\alpha}f)\ge 2^{2k-1}-2^k\left\lfloor 2^{\frac{k}{2}+1}\right\rfloor-2^{k+1}$ otherwise,
-        where $\mathcal{C}=\{(x_1,x_2,x_1,x_2):x_1\in\F_{2^k},x_2\in\F_{2^k}^*\}\cup\{(x_1,0,x_2,0):x_1,x_2\in\F_{2^k}\}$.
+        where $\mathcal{E}=\{(x_1,x_2,x_1,x_2):x_1\in\F_{2^k},x_2\in\F_{2^k}^*\}\cup\{(x_1,0,x_2,0):x_1,x_2\in\F_{2^k}\}$.
     \end{theorem}
 
     \begin{proof}
@@ -582,7 +642,7 @@ The following lemma provides a lower bound on a class of character sums by some 
 
             The case $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\F_{2^k}^*\times\{0\}\times\F_{2^k}\times\F_{2^k}^*$ and the case $(\alpha_1,\alpha_2,\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^*\times\F_{2^k}^*\times\{0\}$ will lead to analogue proofs with the same upper bounds and we omit them.
 
-            \item If both \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}} hold,\label{case_2}
+            \item If both \hyperref[item_a]{Conditions~A} and \hyperref[item_b]{B} hold,\label{case_2}
             it can be guaranteed that Equation~\eqref{eq:coefficient} has $8$ solutions $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2,y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\}$, where $y_0\notin\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$, according to Lemma \ref{lemma:num_sol_second_dev}.
             Then we have
             \begin{align*}
@@ -604,7 +664,7 @@ The following lemma provides a lower bound on a class of character sums by some 
             $c_1= \TRACE\left(\frac{\lambda\alpha_1}{y_0+\alpha_2}+\frac{\lambda\beta_1}{y_0+\beta_2}+\frac{\lambda(\alpha_1+\beta_1)}{y_0+\alpha_2+\beta_2}+\nu y_0\right)$.
             By Lemma \ref{lemma:N_ijk_trace},
             for any points $\alpha=(\alpha_1,\alpha_2),\beta=(\beta_1,\beta_2)\in\F_{2^k}\times\F_{2^k}^*$ such that
-            $\alpha_2\ne\beta_2$ and satisfying both \hyperref[item_a]{\textsf{Conditions A}} and \hyperref[item_b]{\textsf{B}},
+            $\alpha_2\ne\beta_2$ and satisfying both \hyperref[item_a]{{Conditions~A}} and \hyperref[item_b]{{B}},
             the number of solutions $\nu\in\F_{2^k}$ for the system
             \begin{empheq}[left=\empheqbiglbrace]{align*}
                 &\TRACE\left(\alpha_2\nu + \alpha_1\mu\right)=0\\
@@ -615,9 +675,9 @@ The following lemma provides a lower bound on a class of character sums by some 
             This implies there exists $(\mu,\nu)\in\F_{2^k}\times\F_{2^k}$ such that $W_{D_{\beta}D_{\alpha}f}(\mu,\nu)=2^{k+3}\cdot(-1)^{c_0}$.
             So in this case, we have
             \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+3}.\]
-            \item If either \hyperref[item_a]{\textsf{Condition A}} or \hyperref[item_b]{\textsf{Condition B}} holds,\label{case_3}
+            \item If either \hyperref[item_a]{{Condition A}} or \hyperref[item_b]{{Condition B}} holds,\label{case_3}
             it can be seen that Equation \eqref{eq:coefficient} has only $4$ solutions.
-            Assume \hyperref[item_a]{\textsf{Condition A}} is satisfied, then $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$ are the only $4$ solutions of Equation \eqref{eq:coefficient}.
+            Assume \hyperref[item_a]{{Condition A}} is satisfied, then $\{0,\alpha_2,\beta_2,\alpha_2+\beta_2\}$ are the only $4$ solutions of Equation \eqref{eq:coefficient}.
             So we have
             \begin{align*}\label{eq:simpleforms_4}
                 &W_{D_{\beta}D_{\alpha}f}(\mu,\nu)\nonumber\\
@@ -649,13 +709,13 @@ The following lemma provides a lower bound on a class of character sums by some 
             \end{equation*}
             is $2^{k-2}\ge 1$.
             This implies there exists $(\mu,\nu)\in\F_{2^k}\times\F_{2^k}$ such that $|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}$.
-            Thus, in the case where \hyperref[item_a]{\textsf{Condition A}} holds, we have
+            Thus, in the case where \hyperref[item_a]{{Condition A}} holds, we have
             \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}.\]
-            Assume \hyperref[item_b]{\textsf{Condition B}} holds,
+            Assume \hyperref[item_b]{{Condition B}} holds,
             it can be seen that $\{y_0,y_0+\alpha_2,y_0+\beta_2,y_0+\alpha_2+\beta_2\}$
             are the only $4$ solutions of
             Equation \eqref{eq:coefficient}, where $y_0\notin\{0, \alpha_2, \beta_2, \alpha_2+\beta_2\}$.
-            The rest of proof  is similar to the case where only Condition \hyperref[item_a]{\textsf{Condition A}} holds, so we omit it and
+            The rest of proof  is similar to the case where only Condition \hyperref[item_a]{{Condition A}} holds, so we omit it and
             straightforwardly present the result $\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}$.
             Therefore, in the case where Equation \eqref{eq:coefficient} has only $4$ solutions, we have
             \[\max_{\mu,\nu}|W_{D_{\beta}D_{\alpha}f}(\mu,\nu)|=2^{k+2}.\]
@@ -705,14 +765,14 @@ Applying twice Lemma \ref{thm:High_order_nl_bound1}, that is, taking
         Let $n=2k\ge 6$ be an arbitrary even integer and $4\le r\le n-2$ be an arbitrary integer.
         Let $f$ be an $n$-variable  simplest $\mathcal{PS}_{ap}$ bent function. Then we have
         \[nl_r(f)\ge 2^{n-1}-\frac{1}{2}\sqrt{2^{2n+1}-2^{\frac{n}{2}+2}(2^{\frac{n}{2}}-1)nl_{r-1}(f)+2^{n+1}l_{r-1}},\]
-        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}-1)+2^{\frac{n}{2}-2 }}$ for $c\geq 2$.
+        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}+1)+2^{\frac{n}{2}-2 }}$ for $c\geq 2$.
     \end{corollary}
     \begin{proof}
         In \cite{Carlet2008lowbound_NL_profile}, Carlet proved that
         \[\forall\alpha=(\alpha_1,\alpha_2)\in\F_{2^k}\times\F_{2^k}^*, nl_r(D_{\alpha}f)\ge 2nl_r(f)-2^{n-1}-2^{\frac{n}{2}},\]
         and
         \[\forall\alpha=(\alpha_1,0)\in\F_{2^k}\times\{0\}, nl_r(D_{\alpha}f)\ge 2^{n-1}-2^{\frac{n}{2}}(l_r+1),\]
-        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}-1)+2^{\frac{n}{2}-2 }}$ for $c\ge 2$.
+        where $l_c$ is defined by $l_1=2^{\frac{n}{4}}$ and $l_c=\sqrt{(2^{\frac{n}{2}}-1)(l_{c-1}+1)+2^{\frac{n}{2}-2 }}$ for $c\ge 2$.
         Therefore, by Lemma \ref{thm:High_order_nl_bound1}, we have
         \begin{align*}
             nl_r(f)
@@ -762,20 +822,20 @@ Applying twice Lemma \ref{thm:High_order_nl_bound1}, that is, taking
                 \hline
                 $6  $ &  $ -           $       & $ -        $     & $ 1        $     & $  -       $ \\  \hline
                 $8  $ &  $ -           $       & $ -        $     & $ 26       $     & $  -       $ \\  \hline
-                $10 $ &  $ 55          $       & $ 63       $     & $ 186      $     & $  123     $ \\  \hline
+                $10 $ &  $ 111         $       & $ 63       $     & $ 186      $     & $  75      $ \\  \hline
                 $12 $ &  $ 533         $       & $ 553      $     & $ 932      $     & $  379     $ \\  \hline
-                $14 $ &  $ 3156        $       & $ 3205     $     & $ 4372     $     & $  1167    $ \\  \hline
+                $14 $ &  $ 3877        $       & $ 3205     $     & $ 4372     $     & $  495     $ \\  \hline
                 $16 $ &  $ 15985       $       & $ 16103    $     & $ 19986    $     & $  3883    $ \\  \hline
-                $18 $ &  $ 75003       $       & $ 75292    $     & $ 89028    $     & $  13736   $ \\  \hline
+                $18 $ &  $ 83435       $       & $ 75292    $     & $ 89028    $     & $  5593    $ \\  \hline
                 $20 $ &  $ 336634      $       & $ 337330   $     & $ 384926   $     & $  47596   $ \\  \hline
-                $22 $ &  $ 1468219     $       & $ 1469893  $     & $ 1628771  $     & $  158878  $ \\  \hline
+                $22 $ &  $ 1565563     $       & $ 1469893  $     & $ 1628771  $     & $  63208   $ \\  \hline
                 $24 $ &  $ 6278535     $       & $ 6282551  $     & $ 6807315  $     & $  524764  $ \\  \hline
-                $26 $ &  $ 26469867    $       & $ 26479472 $     & $ 28238083 $     & $  1758611 $ \\  \hline
+                $26 $ &  $ 27581520    $       & $ 26479472 $     & $ 28238083 $     & $  656563  $ \\  \hline
             \end{tabular}
             \begin{tablenotes}
                 \footnotesize
-                % \item[$\star$] All concrete values of lower bounds in this table have been rounded up to the nearest integer.
-                \item[1] The values in the table are the difference between our lower bound and Carlet's one.
+                \item[$\ast$] All concrete values of lower bounds in this table have been rounded up to the nearest integer.
+                \item[1] The values in the table represent  the difference between our lower bound and the greater value obtained from Tang-Carlet-Tang's and Carlet's bounds.
             \end{tablenotes}
         \end{threeparttable}
         \label{table:MyTableLabel}
@@ -793,3 +853,21 @@ Applying twice Lemma \ref{thm:High_order_nl_bound1}, that is, taking
 \end{document}
 
 % Boolean functions used in cryptosystems should have high higher-order nonlinearity to resist several known attacks, such as algebraic attack and low-degree approximation. The higher-order nonlinearity also plays an important role in coding theory and theoretical computer science. It is well-known that bent functions have the highest nonlinearity in even number of variables and thus they possess the best resistance against fast correlation attack and best affine approximation. However, there is limited knowledge regarding the higher-order nonlinearity of bent functions because computing the higher-order nonlinearity, or even providing tight lower bounds, is a hard task. In 1974, Dillon proposed two well-known classes of bent functions based on partial spread (in brief, $\mathcal{PS}$), called $\mathcal{PS}^-$ and $\mathcal{PS}^+$, respectively. He also exhibited a subclass of $\mathcal{PS}^-$, known as partial spread affine plane ($\mathcal{PS}_{ap}$ for short). In this paper, we provide a lower bound on the third-order nonlinearity of the simplest $\mathcal{PS}_{ap}$ bent functions in $n$ variables, where $n\ge 6$ is even, by calculating nonlinearities of all second-order derivatives of this kind of bent functions. Compared to the two known lower bounds on the third-order nonlinearity given by Carlet and Tang et al. respectively, our lower bound is much better than these two ones.
+
+k:=12;
+Z:=Integers();
+F<w>:=GF(2,k);
+Fstar:=[w^i:i in [0..2^k-2]];
+max_element:=0;
+for b in [w^i: i in [16..2^k-2]] do 
+    for v in Fstar do
+        tmp:= Abs(&+[1-2*Z!Trace((x+b)^(2^k-2)+x^(2^k-2)+v*x):x in F]);
+        if max_element le tmp then 
+            max_element:= tmp;
+            print "now k =",k," ,beta=",b, " and v=",v;
+            print "temp_max_element is", max_element;
+        end if;
+    end for;
+end for;
+max_element;
+

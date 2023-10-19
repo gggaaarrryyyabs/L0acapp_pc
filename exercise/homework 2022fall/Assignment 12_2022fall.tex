@@ -1,0 +1,119 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newtheorem{remark}{Remark}
+
+
+\title{NIS2312-1 2022-2023 Fall Homework~1}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 2022-2023 Fall} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~12} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年10月31日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+%   可以使用计算机求模的运算.
+
+\subsubsection*{Problem 1}
+    证明集合
+    \[\Z[\theta]=\{a+b\theta\mid a,b\in\Z\},~\theta=\frac{1}{2}+\frac{1}{2}\sqrt{-3},\]
+    关于通常的数的运算构成一个整环, 并求出 $ \Z[\theta] $的所有单位.
+
+    解: $ \forall \alpha=a+b\theta,\beta=c+d\theta\in\Z[\theta] $, 都有
+    \begin{align*}
+      \alpha-\beta&=(a-c) +(b-d)\theta\in\Z[\theta]\\
+      \alpha\beta&=(ac-bd)+(ad+bc+bd)\theta\in\Z[\theta],
+    \end{align*}
+    其中 $ \theta^2=\theta-1 $. 故 $ \Z[\theta] $是 $ C $的子环. 同时因为 $ C $是无零因子环, 
+    故 $ \Z[\theta] $也是无零因子环, 且单位元是 $ 1 $ (注意环与其子环的单位元不一定相等), 
+    故 $ \Z[\theta] $是整环. 
+
+    单位的计算: 计算单位 $ u=a+b\theta $ 的范数得到 $ (a+b\theta)(a+b\overline{\theta})=a^2+b^2+ab=1 $.
+    因此可以找到所有的整数解, 列举即为答案: 单位是
+    \[\pm 1,\pm\theta,1-\theta,-1+\theta.\] 
+\begin{remark}
+  
+  计算范数的原因: 
+  假设 \[R=\Z[\theta]=\{a+b\theta\mid a,b\in\Z\},~\theta=\frac{1}{2}+\frac{1}{2}\sqrt{-3},\]
+  且 $ \alpha\in R $是一个单位, 那么存在 $ \beta\in R $ 使得 $ \alpha\beta=1 $. 
+  
+  我们定义范数 $ \mathrm{N}: R\rightarrow\Z $,  ~~$ \alpha\mapsto \alpha\overline{\alpha}=a^{2}+b^{2}+ab $. 
+  其中 $ \alpha=a+b\theta $ 且 $ \overline{\alpha}=a+b\overline{\theta} $, 
+  其中 $ \overline{\theta}=\frac{1}{2}-\frac{1}{2}\sqrt{-3} $ 代表着 $ \theta $的共轭.
+  
+  所以我们有 $ \mathrm{N}(\alpha\beta)=\alpha\beta\overline{\alpha\beta}=\alpha\overline{\alpha}\beta\overline{\beta}=\mathrm{N}(\alpha)\mathrm{N}(\beta)=\mathrm{N}(1)=1  $. 
+  又因为 $ \mathrm{N} $是到整数环的函数, 故有 $ \mathrm{N}(\alpha)=\pm 1,\mathrm{N}(\beta)=\pm 1 $. 
+  注意到 $ \mathrm{N}(\alpha)=(a+1/2b)^2+3/4b^2\ge 0 $, 故求 $ \mathrm{N}(\alpha)=1 $即可.
+\end{remark}
+  
+\subsubsection*{Problem 2} 
+    设 $ R $是无零因子环, $ S $是 $ R $的子环, 且 $ |S|>1 $. 证明: 当 $ S $有单位元时, $ S $的单位元就是 $ R $
+    的单位元.
+
+    解: 假设 $ e_S,e_R $ 分别是 $ S,R $的单位元. 因为 $ |S|>1 $, 故可取非零元 $ s\in S $, 有
+    \[(e_S-e_R)s=e_Ss-e_Rs=s-s=0.\]
+    注意到 $ R $是无零因子环, 且 $ s $ 也不是零元, 故 $ e_S-e_R=0 $, 即 $ e_S $为 $ R $的单位元.
+    
+\subsubsection*{Problem 3}
+    设 $ R $是有单位元 $ e $的无零因子环. 证明: 如果 $ ab=e $, 则 $ ba=e $.
+
+    解: 我们有 $ b(ab-e)=bab-b=(ba-e)b=0 $, 且 $ b $不是零因子, 故 $ ba-e=0 $.
+
+\subsubsection*{Problem 4}
+    证明: 有限整环都是域.
+
+    解: 假设 $ D $是有限整环, 故任取非零元素 $ d\in D $, 由于 $ d $是不是零因子, 可以得到
+    $ dD=D $. 又因为 $ D $中存在单位元, 那么 $ \exists d'\in D $ 使得 $ dd'=e $, 故 $ d $是乘法可逆的.
+    由于 $ d $的任意性, 所以 有限整环中的所有非零元素都是乘法可逆的, 即 有限整环是域.
+
+\subsubsection*{Problem 5}
+  设 $ R $是一个环, $ a\in R $. 如果存在 $ n\in\mathbb{N} $, 使 $ a^n=0 $, 则称 $ a $是 $ R $的一个\textbf{幂零元} (nilpotent element).
+  \begin{enumerate}[label=(\arabic{*})]
+    \item 试求 $ \Z_{18} $的所有幂零元;
+    \item 证明: 如果 $ R $是有单位元 $ e $的交换环, $ x $是 $ R $的一个幂零元, 则 $ e-x $是 $ R $的一个可逆元;
+    \item 证明: 交换环的幂零元全体构成一个子环.
+  \end{enumerate}
+
+  解: 
+  \begin{enumerate}[label=(\arabic{*})]
+    \item 因为 $ 18=2\cdot 3^2 $, 故 $ 2\times 3 $ 必定是幂零元 
+    (对于 $ \Z_n $来说, 假设$ n=p_1^kp_2 $, 其中 $ p_1,p_2 $为素数, 那么 $ p_1p_2 $是幂零元, 
+    因为 $ (p_1p_2)^k=p_1^kp_2\cdot p_2^{k-1}=0 $), $ 2^2\times 3 $也是幂零元, 注意到
+    $ 0 $也是幂零元.
+    \item 假设 $ x^n=0 $, 故有 
+    \begin{align*}
+      (x-e)(x^{n-1}+\dots+x+e)&=x^n-e=0\\ 
+      (x^{n-1}+\dots+x+e)(x-e)&=x^n-e=0.
+    \end{align*}
+    因此 $ x-e $是可逆元.
+    \item 设 $ Nil $ 是 $ R $的全体幂零元的集合. 那么 $ \forall a,b\in Nil $, 都有 $ m,n\in\Z $ 使得 
+    $ a^n=0,b^m=0 $, 那么就有
+    \begin{align*}
+      (a-b)^{m+n} &=a^{m+n}+\sum_{k=1}^{m+n-1}(-1)^k C_{m+n}^k a^{m+n-k} b^k+(-1)^{m+n} b^{m+n} \\
+      &=\sum_{m+n>k \geqslant m}(-1)^k C_{m+n}^k a^{m+n-k} b^k+\sum_{0<k<m}(-1)^k C_{m+n}^k a^{m+n-k} b^k \\
+      &=\sum_{m+n>k \geqslant m}(-1)^k C_{m+n}^k a^{m+n-k} \cdot 0+\sum_{0<k<m}(-1)^k C_{m+n}^k 0 \cdot b^k=0, \\
+      (a b)^{m n} &=a^{m n} b^{m n}=0 .
+      \end{align*}
+      故 交换环的幂零元全体构成一个子环.
+  \end{enumerate}
+\end{document}

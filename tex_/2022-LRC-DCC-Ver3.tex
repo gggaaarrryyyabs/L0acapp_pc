@@ -1,0 +1,1478 @@
+\documentclass[10pt]{article}
+%\usepackage[letterpaper,hmargin=1in,vmargin=1.5in]{geometry}
+\usepackage{indentfirst,mathrsfs}
+\usepackage{amsfonts}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{enumitem}
+\usepackage[colorlinks,linkcolor=black,
+            pdftitle={title},
+              pdfauthor={author},
+              pdfkeywords={}]{hyperref}
+
+\renewcommand{\baselinestretch}{1.1}
+
+\setlength{\oddsidemargin}{0.1in} \setlength{\textwidth}{6.0in}
+\setlength{\topmargin}{-0.25in} \setlength{\textheight}{8.7in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{Example}{Example}
+\newtheorem{proposition}{Proposition}
+\newtheorem{construction}{Construction}
+\newtheorem{remark}{Remark}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\0}{\textbf{0}}
+\newcommand{\1}{\textbf{1}}
+\newcommand{\C}{{\mathcal C}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\nl}{\mathrm{nl}}
+\newcommand{\Tr}{\mathrm{Tr}_1^m}
+\newcommand{\tr}{\mathrm{Tr}_1^k}
+\newcommand{\W}[2][]{\widehat{\chi_{#2}}^{#1}}
+\newcommand{\CardI}{\left|I\right|}
+\usepackage{booktabs}
+
+\begin{document}
+
+\title{On Constructions of Binary Locally Repairable Codes with Locality Two and Multiple Repair Alternatives
+via Autocorrelation Spectra of Boolean Functions}
+	
+\date{}
+	
+
+
+\author{Deng Tang\footnotemark[1]
+    \and Jian Liu\footnotemark[2]
+    \and Sihem Mesnager \footnotemark[3]
+}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+   \footnotetext[1]{School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai, 200240, P. R. China.
+Email: dtang@foxmail.com (D. Tang)}
+
+    \footnotetext[2]{School of Cybersecurity, College of Intelligence and Computing, Tianjin University, Tianjin, 300350, P. R. China. Email:jianliu.nk@gmail.com (J. Liu) }
+
+    \footnotetext[3]{Department of Mathematics, University of Paris VIII, F-93526 Saint-Denis, University
+    Sorbonne Paris Cit\'e, LAGA, UMR 7539, CNRS, 93430 Villetaneuse and Telecom Paris, Polytechnic Institute of Paris, 91120 Palaiseau, France. Email: smesnager@univ-paris8.fr (S. Mesnager)}
+
+  \maketitle
+
+\begin{abstract}
+Distributed storage systems (in brief, DSSs) store data on several distributed nodes and are widely used in file system storage, large database storage, backup file, and cloud storage, etc. DSSs provide reliable access to data through redundancy spread over
+individually unreliable nodes, where the replication scheme and coding mechanism are two
+widespread techniques for ensuring reliability.
+%The replication scheme is very simple, but it will be
+%highly inefficient with data growth since its large storage overhead.
+%Meanwhile, the coding mechanism with erasure codes used in DSSs can provide
+%significantly higher fault-tolerance values and lower storage
+%overheads than the replication scheme.
+ In 2012, Gopalan et al. proposed locally repairable codes (LRCs for short) to minimize
+the number of nodes to be downloaded in repairing any node.
+ A code over a finite alphabet is called LRC (with locality $r$) if every symbol in the encoding is a function of a small number (at most $r$) of other symbols of the codeword.
+In 2013 Pamies-Juarez et al. introduced LRCs with multiple repair alternatives,
+which allows repairing any node with different disjoint nodes.
+LRCs with multiple repair alternatives can increase the probability of being able to
+perform efficient repairs when there are multiple unavailable nodes (these nodes are
+failed or temporarily unavailable).\\
+This paper proposes two large families of LRCs with multiple repair alternatives from Boolean functions. Each repair set has at most $r=2$ symbols, which correspond to an interesting case in practice.
+We shall explore Boolean functions selected from the well-known Maiorana-McFarland class based on partial spreads, respectively.
+Moreover, we show that the number of the disjoint repair sets (denoted by $t$) of our LRCs can be determined entirely by the autocorrelation spectrum of the corresponding Boolean function. This achievement is obtained thanks to the relationship between the autocorrelation spectrum of the corresponding Boolean function and the number of disjoint repairs sets that we establish. Our results give rise LRCs with suitable parameters from special Boolean functions (such as bent functions) based on a construction method introduced by Ding in 2015 for designing linear codes based on the so-called ``defining set" (involving mainly Boolean functions). The approach presented in this article introduces an interesting connection between LRCs (with multiple repair alternatives) and (the autocorrelation spectrum of) Boolean functions. Notably, it emphasizes a novel role of bent functions for designing LRCs. This connection has not been pointed out before to the best of our knowledge.
+
+
+%To our best knowledge, this is the first time an approach to creating LRCs codes with locality $2$ and multiple repair alternatives by exploiting the theory of %Boolean functions is presented in the literature.
+	
+\end{abstract}
+	
+{\bf Keywords}: Binary linear code, LRC, Boolean function, autocorrelation spectrum, Walsh transform, partial spread.
+
+
+\section{Introduction}
+%% To do:
+% In GMM, some zero vector should be replaced by \0;
+% In Partial spread, it would be better to replace a\dot c by \tr(ac), in a field version.
+% Wiener-Khintchine Theorem is a special case of Lemma\ ref{L:crossA}.
+
+
+The need for highly scalable and reliable extensive data storage systems is due to the fact that there is
+explosive growth in data. Distributed storage systems (DSSs) store data on several distributed
+nodes and are widely used in file system storage, large database storage, backup file,
+cloud storage, etc. The repair problem in DSSs addresses
+the recovery of the data encoded using erasure codes such as Reed-Solomon codes, \emph{locally repairable codes} (LRCs)~\cite{Huang2012erasure} etc.
+In recent years, the interest and attention on LRCs have proliferated.
+Several constructions and related results have been given~ (see. e.g. \cite{jin2019constructions,cai2019optimal,wang2021construction,zhang2020locally}).
+
+A binary linear code $\mathcal{C}$ of length $n$, dimension $\kappa$ is a $\kappa$-dimensional subspace of $\mathbb{F}_2^n$.  $\mathcal{C}$ is said to be an $[n,\kappa,d]$ linear code with minimum Hamming distance $d$. Linear codes are an important class of codes in coding theory. They have been extensively studied due to their significant applications in practical systems. In this paper, we shall focus on (binary) locally repairable codes (LRCs) which
+process four parameters by considering the locality $r$ (in addition to those for usual linear codes).
+We briefly recall the terminology used in the literature in the context of LRC for distributed storage. Specifically, an LRC is said to have \emph{locality} $r$ if
+the value at any coordinate can be recovered by accessing
+at most $r$ other coordinates,
+and to have \emph{availability} $t$ if every coordinate can be recovered from $t$ disjoint repair
+sets of other coordinates.
+A code with multiple repair sets (called availability, see~\cite{PamiesISIT2013,2016Locality} for instance) has the advantage of good
+parallel repairability, since for the target symbol, each repair set can be seen as
+a backup that can be accessed
+independently.
+Locally repairable codes with availability $t > 1$ have
+been extensively studied in recent years. An upper
+bound on the minimum distance of LRCs
+was derived in ~\cite{2015Bounds}.  When such an upper bound is achieved with equality, the LRC code is optimal.
+In~\cite{2013Repair, 2015AnWang}, binary locally repairable codes were constructed by employing combinatorial structures.
+Constructions of locally repairable codes
+with availability $t > 1$ were proposed in the literature.
+
+
+In this paper, we present two families of binary LRCs with multiple repair alternatives inspired by the design method of linear codes from the support set of a Boolean function presented by Ding in~\cite{DingIT2015,DingDM16}. We show that $[n,\kappa,d]$ LRCs with $r=2$ can be constructed directly from the support set of a Boolean function, and the minimum distance $d$, as well as the availability $t$, depend only on the Walsh spectrum and the autocorrelation spectrum of the Boolean function. Using this connection, we firstly give a class of binary LRCs from Boolean functions with Maiorana-McFarland (M-M) constructions.
+By analyzing the related cryptographic criteria of the M-M functions, we obtain the explicit parameters of these LRCs,
+which leads to a large number of good LRCs with $r=2$ and pre-defined $t$.
+Secondly, we provide another construction of LRCs with $r=2$ from Boolean functions based on partial spreads,
+where the availability $t$ relates to the dimension of the chosen spreads. The remainder of this extended abstract is organized as follows.
+In Section \ref{Sec-Preliminaries}, we fix our notation and introduce some background and necessary
+preliminaries required for the subsequent sections. In Section \ref{Sec-LRC-Bool-Functions}, we start by recalling, namely, a construction method of binary linear codes from Boolean functions that we follow and present an important result (Theorem \ref{T:relation}) on constructing binary LRCs from Boolean functions. We next explore some wide families of Boolean functions and investigate in Section \ref{LRC-Bool-Specific} the design of LRCs from Boolean functions with M-M constructions (Subsection \ref{LRC-MM}) and based on partial spreads (Subsection \ref{LRC-PS}), respectively.
+%Finally, Section \ref{Sec-conclusion} concludes the paper.
+
+
+\section{Preliminaries}\label{Sec-Preliminaries}
+Given a finite set $E$, $\# E$ will denote its cardinality. Given a real number $x$,  $|x|$ will denote its  absolute value.
+Given a positive integer $n$, $[n]$ will denote the set $\{1,2,\cdots, n\}$.
+\subsection{Boolean functions and related notions}\label{sec:Pre1}
+For any positive integer $m$, we denote by $\F_2^m$ the vector space of $m$-tuples over the
+finite field $\F_2=\{0,1\}$, and by $\F_{2^m}$ the finite field of order $2^m$.
+For simplicity, we denote by $\F_2^{m*}$ the set $\F_2^{m}\setminus\{\0\}$, and
+ $\F_{2^m}^*$ denotes the set $\F_{2^m}\setminus\{0\}$, where $\0$ is the all-zero vector in $\F_2^m$.
+We use $+$ (resp. $\sum$) to denote the addition (resp. a multiple sum) in $\mathbb{Z}$ or in the finite field $\F_{2^m}$, and
+$\oplus$ (resp. $\bigoplus$) to denote the addition (resp. a multiple sum) in $\F_2$.
+For simplicity, when there is no ambiguity, we will use $+$ instead of $\oplus$.
+A Boolean function of $m$ variables is a function from $\F_2^m$ into $\F_2$. If we identify $\F_2^m$ with $\F_{2^m}$, it is a mapping from
+$\F_{2^m}$ to $\F_{2}$. We shall denote by $\mathcal{B}_m$ the set of $m$-variable Boolean functions.
+The design of strong symmetric cipher systems requires that the underlying cryptographic Boolean function meet specific security requirements.
+Some of the required security criteria can be measured with the help of the autocorrelation function or using the Walsh transform as a tool.
+The \emph{Walsh transform} of $f$ in $\mathcal{B}_m$ at  $\alpha\in \F_{2^m}$ is defined by $\W f(\alpha)=\sum_{x\in\F_{2^m}}(-1)^{f(x)+\mathrm{Tr}_1^m(\alpha x)}$,
+%\begin{equation*}
+%\W f(a)=\sum_{x\in\F_{2^m}}(-1)^{f(x)+\mathrm{Tr}_1^m(a x)},
+%\end{equation*}
+where $\mathrm{Tr}_1^m(x)=\sum\limits_{i=0}^{m-1}x^{2^i}$ is the (absolute)  trace function from $\F_{2^m}$ to $\F_2$.
+The multiset constituted by the values of the Walsh transform is called the  \emph{Walsh spectrum} of $f$.
+{\color{blue}
+The \emph{crosscorrelation function} between two Boolean functions $f,g\in\mathcal B_m$ at a point $\alpha\in\F_{2^m}$  is defined as
+$A_{f,g}(\alpha)=\sum_{x\in\F_{2^m}} (-1)^{f(x)+g(x+\alpha)}$.
+If $f=g$, then it is called the \emph{autocorrelation function} of $f\in\mathcal B_m$ at $\alpha\in\F_{2^m}$, denote by $A_f(\alpha)$, i.e.,
+$A_f(\alpha)=\sum_{x\in\F_2^m} (-1)^{f(x)+f(x+\alpha)}$.}
+%The \emph{autocorrelation function}
+%of a Boolean function $f$ in $\mathcal{B}_m$ at a point $\alpha\in\F_{2^m}$ is defined by $A_f(\alpha)=\sum_{x\in\F_{2^m}}(-1)^{f(x)+f(x+\alpha)}$.
+%\begin{equation*}\label{C_f}
+%A_f(\alpha)=\sum_{x\in\F_{2^m}}(-1)^{f(x)+f(x+\alpha)}.
+%\end{equation*}
+The multiset constituted by the values of the autocorrelation function is called the \emph{autocorrelation spectrum} of $f$.
+The well-known Wiener-Khintchine theorem connects the Walsh transform and the autocorrelation function (see e.g.  \cite{Carl93}). A valuable reference on the theory of Boolean functions in cryptography and coding theory is \cite{Book-Carlet}.
+\subsection{Linear codes, LRC codes and related notions}
+An $[n, \kappa, d]_2$ linear code $\mathcal{C}$ over $\F_2$
+is a $\kappa$-dimensional subspace of $\F_2^n$ with minimum Hamming distance $d$, where
+$d=\min_{a,b\in\mathcal{C}, a\neq b, d_H(a,b)}$ in which $d_H$ denotes the Hamming distance
+between vectors (called codewords) $a=(a_1,a_2,\cdots,a_n)\in\mathcal{C}$ and $b=(b_1,b_2,\cdots,b_n)\in\mathcal{C}$,
+i.e., $d_H(a,b)=\#\{1\leq i\leq n : a_i\not=b_i\}$.
+For a given codeword $a\in\mathcal{C}$, the Hamming weight ${w_H}(a)$
+is defined as the number of nonzero coordinates.
+ {\color{red} A generator matrix $G=(g_1,g_2,\cdots, g_n)$ of a linear $[n, \kappa, d]_2$ code $\mathcal{C}$ is a
+$k\times n$ matrix whose rows form a basis of $\mathcal{C}$, where $g_i\in\F_2^\kappa$ is a column vector for $i\in [n]$.
+The dual-code $\mathcal{C}^\perp$ is the orthogonal subspace under the usual inner product in $\F_2^n$.
+In addition, for any $I=\{i_1,i_2,\cdots,i_\kappa\}\subseteq [n]$, if vectors $g_{i_1}, g_{i_2},\cdots, g_{i_\kappa}$ are $\F_2$-linearly independent,
+we say that $I$ is an information set of $\mathcal{C}$.}
+Usually, if the context is clear, we omit the subscript $2$ by convention in the sequel (we shall write $[n, \kappa, d]$ instead of $[n, \kappa, d]_2$).
+We introduce the formal definition of locally repairable codes (LRCs) (see. \cite{Gopalan-et-al} and also \cite{Tamo-Barg-2014}).
+%Parameters of LRCs, such as joint locality [1] and availability [2], were proposed in the literature  to analyse the performance of LRCs %for multiple erasures.
+%Following \cite{Gopalan-et-al} (see also \cite{Tamo-Barg-2014}) and \cite{PamiesISIT2013}, the notion below have been introduced by  Gopalan et al in 2011 %and  Pamies-Juarez et al. in 2013, respectively.
+% For a positive integer $n$, we use $[n]$ to denote the set $\{1,2, \cdots,n\}$.
+\begin{definition}\label{def:LRC}
+ A linear code $\C$ is a LRC with locality $r$ if for any $i\in[n]$, there exists a subset
+ $\mathcal R_i\subset[n]\backslash\{i\}$ with $\#\mathcal R_i\leq r$ such that the $i$-th symbol $c_i$ can be recovered
+ by $\{c_j\}_{j\in \mathcal R_i}$.
+A set $\mathcal R_i$ is called a recovery or repair set for $c_i$.
+Furthermore,  if for any $i\in[n]$, there are at least $t$ disjoint repair
+sets with each set of size at most $r$ symbols, we refer to such a code as {\color{red}a linear LRC with
+locality $r$ and availability $t$, denoted by $(r,t)$-LRC.
+Particularly, if there is an information set $I$  such that, for any $i\in I$ there are at least $t$ disjoint repair
+sets with each set of size at most $r$ symbols, we refer to such a code as a linear $(r,t)_{I}$-LRC.}
+\end{definition}
+
+In order to maximize the reliability of storage systems it is desirable to obtain codes where lost data can be repaired by contacting a small number of nodes  $r$ where this number can be as small as $r=2$.
+
+
+%\begin{lemma}[Griesmer bound]\label{L:Griesmerbound}
+%For any binary linear code $[n, k, d]$, we have
+%\begin{eqnarray*}
+%n \geq \sum_{i=0}^{k-1}\bigg\lceil\frac{d}{2^i}\bigg\rceil,
+%\end{eqnarray*}
+%\end{lemma}
+%where $\lceil \cdot \rceil$ denotes the smallest integer greater than or equal to a given number.
+%In general, a linear code is called optimal if there is no binary linear code with parameters $[n, k+1, d]$ \cite{HPbook2003},
+%and is called distance-optimal if there is no $[n, k, d+1]$ linear code.
+
+
+\subsection{Binary linear codes from Boolean functions}\label{Sec-Binary-codes-Bool}
+Several constructions methods of linear codes from special functions (essentially from cryptographic Boolean functions which play a
+crucial role in symmetric cryptography) over finite fields have been presented in the recent literature (see~\cite{Mesnager-Handbook}).
+Among many of his contributions to this topics, Ding proposed in \cite{DingIT2015} an efficient method to design a linear
+code from the support set $D=\{x\in\F_{2^m}: f(x)\not=0\}$, also denoted by $\mathrm{supp}(f)$, of a Boolean function  $f$ in  $\mathcal{B}_m$ using its univariate polynomial representation.
+We denote by $n_{f}$ the size of $D$. Suppose that $D=\{d_1,d_2,\cdots,d_{n_f}\}$. Then Ding defined a binary linear code $\C_{D}$ of
+length $n_f$ as follows.
+\begin{eqnarray}\label{Eq:Dingcode}
+\C_{D}=\Big\{c_\alpha : \alpha\in\F_{2^m}\Big\}, c_\alpha=(\mathrm{Tr}_1^m(\alpha d_1),\mathrm{Tr}_1^m(\alpha d_2),\cdots,\mathrm{Tr}_1^m(\alpha d_{n_f}))
+\end{eqnarray}
+%where $c_\alpha=(\mathrm{Tr}_1^m(\alpha d_1),\mathrm{Tr}_1^m(\alpha d_2),\cdots,\mathrm{Tr}_1^m(\alpha d_{n_f}))$.
+% and$\mathrm{Tr}_1^m(x)=\sum_{i=0}^{m-1}x^{2^i}$ is the trace function from $\F_{2^m}$ to $\F_2$.
+\begin{theorem}[\cite{DingDM16}, Theorem 1]\label{Lemma-ding}
+We keep the above notation.  If $2n_f\not=-\W f(\alpha)$ for all $\alpha\in\F_{2^m}^*$,
+then $\C_{D}$ defined by \eqref{Eq:Dingcode} is a binary linear code with length $n_f$ and dimension $m$, and its weight distribution
+is given by the following multiset:
+$\left\{\left\{\frac{2n_f+\W f(\alpha)}{4} : \alpha\in\F_{2^m}^*\right\}\right\}\cup \{\{0\}\}.$
+\end{theorem}
+
+\iffalse
+Since the vector space $\F_2^m$ is isomorphic to the finite field $\F_{2^m}$ through the choice of some basis
+of $\F_{2^m}$ over $\F_2$. If $(\lambda_1, \lambda_2,\cdots,\lambda_m)$ is a basis of $\F_{2^m}$ over $\F_2$,
+then every vector $x=(x_1,\cdots,x_m)$ of $\F_2^m$ can be identified with the element
+$x_1\lambda_1+x_2\lambda_2+\cdots+x_m\lambda_m\in\F_{2^m}$.
+The finite field $\F_{2^m}$ can then be viewed as an $m$-dimensional vector space over $\F_2$.
+Further, each of its elements can be identified with a binary vector of
+length $m$.\fi
+
+ By choosing a basis of $\F_{2^m}$ over $\F_2$, $\F_{2^m}$ can then be viewed as an $m$-dimensional vector space over $\F_2$.
+ Thus, each element of  $\F_{2^m}$ can be identified with a binary row vector of length $m$. We now restate the above generic construction from the viewpoint of vector space. Let $D=\{\mathbf g_1,\mathbf g_2, \cdots, \mathbf g_{n}\}\subseteq \mathbb F_2^m$.
+The linear  code $\mathcal C_{D}$  of length $m$ over $\mathbb F_2$  defined from $D$ is:
+\begin{align}\label{eq:C-D}
+\mathcal C_{D}=\{(\mathbf a\cdot \mathbf g_1, \mathbf a\cdot \mathbf g_2, \cdots, \mathbf a\cdot \mathbf g_{n}): \mathbf a \in \mathbb F_2^m\},
+\end{align}
+where $\mathbf a\cdot \mathbf g_i$  is the dot product of $\mathbf a$ and $ \mathbf g_i$.
+The set $D$ is called the \emph{defining set} of the resulting code $\mathcal C_D$.
+
+
+{\color{red}
+\subsection{Bounds on LRC codes}
+
+ In 2013,  Cadamb and Mazumdar derived a new bound for $[n,k,d]$ LRCs which took the size of the alphabet into
+ account~\cite{Viveck2013}. This bound is known as Cadamb-Mazumdar bound. They showed that the dimension $\kappa$ of
+ an $[n, \kappa, d]$-LRC $\mathcal{C}$ over $\mathbb{F}_{q}$ with locality $r$ is upper-bounded by
+\begin{equation}\label{Eq:CM}
+ \kappa \leq \min _{\iota \in \mathbb{N}^{+}}\left\{\iota r+\kappa_{\text {opt }}^{(q)}[n-\iota(r+1), d]\right\},
+\end{equation}
+where $\kappa_{\text {opt }}^{(q)}[n, d]$ is the largest possible dimension of a code with length $n$ for a given alphabet size $q$
+and a given minimum distance $d$.
+%This bound is applied to both linear and nonlinear codes.
+The Cadamb-Mazumdar bound can be attained
+by binary simplex codes~\cite{Viveck2015}. Later in~\cite{Viveck2013,Natalia2015}, the explicit constructions of
+the family of binary LRCs are proposed which achieve the bound in~\eqref{Eq:CM}.  However, because the exact
+value of $\kappa^q_{\text {opt}}[n,d]$ can only be obtained in a limited case with relatively short code length, it is difficult to apply
+the Cadamb-Mazumdar bound to evaluate the optimality of general LRCs.
+Let $r$ and $l$ be two positive integers and $y=\left(y_1, y_2, \cdots, y_l\right) \in [t]^l$ be an $l$-dimensional vector with coordinates taking in $[t]$.
+We define the integers $A(r, l, y)$ and $B(r, l, y)$ as follows:
+\begin{eqnarray}
+&&A(r, l, y)=\sum_{j=1}^l(r-1) y_j+l,\label{eq:A} \\
+&&B(r, l, y)=\sum_{j=1}^l r y_j+l.\label{eq:B}
+\end{eqnarray}
+Then for any $[n, \kappa, d]_q$ linear $(r,t)_I$-LRC,  Huang et al. proposed in \cite{HuangYUSTIT16} the following
+upper bounds on $d$ and $\kappa$.
+\begin{lemma}[\cite{HuangYUSTIT16}]\label{L:BoundHuang}
+For any $[n, \kappa, d]_q$ linear $(r, t)_I$-LRC, the minimum distance $d$ satisfies
+\begin{equation}\label{eq:bound-d}
+d \leq  \min _{\substack{1\leq l \leq \left\lceil\frac{\kappa}{(r-1)t+1}\right\rceil\\ y \in [t]^{l} \\ A(r, l, y)<\kappa}}\left\{d_{{\rm opt }}^{(q)}[n-B(r, l, y), \kappa-A(r, l, y)]\right\},
+\end{equation}
+and the dimension $\kappa$ satisfies
+\begin{equation}\label{eq:bound-dim}
+\kappa\leq \min _{\substack{1\leq l \leq \left\lceil\frac{\kappa}{(r-1)t+1)}\right\rceil\\ y \in [t]^{l} \\ A(r, l,y)<\kappa}}\left\{ A(r,l,y)+\kappa^{(q)}_{{\rm opt}}[n-B(r,l,y),d])\right\},
+\end{equation}
+where $l$ is a positive integer, $A(r, l, y)$ and $B(r, l, y)$ are defined by~\eqref{eq:A} and~\eqref{eq:B} respectively,
+and $d_{\rm opt}^{(q)}[n, \kappa]$ is the largest possible minimum Hamming
+distance $d$ of a code with length $n$ for a given alphabet size $q$
+and a given dimension $\kappa$.
+\end{lemma}
+Note that a linear $(r, t)$-LRC is also a linear $(r, t)_I$-LRC.
+Thus, the two bounds given in Lemma~\ref{L:BoundHuang} hold for linear $(r, t)$-LRCs as well.
+
+The following is the well-known  Griesmer bound on the length of a linear code.
+\begin{lemma}[Griesmer bound]\label{L:Griesmerbound}
+For any binary linear code $[n, \kappa, d]$, we have
+\begin{eqnarray*}
+n \geq \sum_{i=0}^{\kappa-1}\bigg\lceil\frac{d}{2^i}\bigg\rceil,
+\end{eqnarray*}
+where $\lceil \cdot \rceil$ denotes the smallest integer greater than or equal to a given number.
+\end{lemma}
+
+In this paper, we will investigate the optimality of LRCs, in the sense of the following definition.
+\begin{definition}
+Let $\mathcal{C}$ be an $[n, \kappa, d]_q$ linear code with locality $r$.
+We say that $\mathcal{C}$ is distance-optimal if there does not exist an $[n, \kappa, d+1]_q$ code with locality $r$.
+Similarly, we say that $\mathcal{C}$  is dimensional-optimal if there does not exist an $[n, \kappa+1, d]_q$ code
+with locality $r$.
+%Finally, it is called $r$-optimal if there does not exist an $[n, k, d]_q$ code with all-symbol locality $r-1$.
+\end{definition}
+
+%In general, a binary linear code  is call optimal if there is no binary linear code with parameters $[n, K+1, d]$ \cite{HPbook2003}.
+%In this letter, we focus on optimizing the largest $d$ for a given binary linear code with length $n$ and dimension $K$.
+%For any given binary linear code $[n, K, d]$, we say that this code is \emph{distance-optimal} if there is no $[n, K, d+1]$ binary linear code.
+%There are many work on the subject that finding the largest $d$ for linear codes when  their lengths and dimensions are fixed,
+%see for instance \cite{JaffeIT99}, and
+%in these references the same notation ``distance-optimal" has been mentioned.
+%In the view of the Griesmer bound, it can be easily seen that any binary linear code $[n, K, d]$ such that
+%$n<\sum_{i=0}^{K-1}\big\lceil\frac{d+1}{2^i}\big\rceil$ is distance-optimal.
+}
+
+
+\section{A new construction method  for designing LRC with locality $2$  and multiple repair alternatives via autocorrelation spectra of Boolean functions}\label{Sec-LRC-Bool-Functions}
+The following main result will play an important role in the rest of the paper.
+\begin{theorem}\label{T:relation}
+Let $f$ in $\mathcal{B}_m$ such that $f(0)=0$
+and $2n_f\not=-\W f(\alpha)$ for all $\alpha\in\F_{2^m}^*$.
+Then $\C_D$ is an $[n_f, m, d]$-LRC with $d=\min\{\frac{2n_f+\W f(\alpha)}{4} : \alpha\in\F_{2^m}^*\}$, $r=2$,
+and $t=\min\left\{\frac{4n_f+A_f(a)-2^m}{8} : a\in D\right\}$,
+in which recall that $n_f$ is the size of the support set of $f$ and $A_f(a)$ is the autocorrelation function of $f$ at point $a$.
+% both of them are defined in Section~\ref{Sec-Preliminaries} above.
+
+\end{theorem}
+
+\begin{proof}
+It follows from Theorem~\ref{Lemma-ding} that $\C_D$ has dimension $m$ and minimum distance $\min\{\frac{2n_f+\W f(\alpha)}{4} : \alpha\in\F_{2^m}^*\}$.
+In the rest part of this proof. We will prove that $\C_D$ is a $(2,t)$-LRC with $t=\min\left\{\frac{4n_f+A_f(a)-2^m}{8} : a\in D\right\}$.
+    Since $\mathrm{Tr}_1^m(\alpha x)=0$ for all $\alpha\in \F_{2^m}^*$ if and only if $x=0$, then for all $\alpha\in \F_{2^m}^*$, the $i$-th coordinate of the codeword $c_{\alpha}$ defined by \eqref{Eq:Dingcode} can be recovered from the subset $\{j_1,j_2\}$ if and only if $d_i+d_{j_1}+d_{j_2}=0$, where $d_i, d_{j_1}, d_{j_2}\in D$.
+    Hence, $\C_D$ is an $[n_f, m, d]$-LRC with $r=2$, if for all $i\in \{1,\cdots, n_f\}$, there is at least one repair set of the $i$-th coordinate of $\C_D$ which has $2$ elements. We now prove that $\C_D$ is an $(2,t)$-LRC with $t=\min\left\{\frac{4n_f+A_f(a)-2^m}{8}: a\in D\right\}$.
+    From the above discussion, we know that for a given $i\in \{1,\cdots, n_f\}$,
+    the $i$-th coordinate of $\C_D$ can recovered from the subset $\{j_1,j_2\}$ if and only if  $d_i+d_{j_1}+d_{j_2}=0$, where $d_i, d_{j_1}, d_{j_2}\in D$, which is equivalent to saying that, $d_{j_1}\in \left(d_i+D\right)\bigcap D$, where $d_i+D=\{d_i+d: d\in D\}$.
+    Hence, in respect of the order of $\{j_1,j_2\}$,
+    the number of disjoint repair sets of the $i$-th coordinate of $\C_D$, denoted by $t_i$, can be computed as
+    \begin{align*}
+        t_i&=\frac{1}{2}\#\left\{(j_1,j_2): d_i+d_{j_1}+d_{j_2}=0, d_i, d_{j_1}, d_{j_2}\in D\right\}\\
+           &=\frac{1}{2}\#\left\{j_1: d_{j_1}\in D\bigcap (d_i+D) \right\} \\
+           &=\frac{1}{2}\# \Big(D\bigcap (d_i+D)\Big).\\
+    \end{align*}
+    It is  not difficult  to see that $\#\Big(D \bigcap \left(d_i+D\right)\Big)$ must be even, since $d_{j_1}\in D\bigcap \left(d_i+D\right)$ if and only if
+    $d_{j_1}+d_i\in D\bigcap \left(d_i+D\right)$, and $d_{j_1}\ne d_{j_1}+d_i$ (note that $f(0)=0$ implies $d_i\ne 0$ for all $d_i\in D$).
+    Since $\#D=\#d_i+D=n_f$, the autocorrelation function $A_f(d_i)$ can be written as
+    \begin{align*}
+        A_f(d_i)&=\sum_{x\in\F_{2^m}}(-1)^{f(x)+f(x+d_i)}\\
+                &=\sum_{x\in D\bigcap (d_i+D)}(-1)^{0}
+                   +\sum_{x\in \big(D\setminus (d_i+D)\big)\bigcup \big((d_i+D)\setminus D\big)}(-1)^1
+                   +\sum_{x\in \F_{2^m}\setminus (D\bigcup (d_i+D))}(-1)^{0}\\
+                &=2t_i+2(-1)(\#D-2t_i)+2^m-(2\#D-2t_i)\\
+                &=8t_i-4n_f+2^m.
+    \end{align*}
+    Therefore, we have $t_i=\frac{4n_f+A_f(d_i)-2^m}{8}$, and thus $t=\min\left\{\frac{4n_f+A_f(a)-2^m}{8} : a\in D\right\}$.
+\end{proof}
+
+
+\section{Binary LRCs with locality $2$  and multiple repair alternatives from specific wide families of  Boolean functions}\label{LRC-Bool-Specific}
+\subsection{LRCs from (bent) Boolean functions through the M-M constructions}\label{LRC-MM}
+First, recall that the {\it Hamming distance} between two Boolean functions $f_1$ and
+$f_2$ in $\mathcal{B}_m$ is equal to the weight of $f_1\oplus f_2$.
+The minimum distance between $f$ in $\mathcal{B}_m$ and the set of all affine
+functions $l_{b}\oplus \epsilon$ ($b \in\F_2^m,\epsilon \in {\mathbb F}_2$), called the {\it nonlinearity} of $f$, is denoted by
+$\mathrm{nl}(f)$ and satisfies the relation $\mathrm{nl}(f)=2^{n-1}-\frac{1}{2}\max_{b\in
+\F_2^m}\left|\W f(b)\right|.$ Because of Parseval's relation (\cite{MS1977}), it is upper bounded by
+$2^{m-1}-2^{m/2-1}$. This bound is tight for $m$ even. Functions achieving the equality are called \emph{bent} (\cite{Dil74,Rothaus}).
+Bent functions are interesting combinatorial objects with many connections in many domains.(see \cite{CarletMesnagerDCC2015},\cite{Book-Carlet},\cite{SihemBentBook16}).
+
+
+ %The  nonlinearity of a Boolean function $f\in\mathcal{B}_m$ can be
+%computed as $\mathrm{nl}(f)= 2^{m-1}-\frac{1}{2}\max_{\omega\in\F_2^m}|\W f(\omega)|.$
+
+%When $m$ is even, the nonlinearity of $f$ can also be computed as
+%\begin{eqnarray*}
+%\mathrm{nl}(f)&=&2^{m-1}-\frac{1}{2}\max_{a,b\in\F_2^{m/2}}|\W f(a,b)|.
+%\end{eqnarray*}
+%The well-known Parseval's relation \cite{MS1977} states that: for any $m$-variable Boolean function,
+%we have $\sum_{u\in\F_2^n}{\W f}^2(u)=2^{2m}$.
+%Parseval's relation implies that, for a Boolean function of $m$ variables,
+%the mean of square of Walsh spectrum equals $2^n$.
+%Then the maximum of the square of Walsh spectrum is greater than or equal to $2^m$
+%and therefore $\max_{u\in\F_2^m}|\widehat{f}(u)|\geq 2^{\frac{m}{2}}$.
+%This implies that the nonlinearity $\mathrm{nl}(f)$ is upper-bounded by $2^{m-1}-2^{\frac{m}{2}-1}$.
+%This upper bound $2^{m-1}-2^{\frac{m}{2}-1}$ is tight for even $m$.
+%The functions achieving the equality are called \emph{bent} \cite{Rothaus}.
+
+
+\begin{lemma} [\cite{Rothaus}] \label{bent-df}
+A Boolean function $f$ in $\mathcal{B}_m$ is bent if and only if $A_f(\omega)=0$ for any $\omega\in\F_2^{m*}$.
+\end{lemma}
+As a first consequence of Theorem \ref{T:relation} using Lemma \ref{bent-df}, we derive the following result highlighting that the bent functions allow the constructions of binary LRCs with locality $2$ and multiple repair alternatives.
+\begin{corollary}\label{T:LRCBent}
+Let $f\in \mathcal{B}_m$ (where $m\geq 4$) be a bent function such that $f(0)=0$.
+Then $\C_D$ is an $[n_f, m, \frac{n_f}{2}-2^{\frac m2-2}]$-LRC with $r=2$
+and $t=\frac{4n_f-2^m}{8}$.
+\end{corollary}
+ It is known that any bent function in $m$ variables has Hamming weight $2^{m-1}-2^{\frac{m}{2}-1}$ or $2^{m-1}+2^{\frac{m}{2}-1}$.
+Then by Corollary~\ref{T:LRCBent} we can get $[2^{m-1}-2^{\frac{m}{2}-1}, m, 2^{m-2}-2^{\frac{m}{2}-1}]$-LRC with $(r, t)=(2, 2^{m-2}-2^{\frac{m}{2}-2}-2^{m-3})$
+and $[2^{m-1}+2^{\frac{m}{2}-1}, m, 2^{m-2}]$-LRC with $(r, t)=(2, 2^{m-2}+2^{\frac{m}{2}-2}-2^{m-3})$.
+
+The well-known class of Maiorana-McFarland (M-M) bent functions was discovered independently by Maiorana
+and McFarland (see \cite{Dil74,Mcfarland1973differencesets}), which includes a huge number of bent functions.
+The M-M construction produce bent functions indeed in $\mathcal{B}_{m}$ where
+$m=2k$ but it was generalized into a more general case as follows (see, e.g., \cite{Book-Carlet}).
+
+\iffalse
+\begin{construction}[\cite{Dil74,Mcfarland1973differencesets}]\label{C:MMbent}
+For $m=2k$, we define a Boolean function $b\in\mathcal{B}_{m}$ as follows
+\begin{equation*}\label{Cons.MMbent}
+b(x,y)=\phi(x)\cdot y+g(x),
+\end{equation*}
+where $x,y\in \F_2^{k}$, $\phi$ is an arbitrary permutation over $\F_2^k$,
+and $g$ is an arbitrary Boolean function in $k$ variables.
+\end{construction}
+\fi
+%Indeed, the M-M construction can be generalized into a more general case, see for instance \cite{Book-Carlet}.
+\begin{construction}\label{C:GMM}
+Let $m$ be a positive integer and $s_1,s_2$ be two positive integers such that $s_1+s_2=m$.
+Define a Boolean function $f\in\mathcal{B}_{m}$ as follows
+\begin{equation}\label{Cons.GMM}
+f(x,y)=\phi(x)\cdot y+g(x),
+\end{equation}
+where $x\in\F_2^{s_1},y\in\F_2^{s_2}$, $\phi$ be an arbitrary mapping from $\F_2^{s_1}$ to $\F_2^{s_2}$,
+and $g$ is an arbitrary Boolean function in $s$ variables.
+\end{construction}
+
+For a mapping $\phi$ from $\F_2^{s_1}$ to $\F_2^{s_2}$,
+we denote $\mathrm{Ker}(\phi)=\{x\in \F_2^{s_1}\mid \phi(x)=0\}$,
+$\mathrm{Im}\phi=\{\phi(x)\mid x\in \F_2^{s_1}\}$, and $\phi(U)=\{\phi(x)\mid x\in U\}$ for a subset $U\subseteq \F_2^{s_1}$.
+Note that for $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$, the Walsh transform of $f$ in (\ref{Cons.GMM}) can be written as
+\begin{align*}
+   \W f(a,b)=\sum_{x\in \F_2^{s_1},y\in\F_2^{s_2}}(-1)^{\phi(x)\cdot y+g(x)+a\cdot x+b\cdot y}
+    =\sum_{x\in \F_2^{s_1}}(-1)^{g(x)+a\cdot x}\sum_{y\in\F_2^{s_2}}(-1)^{(\phi(x)+b)\cdot y}.
+\end{align*}
+Then, the following corollary is a direct consequence.
+
+\begin{corollary}\label{thm:walsh-con2}
+Let $f$ be the function generated by Construction \ref{C:GMM}, then for any $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$
+we have
+\begin{eqnarray}
+\W f(a,b)
+&=& \left\{
+\begin{array}{llllll}
+2^{s_2}\sum\limits_{x\in \phi^{-1}(b)}(-1)^{g(x)+a\cdot x},& b\in\mathrm{Im}\phi,\\
+0,&b\not\in\mathrm{Im}\phi.
+\end{array}
+\right.
+\end{eqnarray}
+\end{corollary}
+
+Furthermore, let $U$ be a subset of $\F_2^{s_1}$ and $V$ be a subset of $\F_2^{s_2}$.
+If $\phi$ is an injection from $\F_2^{s_1}\setminus U$ to $\F_2^{s_2}\setminus V$, then for $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$,
+we have
+\begin{eqnarray}\label{MM-Wf-1}
+\W f(a,b)
+%&=&\sum\limits_{x\in {\F^k_{2}}}(-1)^{\beta\cdot F(x)+a\cdot x}\sum\limits_{y\in {\F^k_{2}}}(-1)^{b \cdot y}\nonumber\\
+&=& \left\{
+\begin{array}{llllll}
+2^{s_2}\sum\limits_{x\in \phi^{-1}(b)}(-1)^{g(x)+a\cdot x},& b\in\phi(U),\\
+2^{s_2}(-1)^{g(\phi^{-1}(b))+a\cdot \phi^{-1}(b)},&b\in\F_2^{s_2}\setminus V,\\
+0,&b\not\in\mathrm{Im}\phi.
+\end{array}
+\right.
+\end{eqnarray}
+
+\begin{theorem}\label{thm:GMM-wf}
+Let $f$ be the function generated by Construction \ref{C:GMM}, where $g\equiv 0$,
+$U$ is a subspace of $\F_2^{s_1}$.
+Define $\phi$ as a mapping from $\F_2^{s_1}$ to $\F_2^{s_2}$ satisfying
+$\phi$ is additive homomorphic from $U$ to $V$, and $\phi$ is injective from $\F_2^{s_1}\setminus U$ to $\F_2^{s_2}\setminus V$.
+Then, for any $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$,
+\begin{eqnarray}
+\W f(a,b)
+&=& \left\{
+\begin{array}{llllll}
+(-1)^{a\cdot \phi^{-1}(b)} 2^{s_2} \#\mathrm{Ker}(\phi), & \mbox{if}~a\in \mathrm{Ker}(\phi)^{\bot}, b\in\phi(U),\\
+(-1)^{a\cdot \phi^{-1}(b)} 2^{s_2},&\mbox{if}~ b\in\F_2^{s_2}\setminus V,\\
+0,& \mbox{otherwise}.
+\end{array}
+\right.
+\end{eqnarray}
+\end{theorem}
+
+\begin{proof}
+    Since $\phi$ is additive homomorphic from $U$ to $V$, we have that for any $b\in \phi(U)$,  $\phi^{-1}(b)=u+\mathrm{Ker}(\phi)$, $u\in U$.
+    For convenience, we denote by $u_b$ the coset representative of $\phi^{-1}(b)$.
+
+    According to (\ref{MM-Wf-1}), we only need to consider the case for $b\in\phi(U)$.
+    Suppose that $\mathrm{Ker}(\phi)$ has dimension $w$,
+    then $\mathrm{Ker}(\phi)=\{\sum_{i=1}^w c_i \kappa_i\mid c_i\in \F_2, i=1,\cdots, w\}$ for a basis $\{\kappa_1,\cdots, \kappa_w\}$ on $\F_2^{s_1}$.
+    Let $\phi^{-1}(b)=u_b+\mathrm{Ker}(\phi)$, then for $a\in\F_2^{s_1}$ and $b\in\phi(U)$, we have
+    \begin{align*}
+       \W f(a,b)&=2^{s_2} \sum\limits_{x\in u_b+\mathrm{Ker}(\phi)}(-1)^{a\cdot x}\\
+                        &=(-1)^{a\cdot u_b} 2^{s_2} \sum\limits_{y\in \mathrm{Ker}(\phi)}(-1)^{a\cdot y}\\
+                        &=(-1)^{a\cdot u_b} 2^{s_2} \sum\limits_{c\in \F_2^w}(-1)^{a\cdot (\sum_{i=1}^w c_i \kappa_i)}\\
+                        &=(-1)^{a\cdot u_b} 2^{s_2} \sum\limits_{c\in \F_2^w}(-1)^{\sum_{i=1}^w c_i \left(a\cdot \kappa_i\right)}\\
+                        &=(-1)^{a\cdot u_b} 2^{s_2} \sum\limits_{c\in \F_2^w}(-1)^{c \cdot d}\\
+                        &=\left\{\begin{array}{ll}
+                                 (-1)^{a\cdot u_b} 2^{s_2+w}, & \mbox{if}~a\in \mathrm{Ker}(\phi)^\bot,\\
+                                 0, & \mbox{otherwise},
+                                 \end{array}\right.
+    \end{align*}
+    where $d=(a \cdot \kappa_1,\cdots,a \cdot \kappa_w)\in \F_2^w$.
+    Note that when $a\in \mathrm{Ker}(\phi)^\bot$,
+    then $(-1)^{a\cdot u_b}$ is independent with the choice of $u_b$ in the coset $\phi^{-1}(b)$,
+    so we denote $u_b=\phi^{-1}(b)$ for convenience.
+    The desired result follows.
+\end{proof}
+
+%Recall that the defining set $D$ of $f$ is defined as the support set of $f$. Theorem \ref{thm:AC-con2} gives the autocorrelation values of functions from Construction \ref{C:GMM}. Due to the limit in space, the (long) proof of  Theorem \ref{thm:AC-con2} was removed.  It will be included in the full version.
+
+Recall that the defining set $D$ of $f$ is defined as the support set of $f$.
+Theorem \ref{thm:AC-con2} gives the autocorrelation values of functions from Construction \ref{C:GMM}.
+
+\begin{theorem}\label{thm:AC-con2}
+Let $f$ be the function generated by Construction \ref{C:GMM}, where $g\equiv 0$, $U$ is a  $k$-dimensional
+subspace of $\F_2^{s_1}$.
+Define $\phi$ as a mapping from $\F_2^{s_1}$ to $\F_2^{s_2}$ satisfying
+$\phi$ is additive homomorphic from $U$ to $V$, and $\phi$ is injective from $\F_2^{s_1}\setminus U$ to $\F_2^{s_2}\setminus V$.
+Then, for any $(a,b)\in D$,
+\begin{eqnarray}
+A_f(a,b)
+&=& \left\{
+\begin{array}{llllll}
+2^{s_2+k}, & \mbox{if}~a\in \mathrm{Ker}(\phi)\setminus\{0\}, b\in \phi(U)^{\bot},\\
+0,& \mbox{otherwise}.
+\end{array}
+\right.
+\end{eqnarray}
+\end{theorem}
+{\color{blue}
+\begin{proof}
+    Since $g\equiv 0$, then for any $b\in \F_2^{s_2}$, $f(0,b)=\phi(0)\cdot y+0=0$, and thus $(0,b)\not\in D$.
+    Hence, for $(a,b)\in D$, we know that $a\neq 0$.
+    For any $(a,b)\in D$, the autocorrelation function of $f$ can be written as
+    \begin{align}
+    \nonumber    A_f(a,b)&=\sum_{x\in \F_2^{s_1}, y\in \F_2^{s_2}} (-1)^{\phi(x+a)\cdot (y+b)+g(x+a)+\phi(x)\cdot y+g(x)}\\
+    \nonumber            &=\sum_{x\in \F_2^{s_1}} (-1)^{\phi(x+a)\cdot b} \sum_{y\in \F_2^{s_2}} (-1)^{\left(\phi(x+a)+\phi(x)\right)\cdot y}\\
+    \label{thm:Af-1}     &=\sum_{x\in U} (-1)^{\phi(x+a)\cdot b}\sum_{y\in \F_2^{s_2}} (-1)^{\left(\phi(x+a)+\phi(x)\right)\cdot y}.
+    \end{align}
+    Note that (\ref{thm:Af-1})  comes from the fact that $\phi$ is injective on $\F_2^{s_1}\setminus U$ and $a\neq 0$,
+    and thus $\phi(x+a)\ne\phi(x)$ for any  $x\in\F_2^{s_1}\setminus U$, which implies that
+    $\sum_{y\in \F_2^{s_2}} (-1)^{\left(\phi(x+a)+\phi(x)\right)\cdot y}=0$.
+
+    \textbf{Case 1.} $a\not \in U$.
+
+    Since $U$ is a subspace of $\F_2^{s_1}$, then $a+x\not \in U$ for all $x\in U$,
+    which leads to $\phi(x+a)\neq \phi(x)$  for all $x\in U$, and thus $A_f(a,b)=0$.
+
+   \textbf{Case 2.} $a \in U\bigcap \mathrm{Ker}(\phi)\setminus \{0\}$.
+
+    Since $\phi$ is homomorphism on $U$, then $\mathrm{Ker}(\phi)$ is a subspace of $U$.
+    For any $x, u\in U$, if $x\in u+\mathrm{Ker}(\phi)$, then $x+a\in u+\mathrm{Ker}(\phi)$,
+    which leads to $\phi(x+a)=\phi(x)$  for all $x\in U$.
+    Then, $\sum_{y\in \F_2^{s_2}} (-1)^{\left(\phi(x+a)+\phi(x)\right)\cdot y}=2^{s_2}$  for all $x\in U$,
+    and thus
+        $A_f(a,b)=2^{s_2}\sum_{x\in U} (-1)^{\phi(x+a)\cdot b}=2^{s_2}\sum_{x\in U} (-1)^{\phi(x)\cdot b}$.
+
+
+    \textbf{Case 3.} $a \in U\setminus \mathrm{Ker}(\phi)$.
+
+    For any $x, u\in U$, if $x\in u+\mathrm{Ker}(\phi)$, then $x+a\in a+u+\mathrm{Ker}(\phi)$.
+    Note that since $a\not \in \mathrm{Ker}(\phi)$, then $\left(u+\mathrm{Ker}(\phi)\right)\bigcap\left(a+u+\mathrm{Ker}(\phi)\right)=\emptyset$.
+    which leads to $\phi(x+a)\neq \phi(x)$ for all $x\in U$,
+    and thus $A_f(a,b)=0$.
+
+    From Case 1 to Case 3, and since $\phi$ is additive homomorphic on $U$, we know that for  $(a,b)\in D$,
+    \begin{align}\label{thm:Af-2}
+        A_f(a,b)&=\left\{\begin{array}{ll}
+                         2^{s_2} \sum_{x\in U} (-1)^{\phi(x)\cdot b}, & \mbox{if}~a\in \mathrm{Ker}(\phi)\setminus\{0\},\\
+                         0, & \mbox{otherwise}.
+                         \end{array}\right.
+    \end{align}
+    Since $U$ is a  $k$-dimensional subspace of $\F_2^{s_1}$, then we have $U=\{\sum_{i=1}^k c_i u_i\mid c_i\in \F_2, i=1,\cdots, k\}$ for a basis $\{u_1,\cdots, u_k\}$ on $\F_2^{s_1}$. Since $\phi$ is additive homomorphic, then $\{\phi(u_1),\cdots, \phi(u_k)\}$ on $\F_2^{s_2}$ is still linear independent.
+    Hence,
+    \begin{align}
+    \nonumber    \sum_{x\in U} (-1)^{\phi(x)\cdot b}&=\sum_{c\in \F_2^k} (-1)^{\phi\left(\sum_{i=1}^k c_i u_i\right)\cdot b}\\
+    \nonumber                                       &=\sum_{c\in \F_2^k} (-1)^{\sum_{i=1}^k c_i \left(\phi(u_i)\cdot b\right)}\\
+    \nonumber                                       &=\sum_{c\in \F_2^k}(-1)^{c\cdot d}\\
+    \label{thm:Af-3}                                       &=\left\{\begin{array}{ll}
+                                                                     2^k, & \mbox{if}~b\in \phi(U)^\bot,\\
+                                                                     0, & \mbox{otherwise},
+                                                                    \end{array}\right.
+    \end{align}
+    where $d=(\phi(u_1)\cdot b,\cdots,\phi(u_k)\cdot b)\in \F_2^k$.
+    Combining (\ref{thm:Af-2}) with (\ref{thm:Af-3}), one can obtain the desired result.
+\end{proof}
+}
+
+
+The following result is obtained directly by combining Theorem~\ref{T:relation}, Theorem~\ref{thm:GMM-wf}, and Theorem~\ref{thm:AC-con2}.
+It can be easily checked that Corollary ~\ref{T:LRCBent} is a particular case of
+Theorem~\ref{thm:LRC-MM} below with $U=\{0\}$.
+
+\begin{theorem}\label{thm:LRC-MM}
+Let $f$ be an $m$-variable ($m\geq 4$) M-M function generated by Construction \ref{C:GMM}, where $m=s_1+s_2$, $g\equiv 0$, and $U$ is a  $k$-dimensional
+subspace of $\F_2^{s_1}$.
+Define $\phi$ as a mapping from $\F_2^{s_1}$ to $\F_2^{s_2}$ satisfying
+$\phi$ is additive homomorphic from $U$ to $V$, $\#U\ne \#\mathrm{Ker}(\phi)<2^{s_1-1}$ if $k\geqslant 1$, and $\phi$ is injective from $\F_2^{s_1}\setminus U$ to $\F_2^{s_2}\setminus V$.
+Then, $\C_D$ defined in (\ref{eq:C-D}) is an $[n_f, m, \frac{n_f}{2}-2^{s_2-2}\#\mathrm{Ker}(\phi)]$-LRC with $r=2$
+and
+\begin{align*}
+    t&=\left\{\begin{array}{ll}
+               \frac{4n_f-2^{s_2+k}-2^{m}}{8} , & \mbox{if}~\mathrm{Ker}(\phi)\setminus\{0\}\neq \emptyset, ~\phi(U)^{\bot}\neq \emptyset,\\
+                \frac{4n_f-2^{m}}{8}, & \mbox{otherwise}.
+               \end{array}\right.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+    Since $g\equiv 0$ and $\phi$ is additive homomorphic from $U$ to $V$, then $f(0,0)=\phi(0)\cdot 0+0=0$.
+    It can be easily checked that since $\#\mathrm{Ker}(\phi)<2^{s_1-1}$, then for any $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$,
+    \begin{align*}
+        2n_f+\W f(a,b)&=2^{s_1+s_2}-\W f(0,0)+\W f(a,b)\\
+                             &=2^{s_1+s_2}-2^{s_2}\#\mathrm{Ker}(\phi)+\W f(a,b)\\
+                             &\geqslant 2^{s_1+s_2}-2^{s_2+1}\#\mathrm{Ker}(\phi)>0.
+    \end{align*}
+    Hence, according to Theorem~\ref{T:relation}, we know that
+   $\C_D$ is an $[n_f, m, d]$-LRC with $d=\min\{\frac{2n_f+\W f(a,b)}{4} : (a,b)\in\F_2^{s_1}\times\F_2^{s_2}, (a,b)\ne (0,0)\}$, $r=2$,
+and $t=\min\{\frac{4n_f+A_f(a,b)-2^{m}}{8} : (a,b)\in D\}$.
+From Theorem~\ref{thm:GMM-wf} and Theorem~\ref{thm:AC-con2},
+we only need to prove that there exists $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$ such that $\W f(a,b)=-2^{s_2}\#\mathrm{Ker}(\phi)$.
+If $U=\{0\}$, then we have $\#\mathrm{Ker}(\phi)=1$, and thus $\W f(a,b)=-2^{s_2}$ for some $(a,b)\in\F_2^{s_1}\times\F_2^{s_2}$.
+If $\mathrm{dim}(U)\geqslant 1$,
+then we choose $a\in \mathrm{Ker}(\phi)^{\bot}\setminus U^{\bot}$,
+and thus for any $b\in \phi(U)$, $a\cdot \phi^{-1}(b)\ne 0$.
+The desired result is therefore deduced thanks to Theorem~\ref{thm:GMM-wf}.
+\end{proof}
+
+
+
+\subsection{LRCs from Boolean functions based on partial spreads}\label{LRC-PS}
+Spreads and partial spreads are fundamental objects in several fields, including the theory of (bent) Boolean functions.
+We emphasize below that they also play a role in constructing LRCs. Recall that a partial $k$-spread of the vector space $\F_2^m$ is a collection $\mu$ of $k$-dimensional subspaces
+$V_{1}, V_{2}, \cdots, V_{s}$ of $\F_2^m$ such that $V_i\cap V_{j}=\{\0\}$ for $1\leq i\neq j\leq s$.
+Such a collection is called a spread if, in addition, $\bigcup_{i=1}^{s} V_i=\F_2^m$.
+Particularly, for $m=2k$, a partial $k$-spread of $\F_2^m$ with $m=2k$ is a set of pairwise
+supplementary of $k$-dimensional subspaces of $\F_2^m$.
+In this case, a $k$-spread of $\F_2^m$ can be easily obtained from the finite field $\F_{2^m}$,
+in which a $k$-dimensional subspace of $\F_2^m$ can be viewed as an additive group of $\F_{2^m}$.
+Indeed, let $\alpha$ be a primitive element of $\F_{2^m}$ and $\gamma=\alpha^{2^k+1}$, then we can
+easily verify that
+$V_{1}, V_{2}, \cdots, V_{2^k+1}$ defined by $V_i=\{\alpha^{i-1},\alpha^{i-1}\gamma,\alpha^{i-1}\gamma^2,\cdots,
+\alpha^{i-1}\gamma^{2^k-2}\}\cup \{0\}$ for any $1\leq i \leq 2^k+1$ form a spread of $\F_{2^m}$.
+In the sequel, we consider Boolean functions with support constituted by partial spreads and
+the parameters of results in locally repairable codes.
+
+\begin{lemma}\label{L:Walsh-PS}
+Let $m=2k\geq 4$ be an integer and $\Omega_s=\{V_1,V_2,\cdots,V_s\}$ be a partial $k$-spread of $\F_2^m$, where $2\leq s\leq 2^k+1$.
+Let $f_s\in\mathcal{B}_{m}$ be the Boolean function with support $\Omega_s\setminus\{\0\}$, i.e.,
+$\mathrm{supp}(f_s)=\Omega_s\setminus\{\0\}$. Then we have
+\begin{eqnarray*}
+A_{f_s}(a)
+&=& \left\{
+\begin{array}{llllll}
+2^m,&\mathrm{if~}a=\0\\
+2^m+4s^2-2^{k+2}s-8s+2^{k+2},&\mathrm{if~}a\in\mathrm{supp}(f_s)\\
+2^m+4s^2-2^{k+2}s,&\mathrm{if~}a\in\F_2^{m*}\setminus\mathrm{supp}(f_s)
+\end{array}
+\right.
+\end{eqnarray*}
+\end{lemma}
+\begin{proof}
+The well-known Wiener-Khintchine Theorem (see e.g., \cite{Carl93}) shows that for any
+$m$-variable Boolean function $h$ and an arbitrary vector $a\in\F_2^m$, we have (where ``$\cdot$" denotes a scalar product in $\F_2^m$):
+\begin{equation}\label{E:Walsh2Walsh-AC}
+%A_h(a)=2^{-m}\sum_{u\in\F_2^m}\W{h}^2(u)(-1)^{u\cdot a}.
+A_h(a)=2^{-m}\sum_{u\in\F_2^m} \widehat{\chi_h}^2(u)(-1)^{u\cdot a}.
+\end{equation}
+Therefore, it is sufficient to determine the values of $\widehat{\chi_{f_s}}^2(u)$ for all $u\in\F_2^m$.
+We now consider the values of $\W {f_s}(u)$,  where $u \in \F_2^{m*}$, by considering $\W{f_s}(u)=-2\sum_{x\in\mathrm{supp}(f_s)}(-1)^{u\cdot x}$.
+Basically, our discussion is based on the fact that, for any $1\leq i\leq s$, we have
+$\sum_{x\in V_i\setminus\{\0\}} (-1)^{u\cdot x}=2^k-1$ if
+$u \perp V_i$ and $\sum_{x\in V_i\setminus\{\0\}} (-1)^{u\cdot x}=-1$ otherwise.
+Note also that for any $1\leq i\neq j\leq s$ if we have both $u \perp V_i$ and $u \perp V_j$
+then $u$ must be the all-zero vector, i.e., $u=\0$.
+Then we can straightforwardly obtain that
+\begin{eqnarray}\label{E:WalshPS}
+\W{f_s}(u)
+&=& \left\{
+\begin{array}{llllll}
+2^m-2s(2^k-1),&\mathrm{if~}u=\0\\
+-2^{k+1}+2s,&\mathrm{if~}u\in  \Omega_s'\\
+2s,&\mathrm{if~}u\not\in \Omega_s'
+\end{array}
+\right.,
+\end{eqnarray}
+where $\Omega_s'=\bigcup_{i=1}^sV_i^\bot\setminus \{\0\}$,
+in which $V_i^\bot$ denotes the orthogonal subspace of $V_i$.
+
+We are ready now to give the values of $A_{f_s}(a)$ for all $a\in\F_2^m$.
+Clearly, by the definition of autocorrelation function we can directly get $A_{f_s}(\0)=2^m$.
+For any $a\in\F_2^m\setminus\{0\}$, two cases can occur.
+
+\textbf{Case A}.  $a\in\mathrm{supp}(f_s)$. Note that $\Omega_s'\cup \{0\}$ is also a partial $k$-spread of $\F_2^m$,
+constituted by $s$ subspaces of $\F_2^m$. Since $a\in\mathrm{supp}(f_s)=\bigcup_{i=1}^s V_i\setminus\{\0\}$
+and $\Omega_s'=\bigcup_{i=1}^sV_i^\bot\setminus \{\0\}$, there exists exact one $V_j$ such that
+$a\perp  V_j$, where $1\leq j \leq s$. This implies that $\sum_{u\in\Omega_s'}(-1)^{a \cdot u}=(2^k-1)+(-1)\cdot(s-1)=2^k-s$.
+In addition, we have $\sum_{u\in\F_2^{m*}\setminus\Omega_s'}(-1)^{a \cdot u}=s-2^k-1$ since
+$\sum_{u\in\F_2^{m*}}(-1)^{a \cdot u}=-1$ for $a\ne\0$.
+Then by \eqref{E:Walsh2Walsh-AC}, we have
+\begin{eqnarray*}
+A_{f_s}(a)&=&2^{-m}\bigg(\big(2^m-2s(2^k-1)\big)^2+(-2^{k+1}+2s)^2\sum_{u\in\Omega_s'}(-1)^{a \cdot u}+(2s)^2\sum_{u\in\F_2^{m*}\setminus\Omega_s'}(-1)^{a \cdot u}\bigg)\\
+&=&2^{-m}\bigg(\big(2^m-2s(2^k-1)\big)^2+(-2^{k+1}+2s)^2(2^k-s)+(2s)^2(s-2^k-1)\bigg)\\
+&=& 2^{-m}\bigg(2^{2m}+s^22^{m+2}-s2^{m+k+2}+2^{m+k+2}-s2^{m+3}\bigg)\\
+&=&2^m+4s^2-2^{k+2}s-8s+2^{k+2}.
+\end{eqnarray*}
+
+\textbf{Case B}. $a\in\F_2^{m*}\setminus\mathrm{supp}(f_s)$.
+Similar to Case A above, we have
+$\sum_{u\in\Omega_s'}(-1)^{a \cdot u}=-s$ and $\sum_{u\in\F_2^{m*}\setminus\Omega_s'}(-1)^{a \cdot u}=s-1$.
+Then by \eqref{E:Walsh2Walsh-AC}, we have
+\begin{eqnarray*}
+A_{f_s}(a)&=&2^{-m}\bigg(\big(2^m-2s(2^k-1)\big)^2+(-2^{k+1}+2s)^2(-s)+(2s)^2(s-1)\bigg)\\
+&=&2^m+4s^2-2^{k+2}s.
+\end{eqnarray*}
+The assertion of theorem follows from the two cases above. This completes the proof.
+\end{proof}
+
+
+We are ready now to present the parameters of LRCs
+derived from the Boolean functions based on partial spreads.
+\begin{theorem}\label{T:PSParameter}
+Let $m=2k\geq 4$ be an integer and $\Omega_s=\{V_1,V_2,\cdots,V_s\}$ be a partial $k$-spread of $\F_2^m$,
+where $2\leq s\leq 2^k+1$.
+Let $f_s\in\mathcal{B}_{m}$ be the Boolean function with support $\Omega_s\setminus\{\0\}$.
+Then the binary linear code $\C_{D_s}$ defined by \eqref{eq:C-D}
+is an $[(2^k-1)s, m, 2^{k-1}(s-1)]$-LRC with $r=2$ and $t=\frac{4s^2-12s+2^{k+2}}{8}$.
+\end{theorem}
+\begin{proof}
+It can be easily seen that the linear code $\C_{D_s}$ has length $(2^k-1)s$.
+Then by Theorem~\ref{Lemma-ding} and~\eqref{E:WalshPS} we obtain that
+$\C_{D_s}$ has dimension $m$. Finally, by Theorem~\ref{T:relation} and Lemma~\ref{L:Walsh-PS}
+we immediately get that $r=2$ and $t=\frac{4s^2-12s+2^{k+2}}{8}$, which completes the proof.
+\end{proof}
+{\color{red}
+
+\begin{theorem}\label{T:BoundPS-d}
+Let $m=2k\geq 6$ be an integer and $\Omega_s=\{V_1,V_2,\cdots,V_s\}$ be a partial $k$-spread of $\F_2^m$,
+where $2^k-k+1\leq s\leq 2^k+1$.
+Let $f_s\in\mathcal{B}_{m}$ be the Boolean function with support $\Omega_s\setminus\{\0\}$.
+Then the binary linear code $\C_{D_s}$ defined by~\eqref{eq:C-D} is distance-optimal with respect to the bound given by~\eqref{eq:bound-d}.
+\end{theorem}
+\begin{proof}
+By taking $r=2$, $l=1$ and $y=(1)$ in $A(r, l, y)$ and $B(r, l, y)$ which are defined by~\eqref{eq:A} and~\eqref{eq:B} respectively,
+then we have $A(2, 1, y)=2$ and  $B(2, 1, y)=3$.
+It follows from \eqref{eq:bound-d} that $d\leq d_{{\rm opt }}^{(2)}[n-3, \kappa-2]$,
+where $n$, $\kappa$, $d$ are the length, dimension, and minimum distance of the binary linear code  $\C_{D_s}$, respectively.
+Recall from Theorem~\ref{T:PSParameter} that for any $2^k-k+1\leq s\leq 2^k+1$ the linear code $\C_{D_s}$ defined by \eqref{eq:C-D} has
+length $n=(2^k-1)s$, dimension $m$ and minimum distance $2^{k-1}(s-1)$.
+Therefore, for proving $\C_{D_s}$ is distance-optimal with respect to the bound given by~\eqref{eq:bound-d},
+we only need to prove that $d_{\rm opt}^{(2)}[(2^k-1)s-3, m-2]\leq 2^{k-1}(s-1)$.
+This is equivalent to proving that there is no binary linear code having minimum distance $2^{k-1}(s-1)+1$, dimension $m-2$
+and length $s(2^k-1)-3$. By the Griesmer bound, we only need to prove that
+\begin{eqnarray}\label{Eq:PSoptimald}
+\sum_{i=0}^{m-3}\bigg\lceil\frac{2^{k-1}(s-1)+1}{2^i}\bigg\rceil > s(2^k-1)-3.
+\end{eqnarray}
+
+In what follows, we will prove \eqref{Eq:PSoptimald} holds for  $2^k-k+1\leq s\leq 2^k+1$.
+We have
+\begin{eqnarray*}
+&&\sum_{i=0}^{2k-3}\bigg\lceil\frac{2^{k-1}(s-1)+1}{2^i}\bigg\rceil\\
+&=&\sum_{i=0}^{k-1}\Big\lceil2^{k-1-i}\big(s-1\big)+\frac{1}{2^{i}}\Big\rceil+\sum_{i=k}^{2k-3}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}+\frac{1}{2^i}\bigg\rceil.\\
+&=&\left(\big(s-1\big)\sum_{i=0}^{k-1}2^i+\sum_{i=0}^{k-1}\Big\lceil\frac{1}{2^{i}}\Big\rceil\right)+\sum_{i=1}^{k-2}\bigg\lceil\frac{s-1}{2^i}+\frac{1}{2^{k+i-1}}\bigg\rceil\\
+&\geq &\bigg(\big(2^k-1)\big(s-1\big)+k\bigg)+\sum_{i=1}^{k-2}\bigg\lceil\frac{s-1}{2^i}\bigg\rceil\\
+&\geq &\big(2^k-1)\big(s-1\big)+k+\bigg\lceil\sum_{i=1}^{k-2}\frac{s-1}{2^i}\bigg\rceil\\
+&= &\big(2^k-1)\big(s-1\big)+k+\left\lceil\left(s-1\right)\left(1-\left(\frac{1}{2}\right)^{k-2}\right)\right\rceil\\
+&\geq &\big(2^k-1)\big(s-1\big)+k+s-4\\
+&\geq&s(2^k-1)-3
+\end{eqnarray*}
+for any $2^k-k+1\leq s\leq 2^k+1$.
+
+Therefore, we obtain that for any $2^k-k+1\leq s\leq 2^k+1$ the linear code $\C_{D_s}$  is distance-optimal with respect to the bound given by~\eqref{eq:bound-d}.
+This completes the proof.
+\end{proof}
+
+
+
+\begin{theorem}\label{T:BoundPS}
+Let $m=2k\geq 6$ be an integer and $\Omega_s=\{V_1,V_2,\cdots,V_s\}$ be a partial $k$-spread of $\F_2^m$,
+where $2^k-2\leq s\leq 2^k+1$.
+Let $f_s\in\mathcal{B}_{m}$ be the Boolean function with support $\Omega_s\setminus\{\0\}$.
+Then the binary linear code $\C_{D_s}$ defined by~\eqref{eq:C-D} is dimension-optimal with respect to the bound given by~\eqref{eq:bound-dim}.
+\end{theorem}
+\begin{proof}
+By taking $r=2$, $l=1$ and $y=(1)$ in $A(r, l, y)$ and $B(r, l, y)$ which are defined by~\eqref{eq:A} and~\eqref{eq:B} respectively,
+then we have  $A(2, 1, y)=2$ and  $B(2, 1, y)=3$.
+According to \eqref{eq:bound-dim} we have
+\begin{eqnarray*}
+ \kappa\leq 2+\kappa_{\rm opt}^{(2)}(n-3, d),
+\end{eqnarray*}
+where $n$, $\kappa$, $d$ are the length, dimension, and minimum distance of the binary linear code  $\C_{D_s}$, respectively.
+Note that for any $2^k-2\leq s\leq 2^k+1$ code $\C_{D_s}$ defined by \eqref{eq:C-D} has dimension $m$.
+Thus, for proving $\C_{D_s}$ is dimension-optimal with respect to the bound given by~\eqref{eq:bound-d}, we only need to prove that $\kappa_{\rm opt}^{(2)}(n-3, d)\leq m-2$.
+By Griesmer bound, we only need to prove that for any $2^k-2\leq  s \leq 2^k+1$ we have $\kappa_{\rm opt}^{(2)}(s(2^k-1)-3, 2^{k-1}(s-1))\leq m-2$.
+This is equivalent to proving that there is no binary linear code having minimum distance $2^{k-1}(s-1)$, dimension $m-1$ and length $s(2^k-1)-3$.
+So we only need to prove that
+\begin{eqnarray}\label{Eq:PSoptimal}
+\sum_{i=0}^{m-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil > s(2^k-1)-3.
+\end{eqnarray}
+
+In what follows, we will prove \eqref{Eq:PSoptimal} holds for  $2^k-2\leq s\leq 2^k+1$.
+We have
+\begin{eqnarray*}
+\sum_{i=0}^{m-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil &=&\sum_{i=0}^{2k-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil\\
+&=&\sum_{i=0}^{k-1}\Big\lceil2^i\big(s-1\big)\Big\rceil+\sum_{i=k}^{2k-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil.\\
+&=&\big(s-1\big)\sum_{i=0}^{k-1}2^i+\sum_{i=k}^{2k-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil\\
+&=&\big(2^k-1)\big(s-1\big)+\sum_{i=k}^{2k-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil\\
+&=&\big(2^k-1)\big(s-1\big)+\sum_{i=1}^{k-1}\bigg\lceil\frac{s-1}{2^i}\bigg\rceil.\\
+\end{eqnarray*}
+For any $2^k-2\leq s\leq 2^k+1$, we write $s=2^k-u_s$. Then we have
+\begin{eqnarray*}
+\sum_{i=1}^{k-1}\bigg\lceil\frac{s-1}{2^i}\bigg\rceil&=&\sum_{i=1}^{k-1}\bigg\lceil2^{k-i}\bigg\rceil+\sum_{i=1}^{k-1}\bigg\lceil\frac{-u_s-1}{2^i}\bigg\rceil\\
+&=&\sum_{i=1}^{k-1}2^i+\bigg\lceil\frac{-u_s-1}{2}\bigg\rceil+\bigg\lceil\frac{-u_s-1}{4}\bigg\rceil+\sum_{i=3}^{k-1}\bigg\lceil\frac{-u_s-1}{2^i}\bigg\rceil\\
+&=&2^k-2+\bigg\lceil\frac{-u_s-1}{2}\bigg\rceil+\bigg\lceil\frac{-u_s-1}{4}\bigg\rceil+0\\
+&=& \left\{
+\begin{array}{llllll}
+s-1,&\mathrm{if~}s=2^k-2\\
+s-2,&\mathrm{if~}s=2^k-1\\
+s-2,&\mathrm{if~}s=2^k\\
+s-3,&\mathrm{if~}s=2^k+1
+\end{array}
+\right..
+\end{eqnarray*}
+Then we can easily verify that for any $2^k-2\leq s\leq 2^k+1$ we have
+\begin{eqnarray*}
+\sum_{i=0}^{m-2}\bigg\lceil\frac{2^{k-1}(s-1)}{2^i}\bigg\rceil &=&\big(2^k-1)\big(s-1\big)+\sum_{i=1}^{k-1}\bigg\lceil\frac{s-1}{2^i}\bigg\rceil\\
+&=&\left\{
+\begin{array}{llllll}
+2^k(s-1),&\mathrm{if~}s=2^k-2\\
+2^k(s-1)-1,&\mathrm{if~}s=2^k-1\\
+2^k(s-1)-1,&\mathrm{if~}s=2^k\\
+2^k(s-1)-2,&\mathrm{if~}s=2^k+1
+\end{array}
+\right.\\
+&>& s(2^k-1)-3.
+\end{eqnarray*}
+This implies that for any $2^k-2\leq s\leq 2^k+1$ the binary linear code $\C_{D_s}$  is dimension-optimal with respect to the bound given by~\eqref{eq:bound-d}, and
+thus we complete the proof.
+\end{proof}
+
+\begin{definition}\label{D:h_I}
+Let $m=2k\geq 4$ be an integer and $\theta$ be a primitive element of $\F_{2^k}$.
+%Let $I(x)$ be a $k$-variable Boolean function over $\F_{2^k}$ such that $|supp(I)|=s$, $I(0)=0$, and $\max_{\alpha\in\F_{2^k}^*}|\W I(\alpha)|\leq $
+Let $\Omega=\{V_1,V_2,\ldots,V_{2^k+1}\}$ be a partial $k$-spread of $\F_{2^m}$,
+where $V_i=\{(x, \theta^{i}x) : x\in\F_{2^k}\}$ for any $1\leq i \leq 2^k-1$, $V_{2^k}=\{(x,0) : x\in\F_{2^k}\}$,  and $V_{2^k+1}=\{(0, y) : y\in \F_{2^k}\}$.
+Let $I$ be a subset of $[2^k]=\{1,2, \ldots, 2^k\}$ such that $2\leq \CardI\leq 2^k$,  $\Omega_I=\bigcup_{i\in I}V_i$, and $V\subseteq V_{2^k+1}$ be an
+arbitrary $\tau$-dimensional subspace of $\F_2^m$, where $0<\tau<k$.
+We define a Boolean function $h_I\in\mathcal{B}_{m}$  with support $(\Omega_I\cup V_{2^k+1})\setminus V$.
+%We define a Boolean function $h_I\in\mathcal{B}_{m}$  with support $\Omega_I\cup V_a$, where $a\in V_{2^k+1}\setminus V$ and $V_a=\{a+v : v\in V\}$.
+\end{definition}
+
+\begin{lemma}\label{L:Walsh-PSRevised}
+Let $m=2k\geq 4$ be an integer and $h_I\in\mathcal{B}_m$ be the Boolean function defined in Definition~\ref{D:h_I}.
+Then for any $w\in\F_{2^k}\times\F_{2^k}$ we have
+\begin{eqnarray*}\label{E:WalshPS}
+\W{h_I}(w)
+&=& \left\{
+\begin{array}{llllll}
+2^m-2^{k+1}(\CardI+1)+2^{\tau+1}+2\CardI,&\mathrm{if~}w=0\\
+-2^{k+1}+2\CardI+2^{\tau+1},&\mathrm{if~}w\in\Omega_I'\mathrm{~and~} w \perp V\\
+-2^{k+1}+2\CardI,&\mathrm{if~}w\in\Omega_I'\mathrm{~and~} w \not\perp V\\
+-2^{k+1}+2\CardI+2^{\tau+1},&\mathrm{if~}w\not\in\Omega_I', w \perp V_{2^k+1} \mathrm{~and~} w\ne 0\\
+2\CardI+2^{\tau+1},&\mathrm{if~}w\not\in\Omega_I', w \not\perp V_{2^k+1}\mathrm{~and~} w \perp V\\
+2\CardI,&\mathrm{if~}w\not\in\Omega_I', w \not\perp V_{2^k+1}\mathrm{~and~} w \not\perp V
+\end{array}
+\right.,
+\end{eqnarray*}
+where $\Omega_I^\prime=\bigcup_{i\in I}V_i^\bot\setminus \{0\}$,
+in which $V_i^\bot$ denotes the orthogonal subspace of $V_i$ with respect to the trace function, i.e., $V_i^\bot=\{z \in \F_{2^m} : \tr(zw)=0~{\text for~all}~w\in V_i\}$.
+\end{lemma}
+\begin{proof}
+Clearly, $h_I$ has Hamming weight $(2^k-1)\CardI+(2^k-2^\tau)=2^k(\CardI+1)-2^\tau-\CardI$ and then
+we have $\W{h_I}(0,0)=2^m-2(2^k(\CardI+1)-2^\tau-\CardI)=2^m-2^{k+1}(\CardI+1)+2^{\tau+1}+2\CardI$.
+We now consider the values of $\widehat{\chi_{h_I}}(u,v)$ for all $w=(u,v)\in\F_{2^k}\times\F_{2^k}\setminus\{0,0\}$.
+%Let $V^\prime\subset V_i$ be any $\tau^\prime$-dimensional subspace of $\F_2^m$, where $1\leq i\leq 2^k+1$.
+Note that for any $\tau^\prime$-dimensional subspace $V^\prime\subset\F_{2^m}$ we have
+$\sum_{z\in V^\prime}(-1)^{\tr(w z)}=2^{\tau^\prime}$ if $w\perp V^\prime$ and $\sum_{z\in V^\prime}(-1)^{\tr(wz)}=0$ if $w\not\perp V^\prime$.
+Then for any $w\in\F_2^m$ we can verify that
+\begin{eqnarray*}
+\sum_{z\in V_{2^k+1}\setminus V} (-1)^{\tr(wz)}
+&=& \left\{
+\begin{array}{llllll}
+2^k-2^{\tau},&\mathrm{if~}w \perp V_{2^k+1}\mathrm{~and~} w \perp V\\
+-2^{\tau},&\mathrm{if~}w \not\perp V_{2^k+1}\mathrm{~and~} w \perp V\\
+0,&\mathrm{if~}w \not\perp V_{2^k+1}\mathrm{~and~} w \not\perp V
+\end{array}
+\right..
+\end{eqnarray*}
+Furthermore, we can easily obtain that
+\begin{eqnarray*}\label{E:WalshPS}
+\sum_{z\in  \Omega_I} (-1)^{\tr(wz)}
+&=& \left\{
+\begin{array}{llllll}
+2^{k}-\CardI,&\mathrm{if~}w\in  \Omega_I^\prime\\
+-\CardI,&\mathrm{if~}w\not\in \Omega_I^\prime
+\end{array}
+\right..
+\end{eqnarray*}
+Note that for any $i,j\in I$ if we have both $w \perp V_i$ and $w \perp V_j$
+then $w$ must be the all-zero vector, i.e., $w=0$.
+Therefore, for any $w\in\F_{2^m}^*$ we have
+\begin{eqnarray*}
+\W{h_I}(w)&=&-2\sum_{z\in \mathrm{supp}(h_I)} (-1)^{\tr(wz)}\\
+&=&-2\sum_{z\in V_{2^k+1}\setminus V} (-1)^{\tr(wz)}-2\sum_{z\in  \Omega_I} (-1)^{\tr(wz)}\\
+&=& \left\{
+\begin{array}{llllll}
+-2^{k+1}+2\CardI+2^{\tau+1},&\mathrm{if~}w\in\Omega_I'\mathrm{~and~} w \perp V\\
+-2^{k+1}+2\CardI,&\mathrm{if~}w\in\Omega_I'\mathrm{~and~} w \not\perp V\\
+-2^{k+1}+2\CardI+2^{\tau+1},&\mathrm{if~}w\not\in\Omega_I', w \perp V_{2^k+1} \mathrm{~and~} w\ne 0\\
+2\CardI+2^{\tau+1},&\mathrm{if~}w\not\in\Omega_I', w \not\perp V_{2^k+1}\mathrm{~and~} w \perp V\\
+2\CardI,&\mathrm{if~}w\not\in\Omega_I', w \not\perp V_{2^k+1}\mathrm{~and~} w \not\perp V
+\end{array}
+\right..
+\end{eqnarray*}
+This completes the proof.
+\end{proof}
+
+{\color{blue}
+\begin{lemma}\label{L:autoPSV}
+Let $m=2k\geq 4$ be an integer and $h_I\in\mathcal{B}_m$ be the Boolean function defined in Definition~\ref{D:h_I}.
+Then for any $z=(a,b)\in\F_{2^k}\times\F_{2^k}$ we have
+\begin{eqnarray*}
+A_{h_I}(z)
+&=& \left\{
+\begin{array}{llllll}
+2^m,&\text{if }z=(0,0)\\
+,   &\text{if }z\\
+,   &\text{if }z\\
+,   &\text{if }z\\
+,   &\text{if }z\\
+,   &\text{if }z
+\end{array}
+\right..
+\end{eqnarray*}
+\end{lemma}
+\begin{proof}
+
+\begin{equation}
+    \W{h_I}(w)= \left\{
+    \begin{array}{llllll}
+    2^m-2^{k+1}(\CardI+1)+2^{\tau+1}+2\CardI, & \text{if }w=0\\ 
+    -2^{k+1}+2\CardI+2^{\tau+1}, & \text{if }w\in\left( \Omega_I'\cap V^{\perp} \right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)\\
+    -2^{k+1}+2\CardI,            & \text{if }w\in\Omega_I'\setminus V^{\perp}\\
+    2\CardI+2^{\tau+1},          & \text{if }w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)\\
+    2\CardI,                     & \text{if }w\not\in\Omega_I'\cup V^{\perp}.
+    \end{array}
+    \right.
+\end{equation}
+
+Since $V_i=\left\{ (x,\theta^ix):x\in\F_{2^k} \right\}$ for $1\le i\le 2^k-1$, we have $V_i^{\perp}=\left\{ (\theta^ix,x):x\in\F_{2^k} \right\}$. 
+Besides, we obtain that $V_{2^k}^{\perp}=\left\{ (0,y):y\in\F_{2^k} \right\}=V_{2^k+1}$ and thus $V_{2^k+1}^{\perp}=V_{2^k}=\left\{ (x,0):x\in\F_{2^k}\right\}$. 
+Particularly, $V=\left\{ (0,y):y\in\operatorname{span}\left\{ \eta_1,\eta_2,\dots,\eta_{\tau} \right\} \right\}\subseteq V_{2^k+1}$ is an $\tau$-dimensional subspace of $\F_{2^m}$, where $\eta_i\in\F_{2^k}^*$ are linearly independent for $1\le i\le\tau$, which implies that we can obtain $ V^{\perp}=\left\{ (x,0):x\in\F_{2^k} \right\}\cup V_{L}^{\perp}\setminus\{(0,0)\}$, where 
+\[V_L^{\perp}=\left\{ (x,y'):x\in\F_{2^k}, y'\in \mathcal{D}\right\},\]
+and 
+\[\mathcal{D}=\left\{y'\in\F_{2^k}:\tr(yy')=0,\forall y\in \operatorname{span}\left\{ \eta_1,\eta_2,\dots,\eta_{\tau} \right\} \right\},\]
+and we denote $\mathcal{D}^*=\mathcal{D}\setminus\{0\}$, clearly $\left|\mathcal{D}^*\right|=2^{k-\tau}-1$.
+Meanwhile, we can deduce that 
+\[\Omega_I^{\prime}=\bigcup_{i\in I}V_i^{\perp}\setminus\{(0,0)\}=\left\{ (\theta^ix,x):x\in\F_{2^k}, i\in I \right\}\setminus\{(0,0)\}.\]
+Therefore, the sets for different Walsh spectrum values $\W{h_I}(w)$ are listed below, where $w=(u,v)\in\F_{2^k}\times\F_{2^k}\setminus\{(0,0)\}$: 
+
+\begin{equation}
+\begin{cases}
+    &\left( \Omega_I'\cap V^{\perp} \right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)= \left\{ (\theta^ix,x): x\in\mathcal{D}^*,i\in I\right\}\cup \left\{ (x,0):x\in\F_{2^k}^* \right\}\\ 
+    &\Omega_I'\setminus V^{\perp} = \left\{ (\theta^ix,x):x\in\F_{2^k}^*\setminus \mathcal{D}^*, i\in I \right\} \\
+    &V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right) =\left\{ (\theta^jx,x):x\in \mathcal{D}^*,j\in \left[ 2^k \right]\setminus I \right\}\\
+    &\F_{2^m}\setminus\left( \Omega_I'\cup V^{\perp} \right) = \left\{ (\theta^jx,x):x\in\F_{2^k}^*\setminus \mathcal{D}^*,j\in \left[ 2^k \right]\setminus I \right\}\cup\left\{ (0,x):x\in\F_{2^k}^* \right\}.
+\end{cases} 
+\end{equation}
+% Thus, we conclude that 
+% \begin{equation}
+%     \left\{ 
+%     \begin{alignedat}{2}
+%         &(\Omega_I'\cap V^{\perp}\setminus\{0\})^{\perp}= \left\{ (x,\theta^ix): x\in \mathcal{D},i\in I\right\}\\ 
+%         &\Omega_I'\setminus V^{\perp} = \left\{ (\theta^ix,x):x\in\F_{2^k}^*\setminus \mathcal{D}, i\in I \right\} \\
+%         &V_{2^k+1}^{\perp}\setminus\Omega_I' = \left\{ (0,x):x\in\F_{2^k}^* \right\}\\
+%         &V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right) =\left\{ (\theta^jx,x):x\in \mathcal{D},j\in \left[ 2^k \right]\setminus I \right\}\\
+%         &\F_{2^m}\setminus\left( \Omega_I'\cup V^{\perp} \right) = \left\{ (\theta^jx,x):x\in\F_{2^k}^*\setminus \mathcal{D},j\in \left[ 2^k \right]\setminus I \right\}.
+%     \end{alignedat} \right.
+% \end{equation} 
+According to the definition of autocorrelation function we have $A_{h_I}(0)=2^m$.
+We now consider the values of $A_{h_I}(z)$, where $z=(a,b) \in \F_{2^k}\times\F_{2^k}\setminus\{(0,0)\}$.
+Recall from the Wiener-Khintchine Theorem (see \eqref{E:Walsh2Walsh-AC} for instance) we have
+\begin{equation*}
+A_{h_I}(z)=2^{-m}\sum_{(u,v)\in\F_{2^k}\times\F_{2^k}} \widehat{\chi_{h_I}}^2(u, v)(-1)^{\tr(au+bv)}.
+\end{equation*}
+For any $z=(a,b) \in \F_{2^k}\times\F_{2^k}\setminus\{(0,0)\}$, four cases can occur.
+\begin{align*}
+    A_{h_I}(z)=&2^{-m}\sum_{w\in\F_{2^m}}\W{h_I}(w)^2(-1)^{\tr(zw)}\\
+            =&2^{-m}\left( \sum_{w\in\Omega_I'\cap V^{\perp}\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)}+\sum_{w\in\Omega_I'\setminus V^{\perp}}+\sum_{w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)}+\sum_{w\not\in\Omega_I'\cup V^{\perp}}\right)\W{h_I}(w)^2(-1)^{\tr(zw)}
+\end{align*}
+\begin{enumerate}[label=\textbf{Case \Alph{*}}]
+    \item If $z\in\left\{ (x,\theta^ix):x\in\F_{2^k}^*,i\in I \right\}$,
+    % $\cup\left\{ (0,x):x\in\F_{2^k}^* \right\}$
+    %  $\tr(zw)=0$ for all $w\in\Omega_I^{\prime}\cap V^{\perp}$ 
+    we confirm that 
+    % \[\sum_{w\in\Omega_I'\cap V^{\perp}}(-1)^{\tr(zw)}\]
+    \begin{align*}
+        A_{h_I}(z)= & 
+        2^{-m}\left[  \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2\sum_{w\in\left( \Omega_I'\cap V^{\perp} \right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)}(-1)^{\tr(zw)}\right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2\sum_{w\in\Omega_I'\setminus V^{\perp}}(-1)^{\tr(zw)}\\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2\sum_{w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)}(-1)^{\tr(zw)}\\
+        &\left.\qquad+4\CardI^2\sum_{w\not\in\Omega_I'\cup V^{\perp}}(-1)^{\tr(zw)}+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{-m}\left[ \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2 \left( -(\CardI-1)+\left|\mathcal{D}^*\right|-1 \right) \right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2 \left( 0\cdot(\CardI-1)+\left( 2^k-1-\left|\mathcal{D}^*\right| \right) \right)\\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2 \left( -\left( 2^k-\CardI \right) \right)\\
+        &\left.\qquad+4\CardI^2 \left( 0\cdot\left( 2^k-\CardI \right) -1 \right)+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{2k} + 4\cdot\left( \CardI^2-2^k\CardI+2^{\tau}-2 \right) - 4\cdot\left( 2^{\tau}-1 \right)\left( 2\CardI+2^{\tau} \right)\cdot 2^{-k}\\
+        &\qquad-4\cdot\CardI\cdot\left( 2\CardI^2+\left( 2^{\tau+2}+1 \right)\CardI+2^{2\tau+1} \right)\cdot 2^{-2k}
+    \end{align*}
+    \item If $z\in\left\{ (x,\theta^jx):x\in\F_{2^k}^*,j\in\left[ 2^k \right]\setminus I \right\}$, similar to Case A, we have 
+    \begin{align*}
+        A_{h_I}(z)= & 
+        2^{-m}\left[  \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2\sum_{w\in\left( \Omega_I'\cap V^{\perp}\right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)}(-1)^{\tr(zw)}\right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2\sum_{w\in\Omega_I'\setminus V^{\perp}}(-1)^{\tr(zw)}\\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2\sum_{w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)}(-1)^{\tr(zw)}\\
+        &\left.\qquad+4\CardI^2\sum_{w\not\in\Omega_I'\cup V^{\perp}}(-1)^{\tr(zw)}+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{-m}\left[ \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2 \left( -\CardI-1 \right) \right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2 \left( 0\cdot\CardI \right) \\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2 \left( -\left( 2^k-\CardI-1 \right)+\left|\mathcal{D}^*\right| \right)\\
+        &\qquad+4\CardI^2 \left( 0\cdot\left( 2^k-\CardI-1 \right) + \left( 2^k-1-\left|\mathcal{D}^*\right| \right) -1 \right)\\
+        &\left.\qquad+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{2k} + 4\cdot\left( \CardI^2-2^k\CardI-2^k-2\CardI+ 2^{\tau} \right)\\ 
+        &\qquad- 4\cdot\left( 2^{\tau}-1 \right)\left( 2\CardI+2^{\tau} \right)\cdot 2^{-k} - 4\cdot\CardI^2\cdot 2^{-2k}.
+    \end{align*}
+    \item If $z\in\left\{ (x,0):x\in\F_{2^k}^* \right\}$, we have 
+    \begin{align*}
+        A_{h_I}(z)= & 
+        2^{-m}\left[  \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2\sum_{w\in\left( \Omega_I'\cap V^{\perp}\right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)}(-1)^{\tr(zw)}\right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2\sum_{w\in\Omega_I'\setminus V^{\perp}}(-1)^{\tr(zw)}\\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2\sum_{w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)}(-1)^{\tr(zw)}\\
+        &\left.\qquad+4\CardI^2\sum_{w\not\in\Omega_I'\cup V^{\perp}}(-1)^{\tr(zw)}+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{-m}\left[ \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2 \left( -\CardI-1 \right) \right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2 \left( 0\cdot\CardI \right) \\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2 \left( -\left( 2^k-\CardI \right) \right)\\
+        &\left.\qquad+4\CardI^2 \left( 0\cdot\left( 2^k-\CardI \right) + \left( 2^k-1 \right) \right)+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{2k} +4\cdot\left( \CardI^2-\left( 2^k-2 \right)\CardI-2^k+2^{\tau} \right) -4\cdot\left( 2\CardI+2^{\tau} \right)\cdot 2^{-k+\tau}\\
+        &\qquad -4\cdot\CardI^2\cdot 2^{-2k}. 
+    \end{align*}
+    \item If $z\in\left\{ (0,x):x\in\F_{2^k}^* \right\}$, we have 
+    \begin{align*}
+        A_{h_I}(z)= & 
+        2^{-m}\left[  \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2\sum_{w\in\left( \Omega_I'\cap V^{\perp}\right)\cup \left( V_{2^k+1}^{\perp}\setminus\Omega_I' \right)}(-1)^{\tr(zw)}\right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2\sum_{w\in\Omega_I'\setminus V^{\perp}}(-1)^{\tr(zw)}\\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2\sum_{w\in V^{\perp}\setminus\left( \Omega_I'\cup V_{2^k+1}^{\perp} \right)}(-1)^{\tr(zw)}\\
+        &\left.\qquad+4\CardI^2\sum_{w\not\in\Omega_I'\cup V^{\perp}}(-1)^{\tr(zw)}+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{-m}\left[ \left( -2^{k+1}+2\CardI+2^{\tau+1} \right)^2 \left( -\CardI+2^k-1 \right) \right.\\
+        &\qquad+\left( -2^{k+1}+2\CardI \right)^2 \left( 0\cdot\CardI \right) \\
+        &\qquad+\left( 2\CardI+2^{\tau+1} \right)^2 \left( -\left( 2^k-\CardI \right) \right)\\
+        &\left.\qquad+4\CardI^2 \left( 0\cdot\left( 2^k-\CardI \right) -1 \right)+\left( 2^m-2^{k+1}\left(\CardI+1\right)+2^{\tau+1}+2\CardI \right)^2\right]\\
+        =& 2^{2k} + 4\cdot\left( \CardI^2-2^k\CardI-2^{\tau} \right) - 4\cdot\CardI^2\cdot 2^{-2k}
+        \ge&   
+    \end{align*}
+\end{enumerate}
+
+\end{proof}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{theorem}\label{T:PSVParameter}
+Let $m=2k\geq 4$ be an integer and $h_I\in\mathcal{B}_m$ be the Boolean function defined in Definition~\ref{D:h_I}.
+Then the binary linear code $\C_{D}$ defined by \eqref{eq:C-D}
+is an $[(2^k-1)\CardI-2^{\tau}+1, m, (\CardI-1)2^{k-1}-2^{\tau-1}]$-LRC with $r=2$ and $t=$.
+\end{theorem}
+
+\begin{theorem}\label{T:BoundPSI}
+Let $m=2k\geq 4$ be an integer and $h_I\in\mathcal{B}_m$ be the Boolean function defined in Definition~\ref{D:h_I}.
+When $2^k-k+1\leq \CardI \leq 2^k+1$ in Definition~\ref{D:h_I}, the binary linear code $\C_{D}$ defined by \eqref{eq:C-D} is distance-optimal with respect to the bound given by~\eqref{eq:bound-d},
+and when $2^k-2\leq \CardI \leq 2^k+1$ in Definition~\ref{D:h_I},  $\C_{D}$  is dimension-optimal with respect to the bound given by~\eqref{eq:bound-dim}.
+\end{theorem}
+
+\begin{proof}
+Similar to the proof of Theorem~\ref{T:BoundPS-d},
+
+
+ Theorem~\ref{T:BoundPS}, we take $\iota=1$ in \eqref{Eq:CM} and then we only need to prove that
+$\kappa_{o p t}^{(q)}(n-3, d)\leq m-2$, where $n$ is the length of the binary linear code $\C_{D}$.
+By Griesmer bound, we only need to prove that for any $2^k-2\leq  \CardI\leq 2^k+1$ we have $\kappa_{o p t}^{(q)}((2^k-1)\CardI-2^\tau-2, (\CardI-1)2^{k-1}-2^{\tau-1})\leq m-2$.
+This implies that we only need to prove that there is no binary linear code
+with minimum distance  $(\CardI-1)2^{k-1}-2^{\tau-1}$, dimension $m-1$ and length $(2^k-1)\CardI-2^\tau-2$.
+Therefore, we only need to show that
+\begin{eqnarray*}\label{Eq:PSoptimal}
+\sum_{i=0}^{m-2}\bigg\lceil\frac{(\CardI-1)2^{k-1}-2^{\tau-1}}{2^i}\bigg\rceil >(2^k-1)\CardI-2^\tau-2.
+\end{eqnarray*}
+Note that
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{proof}
+
+
+
+\subsection{LRCs from the product of  Boolean functions}\label{LRC-product}
+
+\begin{theorem}\label{T:Walshprod}
+Let $f_1,f_2,\cdots,f_l\in\mathcal{B}_m$ be $l$ Boolean functions and define an $m$-variable Boolean function as
+$f=\prod_{i=1}^{l}f_i$. Then for any $\alpha\in\F_{2^m}$ we have
+\begin{eqnarray*}
+\W f(\alpha)&=&\left(2^m-2^{m-l+1}\right)\delta_0(\alpha)-2^{-l+1}\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\alpha),
+\end{eqnarray*}
+where $\delta_0$ is the Dirac (or Kronecker) symbol, \emph{i.e.} the indicator of the singleton ${0}$, defined
+by $\delta_0(\alpha)=1$ if $\alpha$ is the null vector and $\delta_0(\alpha)=0$ otherwise.
+\end{theorem}
+\begin{proof}
+Let $g\in\mathcal{B}_m$ be an arbitrary Boolean function. It can be easily seen that $g(x)=\frac{1-(-1)^{g(x)}}{2}$ for any $x\in\F_{2^m}$. Then
+$f=\prod_{i=1}^{l}f_i$ is equivalent to
+\begin{eqnarray*}
+\frac{1-(-1)^{f(x)}}{2}&=&\left(\frac{1-(-1)^{f_1(x)}}{2}\right)\left(\frac{1-(-1)^{f_2(x)}}{2}\right)\cdots \left(\frac{1-(-1)^{f_l(x)}}{2}\right).
+\end{eqnarray*}
+So we have
+\begin{eqnarray*}
+1-(-1)^{f(x)}&=&2^{-l+1}\left(1-(-1)^{f_1(x)}\right)\left(1-(-1)^{f_2(x)}\right)\cdots \left(1-(-1)^{f_l(x)}\right).
+\end{eqnarray*}
+This implies that
+\begin{eqnarray*}
+1-(-1)^{f(x)}&=&2^{-l+1}\left(1+\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\cdot (-1)^{\sum_{i\in I}f_i(x)}  \right).
+\end{eqnarray*}
+Then for any $\alpha\in\F_{2^m}$ we have
+\begin{eqnarray*}
+\sum_{x\in\F_{2^m}}\left(1-(-1)^{f(x)}\right)(-1)^{\Tr(\alpha x)}&=&2^{-l+1}\sum_{x\in\F_{2^m}}\left(1+\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\cdot (-1)^{\sum_{i\in I}f_i(x)}  \right)(-1)^{\Tr(\alpha x)}.
+\end{eqnarray*}
+Note that $\sum_{x\in\F_{2^m}}1\cdot (-1)^{\Tr(\alpha x)}=\sum_{x\in\F_{2^m}}(-1)^{\Tr(\alpha x)}= 2^m\delta_0(\alpha)$.
+According to the definition of the Walsh transform, we immediately get that
+ \begin{eqnarray*}
+2^m\delta_0(\alpha)-\W f(\alpha)&=&2^{-l+1}\left(2^m\delta_0(\alpha)+\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\alpha)\right).
+\end{eqnarray*}
+This gives
+ \begin{eqnarray*}
+\W f(\alpha)&=&\left(2^m-2^{m-l+1}\right)\delta_0(\alpha)-2^{-l+1}\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\alpha).
+\end{eqnarray*}
+This completes the proof.
+\end{proof}
+
+\begin{corollary}\label{C:WalshTwoProd}
+Let $f_1,f_2\in\mathcal{B}_m$ be two Boolean functions and define an $m$-variable Boolean function $f(x)=f_1(x)f_2(x)$.
+Then for any $\alpha\in\F_{2^m}$ we have
+\begin{eqnarray*}
+\W f(\alpha)&=&2^{m-1}\delta_0(\alpha)-\frac{1}{2}\Big(\W {f_1+f_2}(\alpha)-\W {f_1}(\alpha)-\W {f_2}(\alpha)\Big).
+\end{eqnarray*}
+\end{corollary}
+
+We now consider the autocorrelation functions of the  Boolean function $f\in\mathcal{B}_m$ defined in Theorem~\ref{T:Walshprod}.
+To this end, we first need the following lemma.
+\begin{lemma}\label{L:crossA}
+Let $f_1,f_2$ be any two Boolean functions in $m$ variables.
+For any ${a}\in\F_{2^m}$, we have
+\begin{eqnarray*}
+A_{f_1,f_2}({a})&=&2^{-m}\sum_{\beta\in\F_{2^m}}\W{f_1}(\beta)\W{f_2}(\beta)(-1)^{\Tr({a}\beta)}.
+\end{eqnarray*}
+\end{lemma}
+\begin{proof}
+It can be easily verified that
+\begin{eqnarray*}
+\sum_{\beta\in\F_{2^m}}(-1)^{\Tr(\gamma\beta)}
+&=& \left\{
+\begin{array}{llllll}
+0,&\mathrm{if~}\gamma\in\F_{2^m}^*\\
+2^m,&\mathrm{if~}\gamma=0
+\end{array}
+\right..
+\end{eqnarray*}
+Then for any ${a}\in\F_{2^m}$ we have
+\begin{eqnarray*}\label{E:}
+\sum_{\gamma\in\F_{2^m}}\sum_{\beta\in\F_{2^m}}(-1)^{\Tr(\beta({a}+\gamma))}=2^m.
+\end{eqnarray*}
+Therefore, we have
+\begin{eqnarray*}
+A_{f_1,f_2}({a})&=&\sum_{x\in\F_{2^m}}(-1)^{f_1(x)+f_2(x+{a})}\\
+&=&2^{-m}\sum_{\gamma\in\F_{2^m}}\sum_{\beta\in\F_{2^m}}(-1)^{\Tr(\beta({a}+\gamma))}\sum_{x\in\F_{2^m}}(-1)^{f_1(x)+f_2(x+\gamma)}\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}(-1)^{\Tr({a}\beta)}\left(\sum_{x\in\F_{2^m}}\sum_{\gamma\in\F_{2^m}}(-1)^{f_1(x)+f_2(x+\gamma)+\Tr(\beta\gamma)} \right)\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}(-1)^{\Tr({a}\beta)}\left(\sum_{x\in\F_{2^m}}\sum_{y\in\F_{2^m}}(-1)^{f_1(x)+f_2(y)+\Tr(\beta(x+y))} \right)\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}(-1)^{\Tr({a}\beta)}\left(\sum_{x\in\F_{2^m}}(-1)^{f_1(x)+\Tr(\beta x)}\sum_{y\in\F_{2^m}}(-1)^{f_2(y)+\Tr(\beta y)} \right)\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}\W{f_1}(\beta)\W{f_2}(\beta)(-1)^{\Tr({a}\beta)}.
+\end{eqnarray*}
+This completes the proof.
+\end{proof}
+
+\begin{theorem}\label{T:Autoprod}
+Let $f_1,f_2,\cdots,f_l\in\mathcal{B}_m$ be $l$ Boolean functions and define an $m$-variable Boolean function as
+$f=\prod_{i=1}^{l}f_i$. Then for any ${a}\in\F_{2^m}$ we have
+\begin{eqnarray*}
+A_f({a})&=&2^m+2^{m-2l+2}-2^{m-l+2}+2^{2-2l}\sum_{\emptyset\neq I, J \subseteq \{1,2,\cdots, l\}}(-1)^{\CardI+\# J}A_{\sum\limits_{i\in I}f_i, \sum\limits_{j\in J}f_j}({a})\\
+&&-(2^{2-l}-2^{3-2l})\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(0).
+\end{eqnarray*}
+\end{theorem}
+\begin{proof}
+It follows from Lemma~\ref{L:crossA} that, for any ${a}\in\F_{2^m}$, we have
+\begin{eqnarray*}
+A_f({a})&=&\sum_{x\in\F_{2^m}}(-1)^{f(x)+f(x+{a})}=2^{-m}\sum_{\beta\in\F_{2^m}}\widehat{\chi_f}^2(\beta)(-1)^{\Tr({a}\beta)}.
+\end{eqnarray*}
+By Theorem~\ref{T:Walshprod}, we have
+\begin{eqnarray*}
+A_f({a})&=&2^{-m}\sum_{\beta\in\F_{2^m}}\widehat{\chi_f}^2(\beta)(-1)^{\Tr({a}\beta)}\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}\bigg[\left(2^m-2^{m-l+1}\right)\delta_0(\beta)-2^{-l+1}\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\bigg]^2(-1)^{\Tr({a}\beta)}\\
+&=&2^{-m}\sum_{\beta\in\F_{2^m}}\bigg[\left(2^m-2^{m-l+1}\right)^2\delta_0^2(\beta)
++2^{-2l+2}\left(\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\right)^2\\
+&&-(2^{m-l+2}-2^{m-2l+3})\delta_0(\beta)\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\bigg](-1)^{\Tr({a}\beta)}\\
+&=&2^{-m}\cdot \left(2^m-2^{m-l+1}\right)^2\sum_{\beta\in\F_{2^m}}\delta_0^2(\beta)(-1)^{\Tr({a}\beta)}\\
+&&+2^{-2l-m+2}\sum_{\beta\in\F_{2^m}}\left(\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\right)^2(-1)^{\Tr({a}\beta)}\\
+&&-(2^{2-l}-2^{3-2l})\sum_{\beta\in\F_{2^m}}\left(\delta_0(\beta)\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\right)(-1)^{\Tr({a}\beta)}.
+\end{eqnarray*}
+Note that
+$$2^{-m}\cdot \left(2^m-2^{m-l+1}\right)^2\sum_{\beta\in\F_{2^m}}\delta_0^2(\beta)(-1)^{\Tr({a}\beta)}=2^m+2^{m-2l+2}-2^{m-l+2}.$$
+Note also that
+\begin{eqnarray*}
+&&2^{-2l-m+2}\sum_{\beta\in\F_{2^m}}\left(\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum\limits_{i\in I}f_i}(\beta)\right)^2(-1)^{\Tr({a}\beta)}\\
+&=&2^{-2l-m+2}\sum_{\beta\in\F_{2^m}}\sum_{\emptyset\neq I, J \subseteq \{1,2,\cdots, l\}}(-1)^{\CardI+\# J}\W {\sum\limits_{i\in I}f_i}(\beta)\W {\sum\limits_{j\in J}f_j}(\beta)(-1)^{\Tr({a}\beta)}\\
+&=&2^{2-2l}\sum_{\emptyset\neq I, J \subseteq \{1,2,\cdots, l\}}(-1)^{\CardI+\# J}A_{\sum\limits_{i\in I}f_i, \sum\limits_{j\in J}f_j}({a}).
+\end{eqnarray*}
+In addition, we have
+\begin{eqnarray*}
+&&(2^{2-l}-2^{3-2l})\sum_{\beta\in\F_{2^m}}\left(\delta_0(\beta)\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(\beta)\right)(-1)^{\Tr({a}\beta)}\\
+&=&(2^{2-l}-2^{3-2l})\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(0).
+\end{eqnarray*}
+Combining above discussion, we can immediately get that
+\begin{eqnarray*}
+A_f({a})&=&2^m+2^{m-2l+2}-2^{m-l+2}+2^{2-2l}\sum_{\emptyset\neq I, J \subseteq \{1,2,\cdots, l\}}(-1)^{\CardI+\# J}A_{\sum\limits_{i\in I}f_i, \sum\limits_{j\in J}f_j}({a})\\
+&&-(2^{2-l}-2^{3-2l})\sum_{\emptyset\neq I\subseteq \{1,2,\cdots, l\}}(-1)^{\CardI}\W {\sum_{i\in I}f_i}(0).
+\end{eqnarray*}
+This finishes the proof.
+\end{proof}
+
+
+\begin{corollary}\label{C:ATwoProd}
+Let $f_1,f_2\in\mathcal{B}_m$ be two Boolean functions and define an $m$-variable Boolean function $f(x)=f_1(x)f_2(x)$.
+Then for any ${a}\in\F_{2^m}$ we have
+\begin{eqnarray*}
+A_f({a})&=& 2^{m-2}+\frac{1}{4}\Big(A_{f_1}({a})+A_{f_2}({a})+A_{f_1+f_2}({a})\Big)+\frac{1}{2}\Big(A_{f_1,f_2}({a})-A_{f_1,f_1+f_2}({a})-A_{f_2,f_1+f_2}({a})\Big)\\
+&&-\frac{1}{2}\Big(\W {f_1+f_2}(0)-\W {f_1}(0)-\W {f_2}(0)\Big).
+\end{eqnarray*}
+\end{corollary}
+\begin{proof}
+It follows from Theorem~\ref{T:Autoprod} that
+\begin{eqnarray*}
+A_f({a})&=& 2^{m-2}+\frac{1}{4}\Big[A_{f_1,f_1}({a})+A_{f_1,f_2}({a})+A_{f_2,f_1}({a})+A_{f_2,f_2}({a})\\
+&&-A_{f_1,f_1+f_2}({a})-A_{f_2,f_1+f_2}({a})-A_{f_1+f_2,f_1}({a})-A_{f_1+f_2,f_2}({a})+A_{f_1+f_2,f_1+f_2}({a})\Big]\\
+&&-\frac{1}{2}\Big(\W {f_1+f_2}(0)-\W {f_1}(0)-\W {f_2}(0)\Big)\\
+&=& 2^{m-2}+\frac{1}{4}\Big(A_{f_1}({a})+A_{f_2}({a})+A_{f_1+f_2}({a})\Big)+\frac{1}{2}\Big(A_{f_1,f_2}({a})-A_{f_1,f_1+f_2}({a})-A_{f_2,f_1+f_2}({a})\Big)\\
+&&-\frac{1}{2}\Big(\W {f_1+f_2}(0)-\W {f_1}(0)-\W {f_2}(0)\Big).
+\end{eqnarray*}
+where $A_{g,g}({a})=A_{g}({a})$ and $A_{g,h}({a})=A_{h,g}({a})$ for any $g,h\in\mathcal{B}_m$
+is used in the last  identity. This completes the proof.
+\end{proof}
+}
+
+{\color{red}
+\begin{itemize}
+  \item For any $m$, we can consider $f(x)=g(x)h(x)=\Tr(x^3)\Tr(\lambda x^3)$.
+  \item  We can improve the minimum distance of the code from $f(x)=g(x)h(x)$ by choosing some functions minimizing the values
+  $\Big(\W {f_1+f_2}(\alpha)-\W {f_1}(\alpha)-\W {f_2}(\alpha)\Big)$ in Corollary~\ref{C:WalshTwoProd} ($g,h$ can be obtained by MM construction, but
+  we need to find some $g,h$ defined over finite field).
+\end{itemize}
+
+}
+
+
+\subsection{LRCs from Boolean functions based on direct sum}
+  \begin{lemma}[\cite{Seberry1994}]\label{disjoint}
+    Let $l$, $e$ and $m$ be three positive integers such that $m=l+e$.
+    Let $f(x_1,\cdots ,x_m)=g(x_1,\cdots, x_l)+h(x_{l+1}, \cdots,x_{m})$, where $g\in\mathcal{B}_l$ and $h\in\mathcal{B}_e$.
+    For any $\beta\in\F_2^m$, we have
+     \begin{enumerate}
+     \item [1)] $\W f(\beta)=\W g(\beta')\cdot \W h(\beta'')$
+     \item [2)] $A_f(\beta)=A_g(\beta')\cdot A_h(\beta'')$
+     \end{enumerate}
+     where $\beta=(\beta',\beta'')\in\F_2^l\times \F_2^{e}$ with $\beta'=(\beta_1,\cdots,\beta_l)$ and $\beta''=(\beta_{l+1},\cdots, \beta_{m})$.
+    \end{lemma}
+
+{\color{red}
+\begin{theorem}\label{T:LRCDirectSum}
+Let $l$ and$e$  be two positive integers.
+Let $\Omega_{s}=\{V_1,V_2,\cdots,V_s\}$ be a partial $\frac{l}{2}$-spread of $\F_2^l$ with $2\leq s \le 2^{l/2}+1$
+$\Omega'_{s'}=\{V'_1,V'_2,\cdots,V'_{s'}\}$ be a partial $\frac{e}{2}$-spread of $\F_2^e$ with $2\leq s' \le 2^{e/2}+1$,
+and $g\in\mathcal{B}_{l}$ be the Boolean function with support $\Omega_s'\setminus\{\0\}$
+and $h\in\mathcal{B}_{e}$ be the Boolean function with support $\Omega'_{s'}\setminus\{\0\}$.
+We define $f(x,y)=g(x)+h(y)$, where $x\in\F_2^l$ and $y\in\F_2^e$, then
+$\C_D$ defined in (\ref{eq:C-D}) is an $[  , l+e,  ]$-LRC with $r=2$ and $t=$.
+\end{theorem}
+\begin{proof}
+dd
+\end{proof}
+
+
+}
+
+
+
+
+
+
+
+\section{Conclusions}\label{Sec-conclusion}
+
+We have presented a new approach to design locally repairable codes (LRCs) with locality two and multiple repair alternatives
+by employing Boolean functions. Specifically, we focused on codes achieving minimum repair locality and maximum rate.
+We analyzed those codes using new tools and proposed an explicit construction method for designing them.
+A connection between LRCs (with multiple repair alternatives) and (the autocorrelation spectrum of) Boolean functions has been pointed out
+for the first time in this context (to the best of our knowledge), emphasizing notably a novel role of bent functions for designing LRCs.
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{LRCBF}
+
+%\begin{thebibliography}{10}
+%
+%%\bibitem{Pamies-Juarez-et-al}
+%%L.  Pamies-Juarez, HDL.  Hollmann, and F.  Oggier
+%%Locally repairable codes with multiple repair alternatives
+%%2013 IEEE international symposium on information theory, pp. 892--896, 2013.
+%
+%\bibitem{cai2019optimal}
+%H. Cai, Y. Miao, M. Schwartz, and X. Tang.
+%\newblock On optimal locally repairable codes with multiple disjoint repair
+%  sets.
+%\newblock {\em IEEE Trans. Inf. Theory}, 66(4), pp. 2402--2416,
+%  2019.
+%
+%\bibitem{Carl93}
+%C. Carlet.
+%\newblock Partially-bent functions.
+%\newblock {\em Designs, Codes and Cryptography}, 3(2):135--145, 1993.
+%
+%  \bibitem{Book-Carlet}  C. Carlet.
+% \newblock Boolean Functions for Cryptography and Coding Theory.
+%\newblock {\em Cambridge University Press}, Cambridge,
+%U.K., 2021.
+%
+%
+%   \bibitem{CarletMesnagerDCC2015}
+%C. Carlet and S. Mesnager.
+%\newblock Four decades of research on bent functions.
+% \newblock {\em Des. Codes Cryptogr.}, vol. 78, pp. 5-50, 2016.
+%
+% \bibitem{Dil74}
+%J.F.  Dillon.
+%\newblock  Elementary Hadamard difference sets.
+%\newblock {\em PhD thesis, Univ. of Maryland}, 1974.
+%
+% \bibitem{DingIT2015}
+%C. Ding.
+%\newblock Linear codes from some $2$-designs.
+%\newblock {\em IEEE Trans. Inf. Theory}, 61(6), pp. 3265--3275,
+%  2015.
+%
+%\bibitem{DingDM16}
+%C. Ding.
+%\newblock A construction of binary linear codes from {B}oolean functions.
+%\newblock {\em Discrete Mathematics}, 339(9), pp. 2288--2303, 2016.
+%
+%\bibitem{Gopalan-et-al}
+%P. Gopalan, C. Huang, H. Simitci, and S. Yekhanin.
+%\newblock On the locality of codeword symbols.
+%\newblock {\em IEEE Trans. Inf. Theory}, vol. 58, no. 11, pp. 6925--6934, 2012.
+%
+%\bibitem{Huang2012erasure}
+%C. Huang, H. Simitci, Y. Xu, A.Ogus, B.Calder, Parikshit
+%  Gopalan, J. Li, and S. Yekhanin.
+%\newblock Erasure coding in windows azure storage.
+%\newblock In {\em 2012-USENIX Annual Technical Conference
+%  USENIX-ATC 12}, pp. 15--26, 2012.
+%
+%
+%
+%  \bibitem{jin2019constructions}
+%L. Jin, H. Kan, and Y. Zhang.
+%\newblock Constructions of locally repairable codes with multiple recovering
+%  sets via rational function fields.
+%\newblock {\em IEEE Trans. Inf. Theory}, 66(1), pp. 202--209, 2019.
+%
+%
+%
+%  \bibitem{MS1977}
+%F.J. MacWilliams and N. J. A. Sloane.
+%\newblock The theory of error-correcting codes, Vol 16.
+%\newblock {\em Elsevier}, 1977.
+%
+%\bibitem{Mcfarland1973differencesets}
+%R.~L McFarland.
+%\newblock A family of difference sets in non-cyclic groups.
+%\newblock {\em Journal of Combinatorial Theory, Series A}, 15(1), pp. 1--10, 1973.
+%
+%\bibitem{SihemBentBook16}
+%S. Mesnager.
+%\newblock Bent Functions - Fundamentals and Results.
+%\newblock {\em Springer}, Switzerland, 2016.
+%
+% \bibitem{Mesnager-Handbook}
+% S. Mesnager.
+%\newblock Linear codes from functions.
+%\newblock {\em   A Concise Encyclopedia of Coding Theory} CRC Press/Taylor and Francis Group (Publisher) London, New York, 2021 (Chapter  20, 94 pages).
+%
+%
+%\bibitem{PamiesISIT2013}
+%L. Pamies-Juarez, H. D. L. Hollmann, and F. Oggier.
+%\newblock Locally repairable codes with multiple repair alternatives.
+%\newblock In {\em 2013 {IEEE} international symposium on information theory},
+%  pages 892--896,  2013.
+%
+%  \bibitem{2016Locality}
+%A.~S. Rawat, D.~S. Papailiopoulos, A.~G. Dimakis, and S.~Vishwanath.
+%\newblock Locality and availability in distributed storage.
+%\newblock {\em IEEE Trans. Inf. Theory}, 62(8), pp. 4481--4493,
+%  2016.
+%
+%  \bibitem{Rothaus}
+%O. S Rothaus.
+%\newblock On ``bent" functions.
+%\newblock {\em Journal of Combinatorial Theory, Series A}, 20(3) pp. 300--305,
+%  1976.
+%
+%\bibitem{Tamo-Barg-2014}
+%I. Tamo and A. Barg.
+%\newblock  A family of optimal locally recoverable codes.
+% \newblock {\em IEEE Trans. Inf. Theory}, vol. 60, no. 8, pp. 4661--4676, 2014.
+%
+% \bibitem{2015Bounds}
+%I.~Tamo, A.~Barg, and A.~Frolov.
+%\newblock Bounds on the parameters of locally recoverable codes.
+%\newblock {\em IEEE Trans. Inf. Theory}, 62(6), pp. 3070--3083,
+%  2015.
+%
+%
+%\bibitem{2013Repair}
+%A.~Wang and Z.~Zhang.
+%\newblock Repair locality with multiple erasure tolerance.
+%\newblock {\em IEEE Trans. Inf. Theory}, 60(11), pp. 6979--6987,
+%  2013.
+%
+%
+%\bibitem{2015AnWang}
+%A.~Wang and Z.~Zhang.
+%\newblock An integer programming based bound for locally repairable codes.
+%\newblock {\em IEEE Trans. Inf. Theory}, 61(10), pp. 5280--5294,
+%  2015.
+%
+%
+%\bibitem{wang2021construction}
+%J. Wang, K. Shen, X.  Liu, and C. Yu.
+%\newblock Construction of binary locally repairable codes with optimal distance
+%  and code rate.
+%\newblock {\em IEEE Communications Letters},
+%vol. 25, no. 7,  pp.  2109 - 2113, 2021.
+%
+%\bibitem{zhang2020locally}
+%Y.~Zhang and H.  Kan.
+%\newblock Locally repairable codes from combinatorial designs.
+%\newblock {\em Science China Information Sciences}, 63(2), pp. 1--15, 2020.
+%\end{thebibliography}
+\end{document}

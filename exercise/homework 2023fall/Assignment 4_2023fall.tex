@@ -1,0 +1,90 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+\title{NIS2312-01 Fall 2023 Homework~4}
+\author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-01 Fall 2023-2024} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Assignment~4} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2023年9月23日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+  
+\subsubsection*{引理54}
+    映射$f:A\rightarrow B$ 是一一映射的充分必要条件是$f$是可逆映射.
+
+    证明:  
+    
+    必要性: 假设$f$是可逆映射, 则$f$存在逆映射$f^{-1}:B\rightarrow A$. 对于$\forall b\in B$, 我们都有$f^{-1}(b)=a\in A$, 则$f(a)=f(f^{-1}(b))=b$, 因此$f$是满射; 假设$a_1,a_2\in A$且满足$f(a_1)=f(a_2)$, 则有$a_1=f^{-1}(f(a_1))=f^{-1}(f(a_2))=a_2$, 故$f$是单射. 因此$f$是一一映射.
+
+    充分性: 若$f$是一一映射, 故根据$f$的满射性质有, 对于任意给定的$b\in B$我们都能找到$a\in A$使得 $f(a)=b$, 同时因为$f$是单射, 则$a$是唯一确定的; 因此定义映射$g:B\rightarrow A$, 其中$g(b)=a$, 则$f(g(b))=f(a)=b$和$g(f(a))=g(b)=a$, 因此$f$是可逆映射.
+
+\subsubsection*{引理55}
+    设$f:A\rightarrow B$和$g:B\rightarrow C$都是一一映射, 则$g\circ f:A\rightarrow C$也是一一映射, 并且$(g\circ f)^{-1} = f^{-1}\circ g^{-1}$.
+
+    证明: 因为$f,g$都是一一映射, 根据引理54可知$f,g$都是可逆映射, 分别记为$f^{-1},g^{-1}$. 因此直接检验
+    \begin{align*}
+        (g\circ f)\circ(f^{-1}\circ g^{-1}) &=g\circ f\circ f^{-1}\circ g^{-1}\\
+                                            &=g\circ (f\circ f^{-1})\circ g^{-1}\\
+                                            &=g\circ id_B\circ g^{-1}\\
+                                            &=g\circ g^{-1}\\
+                                            &=id_C 
+    \end{align*}
+    同理可以得到 $(f^{-1}\circ g^{-1})\circ(g\circ f)=id_A$, 其中$id_A,id_B$和$id_C$分别是集合$A,B$和$C$的恒等映射.
+    故$g\circ f:A\rightarrow C$是可逆映射, 因此是一一映射. 
+\subsubsection*{Problem}
+    验证下列集合$G$与给定的运算能否构成群, 即判断是否满足群定义中的四个条件.
+    \begin{enumerate}[label=(\arabic{*})]
+        \item $G=\mathbb{C}$为复数集, 运算为复数域上的乘法.
+        \item $G=\mathbb{Z}$为整数集, 运算为整数上的减法.
+        \item $G=\mathbb{R}$为实数集, 运算为$\star$, 其定义如下: \[a\star b=(a+1)(b+1)-1,\forall a,b\in \mathbb{R}.\]
+    \end{enumerate}
+
+    证明: 
+    \begin{enumerate}[label=(\arabic{*})]
+        \item 对于代数结构$(\mathbb{C},*)$, 我们有:
+        \begin{enumerate}
+            \item 由于复数乘复数的结果仍然是复数, 故代数结构满足封闭性.
+            \item 对于$\forall a,b,c\in\mathbb{C}$, 都有$a*(b*c)=(a*b)*c$, 故结合律成立.
+            \item 对于$\forall a\in\mathbb{C}$, 我们有$a*1=1*a=a$, 则$1$是单位元.
+            \item 但除了$0$以外的元素才有逆元: $a\in\mathbb{C}\setminus\left\{ 0 \right\}$的逆元$1/a$.
+        \end{enumerate} 
+        因此该代数结构不构成群.
+        \item 对于代数结构$(\mathbb{Z},-)$, 我们有:
+        \begin{enumerate}
+            \item 由于整数相减的结果仍然是整数, 故代数结构满足封闭性.
+            \item 对于$\forall a,b,c\in\mathbb{Z}$, 等式$a-(b-c)=a-b+c=(a-b)-c$成立当且仅当$c=0$, 故结合律不成立.
+            \item 对于$\forall a\in\mathbb{Z}$, 我们有$a-id=id-a=a$, 即$id=0$且$id=2a$, 故不存在单位元.
+        \end{enumerate} 
+        因此该代数结构不构成群.
+        \item 对于代数结构$(\mathbb{R},\star)$, 我们有:
+        \begin{enumerate}
+            \item 由于实数之间的加减乘的结果仍然是实数, 故代数结构满足封闭性.
+            \item 对于$\forall a,b,c\in\mathbb{R}$, 都有$a\star(b\star c)=a\star\left( (b+1)(c+1)-1 \right)=(a+1)\left( (b+1)(c+1)-1 +1\right)-1=(a+1)(b+1)(c+1)-1$, 同时也有$(a\star b)\star c=(a+1)(b+1)(c+1)-1$, 则$a\star(b\star c)=(a\star b)\star c$, 故结合律成立.
+            \item 假设$id$是单位元, 对于$\forall a\in\mathbb{R}$, 我们有$a\star id=id\star a=a$, 即$(a+1)id=0$, 则$0$是单位元.
+            \item $\forall a\in\mathbb{R}$, 其逆元为$a^{-1}$满足$a\star a^{-1}=0$, 即$(a+1)(a^{-1}+1)-1=0\Rightarrow (a+1)(a^{-1}+1)=1$, 但$a=-1$时上式不成立, 故$-1$没有逆元.
+        \end{enumerate} 
+        因此该代数结构不构成群.
+    \end{enumerate}
+\end{document}

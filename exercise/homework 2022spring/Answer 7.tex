@@ -1,0 +1,156 @@
+\documentclass[a4paper,12pt]{ctexart}
+\usepackage{fullpage,enumitem,amsmath,amssymb,graphicx}
+\usepackage{tikz-cd}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\F}{\mathbf{F}}
+\newcommand{\Com}{\mathbf{C}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\R}{\mathbf{R}}
+
+
+% \title{NIS2312-2 Spring 2022 Homework~1}
+% \author{唐灯}
+
+
+
+\begin{document}
+%   \maketitle
+  \begin{center}
+
+  \vspace{-0.3in}
+  \begin{tabular}{c}
+    \textbf{\Large NIS2312-1 Spring 2021-2022} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  信息安全的数学基础(1)} \\
+    \textbf{\Large  } \\
+    \textbf{\Large  Answer~7} \\
+    \textbf{\Large  } \\
+    \textbf{\Large 2022年4月22日} \\
+  \end{tabular}
+  \end{center}
+  \noindent
+  \rule{\linewidth}{0.4pt}
+
+  % 在这个练习中, 带 * 的题目属于数论方面, 可以不做的 (考试不会单独考数论的题).  
+\subsubsection*{Problem 1}
+    % 判断下列代数结构在给定运算下是否构成环
+    \begin{enumerate}
+      \item 已知 $ 2\Z $和 $ 3\Z $是 $ \Z $的理想, 证明或证否 $ 2\Z\cap 3\Z $也是 $ \Z $的理想.
+      \item 证明交换环 $ R $ 的幂零元组成的集合 $ \mathfrak{R} (R) $ 为 $ R $的理想.
+      \item 假设 $ I $是环 $ R $的理想, $ S $是环 $ R $的子环, 证明: $ I\cap S $是环 $ S $的理想.
+    \end{enumerate}
+
+    解: \begin{enumerate}
+      \item 理想的交仍然是理想;
+      \item $ \forall x,y\in \mathfrak{R} (R) $, 总有 $ \exists m,n\in\Z $使得 $ x^m=0,y^n=0 $且 $ m>n $, 因此有
+      $ (x-y)^{m+n}=\sum_{i=0}^{m+n}\binom{m+n}{i}x^i(-y)^{m+n-i} $, 当 $ 0\leq i\leq m $时, 有 $ (-y)^{m+n-i}=0 $,
+      当 $ i>m $时, 有 $ x^{i}=0 $, 所以 $ (x-y)^{m+n}=0 $成立, 即 $ x-y\in\mathfrak{R} (R)  $; 交换环中幂零元乘非零元仍未幂零元,
+      因此 $ \mathfrak{R} (R) $为 $ R $的理想;
+      \item $ \forall a,b\in I\cap S $, 有 $ a,b\in I $和 $ a,b\in S $, 则 $ a-b\in I $, $ a-b\in S $, 故 $ a-b\in I\cap S $;
+      又因为 $ I $为理想, 则 $ \forall x\in S $, 有 $ ax,xa\in I $ (理想的``吸收率'')和 $ ax,xa\in S $ (子环的封闭性), 即 $ ax,xa\in I\cap S $,
+      则 $ I\cap S\triangleleft S $. 
+    \end{enumerate}
+\subsubsection*{Problem 2}
+   证明: 假设环 $ R $中有单位元, 那么
+   \begin{enumerate}
+      \item 如果 $ I $是环 $ R $的理想, $ I=R $当且仅当 $ I $中有单位;
+      \item 交换环 $ R $是一个域当且仅当 $ R $只有平凡理想.
+    \end{enumerate}
+
+    解: \begin{enumerate}
+      \item $ \Rightarrow $: $ I=R $, 因此 $ e\in R=I $, 故 $ I $中有单位;
+      $ \Leftarrow $: 假设 $ a\in I $是单位, 那么 $ \exists b\in R $使得 $ e=ab\in I $, 则 $ \forall r\in R $, 我们有 $ r=er\in I $, 即 $ R\subseteq I $,
+      又因为 $ I\subseteq R $, 可以得到 $ I=R $; 
+      \item $ \Rightarrow $: 所有非零元素均为单位, 所以所有非零理想均含有单位, 根据1可知非零理想就是 $ R $;
+      $ \Leftarrow $: 任取一个非零元素 $ x\in R $, 得到其主理想 $ \langle x \rangle=xR $, 所以得到 $ xR=R $, 因为 $ R $中有单位元, 则有 $ r\in R $满足 $ xr=e $, 
+      故 $ x $是单位, 因此 $ R $的非零元素均为单位, 故 $ R $是一个域. 
+    \end{enumerate}
+\subsubsection*{Problem 3}
+    假设 $ R=\{\begin{pmatrix}a&b\\b&a\end{pmatrix}\mid a,b\in\Z\} $, 
+    $ \phi:R\rightarrow\Z $是一个映射满足 $ \phi(\begin{pmatrix}a&b\\b&a\end{pmatrix})=a-b $,
+    证明:
+    \begin{enumerate}
+      \item $ \phi $是一个同态;
+      \item 计算 $ ker(\phi) $;
+      \item $ R/ker(\phi)\cong\Z $. 
+    \end{enumerate} 
+
+    解: \begin{enumerate}
+      \item $ \forall \begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix},\begin{pmatrix}a_2&b_2\\b_2&a_2\end{pmatrix}\in R $, 有
+      \[ \phi\left(\begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix}+\begin{pmatrix}a_2&b_2\\b_2&a_2\end{pmatrix}\right)=\phi\left(\begin{pmatrix}a_1+a_2&b_1+b_2\\b_1+b_2&a_1+a_2\end{pmatrix}\right)=a_1+a_2-b_1-b_2\]
+      \begin{align*}
+        &\phi\left(\begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix}\cdot\begin{pmatrix}a_2&b_2\\b_2&a_2\end{pmatrix}\right)=\phi\left(\begin{pmatrix}a_1a_2+b_1b_2&a_1b_2+a_2b_1\\a_1b_2+a_2b_1&a_1a_2+b_1b_2\end{pmatrix}\right)=a_1a_2+b_1b_2-a_1b_2-a_2b_1\\
+        =&(a_1-b_1)(a_2-b_2)=\phi\left(\begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix}\right)\cdot\phi\left(\begin{pmatrix}a_2&b_2\\b_2&a_2\end{pmatrix}  \right)
+      \end{align*}
+      因此 $ \phi $是一个同态映射;
+      \item $ \phi\left(\begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix}\right)=a_1-b_1=0\Rightarrow a_1=b_1 $, 则 $ ker(\phi)=\left\{\begin{pmatrix}a&a\\a&a\end{pmatrix}\mid a\in \Z\right\} $;
+      \item $ \forall x\in\Z $, 有 $ \exists a,b\in\Z $满足 $ x=a-b $, 那么 $ \phi\left(\begin{pmatrix}a_1&b_1\\b_1&a_1\end{pmatrix}\right)=x $, 故为满同态,
+      所以由环同态基本定理可以得到 $ R/ker(\phi)\cong\Z $.
+      \end{enumerate}
+\subsubsection*{Problem 4}
+    假设 $ D\in\Z $是一个非完全平方数, 
+    令 $ S=\left\{\begin{pmatrix}a &b\\Db &a\end{pmatrix}\mid a,b\in \Z\right\} $. 证明：
+    \begin{enumerate}
+      \item $ S $是 $ M_2(\Z) $的子环;
+      \item 映射$ \begin{array}{rccc}
+        \phi:&\Z[\sqrt{D}]&\rightarrow&S\\
+        &a+b\sqrt{D}&\mapsto&\begin{pmatrix}a &b\\Db &a\end{pmatrix}
+      \end{array} $是环的同构映射.
+    \end{enumerate}
+
+    解: \begin{enumerate}
+      \item 
+      $\begin{aligned}
+        &\forall \left(\begin{array}{ll}
+        a_{1} & b_{1} \\
+        D b_{1} & a_{1}
+        \end{array}\right),\left(\begin{array}{ll}
+        a_{2} & b_{2} \\
+        D b_{2} & a_{2}
+        \end{array}\right) \in S \\
+        &\left(\begin{array}{ll}
+        a_{1} & b_{1} \\
+        D b_{1} & a_{1}
+        \end{array}\right)-\left(\begin{array}{ll}
+        a_{2} & b_{2} \\
+        D b_{2} & a_{2}
+        \end{array}\right)=\left(\begin{array}{ll}
+        a_{1}-a_{2} & b_{1}-b_{2} \\
+        D\left(b_{1}-b_{2}\right) & a_{1}-a_{2}
+        \end{array}\right) \in S \\
+        &\left(\begin{array}{ll}
+        a_{1} & b_{1} \\
+        D b_{1} & a_{1}
+        \end{array}\right) \cdot\left(\begin{array}{ll}
+        a_{2} & b_{2} \\
+        D b_{2} & a_{2}
+        \end{array}\right)=\left(\begin{array}{ll}
+        a_{1} a_{2}+D b_{1} b_{2} & a_{1} b_{2}+a_{2} b_{1} \\
+        D\left(a_{1} b_{2}+a_{2} b_{1}\right) & a_{1} a_{2}+D b_{1} b_{2}
+        \end{array}\right) \in S
+        \end{aligned}$,
+        
+        所以 $ S $是 $ M_2(\Z) $的子环;
+        \item  (1) $ \forall \begin{pmatrix}a&b\\Db&a\end{pmatrix}\in S $, 有 $\exists a+b\sqrt{D}\in\Z[\sqrt{D}] $满足 $ \phi(a+b\sqrt{D})=\begin{pmatrix}a&b\\Db&a\end{pmatrix} $, 满射;
+        
+        (2) $\forall a_{1}+b_{1} \sqrt{D}, a_{2}+b_{2} \sqrt{D} \in\Z[\sqrt{D}] $, 如果 $ \phi\left(a_{1}+b_{1} \sqrt{D}\right)=\phi\left(a_{2}+b_{2} \sqrt{D}\right)$,
+         那么 $\left(\begin{array}{ll}a_{1} & b_{1} \\ D b_{1} & a_{1}\end{array}\right)=\left(\begin{array}{ll}a_{2} & b_{2} \\ D b_{2} & a_{2}\end{array}\right)$ 则 $a_{1}=a_{2}, b_{1}=b_{2}$, 即 $a_{1}+b_{1} \sqrt{D}=a_{2}+b_{2} \sqrt{D}$, 单射;
+
+        (3) $\phi\left(a_{1}+b_{1} \sqrt{D}\right)+\phi\left(a_{2}+b_{2} \sqrt{D}\right)=\left(\begin{array}{ll}a_{1}+a_{2} & b_{1}+b_{2} \\ b_{1}+D b_{2} & a_{1}+a_{2}\end{array}\right)=\phi\left(a_{1}+b_{1} \sqrt{D}+a_{2}+b_{2} \sqrt{D}\right)$
+        $\phi\left(a_{1}+b_{1} \sqrt{D}\right) \cdot \phi\left(a_{2}+b_{2} \sqrt{D}\right)=\left(\begin{array}{ll}a_{1} a_{2}+D_{1} b_{2} & a_{1} b_{2}+a_{2} b_{1} \\ D\left(a_{1} b_{2}+a_{2} b_{1}\right) & a_{1} a_{2}+D b_{1} b_{2}\end{array}\right)$
+
+        $=\phi\left(a_{1} a_{2}+b_{1} b_{2} D+\left(a_{1} b_{2}+a_{2} b_{1}\right) \sqrt{b}\right)=\phi\left(\left(a_{1}+b_{1} \sqrt{b}\right)\cdot\left(a_{2}+b_{2} \sqrt{b}\right)\right)$, 同构.
+    \end{enumerate}
+\subsubsection*{Problem 5}
+    假设 $ f(x)\in\R[x] $, 如果 $ a+bi $是 $ f(x) $的复数根, 证明 $ a-bi $也是 $ f(x) $的根.
+    注意:需要构造一个合理的同构映射. 
+    
+    解: 假设 $ f(x)=a_0+a_1x+a_2x^2+\cdots+a_nx^n $, 其中 $ a_i\in\R $. 取共轭 $ \phi $ 做复数域上的映射, 
+
+    \[\begin{array}{cccc}
+      \phi:& \Com& \rightarrow& \Com\\
+      &a+bi&\mapsto&a-bi
+    \end{array}\]
+    所以, 可以得到结果 $ \phi(f(a+bi))=\phi(a_0+a_1(a+bi)+\cdots+a_n(a+bi)^n)=\phi(a_0)+\phi(a_1)\phi(a+bi)+\cdots+\phi(a_n)\phi(a+bi)^n=a_0+a_1(a-bi)+\cdots+a_n(a-bi)^n=f(a-bi) $, 又因为 $ \phi(f(a+bi))=\phi(0)=0 $, 故 $ f(a-bi)=0 $, 即 $ a-bi $也是 $ f(x) $的解.
+\end{document}
